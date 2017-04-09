@@ -23,13 +23,6 @@ alias m="less"
 alias cp="cp -a"
 alias pd='pushd'  # symmetry with cd
 
-# GIT
-# Do this: git config --global url.ssh://git@github.com/.insteadOf https://github.com
-alias gd="git diff --ignore-space-at-eol"
-alias gs="git status 2>/dev/null"
-function gc() { git clone ssh://git@github.com/"$*" }
-function gg() { git commit -m "$*" }
-
 # More suitable for .zshenv
 PROMPT='%n@%m %3~%(!.#.$)%(?.. [%?]) '
 
@@ -65,13 +58,13 @@ bindkey ' '  magic-space
 ####################################
 # Stripped-down version of oh-my-zsh
 ####################################
-export ZSH=$HOME/zclean
+export ZSH=$HOME/dmz
 
 for c in $ZSH/lib/*.zsh; do
   source $c
 done
 
-plugins=(impure zsh-syntax-highlighting colorize)
+plugins=(impure zsh-syntax-highlighting colorize hub)
 
 for p in $plugins; do
   fpath=($ZSH/plugins/$p $fpath)
@@ -160,6 +153,19 @@ function chpwd() {
 	emulate -L zsh
 	ls
 }
+#
+# GIT
+# Do this: git config --global url.ssh://git@github.com/.insteadOf https://github.com
+hubpath=$(which hub)
+if (( $+commands[hub] )); then
+	alias git=$hubpath
+fi
+
+alias gd="git diff --ignore-space-at-eol"
+alias gs="git status 2>/dev/null"
+function gc() { git clone ssh://git@github.com/"$*" }
+function gg() { git commit -m "$*" }
+
 
 # Put your machine-specific settings here
 [[ -f ~/.secret ]] && source ~/.secret
