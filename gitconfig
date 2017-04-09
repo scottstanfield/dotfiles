@@ -4,6 +4,7 @@
 	branch = auto
 	interactive = auto
 	diff = auto
+	autocrlf = input   # set to input on Mac/Linux, true on Windows
 [alias]
 	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit 
 	co = checkout
@@ -21,6 +22,16 @@
 	list-remote-stale-branches = !git branch -r --merged origin/master | sed -e 's/origin\\///' | grep -v master 
 [push]
 	default = simple
+
+[diff]
+	mnemonicprefix = true
+	rename = copy
+
+[grep]
+	lineNumber = true
+
+[color]
+	ui = true
 
 # [pager]
 # 	diff = diff-so-fancy | less --tabs=4 -RFX 

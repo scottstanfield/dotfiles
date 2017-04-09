@@ -22,8 +22,9 @@ link R/Makevars ~/.R/Makevars
 link Renviron ~/.Renviron
 link Rprofile ~/.Rprofile
 
-# Setup gitconfig
+# Setup git
 link gitconfig ~/.gitconfig
+link gitignore ~/.gitignore
 
 # Setup go
 mkdir -p ~/go
@@ -31,6 +32,7 @@ mkdir -p ~/go
 # Post-install step
 echo 'launchng nvim to run :PlugInstall...'
 nvim +PlugInstall +qall
+
 
 
 
