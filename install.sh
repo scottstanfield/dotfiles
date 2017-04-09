@@ -25,6 +25,9 @@ link Rprofile ~/.Rprofile
 # Setup gitconfig
 link gitconfig ~/.gitconfig
 
+# Setup go
+mkdir -p ~/go
+
 # Post-install step
 echo 'launchng nvim to run :PlugInstall...'
 nvim +PlugInstall +qall
