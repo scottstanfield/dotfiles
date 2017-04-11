@@ -157,7 +157,7 @@ prompt_pure_preprompt_render() {
 	# abbreviated path 
 	#local left="$bg[white]${MODEL}$bg[default] %F{blue}%m %~%f" 
 	#local left="(${MODEL}) %F{blue}%m %~%f" 
-	local left="(${MODEL}) %F{blue}%m %~%f" 
+	local left="${LEFT_PROMPT_EXTRA}%F{blue}%m %~%f" 
 
 	# prompt turns red if the previous command didn't exit with 0
 	#left+=" %(?.%F{green}.%F{red})$(prompt_tail)%f "
