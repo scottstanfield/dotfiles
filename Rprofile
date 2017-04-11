@@ -11,3 +11,21 @@
 		setOutputColors256(string = 0, verbose = F)     # for solarized light
 	}
 }
+
+# Set output width to size of the screen (if possible)
+.set.width.option <- function()
+{
+	tryCatch({
+	width = as.integer(Sys.getenv('COLUMNS'))
+	if (is.na(width)) {
+		width = as.integer(system('tput cols', intern=TRUE))
+	}
+	}, error=function(err) {
+	print('in error')
+	})
+
+	if (is.na(width)) width=120
+	options(width = width)
+}
+.set.width.option()
+
