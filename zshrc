@@ -1,6 +1,5 @@
-# Sensible, short .zshrc
-# Find updates at https://gist.github.com/scottstanfield/fa1085c225069160225d18b1dc16ee1c
-# Link to just the RAW file suitable for curl -L https://bit.ly/sensible-zshrc
+# Scott Stanfield
+# http://git.io/dmz
 
 # GNU and BSD (macOS) ls flags aren't compatible
 ls --version &>/dev/null

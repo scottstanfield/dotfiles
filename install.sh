@@ -1,6 +1,8 @@
 #!/bin/sh
 
 # dmz: Setup my Dotfiles / viM / zshrc / gitconfig
+# http://git.io/dmz
+
 # assumes you have zsh and neovim installed
 # destroys existing links
 
