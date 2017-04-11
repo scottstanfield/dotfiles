@@ -141,6 +141,7 @@ alias r='R --no-save --quiet'
 alias make="make --no-print-directory"
 alias grep="grep --color=always"
 alias gpg="gpg2"
+alias shs="ssh -Y"    # enable X11 forwarding back to the Mac running XQuartz to display graphs
 
 # Functions
 function ff() { find . -iname "$1*" -print }
@@ -161,7 +162,9 @@ if (( $+commands[hub] )); then
 	alias git=$hubpath
 fi
 
-alias gd="git diff --ignore-space-at-eol"
+# Use diff-so-fancy if found in path
+hash "diff-so-fancy" &> /dev/null && alias gd="git dsf" || alias gd="git diff"
+
 alias gs="git status 2>/dev/null"
 function gc() { git clone ssh://git@github.com/"$*" }
 function gg() { git commit -m "$*" }

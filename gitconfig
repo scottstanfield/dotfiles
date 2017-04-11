@@ -16,14 +16,15 @@
 	workflow = !open http://haacked.com/archive/2014/07/28/github-flow-aliases/
 	bclean = "!f() { git branch --merged ${1-master} | grep -v " ${1-master}$" | xargs git branch -d; }; f"
 	bdone = "!f() { git checkout ${1-master} && git up && git bclean ${1-master}; }; f"
-	dsf = "!git diff --color $@ | diff-so-fancy"
 
 	delete-remote-stale-branches = !git branch -r --merged origin/master | sed -e 's/origin\\///' | grep -v master | xargs -p -n 1 git push origin --delete
 	list-remote-stale-branches = !git branch -r --merged origin/master | sed -e 's/origin\\///' | grep -v master 
-[push]
-	default = simple
 
-[diff]
+	dsf = "!f() { [ -z \"$GIT_PREFIX\" ] || cd \"$GIT_PREFIX\" && git diff --ignore-space-change --color \"$@\" | diff-so-fancy  | less --tabs=4 -RFX; }; f"
+[push]   
+	default  = simple
+
+[diff] 
 	mnemonicprefix = true
 	rename = copy
 
@@ -33,9 +34,8 @@
 [color]
 	ui = true
 
-# [pager]
-# 	diff = diff-so-fancy | less --tabs=4 -RFX 
-# 	show = diff-so-fancy | less --tabs=4 -RFX/
+[pager]
+ 	diff = less --tabs=4 -RFX 
 
-# [url "ssh://git@github.com/"] 
-# 	insteadOf = https://github.com 
+; [url "ssh://git@github.com/"] 
+; 	insteadOf = https://github.com 
