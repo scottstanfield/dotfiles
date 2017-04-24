@@ -15,16 +15,19 @@ let &showbreak = '↳ '
 set breakindent
 set breakindentopt=sbr
 
-" mimic emacs line editing in insert-mode only
-ino <C-A> <Home>
-ino <C-B> <Left>
-ino <C-D> <Del>
-ino <C-E> <End>
+" mimic emacs like line-editing in insert-mode
+ino <C-A> <Home>		
+ino <C-E> <End>		
 ino <C-F> <Right>
-ino <C-K> <Esc>lDa
-ino <C-U> <Esc>d0xi
+ino <C-B> <Left>
+ino <C-D> <Del>	
+ino <C-K> <Esc>lDa	
+ino <C-U> <Esc>d0xi	
 ino <C-Y> <Esc>Pa
+
 ino <C-X><C-S> <Esc>:w<CR>a
+
+
 
 " Ctrl-s to save current file (in normal and insert mode)
 imap <c-s> <Esc>:w<CR>a
@@ -202,6 +205,7 @@ nnoremap <leader>b <C-w>l
 
 " Flip between last two files
 nnoremap <leader><leader> <c-^>
+nnoremap `` <c-^>
 
 " Indent and outdent now > and < keep the visual selection
 vnoremap > >gv
