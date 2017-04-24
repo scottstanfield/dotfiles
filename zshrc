@@ -21,6 +21,7 @@ alias ,="cd .."
 alias m="less"
 alias cp="cp -a"
 alias pd='pushd'  # symmetry with cd
+alias df='df -h'  # human readable
 
 # More suitable for .zshenv
 PROMPT='%n@%m %3~%(!.#.$)%(?.. [%?]) '
