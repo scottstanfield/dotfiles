@@ -252,13 +252,16 @@ call plug#begin('~/.config/nvim/plugged')
 	let g:rainbow#pairs = [['(', ')'], ['[', ']']]
 
     Plug 'kassio/neoterm'
-    Plug 'junegunn/goyo.vim'
+    Plug 'junegunn/goyo.vim'		
+	let g:goyo_width = 100
+	nmap <leader>g :silent Goyo<CR>
+
 	Plug 'regedarek/ZoomWin'
 
     Plug 'junegunn/vim-easy-align',     { 'on': ['<Plug>(EasyAlign)', 'EasyAlign'] }
     xmap ga <Plug>(EasyAlign)
     nmap ga <Plug>(EasyAlign)
-    let g:easy_align_delimiters = { 'a': {'pattern': '<-'}, '<': {'pattern': '<-'} }
+    let g:easy_align_delimiters = { ';': {'pattern': ':'}, 'a': {'pattern': '<-'}, '<': {'pattern': '<-'}, ':': {'pattern': ':='}}
 
     " Python
     "   Plug 'neomake/neomake'
