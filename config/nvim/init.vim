@@ -270,6 +270,9 @@ call plug#begin('~/.config/nvim/plugged')
 	" After installing, run ~/.fzf/install
 	Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 	
+	Plug 'blueyed/vim-diminactive'
+	hi ColorColumn ctermbg=lightgrey
+
 	Plug 'itchyny/lightline.vim'
 
 	Plug 'junegunn/rainbow_parentheses.vim'
