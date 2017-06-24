@@ -79,7 +79,6 @@ for p in $plugins; do
 done
 
 
-setopt autopushd pushdminus pushdsilent pushdtohome pushd_ignore_dups
 COMPLETION_WAITING_DOTS="true"
 
 ###################################################
