@@ -6,6 +6,11 @@ let mapleader = ","             " Our free key to prefix custom commands
 let localleader = "\\"
 set hidden                      " switch buffers w/o saving
 
+set clipboard+=unnamedplus
+
+set encoding=utf-8
+set fileencoding=utf-8
+
 " Move visual blocks up/down: it's magic
 vnoremap J :m '>+1<CR>gv=gv
 vnoremap K :m '<-2<CR>gv=gv
