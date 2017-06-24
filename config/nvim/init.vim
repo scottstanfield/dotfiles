@@ -299,7 +299,6 @@ call plug#begin('~/.config/nvim/plugged')
     "   R linter with neomake!
     "   https://github.com/neomake/neomake/pull/646/files
     "
-    
 
     " For R language
     Plug 'jalvesaq/Nvim-r',   { 'for': 'r' }
@@ -324,12 +323,16 @@ call plug#begin('~/.config/nvim/plugged')
     Plug 'tpope/vim-surround'
     Plug 'tpope/vim-repeat'
     Plug 'tpope/vim-commentary'                     " smarter commenting with gc
-    Plug 'altercation/vim-colors-solarized'         " not sure what this is doing
     Plug 'matchit.zip'                              " smarter % key matching
-    "Plug 'airblade/vim-gitgutter'             " shows git diff marks in the gutter
+
+    Plug 'airblade/vim-gitgutter'					" shows git diff marks in the gutter
+	nmap <silent> <leader>tg :GitGutterToggle<CR>	
+	let g:gitgutter_enabled = 0						" off by default
 
 call plug#end()
 
+" Toggle line numbers on/off
+nmap <silent> <leader>tn :set invnumber<CR>
 
 " Wrapping autocmd in a group per http://bit.ly/15wKRrM
 augroup my_au
