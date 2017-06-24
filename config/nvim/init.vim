@@ -42,6 +42,11 @@ nmap <c-s> :w<CR>
 """"""""
 " COLORS
 """"""""
+" lighten color of vertical split and remove | bar
+" https://stackoverflow.com/questions/9001337/vim-split-bar-styling
+highlight VertSplit ctermfg=grey
+set fillchars+=vert:\ 
+
 " make :terminal cursor red 
 highlight TermCursor ctermfg=red        
 
