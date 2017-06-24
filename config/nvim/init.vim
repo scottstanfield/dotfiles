@@ -21,13 +21,13 @@ set breakindent
 set breakindentopt=sbr
 
 " mimic emacs like line-editing in insert-mode
-ino <C-A> <Home>		
-ino <C-E> <End>		
+ino <C-A> <Home>
+ino <C-E> <End>
 ino <C-F> <Right>
 ino <C-B> <Left>
-ino <C-D> <Del>	
-ino <C-K> <Esc>lDa	
-ino <C-U> <Esc>d0xi	
+ino <C-D> <Del>
+ino <C-K> <Esc>lDa
+ino <C-U> <Esc>d0xi
 ino <C-Y> <Esc>Pa
 
 ino <C-X><C-S> <Esc>:w<CR>a
