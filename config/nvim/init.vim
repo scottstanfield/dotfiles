@@ -114,7 +114,7 @@ set nostartofline               " Searches leave cursor on same column
 set ignorecase                  " Case-insensitive searching.
 set lazyredraw                  " No redraw during macro execution
 set number                      " Show line numbers.
-set shortmess=atI               " stifle the long interrupt prompts
+set shortmess=atIF               " stifle the long interrupt prompts
 set showmode                    " Display the mode you're in.
 set smartcase                   " But case-sensitive if has caps
 set scrolloff=3                 " Show 3 lines around cursor (more context)
