@@ -196,6 +196,7 @@ ab [left] ←
 ab [right] →
 ab [pi] π
 ab [shrug]  ¯\_(ツ)_/¯
+ab [yhat] ŷ
 
 " Toggle invisible whiteSpace ¬ ¶
 nnoremap <leader>i :set list!<CR>
