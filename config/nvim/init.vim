@@ -51,7 +51,7 @@ set fillchars+=vert:\
 highlight TermCursor ctermfg=red        
 
 " Make / searches stand out in magenta
-highlight Search term=bold ctermbg=225 guibg=LightMagenta
+highlight Search term=bold ctermbg=LightMagenta guibg=LightMagenta
 
 " Hide the Magenta with ,/
 nnoremap <silent> <leader>/ :set hlsearch! hlsearch?<CR>
