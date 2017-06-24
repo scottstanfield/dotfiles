@@ -280,7 +280,7 @@ call plug#begin('~/.config/nvim/plugged')
     vmap <silent> <Space> <Plug>RSendSelection<Esc><Esc>
     nmap <silent> <Space> :call SendLineToR("stay")<CR><Esc><Home><Down>
     let R_assign = 0
-    let R_args = ['--no-save']
+    let R_args = ['--no-save', '--quiet']
     let R_hi_fun = 0
     let R_tmpdir = '~scott/R/tmp'
     let R_source_args = 'print.eval=F'
