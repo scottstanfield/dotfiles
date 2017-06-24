@@ -299,18 +299,8 @@ call plug#begin('~/.config/nvim/plugged')
     Plug 'tpope/vim-commentary'                     " smarter commenting with gc
     Plug 'altercation/vim-colors-solarized'         " not sure what this is doing
     Plug 'matchit.zip'                              " smarter % key matching
+    "Plug 'airblade/vim-gitgutter'             " shows git diff marks in the gutter
 
-    " Evaluate for future install
-    " Plug 'zaiste/tmux.vim'                    " syntax for tmux?
-    " Plug 'airblade/vim-gitgutter'             " shows git diff marks in the gutter
-    " Plug 'nathanaelkane/vim-indent-guides'    " toggle visual indent guides
-    "    nmap <silent> <leader>g <Plug>IndentGuidesToggle
-    " Plug 'jistr/vim-nerdtree-tabs'
-    "    nnoremap <leader>u <plug>NERDTreeTabsToggle<cr>
-    " Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
-    "    nnoremap <leader>nt :NERDTree<cr>
-
-    " Plug 'tpope/vim-markdown'
 call plug#end()
 
 
