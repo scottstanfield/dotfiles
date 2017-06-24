@@ -28,6 +28,11 @@ link Rprofile ~/.Rprofile
 link gitconfig ~/.gitconfig
 link gitignore ~/.gitignore
 
+# Setup ag (the silver search)
+# Mac:   brew install the_silver_searcher
+# Linux: sudo apt install silversearcher-ag
+link agignore ~/.agignore
+
 # Setup go
 mkdir -p ~/go
 
