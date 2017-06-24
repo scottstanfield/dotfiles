@@ -43,13 +43,27 @@ imap <c-s> <Esc>:w<CR>a
 nmap <c-s> :w<CR>
 
 
-""""""""
-" COLORS
-""""""""
+" Vertical Split
 " lighten color of vertical split and remove | bar
 " https://stackoverflow.com/questions/9001337/vim-split-bar-styling
 highlight VertSplit ctermfg=grey
 set fillchars+=vert:\ 
+
+" Toggle the visibility of the bar by changing the color
+" Good for screenshots!
+let g:bar = 0
+function! ToggleSplit()
+	if g:bar
+		highlight VertSplit ctermfg=grey
+		let g:bar=0
+	else
+		highlight VertSplit ctermfg=white
+		let g:bar=1
+	endif
+endfunction
+command! ToggleSp call ToggleSplit()
+"noremap <leader>tv :ToggleSp<CR>
+noremap <leader>tv :call ToggleSplit()<CR>
 
 " make :terminal cursor red 
 highlight TermCursor ctermfg=red        
