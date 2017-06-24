@@ -8,6 +8,10 @@ set hidden                      " switch buffers w/o saving
 
 set clipboard+=unnamedplus
 
+" Map CMD-S to save files (iTerm2 passes it along as an anchor)
+nnoremap <silent> ⚓ :w<CR>
+inoremap <silent> ⚓ <ESC>:w<CR>a
+
 set encoding=utf-8
 set fileencoding=utf-8
 
