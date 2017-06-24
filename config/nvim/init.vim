@@ -157,8 +157,12 @@ nnoremap <silent> <S-Right> :wincmd l<CR>
 " keys to quickly resize window/pane splits
 nmap + <C-w>5+
 nmap - <C-w>5-
-nmap < <C-w>5<
-nmap > <C-w>5>
+nmap < <C-w>5>
+nmap > <C-w>5<
+
+" move easily b/w panes with TAB
+nnoremap <Tab> <C-w><C-w>
+
 
 
 " Make it easier to (make it easier to (make it easier to (edit text)))
@@ -249,8 +253,7 @@ inoremap <C-t> <ESC>bgUWea
 vnoremap . :norm.<CR>
 
 " Tabbed Windows g
-nnoremap <Tab> :tabn<CR>
-nnoremap <S-Tab> :tabp<CR>
+nnoremap <S-Tab> :tabn<CR>
  
 
 """""""""
