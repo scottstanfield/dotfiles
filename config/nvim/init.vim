@@ -246,6 +246,11 @@ endif
 
 call plug#begin('~/.config/nvim/plugged')
 
+	Plug 'itchyny/lightline.vim'
+
+	Plug 'junegunn/rainbow_parentheses.vim'
+	let g:rainbow#pairs = [['(', ')'], ['[', ']']]
+
     Plug 'kassio/neoterm'
     Plug 'junegunn/goyo.vim'
 	Plug 'regedarek/ZoomWin'
@@ -327,9 +332,13 @@ augroup my_au
     " PEP8 has defined the proper indentation for Python
     au BufNewFile,BufRead *.py set ts=4 sts=4 sw=4 tw=79 expandtab fileformat=unix
 
-
     " Turn off line wrapping when working on HTML files
     au BufNewFile,BufRead *.html setlocal nowrap
+augroup END
+
+augroup rainbow_paren
+	autocmd!
+	autocmd FileType r RainbowParentheses
 augroup END
 
 
