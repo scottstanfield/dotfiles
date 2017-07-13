@@ -6,7 +6,15 @@ let mapleader = ","             " Our free key to prefix custom commands
 let localleader = "\\"
 set hidden                      " switch buffers w/o saving
 
+"set clipboard^=unnamed
 set clipboard+=unnamedplus
+"set clipboard^=unnamed
+
+" Folding for R files
+"let r_syntax_folding = 1
+" set nofoldenable				" start with all folds open
+"nnoremap <Enter> za
+
 
 " Map CMD-S to save files (iTerm2 passes it along as an anchor)
 nnoremap <silent> ⚓ :w<CR>
@@ -49,27 +57,36 @@ nmap <c-s> :w<CR>
 highlight VertSplit ctermfg=grey
 set fillchars+=vert:\ 
 
-" Toggle the visibility of the bar by changing the color
-" Good for screenshots!
-let g:bar = 0
+" Toggle the visibility of the bar by changing the color (for screenshots)
+let g:toggle_split = 0
 function! ToggleSplit()
-	if g:bar
+	if g:toggle_split
 		highlight VertSplit ctermfg=grey
-		let g:bar=0
+		let g:toggle_split=0
 	else
 		highlight VertSplit ctermfg=white
-		let g:bar=1
+		let g:toggle_split=1
 	endif
 endfunction
-command! ToggleSp call ToggleSplit()
-"noremap <leader>tv :ToggleSp<CR>
-noremap <leader>tv :call ToggleSplit()<CR>
+noremap <leader>ts :call ToggleSplit()<CR>
+
+" Toggle comments bold and back
+" normal: ctermfg=14
+" bold:   ctermfg=8
+let g:toggle_comments = 0
+function! ToggleComments()
+	if g:toggle_comments
+		highlight Comment ctermfg=14 term=none
+		let g:toggle_comments=0
+	else
+		highlight Comment ctermfg=8  term=bold
+		let g:toggle_comments=1
+	endif
+endfunction
+noremap <leader>tc :call ToggleComments()<CR>
 
 " make :terminal cursor red 
 highlight TermCursor ctermfg=red        
-
-" Make / searches stand out in magenta
-highlight Search term=bold ctermbg=LightMagenta guibg=LightMagenta
 
 " Hide the Magenta with ,/
 nnoremap <silent> <leader>/ :set hlsearch! hlsearch?<CR>
@@ -77,26 +94,29 @@ nnoremap <silent> <leader>/ :set hlsearch! hlsearch?<CR>
 " Highlight current line and column
 nnoremap <leader>c :set cursorcolumn!<CR>
 nnoremap <leader>l :set cursorline!<CR>
-hi CursorLine ctermbg=7 cterm=none
 
 " Colors (solarized) g
-    " let g:solarized_contrast="high"     
-    " let g:solarized_visibility="high"
-    " call togglebg#map("<leader>x")          " ,x toggles dark/light
+" let g:solarized_contrast="high"     
+" let g:solarized_visibility="high"
+" call togglebg#map("<leader>x")          " ,x toggles dark/light
 
-    " let profile = $ITERM_PROFILE
-    " if profile ==? 'solarized-dark'
-    "     set background=dark                 " light | dark
-    "     hi colorcolumn ctermbg=darkgrey
-    " else
-    "     set background=light
-    "     hi colorcolumn ctermbg=lightgrey
-    " endif
-    " colorscheme solarized
-    " "  Remove next line comment to force dark color scheme.
-    " "  Usually it's picked because iTerm2 will pass it in.
-    " " setenv ITERM_PROFILE solarized-dark
-" 
+" let profile = $ITERM_PROFILE
+" if profile ==? 'solarized-dark'
+" 	set background=dark                 " light | dark
+" 	hi colorcolumn ctermbg=darkgrey
+" else
+" 	set background=light
+" 	hi colorcolumn ctermbg=lightgrey
+" endif
+"  Remove next line comment to force dark color scheme.
+"  Usually it's picked because iTerm2 will pass it in.
+" setenv ITERM_PROFILE solarized-dark
+"
+ 
+"set termguicolors
+set background=light
+hi colorcolumn ctermbg=lightgrey
+colorscheme solarized
 
 """""""""""""""""
 " TABS AND SPACES
@@ -157,8 +177,8 @@ nnoremap <silent> <S-Right> :wincmd l<CR>
 " keys to quickly resize window/pane splits
 nmap + <C-w>5+
 nmap - <C-w>5-
-nmap < <C-w>5>
-nmap > <C-w>5<
+nmap < <C-w>5<
+nmap > <C-w>5>
 
 " move easily b/w panes with TAB
 nnoremap <Tab> <C-w><C-w>
@@ -166,7 +186,6 @@ nnoremap <Tab> <C-w><C-w>
 
 
 " Make it easier to (make it easier to (make it easier to (edit text)))
-nnoremap <leader>vi :split $MYVIMRC<cr>
 nnoremap <leader>vs :source $MYVIMRC<cr>
 
 " Two quick jk exits insert mode (odd, I know)
@@ -267,12 +286,16 @@ endif
 
 call plug#begin('~/.config/nvim/plugged')
 
+	" Plug 'chrisbra/csv.vim'
+
 	" After installing, run ~/.fzf/install
 	Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+	Plug 'junegunn/fzf.vim'
 	
-	Plug 'blueyed/vim-diminactive'
+	" Plug 'blueyed/vim-diminactive'
 	hi ColorColumn ctermbg=lightgrey
 
+	Plug 'scottstanfield/neovim-colors-solarized-truecolor-only'
 	Plug 'itchyny/lightline.vim'
 
 	Plug 'junegunn/rainbow_parentheses.vim'
@@ -305,9 +328,11 @@ call plug#begin('~/.config/nvim/plugged')
     Plug 'jalvesaq/colorout', { 'for': 'r' }
     vmap <silent> <Space> <Plug>RSendSelection<Esc><Esc>
     nmap <silent> <Space> :call SendLineToR("stay")<CR><Esc><Home><Down>
+    nmap <silent> <S-C-l> :call SendLineToR("system('clear')")<CR><Esc><Home><Down>
+
     let R_assign = 0
     let R_args = ['--no-save', '--quiet']
-    let R_hi_fun = 0
+    " let R_hi_fun = 0   " workaround no longer needed
     let R_tmpdir = '~scott/R/tmp'
     let R_source_args = 'print.eval=F'
     " I needed to run `brew link --force readline` in order to get gcc5
@@ -443,7 +468,29 @@ endfunction
     let &t_EI = "\<Esc>]50;CursorShape=0\x7" " Block in normal mode
 "endif
 
+" Meta key ⌥  mappings
+tnoremap <M-h> <C-\><C-N><C-w>h
+tnoremap <M-j> <C-\><C-N><C-w>j
+tnoremap <M-k> <C-\><C-N><C-w>k
+tnoremap <M-l> <C-\><C-N><C-w>l
+inoremap <M-h> <C-\><C-N><C-w>h
+inoremap <M-j> <C-\><C-N><C-w>j
+inoremap <M-k> <C-\><C-N><C-w>k
+inoremap <M-l> <C-\><C-N><C-w>l
+nnoremap <M-h> <C-w>h
+nnoremap <M-j> <C-w>j
+nnoremap <M-k> <C-w>k
+nnoremap <M-l> <C-w>l
+nnoremap <M-t> :split term://zsh
+
+
 " Easily get out of Terminal mode
 tnoremap <Esc> <C-\><C-n>
 tnoremap <Esc><Esc> <C-\><C-n><C-w>k
 
+hi Folded ctermbg=7 ctermfg=4
+"
+" Make / searches stand out in magenta
+highlight Search term=bold ctermbg=LightMagenta guibg=LightMagenta
+
+highlight CursorLine cterm=none ctermbg=LightGrey 
