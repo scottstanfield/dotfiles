@@ -138,7 +138,7 @@ alias ag="ag --literal "
 alias R="R --no-save"
 alias r='R --no-save --quiet'
 alias make="make --no-print-directory"
-alias grep="grep --color=always"
+alias grep="grep --color=auto"
 alias gpg="gpg2"
 alias shs="ssh -Y"    # enable X11 forwarding back to the Mac running XQuartz to display graphs
 
