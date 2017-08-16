@@ -295,6 +295,9 @@ call plug#begin('~/.config/nvim/plugged')
 	" Plug 'blueyed/vim-diminactive'
 	hi ColorColumn ctermbg=lightgrey
 
+	" Solarized without the junk: flattened
+	" https://github.com/romainl/flattened
+	" http://vimawesome.com/plugin/solarized-8
 	Plug 'scottstanfield/neovim-colors-solarized-truecolor-only'
 	Plug 'itchyny/lightline.vim'
 
