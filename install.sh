@@ -40,6 +40,10 @@ mkdir -p ~/go
 echo 'launchng nvim to run :PlugInstall...'
 nvim +PlugInstall +qall
 
+# Cloning zsh plugin
+git clone --bare https://github.com/zsh-users/zsh-syntax-highlighting.git \
+	$PWD/plugins/zsh-syntax-highlighting
+
 
 
 
