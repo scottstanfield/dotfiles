@@ -26,6 +26,7 @@ alias m="less"
 alias cp="cp -a"
 alias pd='pushd'  # symmetry with cd
 alias df='df -h'  # human readable
+alias t='tmux new-session -A -s atlantis'
 
 # More suitable for .zshenv
 PROMPT='%n@%m %3~%(!.#.$)%(?.. [%?]) '
@@ -68,7 +69,7 @@ for c in $ZSH/lib/*.zsh; do
   source $c
 done
 
-plugins=(impure zsh-syntax-highlighting colorize hub ripgrep)
+plugins=(impure colorize hub ripgrep)
 
 for p in $plugins; do
   fpath=($ZSH/plugins/$p $fpath)
@@ -176,19 +177,6 @@ function gg() { git commit -m "$*" }
 # Put your machine-specific settings here
 [[ -f ~/.secret ]] && source ~/.secret
 
-# My custom highlights
-ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern cursor)
-ZSH_HIGHLIGHT_PATTERNS+=('rm -rf' 'fg=white,bold,bg=red')
-ZSH_HIGHLIGHT_PATTERNS+=('sudo ' 'fg=white,bold,bg=red')
-ZSH_HIGHLIGHT_STYLES[path]=none
-ZSH_HIGHLIGHT_STYLES[builtin]=fg=blue
-ZSH_HIGHLIGHT_STYLES[command]=fg=blue
-ZSH_HIGHLIGHT_STYLES[alias]=fg=blue
-ZSH_HIGHLIGHT_STYLES[function]=fg=blue
-
-ZSH_HIGHLIGHT_STYLES[path_prefix]=underline   # incomplete paths are underlined
-ZSH_HIGHLIGHT_STYLES[comment]=fg=yellow	      # comments at end of command (not black)
-
 
 export CC=gcc
 export CXX=g++
@@ -200,4 +188,19 @@ export LC_CTYPE="${LANGUAGE}"
 export FZF_DEFAULT_OPTS='--height 40%'
 export FZF_DEFAULT_COMMAND='rg --files --no-ignore --follow -g "!{.git,node_modules,env}" 2> /dev/null'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+
+# My custom highlights
+source $HOME/dmz/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern cursor)
+ZSH_HIGHLIGHT_PATTERNS+=('rm -rf' 'fg=white,bold,bg=red')
+ZSH_HIGHLIGHT_PATTERNS+=('sudo ' 'fg=white,bold,bg=red')
+ZSH_HIGHLIGHT_STYLES[path]=none
+ZSH_HIGHLIGHT_STYLES[builtin]=fg=blue
+ZSH_HIGHLIGHT_STYLES[command]=fg=blue
+ZSH_HIGHLIGHT_STYLES[alias]=fg=blue
+ZSH_HIGHLIGHT_STYLES[function]=fg=blue
+
+ZSH_HIGHLIGHT_STYLES[path_prefix]=underline   # incomplete paths are underlined
+ZSH_HIGHLIGHT_STYLES[comment]=fg=yellow	      # comments at end of command (not black)
 

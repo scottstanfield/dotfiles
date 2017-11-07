@@ -116,7 +116,9 @@ nnoremap <leader>l :set cursorline!<CR>
 "set termguicolors
 set background=light
 hi colorcolumn ctermbg=lightgrey
-colorscheme solarized
+" colorscheme solarized
+"
+
 
 """""""""""""""""
 " TABS AND SPACES
@@ -287,6 +289,7 @@ endif
 call plug#begin('~/.config/nvim/plugged')
 
 	" Plug 'chrisbra/csv.vim'
+	Plug 'lifepillar/vim-solarized8'
 
 	" After installing, run ~/.fzf/install
 	Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
