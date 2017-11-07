@@ -317,14 +317,15 @@ call plug#begin('~/.config/nvim/plugged')
     let g:easy_align_delimiters = { ';': {'pattern': ':'}, 'a': {'pattern': '<-'}, '<': {'pattern': '<-'}, ':': {'pattern': ':='}}
 
     " Python
-    "   Plug 'neomake/neomake'
-    "   let g:neomake_python_enabled_makers = ['flake8', 'pep8', 'vulture']
-    "   let g:neomake_python_flake8_maker = { 'args': ['--ignore=E302,E501'], }
-    "   autocmd! BufWritePost * Neomake
+    Plug 'neomake/neomake'
+    let g:neomake_python_enabled_makers = ['flake8', 'pep8', 'vulture']
+    let g:neomake_python_flake8_maker = { 'args': ['--ignore=E302,E501'], }
+
     "   
-    "   R linter with neomake!
-    "   https://github.com/neomake/neomake/pull/646/files
+    "  R linter with neomake!
+    "  https://github.com/neomake/neomake/pull/646/files
     "
+    autocmd! BufWritePost * Neomake
 
     " For R language
     Plug 'jalvesaq/Nvim-r',   { 'for': 'r' }
