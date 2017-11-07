@@ -1,5 +1,8 @@
 # Scott Stanfield
 # http://git.io/dmz
+#
+
+umask 007
 
 # GNU and BSD (macOS) ls flags aren't compatible
 ls --version &>/dev/null
@@ -15,6 +18,7 @@ alias ls="ls ${lsflags}"
 alias ll="ls ${lsflags} -l"
 alias lla="ls ${lsflags} -la"
 alias la="ls ${lsflags} -la"
+alias lls="ls ${lsflags} -lS"
 alias h="history"
 alias hg="history -1000 | grep -i"
 alias ,="cd .."
