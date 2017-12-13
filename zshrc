@@ -167,9 +167,6 @@ function gc() { git clone ssh://git@github.com/"$*" }
 function gg() { git commit -m "$*" }
 
 
-# Put your machine-specific settings here
-[[ -f ~/.secret ]] && source ~/.secret
-
 
 export CC=gcc
 export CXX=g++
@@ -208,3 +205,7 @@ export NVM_DIR="/home/scott/.nvm"
 # tabtab source for sls package
 # uninstall by removing these lines or running `tabtab uninstall sls`
 [[ -f /home/scott/.nvm/versions/node/v9.2.0/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.zsh ]] && . /home/scott/.nvm/versions/node/v9.2.0/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.zsh
+#
+# Put your machine-specific settings here
+[[ -f ~/.secret ]] && source ~/.secret
+
