@@ -44,6 +44,8 @@ ino <C-Y> <Esc>Pa
 
 ino <C-X><C-S> <Esc>:w<CR>a
 
+" I never use macros; turn them off. Pretty controversial
+map q <Nop>
 
 
 " Ctrl-s to save current file (in normal and insert mode)
