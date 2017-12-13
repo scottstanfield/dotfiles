@@ -90,14 +90,7 @@ COMPLETION_WAITING_DOTS="true"
 ###################################################
 ###################################################
 
-SSHPID=`ps ax|grep -c "[s]sh-agent"`
-if [[ $SSHPID == 0 ]]; then
-  ssh-agent > ~/.ssh-env
-  source ~/.ssh-env
-  ssh-add
-else
-  source ~/.ssh-env
-fi
+# Using ssh forwarding instead from client
 
 export LANGUAGE=en_US.UTF-8
 
@@ -204,3 +197,14 @@ ZSH_HIGHLIGHT_STYLES[function]=fg=blue
 ZSH_HIGHLIGHT_STYLES[path_prefix]=underline   # incomplete paths are underlined
 ZSH_HIGHLIGHT_STYLES[comment]=fg=yellow	      # comments at end of command (not black)
 
+export R_LIBS=~/.R/library
+
+export NVM_DIR="/home/scott/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+
+# tabtab source for serverless package
+# uninstall by removing these lines or running `tabtab uninstall serverless`
+[[ -f /home/scott/.nvm/versions/node/v9.2.0/lib/node_modules/serverless/node_modules/tabtab/.completions/serverless.zsh ]] && . /home/scott/.nvm/versions/node/v9.2.0/lib/node_modules/serverless/node_modules/tabtab/.completions/serverless.zsh
+# tabtab source for sls package
+# uninstall by removing these lines or running `tabtab uninstall sls`
+[[ -f /home/scott/.nvm/versions/node/v9.2.0/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.zsh ]] && . /home/scott/.nvm/versions/node/v9.2.0/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.zsh
