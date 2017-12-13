@@ -161,7 +161,6 @@ set showmode                    " Display the mode you're in.
 set smartcase                   " But case-sensitive if has caps
 set scrolloff=3                 " Show 3 lines around cursor (more context)
 set noshowmode                  " hide the default mode text (e.g. -- INSERT --)
-set title                       " Set the terminal's title
 
 " Open new split panes to the right and bottom, which feels more natural
 set splitbelow
