@@ -322,8 +322,9 @@ call plug#begin('~/.config/nvim/plugged')
 
     " Python
     Plug 'neomake/neomake'
-    let g:neomake_python_enabled_makers = ['flake8', 'pep8', 'vulture']
-    let g:neomake_python_flake8_maker = { 'args': ['--ignore=E302,E501'], }
+    "let g:neomake_python_enabled_makers = ['flake8', 'pep8']
+    "let g:neomake_python_enabled_makers = ['flake8', 'pep8', 'vulture']
+    "let g:neomake_python_flake8_maker = { 'args': ['--ignore=E302,E501'], }
 
     "   
     "  R linter with neomake!
