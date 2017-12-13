@@ -364,7 +364,6 @@ call plug#begin('~/.config/nvim/plugged')
     Plug 'tpope/vim-surround'
     Plug 'tpope/vim-repeat'
     Plug 'tpope/vim-commentary'                     " smarter commenting with gc
-    Plug 'matchit.zip'                              " smarter % key matching
 
     Plug 'airblade/vim-gitgutter'					" shows git diff marks in the gutter
 	nmap <silent> <leader>tg :GitGutterToggle<CR>	
