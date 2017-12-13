@@ -40,5 +40,5 @@
 ; [url "ssh://git@github.com/"] 
 ; 	insteadOf = https://github.com 
 [user]
-	email = scott@e9.ai
+	email = scottstanfield@gmail.com
 	name = Scott Stanfield
