@@ -38,3 +38,9 @@ Session.vim
 .netrwhist
 *~
 
+# nvim folders
+after/
+autoload/
+plugged/
+spell/
+

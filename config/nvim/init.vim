@@ -6,7 +6,19 @@ let mapleader = ","             " Our free key to prefix custom commands
 let localleader = "\\"
 set hidden                      " switch buffers w/o saving
 
+"set clipboard^=unnamed
 set clipboard+=unnamedplus
+"set clipboard^=unnamed
+
+" Folding for R files
+"let r_syntax_folding = 1
+" set nofoldenable				" start with all folds open
+"nnoremap <Enter> za
+
+
+" Map CMD-S to save files (iTerm2 passes it along as an anchor)
+nnoremap <silent> ⚓ :w<CR>
+inoremap <silent> ⚓ <ESC>:w<CR>a
 
 set encoding=utf-8
 set fileencoding=utf-8
@@ -32,26 +44,50 @@ ino <C-Y> <Esc>Pa
 
 ino <C-X><C-S> <Esc>:w<CR>a
 
-
+" I never use macros; turn them off. Pretty controversial
+map q <Nop>
 
 " Ctrl-s to save current file (in normal and insert mode)
 imap <c-s> <Esc>:w<CR>a
 nmap <c-s> :w<CR>
 
 
-""""""""
-" COLORS
-""""""""
+" Vertical Split
 " lighten color of vertical split and remove | bar
 " https://stackoverflow.com/questions/9001337/vim-split-bar-styling
 highlight VertSplit ctermfg=grey
 set fillchars+=vert:\ 
 
+" Toggle the visibility of the bar by changing the color (for screenshots)
+let g:toggle_split = 0
+function! ToggleSplit()
+	if g:toggle_split
+		highlight VertSplit ctermfg=grey
+		let g:toggle_split=0
+	else
+		highlight VertSplit ctermfg=white
+		let g:toggle_split=1
+	endif
+endfunction
+noremap <leader>ts :call ToggleSplit()<CR>
+
+" Toggle comments bold and back
+" normal: ctermfg=14
+" bold:   ctermfg=8
+let g:toggle_comments = 0
+function! ToggleComments()
+	if g:toggle_comments
+		highlight Comment ctermfg=14 term=none
+		let g:toggle_comments=0
+	else
+		highlight Comment ctermfg=8  term=bold
+		let g:toggle_comments=1
+	endif
+endfunction
+noremap <leader>tc :call ToggleComments()<CR>
+
 " make :terminal cursor red 
 highlight TermCursor ctermfg=red        
-
-" Make / searches stand out in magenta
-highlight Search term=bold ctermbg=LightMagenta guibg=LightMagenta
 
 " Hide the Magenta with ,/
 nnoremap <silent> <leader>/ :set hlsearch! hlsearch?<CR>
@@ -59,26 +95,31 @@ nnoremap <silent> <leader>/ :set hlsearch! hlsearch?<CR>
 " Highlight current line and column
 nnoremap <leader>c :set cursorcolumn!<CR>
 nnoremap <leader>l :set cursorline!<CR>
-hi CursorLine ctermbg=7 cterm=none
 
 " Colors (solarized) g
-    " let g:solarized_contrast="high"     
-    " let g:solarized_visibility="high"
-    " call togglebg#map("<leader>x")          " ,x toggles dark/light
+" let g:solarized_contrast="high"     
+" let g:solarized_visibility="high"
+" call togglebg#map("<leader>x")          " ,x toggles dark/light
 
-    " let profile = $ITERM_PROFILE
-    " if profile ==? 'solarized-dark'
-    "     set background=dark                 " light | dark
-    "     hi colorcolumn ctermbg=darkgrey
-    " else
-    "     set background=light
-    "     hi colorcolumn ctermbg=lightgrey
-    " endif
-    " colorscheme solarized
-    " "  Remove next line comment to force dark color scheme.
-    " "  Usually it's picked because iTerm2 will pass it in.
-    " " setenv ITERM_PROFILE solarized-dark
-" 
+" let profile = $ITERM_PROFILE
+" if profile ==? 'solarized-dark'
+" 	set background=dark                 " light | dark
+" 	hi colorcolumn ctermbg=darkgrey
+" else
+" 	set background=light
+" 	hi colorcolumn ctermbg=lightgrey
+" endif
+"  Remove next line comment to force dark color scheme.
+"  Usually it's picked because iTerm2 will pass it in.
+" setenv ITERM_PROFILE solarized-dark
+"
+ 
+"set termguicolors
+set background=light
+hi colorcolumn ctermbg=lightgrey
+" colorscheme solarized
+"
+
 
 """""""""""""""""
 " TABS AND SPACES
@@ -119,7 +160,6 @@ set showmode                    " Display the mode you're in.
 set smartcase                   " But case-sensitive if has caps
 set scrolloff=3                 " Show 3 lines around cursor (more context)
 set noshowmode                  " hide the default mode text (e.g. -- INSERT --)
-set title                       " Set the terminal's title
 
 " Open new split panes to the right and bottom, which feels more natural
 set splitbelow
@@ -142,9 +182,12 @@ nmap - <C-w>5-
 nmap < <C-w>5<
 nmap > <C-w>5>
 
+" move easily b/w panes with TAB
+nnoremap <Tab> <C-w><C-w>
+
+
 
 " Make it easier to (make it easier to (make it easier to (edit text)))
-nnoremap <leader>vi :split $MYVIMRC<cr>
 nnoremap <leader>vs :source $MYVIMRC<cr>
 
 " Two quick jk exits insert mode (odd, I know)
@@ -174,6 +217,13 @@ nnoremap <silent> <leader>tw :set invwrap<CR>:set wrap?<CR>
 
 :cnoremap Wq wq
 
+" Run this file through psql
+" map gp :wa<CR>:!psql -d INSERTDBNAMEHERE -f %<CR>
+
+" Run this file through python3
+" map gy :wa<CR>:!python3 %<CR>
+
+
 " Open current Markdown (*.md) file in OS X "Marked" and force redraw
 nnoremap <leader>m :silent !open -a "Marked 2.app" '%:p'<cr> :redraw!<cr>
 
@@ -198,6 +248,7 @@ ab [pi] π
 ab [shrug]  ¯\_(ツ)_/¯
 ab [yhat] ŷ
 
+
 " Toggle invisible whiteSpace ¬ ¶
 nnoremap <leader>i :set list!<CR>
 set listchars=eol:¬,tab:▸\.,trail:▫,nbsp:_,extends:»,precedes:«
@@ -219,11 +270,11 @@ nnoremap <leader><leader> <c-^>
 nnoremap `` <c-^>
 
 " Indent and outdent now > and < keep the visual selection
+
 vnoremap > >gv
 vnoremap < <gv
 vnoremap <Tab> >gv
 vnoremap <S-Tab> <gv
-
 " Make Control-T uppercase the current word 
 inoremap <C-t> <ESC>bgUWea
 
@@ -231,8 +282,7 @@ inoremap <C-t> <ESC>bgUWea
 vnoremap . :norm.<CR>
 
 " Tabbed Windows g
-nnoremap <Tab> :tabn<CR>
-nnoremap <S-Tab> :tabp<CR>
+nnoremap <S-Tab> :tabn<CR>
  
 
 """""""""
@@ -246,6 +296,20 @@ endif
 
 call plug#begin('~/.config/nvim/plugged')
 
+	" Plug 'chrisbra/csv.vim'
+	Plug 'lifepillar/vim-solarized8'
+
+	" After installing, run ~/.fzf/install
+	Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+	Plug 'junegunn/fzf.vim'
+	
+	" Plug 'blueyed/vim-diminactive'
+	hi ColorColumn ctermbg=lightgrey
+
+	" Solarized without the junk: flattened
+	" https://github.com/romainl/flattened
+	" http://vimawesome.com/plugin/solarized-8
+	Plug 'scottstanfield/neovim-colors-solarized-truecolor-only'
 	Plug 'itchyny/lightline.vim'
 
 	Plug 'junegunn/rainbow_parentheses.vim'
@@ -264,24 +328,28 @@ call plug#begin('~/.config/nvim/plugged')
     let g:easy_align_delimiters = { ';': {'pattern': ':'}, 'a': {'pattern': '<-'}, '<': {'pattern': '<-'}, ':': {'pattern': ':='}}
 
     " Python
-    "   Plug 'neomake/neomake'
-    "   let g:neomake_python_enabled_makers = ['flake8', 'pep8', 'vulture']
-    "   let g:neomake_python_flake8_maker = { 'args': ['--ignore=E302,E501'], }
-    "   autocmd! BufWritePost * Neomake
+    Plug 'neomake/neomake'
+    "let g:neomake_python_enabled_makers = ['flake8', 'pep8']
+    "let g:neomake_python_enabled_makers = ['flake8', 'pep8', 'vulture']
+    "let g:neomake_python_flake8_maker = { 'args': ['--ignore=E302,E501'], }
+
     "   
-    "   R linter with neomake!
-    "   https://github.com/neomake/neomake/pull/646/files
+    "  R linter with neomake!
+    "  https://github.com/neomake/neomake/pull/646/files
     "
-    
+	" If Neomake isn't installed, this line fails hard:
+    autocmd! BufWritePost * Neomake
 
     " For R language
     Plug 'jalvesaq/Nvim-r',   { 'for': 'r' }
     Plug 'jalvesaq/colorout', { 'for': 'r' }
     vmap <silent> <Space> <Plug>RSendSelection<Esc><Esc>
     nmap <silent> <Space> :call SendLineToR("stay")<CR><Esc><Home><Down>
+    nmap <silent> <S-C-l> :call SendLineToR("system('clear')")<CR><Esc><Home><Down>
+
     let R_assign = 0
     let R_args = ['--no-save', '--quiet']
-    let R_hi_fun = 0
+    " let R_hi_fun = 0   " workaround no longer needed
     let R_tmpdir = '~scott/R/tmp'
     let R_source_args = 'print.eval=F'
     " I needed to run `brew link --force readline` in order to get gcc5
@@ -297,12 +365,15 @@ call plug#begin('~/.config/nvim/plugged')
     Plug 'tpope/vim-surround'
     Plug 'tpope/vim-repeat'
     Plug 'tpope/vim-commentary'                     " smarter commenting with gc
-    Plug 'altercation/vim-colors-solarized'         " not sure what this is doing
-    Plug 'matchit.zip'                              " smarter % key matching
-    "Plug 'airblade/vim-gitgutter'             " shows git diff marks in the gutter
+
+    Plug 'airblade/vim-gitgutter'					" shows git diff marks in the gutter
+	nmap <silent> <leader>tg :GitGutterToggle<CR>	
+	let g:gitgutter_enabled = 0						" off by default
 
 call plug#end()
 
+" Toggle line numbers on/off
+nmap <silent> <leader>tn :set invnumber<CR>
 
 " Wrapping autocmd in a group per http://bit.ly/15wKRrM
 augroup my_au
@@ -323,7 +394,7 @@ augroup my_au
     au BufEnter *.tsv set tabstop=14 softtabstop=14 shiftwidth=14 noexpandtab
 
     " PEP8 has defined the proper indentation for Python
-    au BufNewFile,BufRead *.py set ts=4 sts=4 sw=4 tw=79 expandtab fileformat=unix
+    au BufNewFile,BufRead *.py set ts=2 sts=2 sw=2 tw=90 expandtab fileformat=unix
 
     " Turn off line wrapping when working on HTML files
     au BufNewFile,BufRead *.html setlocal nowrap
@@ -413,7 +484,29 @@ endfunction
     let &t_EI = "\<Esc>]50;CursorShape=0\x7" " Block in normal mode
 "endif
 
+" Meta key ⌥  mappings
+tnoremap <M-h> <C-\><C-N><C-w>h
+tnoremap <M-j> <C-\><C-N><C-w>j
+tnoremap <M-k> <C-\><C-N><C-w>k
+tnoremap <M-l> <C-\><C-N><C-w>l
+inoremap <M-h> <C-\><C-N><C-w>h
+inoremap <M-j> <C-\><C-N><C-w>j
+inoremap <M-k> <C-\><C-N><C-w>k
+inoremap <M-l> <C-\><C-N><C-w>l
+nnoremap <M-h> <C-w>h
+nnoremap <M-j> <C-w>j
+nnoremap <M-k> <C-w>k
+nnoremap <M-l> <C-w>l
+nnoremap <M-t> :split term://zsh
+
+
 " Easily get out of Terminal mode
 tnoremap <Esc> <C-\><C-n>
 tnoremap <Esc><Esc> <C-\><C-n><C-w>k
 
+hi Folded ctermbg=7 ctermfg=4
+"
+" Make / searches stand out in magenta
+highlight Search term=bold ctermbg=LightMagenta guibg=LightMagenta
+
+highlight CursorLine cterm=none ctermbg=LightGrey 

@@ -12,11 +12,13 @@
 	{
 		# Sys.getenv("TERM") %in% c("xterm-256color", "screen-256color"))
 		library(colorout)
-		# setOutputColors256(string = 0, verbose = F)     # for solarized light
-    setOutputColors256(normal=16, negnum=166, zero=142, number=35,
-                      date=97, string=62, const=29,
-                      false=161, true=35, infinite=33,
-                      stderr=27, verbose = F)
+		setOutputColors256(string = 0, verbose = F)     # for solarized light
+
+    # Too light for Solarized Light
+    # setOutputColors256(normal=16, negnum=166, zero=142, number=35,
+    #                   date=97, string=62, const=29,
+    #                   false=161, true=35, infinite=33,
+    #                   stderr=27, verbose = F)
 
 
 	}
