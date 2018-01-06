@@ -44,6 +44,8 @@ ino <C-Y> <Esc>Pa
 
 ino <C-X><C-S> <Esc>:w<CR>a
 
+" I never use macros; turn them off. Pretty controversial
+map q <Nop>
 
 " Ctrl-s to save current file (in normal and insert mode)
 imap <c-s> <Esc>:w<CR>a
@@ -158,7 +160,6 @@ set showmode                    " Display the mode you're in.
 set smartcase                   " But case-sensitive if has caps
 set scrolloff=3                 " Show 3 lines around cursor (more context)
 set noshowmode                  " hide the default mode text (e.g. -- INSERT --)
-set title                       " Set the terminal's title
 
 " Open new split panes to the right and bottom, which feels more natural
 set splitbelow
@@ -215,6 +216,13 @@ noremap K <Esc>
 nnoremap <silent> <leader>tw :set invwrap<CR>:set wrap?<CR>
 
 :cnoremap Wq wq
+
+" Run this file through psql
+" map gp :wa<CR>:!psql -d INSERTDBNAMEHERE -f %<CR>
+
+" Run this file through python3
+" map gy :wa<CR>:!python3 %<CR>
+
 
 " Open current Markdown (*.md) file in OS X "Marked" and force redraw
 nnoremap <leader>m :silent !open -a "Marked 2.app" '%:p'<cr> :redraw!<cr>
@@ -320,14 +328,17 @@ call plug#begin('~/.config/nvim/plugged')
     let g:easy_align_delimiters = { ';': {'pattern': ':'}, 'a': {'pattern': '<-'}, '<': {'pattern': '<-'}, ':': {'pattern': ':='}}
 
     " Python
-    "   Plug 'neomake/neomake'
-    "   let g:neomake_python_enabled_makers = ['flake8', 'pep8', 'vulture']
-    "   let g:neomake_python_flake8_maker = { 'args': ['--ignore=E302,E501'], }
-    "   autocmd! BufWritePost * Neomake
+    Plug 'neomake/neomake'
+    "let g:neomake_python_enabled_makers = ['flake8', 'pep8']
+    "let g:neomake_python_enabled_makers = ['flake8', 'pep8', 'vulture']
+    "let g:neomake_python_flake8_maker = { 'args': ['--ignore=E302,E501'], }
+
     "   
-    "   R linter with neomake!
-    "   https://github.com/neomake/neomake/pull/646/files
+    "  R linter with neomake!
+    "  https://github.com/neomake/neomake/pull/646/files
     "
+	" If Neomake isn't installed, this line fails hard:
+    autocmd! BufWritePost * Neomake
 
     " For R language
     Plug 'jalvesaq/Nvim-r',   { 'for': 'r' }
@@ -383,7 +394,7 @@ augroup my_au
     au BufEnter *.tsv set tabstop=14 softtabstop=14 shiftwidth=14 noexpandtab
 
     " PEP8 has defined the proper indentation for Python
-    au BufNewFile,BufRead *.py set ts=4 sts=4 sw=4 tw=79 expandtab fileformat=unix
+    au BufNewFile,BufRead *.py set ts=2 sts=2 sw=2 tw=90 expandtab fileformat=unix
 
     " Turn off line wrapping when working on HTML files
     au BufNewFile,BufRead *.html setlocal nowrap

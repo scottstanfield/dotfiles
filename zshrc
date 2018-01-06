@@ -1,5 +1,8 @@
 # Scott Stanfield
 # http://git.io/dmz
+#
+
+umask 007
 
 # PATH
 typeset -U path                 # keep duplicates out of the path
@@ -28,6 +31,7 @@ alias ls="ls ${lsflags}"
 alias ll="ls ${lsflags} -l"
 alias lla="ls ${lsflags} -la"
 alias la="ls ${lsflags} -la"
+alias lls="ls ${lsflags} -lS"
 alias h="history"
 alias hg="history | grep -i"
 alias ,="cd .."
@@ -61,9 +65,6 @@ bindkey '^p' history-search-backward
 bindkey '^n' history-search-forward
 bindkey ' '  magic-space
 
-# -- end of minimal .zshrc --
-#
-
 
 ####################################
 # Stripped-down version of oh-my-zsh
@@ -74,7 +75,7 @@ for c in $ZSH/lib/*.zsh; do
   source $c
 done
 
-plugins=(impure colorize hub ripgrep)
+plugins=(impure colorize hub ripgrep zsh-syntax-highlighting)
 
 for p in $plugins; do
   fpath=($ZSH/plugins/$p $fpath)
@@ -94,15 +95,6 @@ COMPLETION_WAITING_DOTS="true"
 ###################################################
 ###################################################
 ###################################################
-
-# SSHPID=`ps ax|grep -c "[s]sh-agent"`
-# if [[ $SSHPID == 0 ]]; then
-#   ssh-agent > ~/.ssh-env
-#   source ~/.ssh-env
-#   ssh-add
-# else
-#   source ~/.ssh-env
-# fi
 
 export LANGUAGE=en_US.UTF-8
 
@@ -179,9 +171,6 @@ function gc() { git clone ssh://git@github.com/"$*" }
 function gg() { git commit -m "$*" }
 
 
-# Put your machine-specific settings here
-[[ -f ~/.secret ]] && source ~/.secret
-
 
 export r_arch=x86_64
 export CC=gcc
@@ -195,9 +184,6 @@ export FZF_DEFAULT_OPTS='--height 40%'
 export FZF_DEFAULT_COMMAND='rg --files --no-ignore --follow -g "!{.git,node_modules,env}" 2> /dev/null'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
-# My custom highlights
-source $HOME/dmz/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern cursor)
 ZSH_HIGHLIGHT_PATTERNS+=('rm -rf' 'fg=white,bold,bg=red')
 ZSH_HIGHLIGHT_PATTERNS+=('sudo ' 'fg=white,bold,bg=red')
@@ -210,7 +196,11 @@ ZSH_HIGHLIGHT_STYLES[function]=fg=blue
 ZSH_HIGHLIGHT_STYLES[path_prefix]=underline   # incomplete paths are underlined
 ZSH_HIGHLIGHT_STYLES[comment]=fg=yellow	      # comments at end of command (not black)
 
+export R_LIBS=~/.R/library
 
-export NVM_DIR="/Users/scott/.nvm"
+export NVM_DIR="/home/scott/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+
+# Put your machine-specific settings here
+[[ -f ~/.secret ]] && source ~/.secret
 

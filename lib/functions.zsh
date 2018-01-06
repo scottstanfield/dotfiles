@@ -24,6 +24,10 @@ calc() {
 	echo "scale=3;$@" | bc -l
 }
 
+rpn() {
+	echo "3 k $@ p" | dc
+}
+
 loop () {
 	while true; do
 		$1
