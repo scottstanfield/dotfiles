@@ -183,6 +183,7 @@ function gg() { git commit -m "$*" }
 [[ -f ~/.secret ]] && source ~/.secret
 
 
+export r_arch=x86_64
 export CC=gcc
 export CXX=g++
 export LC_ALL="${LANGUAGE}"
@@ -208,4 +209,8 @@ ZSH_HIGHLIGHT_STYLES[function]=fg=blue
 
 ZSH_HIGHLIGHT_STYLES[path_prefix]=underline   # incomplete paths are underlined
 ZSH_HIGHLIGHT_STYLES[comment]=fg=yellow	      # comments at end of command (not black)
+
+
+export NVM_DIR="/Users/scott/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 
