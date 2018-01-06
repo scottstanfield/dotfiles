@@ -95,14 +95,14 @@ COMPLETION_WAITING_DOTS="true"
 ###################################################
 ###################################################
 
-SSHPID=`ps ax|grep -c "[s]sh-agent"`
-if [[ $SSHPID == 0 ]]; then
-  ssh-agent > ~/.ssh-env
-  source ~/.ssh-env
-  ssh-add
-else
-  source ~/.ssh-env
-fi
+# SSHPID=`ps ax|grep -c "[s]sh-agent"`
+# if [[ $SSHPID == 0 ]]; then
+#   ssh-agent > ~/.ssh-env
+#   source ~/.ssh-env
+#   ssh-add
+# else
+#   source ~/.ssh-env
+# fi
 
 export LANGUAGE=en_US.UTF-8
 
