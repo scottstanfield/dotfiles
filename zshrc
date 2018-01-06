@@ -22,19 +22,20 @@ else
   export CLICOLOR=1
 fi
 
+
 # Aliases
 alias ls="ls ${lsflags}"
 alias ll="ls ${lsflags} -l"
 alias lla="ls ${lsflags} -la"
 alias la="ls ${lsflags} -la"
 alias h="history"
-alias hg="history -1000 | grep -i"
+alias hg="history | grep -i"
 alias ,="cd .."
 alias m="less"
 alias cp="cp -a"
 alias pd='pushd'  # symmetry with cd
 alias df='df -h'  # human readable
-alias t='tmux new-session -A -s atlantis'
+alias t='tmux -2 new-session -A -s atlantis'
 
 # More suitable for .zshenv
 PROMPT='%n@%m %3~%(!.#.$)%(?.. [%?]) '
