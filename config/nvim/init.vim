@@ -47,7 +47,6 @@ ino <C-X><C-S> <Esc>:w<CR>a
 " I rarely use macros, but I accidentally hit q all the time
 " map q <Nop>
 
-
 " Ctrl-s to save current file (in normal and insert mode)
 imap <c-s> <Esc>:w<CR>a
 nmap <c-s> :w<CR>
@@ -250,6 +249,7 @@ ab [pi] π
 ab [shrug]  ¯\_(ツ)_/¯
 ab [yhat] ŷ
 
+
 " Toggle invisible whiteSpace ¬ ¶
 nnoremap <leader>i :set list!<CR>
 set listchars=eol:¬,tab:▸\.,trail:▫,nbsp:_,extends:»,precedes:«
@@ -271,11 +271,11 @@ nnoremap <leader><leader> <c-^>
 nnoremap `` <c-^>
 
 " Indent and outdent now > and < keep the visual selection
+
 vnoremap > >gv
 vnoremap < <gv
 vnoremap <Tab> >gv
 vnoremap <S-Tab> <gv
-
 " Make Control-T uppercase the current word 
 inoremap <C-t> <ESC>bgUWea
 
@@ -341,6 +341,7 @@ call plug#begin('~/.config/nvim/plugged')
     "  R linter with neomake!
     "  https://github.com/neomake/neomake/pull/646/files
     "
+	" If Neomake isn't installed, this line fails hard:
     autocmd! BufWritePost * Neomake
 
     " For R language
@@ -368,7 +369,6 @@ call plug#begin('~/.config/nvim/plugged')
     Plug 'tpope/vim-surround'
     Plug 'tpope/vim-repeat'
     Plug 'tpope/vim-commentary'                     " smarter commenting with gc
-    Plug 'matchit.zip'                              " smarter % key matching
 
     Plug 'airblade/vim-gitgutter'					" shows git diff marks in the gutter
 	nmap <silent> <leader>tg :GitGutterToggle<CR>	
