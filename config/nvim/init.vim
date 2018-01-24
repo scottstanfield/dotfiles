@@ -294,12 +294,8 @@ endif
 
 call plug#begin('~/.config/nvim/plugged')
 
-	Plug 'rust-lang/rust.vim'
-
 	" Plug 'chrisbra/csv.vim'
 	Plug 'lifepillar/vim-solarized8'
-
-	Plug 'enomsg/vim-haskellConcealPlus'
 
 	" After installing, run ~/.fzf/install
 	Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
