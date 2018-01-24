@@ -228,6 +228,7 @@ path+=(~/.cargo/bin)
 
 # PYTHON
 # Add a snowman to the left-side prompt if we're in a pipenv subshell
+path+=(~/.local/bin)
 if (( ${+PIPENV_ACTIVE} )); then LEFT_PROMPT_EXTRA="☃ "; fi
 alias pips="[ -e Pipfile ] && pipenv shell || echo 'No Pipfile found. Try: pipenv install'"
 
