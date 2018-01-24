@@ -221,7 +221,7 @@ export R_LIBS=~/.R/library
 # GO
 export GOPATH=~/.go
 path+=(~/.go/bin)
-[[ -s "/home/scott/.gvm/scripts/gvm" ]] && source "/home/scott/.gvm/scripts/gvm" && gvm use go1.9 > /dev/null || echo "gvm init failed"
+[[ -s "/home/scott/.gvm/scripts/gvm" ]] && source "/home/scott/.gvm/scripts/gvm" && gvm use go1.9 > /dev/null  # || echo "gvm init failed"
 
 # RUST
 path+=(~/.cargo/bin)
@@ -232,6 +232,7 @@ path+=(~/.local/bin)
 if (( ${+PIPENV_ACTIVE} )); then LEFT_PROMPT_EXTRA="☃ "; fi
 alias pips="[ -e Pipfile ] && pipenv shell || echo 'No Pipfile found. Try: pipenv install'"
 
+# ♘ × ♜
 # ♔
 # ♘
 # ♠
