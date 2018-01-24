@@ -1,6 +1,7 @@
 " move a visual block around
 " use arrow keys or control-movement keys to resize windows
 " change line highlight color
+scriptencoding utf-8
 
 let mapleader = ","             " Our free key to prefix custom commands
 let localleader = "\\"
@@ -114,11 +115,6 @@ nnoremap <leader>l :set cursorline!<CR>
 " setenv ITERM_PROFILE solarized-dark
 "
  
-"set termguicolors
-set background=light
-hi colorcolumn ctermbg=lightgrey
-" colorscheme solarized
-"
 
 
 """""""""""""""""
@@ -248,6 +244,7 @@ ab [right] →
 ab [pi] π
 ab [shrug]  ¯\_(ツ)_/¯
 ab [yhat] ŷ
+ab [space] ␢
 
 
 " Toggle invisible whiteSpace ¬ ¶
@@ -302,6 +299,8 @@ call plug#begin('~/.config/nvim/plugged')
 	" Plug 'chrisbra/csv.vim'
 	Plug 'lifepillar/vim-solarized8'
 
+	Plug 'enomsg/vim-haskellConcealPlus'
+
 	" After installing, run ~/.fzf/install
 	Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 	Plug 'junegunn/fzf.vim'
@@ -312,9 +311,29 @@ call plug#begin('~/.config/nvim/plugged')
 	" Solarized without the junk: flattened
 	" https://github.com/romainl/flattened
 	" http://vimawesome.com/plugin/solarized-8
-	Plug 'scottstanfield/neovim-colors-solarized-truecolor-only'
+	" Plug 'scottstanfield/neovim-colors-solarized-truecolor-only'
 	Plug 'itchyny/lightline.vim'
 
+	Plug 'edkolev/tmuxline.vim', {'on': ['Tmuxline', 'TmuxlineSimple', 'TmuxlineSnapshot'] }
+	let g:tmuxline_preset               = 'minimal'
+	let g:tmuxline_theme                = 'lightline'
+	let g:tmuxline_powerline_separators = 0
+	let g:tmuxline_status_justify       = 'left'
+
+	" Special prompt variables come from stftime and https://github.com/edkolev/tmuxline.vim
+
+	let g:tmuxline_preset = {
+		\'a'    : '#S',
+		\'cwin' : '#I #W',
+		\'win'  : '#I #W',
+		\'y'    : '%a %b %e',
+		\'z'    : '%-l:%M %p'}
+	nmap <leader>tm :Tmuxline<CR>
+
+	" Test tmux settings from vim (weird, I know) by typing ,tm
+	" If good, run :TmuxlineSnapshot ~/.tmux.snapshot
+	" Then merge that into the bottom of your .tmux.conf
+	
 	Plug 'junegunn/rainbow_parentheses.vim'
 	let g:rainbow#pairs = [['(', ')'], ['[', ']']]
 
@@ -376,8 +395,8 @@ call plug#begin('~/.config/nvim/plugged')
 
 call plug#end()
 
-" Toggle line numbers on/off
-nmap <silent> <leader>tn :set invnumber<CR>
+" Toggle Line numbers on/off
+nmap <silent> <leader>tl :set invnumber<CR>
 
 " Wrapping autocmd in a group per http://bit.ly/15wKRrM
 augroup my_au
@@ -512,3 +531,20 @@ hi Folded ctermbg=7 ctermfg=4
 highlight Search term=bold ctermbg=LightMagenta guibg=LightMagenta
 
 highlight CursorLine cterm=none ctermbg=LightGrey 
+
+" Colors
+
+if exists('$TMUX')
+	let &t_8f = "<Esc>[38;2;%lu;%lu;%lum"
+	let &t_8b = "<Esc>[48;2;%lu;%lu;%lum"
+endif
+set termguicolors
+set background=dark
+hi colorcolumn ctermbg=lightgrey
+colorscheme solarized8_dark_high
+"colorscheme solarized8
+
+
+
+
+
