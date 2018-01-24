@@ -39,7 +39,7 @@ alias m="less"
 alias cp="cp -a"
 alias pd='pushd'  # symmetry with cd
 alias df='df -h'  # human readable
-alias t='tmux -2 new-session -A -s atlantis'
+alias t='tmux -2 new-session -A -s $MY_TMUX_SESSION'		# set variable in .secret
 
 # More suitable for .zshenv
 PROMPT='%n@%m %3~%(!.#.$)%(?.. [%?]) '
