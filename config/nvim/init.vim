@@ -243,6 +243,7 @@ ab [right] →
 ab [pi] π
 ab [shrug]  ¯\_(ツ)_/¯
 ab [yhat] ŷ
+ab [space] ␢
 
 
 " Toggle invisible whiteSpace ¬ ¶
@@ -390,8 +391,8 @@ call plug#begin('~/.config/nvim/plugged')
 
 call plug#end()
 
-" Toggle line numbers on/off
-nmap <silent> <leader>tn :set invnumber<CR>
+" Toggle Line numbers on/off
+nmap <silent> <leader>tl :set invnumber<CR>
 
 " Wrapping autocmd in a group per http://bit.ly/15wKRrM
 augroup my_au
