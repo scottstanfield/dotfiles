@@ -39,9 +39,6 @@ link tmux.conf ~/.tmux.conf
 # Linux: sudo apt install silversearcher-ag
 link agignore ~/.agignore
 
-# Setup go
-mkdir -p ~/go
-
 # Post-install step
 echo 'launchng nvim to run :PlugInstall...'
 nvim +PlugInstall +qall
