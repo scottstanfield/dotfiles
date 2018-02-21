@@ -72,21 +72,6 @@ function! ToggleSplit()
 endfunction
 noremap <leader>ts :call ToggleSplit()<CR>
 
-" Toggle comments bold and back
-" normal: ctermfg=14
-" bold:   ctermfg=8
-let g:toggle_comments = 0
-function! ToggleComments()
-	if g:toggle_comments
-		highlight Comment ctermfg=14 term=none
-		let g:toggle_comments=0
-	else
-		highlight Comment ctermfg=8  term=bold
-		let g:toggle_comments=1
-	endif
-endfunction
-noremap <leader>tc :call ToggleComments()<CR>
-
 " make :terminal cursor red 
 highlight TermCursor ctermfg=red        
 
@@ -530,10 +515,10 @@ highlight CursorLine cterm=none ctermbg=LightGrey
 
 " Colors
 
-if exists('$TMUX')
-	let &t_8f = "<Esc>[38;2;%lu;%lu;%lum"
-	let &t_8b = "<Esc>[48;2;%lu;%lu;%lum"
-endif
+" if exists('$TMUX')
+" 	let &t_8f = "<Esc>[38;2;%lu;%lu;%lum"
+" 	let &t_8b = "<Esc>[48;2;%lu;%lu;%lum"
+" endif
 set termguicolors
 set background=dark
 hi colorcolumn ctermbg=lightgrey
