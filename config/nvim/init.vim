@@ -178,10 +178,6 @@ nmap - <C-w>5-
 nmap < <C-w>5<
 nmap > <C-w>5>
 
-" move easily b/w panes with TAB
-nnoremap <Tab> <C-w><C-w>
-
-
 
 " Make it easier to (make it easier to (make it easier to (edit text)))
 nnoremap <leader>vs :source $MYVIMRC<cr>
@@ -281,6 +277,13 @@ vnoremap . :norm.<CR>
 
 " Tabbed Windows g
 nnoremap <S-Tab> :tabn<CR>
+" nnoremap <Tab> :tabp<CR>
+" move easily b/w panes with TAB
+nnoremap <Tab> <C-w><C-w>
+
+
+
+
  
 
 """""""""
