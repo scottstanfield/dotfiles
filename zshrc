@@ -158,6 +158,7 @@ function ff() { find . -iname "$1*" -print }
 function ht() { (head $1 && echo "---" && tail $1) | less }
 function monitor() { watch --no-title "clear; cat $1" }
 function take() { mkdir -p $1 && cd $1 }
+function cols() { head -1 $1 | tr , \\n | cat -n | column }		# show CSV header
 
 # Automatically ls after you cd
 function chpwd() {
