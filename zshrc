@@ -135,14 +135,14 @@ eval `dircolors $HOME/dmz/plugins/dircolors/dircolors.ansi-light`
 # Which editor: vi, vim or neovim (nvim)
 hash "nvim" &> /dev/null && vic="nvim" || vic="vim"
 export EDITOR=${vic}
-alias vi="${vic} -p"
+alias vi="${vic} -o"
+alias zshrc="${vic} ~/.zshrc"
 
 if [[ $EDITOR  == "nvim" ]]; then
 	alias vimrc="nvim ~/.config/nvim/init.vim"
 else
 	alias vimrc="vim ~/.vimrc"
 fi
-alias zshrc="vim ~/.zshrc"
 
 # Aliases
 alias ag="ag --literal "
