@@ -481,9 +481,10 @@ endfunction
 
 " Set cursor to underscore in insertmode 
 
+" t_XX settings are ignored in neovim
 "if $TERM_PROGRAM =~ "iTerm.app"
-    let &t_SI = "\<Esc>]50;CursorShape=2\x7" " 1 = vertical bar; 2 = underscore
-    let &t_EI = "\<Esc>]50;CursorShape=0\x7" " Block in normal mode
+    " let &t_SI = "\<Esc>]50;CursorShape=2\x7" " 1 = vertical bar; 2 = underscore
+    " let &t_EI = "\<Esc>]50;CursorShape=0\x7" " Block in normal mode
 "endif
 
 " Meta key ⌥  mappings
@@ -511,6 +512,8 @@ hi Folded ctermbg=7 ctermfg=4
 " Make / searches stand out in magenta
 highlight Search term=bold ctermbg=LightMagenta guibg=LightMagenta
 
+
+
 highlight CursorLine cterm=none ctermbg=LightGrey 
 
 " Colors
@@ -526,6 +529,9 @@ colorscheme solarized8_dark_high
 "colorscheme solarized8
 
 
+set guicursor=n-v-c:block-Cursor/lCursor-blinkon0,i-ci:ver25-Cursor/lCursor,r-cr:hor20-Cursor/lCursor
+
+let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
 
 
 
