@@ -72,21 +72,6 @@ function! ToggleSplit()
 endfunction
 noremap <leader>ts :call ToggleSplit()<CR>
 
-" Toggle comments bold and back
-" normal: ctermfg=14
-" bold:   ctermfg=8
-let g:toggle_comments = 0
-function! ToggleComments()
-	if g:toggle_comments
-		highlight Comment ctermfg=14 term=none
-		let g:toggle_comments=0
-	else
-		highlight Comment ctermfg=8  term=bold
-		let g:toggle_comments=1
-	endif
-endfunction
-noremap <leader>tc :call ToggleComments()<CR>
-
 " make :terminal cursor red 
 highlight TermCursor ctermfg=red        
 
@@ -499,9 +484,10 @@ endfunction
 
 " Set cursor to underscore in insertmode 
 
+" t_XX settings are ignored in neovim
 "if $TERM_PROGRAM =~ "iTerm.app"
-    let &t_SI = "\<Esc>]50;CursorShape=2\x7" " 1 = vertical bar; 2 = underscore
-    let &t_EI = "\<Esc>]50;CursorShape=0\x7" " Block in normal mode
+    " let &t_SI = "\<Esc>]50;CursorShape=2\x7" " 1 = vertical bar; 2 = underscore
+    " let &t_EI = "\<Esc>]50;CursorShape=0\x7" " Block in normal mode
 "endif
 
 " Meta key ⌥  mappings
@@ -529,11 +515,17 @@ hi Folded ctermbg=7 ctermfg=4
 " Make / searches stand out in magenta
 highlight Search term=bold ctermbg=LightMagenta guibg=LightMagenta
 
+
+
 highlight CursorLine cterm=none ctermbg=LightGrey 
 
 " Colors
 
 set termguicolors
 colorscheme solarized8_dark_high
+
+set guicursor=n-v-c:block-Cursor/lCursor-blinkon0,i-ci:ver25-Cursor/lCursor,r-cr:hor20-Cursor/lCursor
+
+let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
 
 
