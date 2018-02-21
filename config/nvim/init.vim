@@ -394,6 +394,7 @@ augroup my_au
     au FileType stylus,jade set tabstop=2|set softtabstop=2|set shiftwidth=2|set expandtab
     au FileType javascript set tabstop=4|set shiftwidth=4|set expandtab
     au FileType r set ts=2 softtabstop=2 shiftwidth=2 expandtab
+    au FileType zsh set tabstop=4|set shiftwidth=4|set expandtab
 
     au BufEnter *.tsv set tabstop=14 softtabstop=14 shiftwidth=14 noexpandtab
 
