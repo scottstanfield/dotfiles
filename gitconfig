@@ -1,3 +1,5 @@
+; vim: ft=gitconfig
+
 [core]
 	editor = vim
 	status = auto
@@ -40,6 +42,6 @@
 ; [url "ssh://git@github.com/"] 
 ; 	insteadOf = https://github.com 
 
-[user]
-	email = scott@stanfield.io
-	name = Scott Stanfield
+; Load [user] details from a local file (not version controlled)
+[include]
+	path=~/.gitconfig.local
