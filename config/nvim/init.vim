@@ -163,10 +163,6 @@ nmap - <C-w>5-
 nmap < <C-w>5<
 nmap > <C-w>5>
 
-" move easily b/w panes with TAB
-nnoremap <Tab> <C-w><C-w>
-
-
 
 " Make it easier to (make it easier to (make it easier to (edit text)))
 nnoremap <leader>vs :source $MYVIMRC<cr>
@@ -266,6 +262,13 @@ vnoremap . :norm.<CR>
 
 " Tabbed Windows g
 nnoremap <S-Tab> :tabn<CR>
+" nnoremap <Tab> :tabp<CR>
+" move easily b/w panes with TAB
+nnoremap <Tab> <C-w><C-w>
+
+
+
+
  
 
 """""""""
@@ -391,6 +394,7 @@ augroup my_au
     au FileType stylus,jade set tabstop=2|set softtabstop=2|set shiftwidth=2|set expandtab
     au FileType javascript set tabstop=4|set shiftwidth=4|set expandtab
     au FileType r set ts=2 softtabstop=2 shiftwidth=2 expandtab
+    au FileType zsh set tabstop=4|set shiftwidth=4|set expandtab
 
     au BufEnter *.tsv set tabstop=14 softtabstop=14 shiftwidth=14 noexpandtab
 
@@ -518,17 +522,11 @@ highlight CursorLine cterm=none ctermbg=LightGrey
 
 " Colors
 
-" if exists('$TMUX')
-" 	let &t_8f = "<Esc>[38;2;%lu;%lu;%lum"
-" 	let &t_8b = "<Esc>[48;2;%lu;%lu;%lum"
-" endif
 set termguicolors
-set background=dark
-hi colorcolumn ctermbg=lightgrey
 colorscheme solarized8_dark_high
-"colorscheme solarized8
 
 set guicursor=n-v-c:block-Cursor/lCursor-blinkon0,i-ci:ver25-Cursor/lCursor-blinkwait500-blinkon200-blinkoff150,r-cr:hor20-Cursor/lCursor
+
 let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
 
 

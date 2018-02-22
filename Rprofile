@@ -30,7 +30,6 @@
 if (interactive()) 
 {
   library(setwidth)
-  library(data.table)
   library(txtplot)
 }
 

@@ -40,7 +40,8 @@ alias cp="cp -a"
 alias pd='pushd'  # symmetry with cd
 alias df='df -h'  # human readable
 alias t='tmux -2 new-session -A -s $MY_TMUX_SESSION'		# set variable in .secret
-alias rg='rg --pretty'
+alias rg='rg --pretty --smart-case'
+
 
 # More suitable for .zshenv
 PROMPT='%n@%m %3~%(!.#.$)%(?.. [%?]) '
@@ -134,14 +135,14 @@ eval `dircolors $HOME/dmz/plugins/dircolors/dircolors.ansi-light`
 # Which editor: vi, vim or neovim (nvim)
 hash "nvim" &> /dev/null && vic="nvim" || vic="vim"
 export EDITOR=${vic}
-alias vi="${vic} -p"
+alias vi="${vic} -o"
+alias zshrc="${vic} ~/.zshrc"
 
 if [[ $EDITOR  == "nvim" ]]; then
 	alias vimrc="nvim ~/.config/nvim/init.vim"
 else
 	alias vimrc="vim ~/.vimrc"
 fi
-alias zshrc="vim ~/.zshrc"
 
 # Aliases
 alias ag="ag --literal "
@@ -157,6 +158,8 @@ function ff() { find . -iname "$1*" -print }
 function ht() { (head $1 && echo "---" && tail $1) | less }
 function monitor() { watch --no-title "clear; cat $1" }
 function take() { mkdir -p $1 && cd $1 }
+function cols() { head -1 $1 | tr , \\n | cat -n | column }		# show CSV header
+function zcolors() { for code in {000..255}; do print -P -- "$code: %F{$code}Test%f"; done | column}
 
 # Automatically ls after you cd
 function chpwd() {
