@@ -528,10 +528,7 @@ hi colorcolumn ctermbg=lightgrey
 colorscheme solarized8_dark_high
 "colorscheme solarized8
 
-
-set guicursor=n-v-c:block-Cursor/lCursor-blinkon0,i-ci:ver25-Cursor/lCursor,r-cr:hor20-Cursor/lCursor
-
+set guicursor=n-v-c:block-Cursor/lCursor-blinkon0,i-ci:ver25-Cursor/lCursor-blinkwait500-blinkon200-blinkoff150,r-cr:hor20-Cursor/lCursor
 let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
-
 
 
