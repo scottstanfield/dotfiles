@@ -39,8 +39,8 @@
 [pager]
  	diff = less --tabs=4 -RFX 
 
-; [url "ssh://git@github.com/"] 
-; 	insteadOf = https://github.com 
+[url "ssh://git@github.com/"] 
+	insteadOf = https://github.com 
 
 ; Load [user] details from a local file (not version controlled)
 [include]
