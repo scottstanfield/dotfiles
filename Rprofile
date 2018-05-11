@@ -1,6 +1,14 @@
 # colorout isn't on CRAN so install from source (it's easy)
 # % git clone https://github.com/jalvesaq/colorout.git
 # % R CMD INSTALL colorout
+#
+
+# Uncomment out the block below if you are using anaconda
+# local({
+# 	r <- getOption("repos")
+# 	r["CRAN"] <- "http://cran.cnr.berkeley.edu/"
+# 	options(repos = r)
+# })
 
 .First <- function()
 {

@@ -41,6 +41,7 @@ alias pd='pushd'  # symmetry with cd
 alias df='df -h'  # human readable
 alias t='tmux -2 new-session -A -s $MY_TMUX_SESSION'		# set variable in .secret
 alias rg='rg --pretty --smart-case'
+alias rgc='rg --no-line-number --color never '              # clean version of rg suitable for piping
 
 
 # More suitable for .zshenv
@@ -133,7 +134,7 @@ export LSCOLORS=exfxcxdxbxegedabagacad
 eval `dircolors $HOME/dmz/plugins/dircolors/dircolors.ansi-light`
 
 # Which editor: vi, vim or neovim (nvim)
-hash "nvim" &> /dev/null && vic="nvim" || vic="vim"
+which "nvim" &> /dev/null && vic="nvim" || vic="vim"
 export EDITOR=${vic}
 alias vi="${vic} -o"
 alias zshrc="${vic} ~/.zshrc"
@@ -191,7 +192,7 @@ export LC_CTYPE="${LANGUAGE}"
 
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-export FZF_DEFAULT_OPTS='--height 40%'
+export FZF_DEFAULT_OPTS='--ansi --height 40% --extended'
 export FZF_DEFAULT_COMMAND='rg --files --no-ignore --follow -g "!{.git,node_modules,env}" 2> /dev/null'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
@@ -231,6 +232,9 @@ path+=(~/.cargo/bin)
 
 # PYTHON
 # Add a snowman to the left-side prompt if we're in a pipenv subshell
+
+# If using Anaconda, comment out this block below:
+
 path+=(~/.local/bin)
 if (( ${+PIPENV_ACTIVE} )); then LEFT_PROMPT_EXTRA="☃ "; fi
 alias pips="[ -e Pipfile ] && pipenv shell || echo 'No Pipfile found. Try: pipenv install'"
@@ -243,3 +247,10 @@ alias pips="[ -e Pipfile ] && pipenv shell || echo 'No Pipfile found. Try: pipen
 # ಠ_ಠ   
 
 
+
+# what am I using perl for?
+# PATH="/home/scott/perl5/bin${PATH:+:${PATH}}"; export PATH;
+# PERL5LIB="/home/scott/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
+# PERL_LOCAL_LIB_ROOT="/home/scott/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
+# PERL_MB_OPT="--install_base \"/home/scott/perl5\""; export PERL_MB_OPT;
+# PERL_MM_OPT="INSTALL_BASE=/home/scott/perl5"; export PERL_MM_OPT;
