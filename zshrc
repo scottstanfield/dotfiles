@@ -235,9 +235,14 @@ path+=(~/.cargo/bin)
 
 # If using Anaconda, comment out this block below:
 
-path+=(~/.local/bin)
-if (( ${+PIPENV_ACTIVE} )); then LEFT_PROMPT_EXTRA="☃ "; fi
-alias pips="[ -e Pipfile ] && pipenv shell || echo 'No Pipfile found. Try: pipenv install'"
+if [[ -f ~/miniconda3/etc/profile.d/conda.sh ]]; then
+    source ~/miniconda3/etc/profile.d/conda.sh activate
+    conda activate intelpy
+else
+    path+=(~/.local/bin)
+    if (( ${+PIPENV_ACTIVE} )); then LEFT_PROMPT_EXTRA="☃ "; fi
+    alias pips="[ -e Pipfile ] && pipenv shell || echo 'No Pipfile found. Try: pipenv install'"
+fi
 
 # ♘ × ♜
 # ♔
