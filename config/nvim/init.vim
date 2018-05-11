@@ -197,6 +197,8 @@ nnoremap <silent> <leader>tw :set invwrap<CR>:set wrap?<CR>
 " Run this file through psql
 " map gp :wa<CR>:!psql -d INSERTDBNAMEHERE -f %<CR>
 " map ss :wa<CR>:!sqlcmd -D -S DBNAME -P PASSWORD -U sa -i %<CR>
+"
+
 
 " Run this file through python3
 " map gy :wa<CR>:!python3 %<CR>
@@ -285,6 +287,10 @@ call plug#begin('~/.config/nvim/plugged')
 	" Plug 'chrisbra/csv.vim'
 	Plug 'lifepillar/vim-solarized8'
 
+	Plug 'nixon/vim-vmath'
+	vmap <expr> ++ VMATH_YankAndAnalyse()
+	nmap        ++ vip++
+
 	" After installing, run ~/.fzf/install
 	Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 	Plug 'junegunn/fzf.vim'
@@ -326,6 +332,9 @@ call plug#begin('~/.config/nvim/plugged')
 	let g:goyo_width = 100
 	nmap <leader>g :silent Goyo<CR>
 
+	Plug 'junegunn/vim-peekaboo'		" extend hash and at "
+	Plug 'rust-lang/rust.vim'
+
 	Plug 'regedarek/ZoomWin'
 
     Plug 'junegunn/vim-easy-align',     { 'on': ['<Plug>(EasyAlign)', 'EasyAlign'] }
@@ -335,24 +344,24 @@ call plug#begin('~/.config/nvim/plugged')
 
     " Python
     Plug 'neomake/neomake'
-    let g:neomake_python_enabled_makers = ['flake8']
-    "let g:neomake_python_enabled_makers = ['flake8', 'vulture']
-    let g:neomake_python_flake8_maker = { 'args': ['--ignore=E261,E128,E266,E302,E501,E221'], }
-    let g:neomake_python_pep8_maker = { 'args': ['--ignore=E128,E302,E266,E221'], }
+    "let g:neomake_python_enabled_makers = ['flake8']
+    ""let g:neomake_python_enabled_makers = ['flake8', 'vulture']
+    " let g:neomake_python_flake8_maker = { 'args': ['--ignore=E261,E128,E266,E302,E501,E221'], }
+    " let g:neomake_python_pep8_maker = { 'args': ['--ignore=E128,E302,E266,E221'], }
 
     "   
     "  R linter with neomake!
     "  https://github.com/neomake/neomake/pull/646/files
     "
 	" If Neomake isn't installed, this line fails hard:
-    autocmd! BufWritePost * Neomake
+	" autocmd! BufWritePost * Neomake
 
     " For R language
     Plug 'jalvesaq/Nvim-r',   { 'for': 'r' }
     Plug 'jalvesaq/colorout', { 'for': 'r' }
     vmap <silent> <Space> <Plug>RSendSelection<Esc><Esc>
     nmap <silent> <Space> :call SendLineToR("stay")<CR><Esc><Home><Down>
-    nmap <silent> <S-C-l> :call SendLineToR("system('clear')")<CR><Esc><Home><Down>
+	"nmap <silent> <S-C-l> :call SendLineToR("system('clear')")<CR><Esc><Home><Down>
 
     let R_assign = 0
     let R_args = ['--no-save', '--quiet']
@@ -382,6 +391,15 @@ call plug#end()
 " Toggle Line numbers on/off
 nmap <silent> <leader>tl :set invnumber<CR>
 
+let g:iron_map_defaults=0
+augroup ironmapping
+	autocmd!
+	autocmd Filetype python nmap <buffer> <leader>t <Plug>(iron-send-motion)
+	autocmd Filetype python vmap <buffer> <leader>t <Plug>(iron-send-motion)
+	autocmd Filetype python nmap <buffer> <leader>. <Plug>(iron-repeat-cmd)
+augroup END
+
+
 " Wrapping autocmd in a group per http://bit.ly/15wKRrM
 augroup my_au
     autocmd!
@@ -403,6 +421,9 @@ augroup my_au
 
     " Turn off line wrapping when working on HTML files
     au BufNewFile,BufRead *.html setlocal nowrap
+
+	" Go into insert mode when entering terminal
+	" au BufEnter * if &buftype == 'terminal' | :startinsert | endif
 augroup END
 
 augroup rainbow_paren
@@ -518,12 +539,12 @@ highlight Search term=bold ctermbg=LightMagenta guibg=LightMagenta
 
 
 
-highlight CursorLine cterm=none ctermbg=LightGrey 
+highlight CursorLine cterm=none ctermbg=Blue 
 
 " Colors
 
 set termguicolors
-colorscheme solarized8_dark_high
+colorscheme solarized8_light_high
 
 set guicursor=n-v-c:block-Cursor/lCursor-blinkon0,i-ci:ver25-Cursor/lCursor-blinkwait500-blinkon200-blinkoff150,r-cr:hor20-Cursor/lCursor
 
