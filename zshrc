@@ -34,12 +34,13 @@ alias la="ls ${lsflags} -la"
 alias lls="ls ${lsflags} -lS"
 alias h="history"
 alias hg="history | grep -i"
+alias @="printenv | grep -i"
 alias ,="cd .."
 alias m="less"
 alias cp="cp -a"
 alias pd='pushd'  # symmetry with cd
 alias df='df -h'  # human readable
-alias t='tmux -2 new-session -A -s $MY_TMUX_SESSION'		# set variable in .secret
+alias t='TERM=xterm-256color-italic tmux -2 new-session -A -s $MY_TMUX_SESSION'		# set variable in .secret
 alias rg='rg --pretty --smart-case'
 
 
@@ -133,7 +134,7 @@ export LSCOLORS=exfxcxdxbxegedabagacad
 eval `dircolors $HOME/dmz/plugins/dircolors/dircolors.ansi-light`
 
 # Which editor: vi, vim or neovim (nvim)
-hash "nvim" &> /dev/null && vic="nvim" || vic="vim"
+which "nvim" &> /dev/null && vic="nvim" || vic="vim"
 export EDITOR=${vic}
 alias vi="${vic} -o"
 alias zshrc="${vic} ~/.zshrc"
@@ -150,8 +151,8 @@ alias R="R --no-save"
 alias r='R --no-save --quiet'
 alias make="make --no-print-directory"
 alias grep="grep --color=auto"
-alias gpg="gpg2"
 alias shs="ssh -Y"    # enable X11 forwarding back to the Mac running XQuartz to display graphs
+alias ssh="TERM=xterm-256color ssh -Y"
 
 # Functions
 function ff() { find . -iname "$1*" -print }
@@ -191,7 +192,7 @@ export LC_CTYPE="${LANGUAGE}"
 
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-export FZF_DEFAULT_OPTS='--height 40%'
+export FZF_DEFAULT_OPTS='--ansi --height 40% --extended'
 export FZF_DEFAULT_COMMAND='rg --files --no-ignore --follow -g "!{.git,node_modules,env}" 2> /dev/null'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
@@ -207,29 +208,38 @@ ZSH_HIGHLIGHT_STYLES[function]=fg=blue
 ZSH_HIGHLIGHT_STYLES[path_prefix]=underline   # incomplete paths are underlined
 ZSH_HIGHLIGHT_STYLES[comment]=fg=yellow	      # comments at end of command (not black)
 
-export R_LIBS=~/.R/library
-
 # Put your machine-specific settings here
 [[ -f ~/.secret ]] && source ~/.secret
 
 ##
 ## Programming language specific
 ##
+#
+# R Language
+#export R_LIBS=~/.R/library
+export R_LIBS=~/rlib
+#export R_LIBS=~/.exploratory/R/3.4
+
 
 # NODE
 # Uncomment for node: the nvm.sh script takes 1/2 second to run!
-# export NVM_DIR="/home/scott/.nvm"
-# [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" --no-use # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 # GO
 export GOPATH=~/.go
 path+=(~/.go/bin)
-[[ -s "/home/scott/.gvm/scripts/gvm" ]] && source "/home/scott/.gvm/scripts/gvm" && gvm use go1.9 > /dev/null  # || echo "gvm init failed"
+[[ -s "~/.gvm/scripts/gvm" ]] && source "~/.gvm/scripts/gvm" && gvm use go1.9 > /dev/null  # || echo "gvm init failed"
 
 # RUST
 path+=(~/.cargo/bin)
 
 # PYTHON
+# For the local, global python
+export PYTHONPATH="/Users/scott/Library/Python/2.7/bin"
+path+=(~/Library/Python/2.7/bin)
+
 # Add a snowman to the left-side prompt if we're in a pipenv subshell
 path+=(~/.local/bin)
 if (( ${+PIPENV_ACTIVE} )); then LEFT_PROMPT_EXTRA="☃ "; fi
@@ -243,3 +253,5 @@ alias pips="[ -e Pipfile ] && pipenv shell || echo 'No Pipfile found. Try: pipen
 # ಠ_ಠ   
 
 
+
+export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
