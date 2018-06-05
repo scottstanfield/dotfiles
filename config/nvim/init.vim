@@ -298,8 +298,8 @@ call plug#begin('~/.config/nvim/plugged')
 	"
 
 	Plug 'nixon/vim-vmath'
-	vmap <expr> ++ VMATH_YankAndAnalyse()
-	nmap        ++ vip++
+	" vmap <expr> ++ VMATH_YankAndAnalyse()
+	" nmap        ++ vip++
 
 	" After installing, run ~/.fzf/install
 	Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
@@ -582,3 +582,4 @@ function! ShowDigraphs()
 	return "\<C-K>"
 endfunction
 
+au TermOpen * setlocal nonumber norelativenumber
