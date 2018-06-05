@@ -222,9 +222,8 @@ export R_LIBS=~/rlib
 
 
 # NODE
-# Uncomment for node: the nvm.sh script takes 1/2 second to run!
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" --no-use # This loads nvm
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" --no-use           # Still must type 'nvm use default'
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 # GO
