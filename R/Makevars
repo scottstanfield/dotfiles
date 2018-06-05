@@ -1,5 +1,5 @@
-CFLAGS   +=   -O3 -pipe -pedantic -std=gnu99
-CXXFLAGS +=   -O3 -pipe -pedantic -Wno-unused
+CFLAGS   +=   -O3 -pipe -pedantic -std=gnu99 -mtune=native
+CXXFLAGS +=   -O3 -pipe -pedantic -Wno-unused -mtune=native
 CXX1X=gcc -std=c++0x
 CXX1XSTD=-std=c++0x
 CXX1XPICFLAGS=-fPIC
