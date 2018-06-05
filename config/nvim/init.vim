@@ -287,7 +287,7 @@ endif
 
 call plug#begin('~/.config/nvim/plugged')
 
-	Plug 'lifepillar/vim-solarized8'		" best true-color solarized palette
+	Plug 'lifepillar/vim-solarized8'		" for solarized8_dark or solarized8_light
 
 	Plug 'kchmck/vim-coffee-script'			" syntax: coffee script
 	Plug 'digitaltoad/vim-pug'				" syntax: pug
@@ -544,12 +544,9 @@ highlight CursorLine cterm=none ctermbg=Blue
 " Colors
 "highlight CursorLine cterm=none ctermbg=LightGrey 
 
-"colorscheme solarized8_light
-"colorscheme zellner
-
 " The order for next two lines here might matter
 set termguicolors					" Set the cursor color
-colorscheme flattened_dark
+colorscheme solarized8_dark
 
 au VimLeave * set guicursor=a:block-blinkon0
 
