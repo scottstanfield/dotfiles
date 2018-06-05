@@ -24,7 +24,7 @@ local({
   }
 }
 
-if (interactive() && FALSE)
+if (interactive())
 {
     library(magrittr)
     library(data.table)
