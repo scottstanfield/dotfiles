@@ -198,6 +198,8 @@ nnoremap <silent> <leader>tw :set invwrap<CR>:set wrap?<CR>
 " Run this file through psql
 " map gp :wa<CR>:!psql -d INSERTDBNAMEHERE -f %<CR>
 " map ss :wa<CR>:!sqlcmd -D -S DBNAME -P PASSWORD -U sa -i %<CR>
+"
+
 
 " Run this file through python3
 " map gy :wa<CR>:!python3 %<CR>
@@ -290,8 +292,14 @@ call plug#begin('~/.config/nvim/plugged')
 	Plug 'kchmck/vim-coffee-script'			" syntax: coffee script
 	Plug 'digitaltoad/vim-pug'				" syntax: pug
 	Plug 'iloginow/vim-stylus'				" syntax: stylus
-	
+	Plug 'rust-lang/rust.vim'				" syntax: rust
+
 	" Plug 'chrisbra/csv.vim'
+	"
+
+	Plug 'nixon/vim-vmath'
+	vmap <expr> ++ VMATH_YankAndAnalyse()
+	nmap        ++ vip++
 
 	" After installing, run ~/.fzf/install
 	Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
@@ -316,6 +324,14 @@ call plug#begin('~/.config/nvim/plugged')
     xmap ga <Plug>(EasyAlign)
     nmap ga <Plug>(EasyAlign)
     let g:easy_align_delimiters = { ';': {'pattern': ':'}, 'a': {'pattern': '<-'}, '<': {'pattern': '<-'}, ':': {'pattern': ':='}}
+	
+	Plug 'junegunn/vim-peekaboo'		" extend hash and at "
+
+    Plug 'junegunn/vim-easy-align',     { 'on': ['<Plug>(EasyAlign)', 'EasyAlign'] }
+    xmap ga <Plug>(EasyAlign)
+    nmap ga <Plug>(EasyAlign)
+    let g:easy_align_delimiters = { ';': {'pattern': ':'}, 'a': {'pattern': '<-'}, '<': {'pattern': '<-'}, ':': {'pattern': ':='}}
+
 
 	Plug 'itchyny/lightline.vim'
 	"let g:lightline = {'colorscheme': 'solarized'}
@@ -339,14 +355,15 @@ call plug#begin('~/.config/nvim/plugged')
 	" Then merge that into the bottom of your .tmux.conf
 	
     Plug 'kassio/neoterm'
-	Plug 'regedarek/ZoomWin'
+
+	Plug 'regedarek/ZoomWin'			" <ctrl-w>o zoom in/out window
 
     " For R language
     Plug 'jalvesaq/Nvim-r',   { 'for': 'r' }
     Plug 'jalvesaq/colorout', { 'for': 'r' }
     vmap <silent> <Space> <Plug>RSendSelection<Esc><Esc>
     nmap <silent> <Space> :call SendLineToR("stay")<CR><Esc><Home><Down>
-    nmap <silent> <S-C-l> :call SendLineToR("system('clear')")<CR><Esc><Home><Down>
+	"nmap <silent> <S-C-l> :call SendLineToR("system('clear')")<CR><Esc><Home><Down>
 
     let R_assign = 0
     let R_args = ['--no-save', '--quiet']
@@ -366,6 +383,7 @@ call plug#begin('~/.config/nvim/plugged')
     Plug 'tpope/vim-surround'
     Plug 'tpope/vim-repeat'
     Plug 'tpope/vim-commentary'                     " smarter commenting with gc
+
     Plug 'airblade/vim-gitgutter'					" shows git diff marks in the gutter
 	nmap <silent> <leader>tu :GitGutterToggle<CR>	
 	let g:gitgutter_enabled = 1						" off by default
@@ -374,6 +392,15 @@ call plug#end()
 
 " Toggle Line numbers on/off
 nmap <silent> <leader>tn :set invnumber<CR>
+
+let g:iron_map_defaults=0
+augroup ironmapping
+	autocmd!
+	autocmd Filetype python nmap <buffer> <leader>t <Plug>(iron-send-motion)
+	autocmd Filetype python vmap <buffer> <leader>t <Plug>(iron-send-motion)
+	autocmd Filetype python nmap <buffer> <leader>. <Plug>(iron-repeat-cmd)
+augroup END
+
 
 " Wrapping autocmd in a group per http://bit.ly/15wKRrM
 augroup my_au
@@ -396,6 +423,9 @@ augroup my_au
 
     " Turn off line wrapping when working on HTML files
     au BufNewFile,BufRead *.html setlocal nowrap
+
+	" Go into insert mode when entering terminal
+	" au BufEnter * if &buftype == 'terminal' | :startinsert | endif
 augroup END
 
 augroup rainbow_paren
@@ -509,13 +539,17 @@ highlight Search term=bold ctermbg=LightMagenta guibg=LightMagenta
 
 
 
+highlight CursorLine cterm=none ctermbg=Blue 
+
 " Colors
 "highlight CursorLine cterm=none ctermbg=LightGrey 
 
 "colorscheme solarized8_light
 "colorscheme zellner
+
+" The order for next two lines here might matter
+set termguicolors					" Set the cursor color
 colorscheme flattened_dark
-set termguicolors					" necesary for setting cursor color
 
 au VimLeave * set guicursor=a:block-blinkon0
 

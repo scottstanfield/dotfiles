@@ -39,6 +39,7 @@
 [pager]
  	diff = less --tabs=4 -RFX 
 
+; Don't use this since it messes up Plug installs in vim
 ; [url "ssh://git@github.com/"] 
 ; 	insteadOf = https://github.com 
 

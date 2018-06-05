@@ -42,6 +42,7 @@ alias pd='pushd'  # symmetry with cd
 alias df='df -h'  # human readable
 alias t='TERM=xterm-256color-italic tmux -2 new-session -A -s $MY_TMUX_SESSION'		# set variable in .secret
 alias rg='rg --pretty --smart-case'
+alias rgc='rg --no-line-number --color never '              # clean version of rg suitable for piping
 
 
 # More suitable for .zshenv
@@ -240,9 +241,17 @@ export PYTHONPATH="/Users/scott/Library/Python/2.7/bin"
 path+=(~/Library/Python/2.7/bin)
 
 # Add a snowman to the left-side prompt if we're in a pipenv subshell
-path+=(~/.local/bin)
-if (( ${+PIPENV_ACTIVE} )); then LEFT_PROMPT_EXTRA="☃ "; fi
-alias pips="[ -e Pipfile ] && pipenv shell || echo 'No Pipfile found. Try: pipenv install'"
+
+# If using Anaconda, comment out this block below:
+
+if [[ -f ~/miniconda3/etc/profile.d/conda.sh ]]; then
+    source ~/miniconda3/etc/profile.d/conda.sh activate
+    conda activate intelpy
+else
+    path+=(~/.local/bin)
+    if (( ${+PIPENV_ACTIVE} )); then LEFT_PROMPT_EXTRA="☃ "; fi
+    alias pips="[ -e Pipfile ] && pipenv shell || echo 'No Pipfile found. Try: pipenv install'"
+fi
 
 # ♘ × ♜
 # ♔
@@ -253,4 +262,9 @@ alias pips="[ -e Pipfile ] && pipenv shell || echo 'No Pipfile found. Try: pipen
 
 
 
-export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+# what am I using perl for?
+# PATH="/home/scott/perl5/bin${PATH:+:${PATH}}"; export PATH;
+# PERL5LIB="/home/scott/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
+# PERL_LOCAL_LIB_ROOT="/home/scott/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
+# PERL_MB_OPT="--install_base \"/home/scott/perl5\""; export PERL_MB_OPT;
+# PERL_MM_OPT="INSTALL_BASE=/home/scott/perl5"; export PERL_MM_OPT;
