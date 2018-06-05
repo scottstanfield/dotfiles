@@ -217,10 +217,7 @@ ZSH_HIGHLIGHT_STYLES[comment]=fg=yellow	      # comments at end of command (not 
 ##
 #
 # R Language
-#export R_LIBS=~/.R/library
-export R_LIBS=~/rlib
-#export R_LIBS=~/.exploratory/R/3.4
-
+export R_LIBS=~/.R
 
 # NODE
 export NVM_DIR="$HOME/.nvm"
