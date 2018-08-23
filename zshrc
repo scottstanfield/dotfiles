@@ -206,7 +206,7 @@ ZSH_HIGHLIGHT_STYLES[command]=fg=blue
 ZSH_HIGHLIGHT_STYLES[alias]=fg=blue
 ZSH_HIGHLIGHT_STYLES[function]=fg=blue
 
-ZSH_HIGHLIGHT_STYLES[path_prefix]=underline   # incomplete paths are underlined
+#ZSH_HIGHLIGHT_STYLES[path_prefix]=underline   # incomplete paths are underlined
 ZSH_HIGHLIGHT_STYLES[comment]=fg=yellow	      # comments at end of command (not black)
 
 # Put your machine-specific settings here
