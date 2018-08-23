@@ -39,14 +39,14 @@ link tmux.conf ~/.tmux.conf
 # Linux: sudo apt install silversearcher-ag
 link agignore ~/.agignore
 
-# Post-install step
-echo 'launchng nvim to run :PlugInstall...'
-nvim +PlugInstall +qall
 
 # Cloning zsh plugin
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git \
 	$PWD/plugins/zsh-syntax-highlighting
 
 
+# Post-install step
+echo 'launchng nvim to run :PlugInstall...'
+nvim +PlugInstall +qall
 
 
