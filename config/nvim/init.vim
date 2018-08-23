@@ -211,6 +211,7 @@ nnoremap <leader>m :silent !open -a "Marked 2.app" '%:p'<cr> :redraw!<cr>
 "    nnoremap <leader>r gq}               " *r*eformat current paragraph
 
 " Abbreviations From http://vimcasts.org/episodes/show-invisibles/
+ab [dag] †
 ab [heart] ❤
 ab [cmd] ⌘
 ab [shift] ⇧
