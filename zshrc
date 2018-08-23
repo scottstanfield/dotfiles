@@ -145,6 +145,7 @@ if [[ $EDITOR  == "nvim" ]]; then
 else
 	alias vimrc="vim ~/.vimrc"
 fi
+alias v="/usr/bin/vi"
 
 # Aliases
 alias ag="ag --literal "
@@ -205,7 +206,6 @@ ZSH_HIGHLIGHT_STYLES[builtin]=fg=blue
 ZSH_HIGHLIGHT_STYLES[command]=fg=blue
 ZSH_HIGHLIGHT_STYLES[alias]=fg=blue
 ZSH_HIGHLIGHT_STYLES[function]=fg=blue
-
 #ZSH_HIGHLIGHT_STYLES[path_prefix]=underline   # incomplete paths are underlined
 ZSH_HIGHLIGHT_STYLES[comment]=fg=yellow	      # comments at end of command (not black)
 
@@ -217,7 +217,7 @@ ZSH_HIGHLIGHT_STYLES[comment]=fg=yellow	      # comments at end of command (not 
 ##
 #
 # R Language
-export R_LIBS=~/.R
+export R_LIBS=~/.R/lib
 
 # NODE
 export NVM_DIR="$HOME/.nvm"
@@ -250,18 +250,13 @@ else
     alias pips="[ -e Pipfile ] && pipenv shell || echo 'No Pipfile found. Try: pipenv install'"
 fi
 
-# ♘ × ♜
-# ♔
-# ♘
-# ♠
-# ☃ 
-# ಠ_ಠ   
-
-
-
 # what am I using perl for?
 # PATH="/home/scott/perl5/bin${PATH:+:${PATH}}"; export PATH;
 # PERL5LIB="/home/scott/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
 # PERL_LOCAL_LIB_ROOT="/home/scott/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
 # PERL_MB_OPT="--install_base \"/home/scott/perl5\""; export PERL_MB_OPT;
 # PERL_MM_OPT="INSTALL_BASE=/home/scott/perl5"; export PERL_MM_OPT;
+
+# tabtab source for serverless package
+# uninstall by removing these lines or running `tabtab uninstall serverless`
+#[[ -f /home/scott/.nvm/versions/node/v10.4.0/lib/node_modules/serverless/node_modules/tabtab/.completions/serverless.zsh ]] && . /home/scott/.nvm/versions/node/v10.4.0/lib/node_modules/serverless/node_modules/tabtab/.completions/serverless.zsh
