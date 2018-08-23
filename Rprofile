@@ -15,24 +15,26 @@ local({
 
   if ('colorout' %in% utils::installed.packages()[,1])
   {
-    if (Sys.getenv("TERM") %in% c("xterm-256color", "screen-256color")) 
-    {
       library(colorout)
       setOutputColors256(verbose=F)         # solarized dark
-      #setOutputColors256(string = 0, verbose = F)     # for solarized light
-    }
   }
+
+  if (interactive())
+  {
+      suppressMessages({
+        library(magrittr)
+        library(data.table, verbose=F)
+        printf(paste('data.table v', utils::packageDescription('data.table')$Version, '\n', sep=''))
+      })
+  }
+
 }
 
-if (interactive())
-{
-    library(magrittr)
-    library(data.table)
-}
+# must-have globals
+printf <- function(...) { cat(sprintf(...)) }
+oneup  <- function() { par(mfrow=c(1,1)) }
+twoup  <- function() { par(mfrow=c(2,2)) }
+cls    <- function() { cat('') }
 
-# printf <- function(...) { cat(sprintf(...)) }
-# oneup  <- function() { par(mfrow=c(1,1)) }
-# twoup  <- function() { par(mfrow=c(2,2)) }
-# cls    <- function() { cat('') }
 
 
