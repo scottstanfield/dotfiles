@@ -40,7 +40,7 @@ alias m="less"
 alias cp="cp -a"
 alias pd='pushd'  # symmetry with cd
 alias df='df -h'  # human readable
-alias t='TERM=xterm-256color-italic tmux -2 new-session -A -s $MY_TMUX_SESSION'		# set variable in .secret
+alias t='tmux -2 new-session -A -s $MY_TMUX_SESSION'		# set variable in .secret
 alias rg='rg --pretty --smart-case'
 alias rgc='rg --no-line-number --color never '              # clean version of rg suitable for piping
 
@@ -260,3 +260,11 @@ fi
 # tabtab source for serverless package
 # uninstall by removing these lines or running `tabtab uninstall serverless`
 #[[ -f /home/scott/.nvm/versions/node/v10.4.0/lib/node_modules/serverless/node_modules/tabtab/.completions/serverless.zsh ]] && . /home/scott/.nvm/versions/node/v10.4.0/lib/node_modules/serverless/node_modules/tabtab/.completions/serverless.zsh
+#
+JAVA_HOME=$(/usr/libexec/java_home)
+
+# Azure CLI bash completion
+autoload bashcompinit && bashcompinit
+source /usr/local/Cellar/azure-cli/2.0.44/etc/bash_completion.d/az
+
+
