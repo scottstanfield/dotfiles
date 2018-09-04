@@ -33,6 +33,11 @@ link gitignore ~/.gitignore
 # Setup tmux
 link tmux.conf ~/.tmux.conf
 
+# Setup bash
+link bashrc ~/.bashrc
+link bash_profile ~/.bash_profile
+
+
 # Setup ag (the silver search)
 # Mac:   brew install the_silver_searcher
 # Linux: sudo apt install silversearcher-ag
