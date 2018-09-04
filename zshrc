@@ -43,6 +43,7 @@ alias df='df -h'  # human readable
 alias t='tmux -2 new-session -A -s $MY_TMUX_SESSION'		# set variable in .secret
 alias rg='rg --pretty --smart-case'
 alias rgc='rg --no-line-number --color never '              # clean version of rg suitable for piping
+alias ping='prettyping --nolegend'
 
 
 # More suitable for .zshenv
@@ -156,6 +157,12 @@ alias grep="grep --color=auto"
 alias shs="ssh -Y"    # enable X11 forwarding back to the Mac running XQuartz to display graphs
 alias ssh="TERM=xterm-256color ssh -Y"
 
+# macOS specific
+function man2() {
+  man -t $@ | open -f -a "Preview"
+}
+
+
 # Functions
 function ff() { find . -iname "$1*" -print }
 function ht() { (head $1 && echo "---" && tail $1) | less }
@@ -261,10 +268,13 @@ fi
 # uninstall by removing these lines or running `tabtab uninstall serverless`
 #[[ -f /home/scott/.nvm/versions/node/v10.4.0/lib/node_modules/serverless/node_modules/tabtab/.completions/serverless.zsh ]] && . /home/scott/.nvm/versions/node/v10.4.0/lib/node_modules/serverless/node_modules/tabtab/.completions/serverless.zsh
 #
-JAVA_HOME=$(/usr/libexec/java_home)
+[[ -f /usr/libexec/java_home ]] && JAVA_HOME=$(/usr/libexec/java_home)
 
 # Azure CLI bash completion
-autoload bashcompinit && bashcompinit
-source /usr/local/Cellar/azure-cli/2.0.44/etc/bash_completion.d/az
+#
+if (( $+commands[az] )) ; then
+    autoload bashcompinit && bashcompinit
+    source /usr/local/Cellar/azure-cli/2.0.44/etc/bash_completion.d/az
+fi
 
 
