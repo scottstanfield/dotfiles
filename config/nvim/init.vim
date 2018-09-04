@@ -234,6 +234,7 @@ ab [degree] °
 ab [mu] µ
 ab [ss] §
 ab [sd] σ
+ab [blank] ␣
 
 " Toggle invisible whiteSpace ¬ ¶
 nnoremap <leader>i :set list!<CR>
