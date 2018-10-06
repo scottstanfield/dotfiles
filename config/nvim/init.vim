@@ -13,7 +13,7 @@ set clipboard+=unnamedplus
 
 " Folding for R files
 "let r_syntax_folding = 1
-" set nofoldenable				" start with all folds open
+" set nofoldenable              " start with all folds open
 "nnoremap <Enter> za
 
 
@@ -63,13 +63,13 @@ set fillchars+=vert:\
 " Toggle the visibility of the bar by changing the color (for screenshots)
 let g:toggle_split = 0
 function! ToggleSplit()
-	if g:toggle_split
-		highlight VertSplit ctermfg=grey
-		let g:toggle_split=0
-	else
-		highlight VertSplit ctermfg=white
-		let g:toggle_split=1
-	endif
+    if g:toggle_split
+        highlight VertSplit ctermfg=grey
+        let g:toggle_split=0
+    else
+        highlight VertSplit ctermfg=white
+        let g:toggle_split=1
+    endif
 endfunction
 noremap <leader>ts :call ToggleSplit()<CR>
 
@@ -84,17 +84,34 @@ nnoremap <leader>c :set cursorcolumn!<CR>
 nnoremap <leader>l :set cursorline!<CR>
 
 " Colors (solarized) g
-" let g:solarized_contrast="high"     
-" let g:solarized_visibility="high"
-" call togglebg#map("<leader>s")          " ,x toggles dark/light
-" 	let profile = $ITERM_PROFILE
-" 	if profile ==? 'solarized-dark'
-" 		set background=dark                 " light | dark
-" 		hi colorcolumn ctermbg=darkgrey
-" 	else
-" 		set background=light
-" 	hi colorcolumn ctermbg=lightgrey
-" endif
+let g:solar_state = 0 
+function! SetDefaultSolar()          " ,x toggles dark/light
+    if $ITERM_PROFILE ==? 'solarized-dark'
+        call SolarDark()
+    else
+        call SolarLight()
+    endif
+endfunction
+autocmd VimEnter * call SetDefaultSolar()
+
+function! SolarDark()
+	let g:solar_state = 0
+    set background=dark
+    hi colorcolumn ctermbg = darkgrey
+    colorscheme solarized8_dark
+endfunction
+
+function! SolarLight()
+	let g:solar_state = 1
+	set background=light
+	hi colorcolumn ctermbg = lightgrey
+	colorscheme solarized8_light
+endfunction
+
+function! ToggleColors()
+	if g:solar_state == 0 | call SolarLight() | else | call SolarDark() | endif
+endfunction
+noremap <leader>tc :call ToggleColors()<CR>
 
 " Remove next line comment to force dark color scheme.
 " Usually it's picked because iTerm2 will pass it in.
@@ -290,83 +307,83 @@ endif
 
 call plug#begin('~/.config/nvim/plugged')
 
-	Plug 'lifepillar/vim-solarized8'		" for solarized8_dark or solarized8_light
+    Plug 'lifepillar/vim-solarized8'        " for solarized8_dark or solarized8_light
 
-	Plug 'kchmck/vim-coffee-script'			" syntax: coffee script
-	Plug 'digitaltoad/vim-pug'				" syntax: pug
-	Plug 'iloginow/vim-stylus'				" syntax: stylus
-	Plug 'rust-lang/rust.vim'				" syntax: rust
+    Plug 'kchmck/vim-coffee-script'         " syntax: coffee script
+    Plug 'digitaltoad/vim-pug'              " syntax: pug
+    Plug 'iloginow/vim-stylus'              " syntax: stylus
+    Plug 'rust-lang/rust.vim'               " syntax: rust
 
-	" Plug 'chrisbra/csv.vim'
-	"
+    " Plug 'chrisbra/csv.vim'
+    "
 
-	Plug 'nixon/vim-vmath'
-	" vmap <expr> ++ VMATH_YankAndAnalyse()
-	" nmap        ++ vip++
+    Plug 'nixon/vim-vmath'
+    " vmap <expr> ++ VMATH_YankAndAnalyse()
+    " nmap        ++ vip++
 
-	" After installing, run ~/.fzf/install
-	Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-	Plug 'junegunn/fzf.vim'
+    " After installing, run ~/.fzf/install
+    Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+    Plug 'junegunn/fzf.vim'
     nnoremap <silent> <leader>ff        :FZF<CR>
-	nnoremap <silent> <C-P> :Files<CR>
+    nnoremap <silent> <C-P> :Files<CR>
     nmap <leader>fc     :Commits<CR>
-	"let g:fzf_layout = { 'window': 'left' }
-	au FileType fzf tnoremap <nowait><buffer> <esc> <c-g>
+    "let g:fzf_layout = { 'window': 'left' }
+    au FileType fzf tnoremap <nowait><buffer> <esc> <c-g>
 
-	Plug 'junegunn/limelight.vim'
-	nmap <leader>tl :Limelight!! 0.7<CR>
+    Plug 'junegunn/limelight.vim'
+    nmap <leader>tl :Limelight!! 0.7<CR>
 
-	Plug 'junegunn/rainbow_parentheses.vim'
-	let g:rainbow#pairs = [['(', ')'], ['[', ']']]
+    Plug 'junegunn/rainbow_parentheses.vim'
+    let g:rainbow#pairs = [['(', ')'], ['[', ']']]
 
-    Plug 'junegunn/goyo.vim'		
-	let g:goyo_width = 100
-	nmap <leader>tg :silent Goyo<CR>
-
-    Plug 'junegunn/vim-easy-align',     { 'on': ['<Plug>(EasyAlign)', 'EasyAlign'] }
-    xmap ga <Plug>(EasyAlign)
-    nmap ga <Plug>(EasyAlign)
-    let g:easy_align_delimiters = { ';': {'pattern': ':'}, 'a': {'pattern': '<-'}, '<': {'pattern': '<-'}, ':': {'pattern': ':='}}
-	
-	Plug 'junegunn/vim-peekaboo'		" extend hash and at "
+    Plug 'junegunn/goyo.vim'        
+    let g:goyo_width = 100
+    nmap <leader>tg :silent Goyo<CR>
 
     Plug 'junegunn/vim-easy-align',     { 'on': ['<Plug>(EasyAlign)', 'EasyAlign'] }
     xmap ga <Plug>(EasyAlign)
     nmap ga <Plug>(EasyAlign)
     let g:easy_align_delimiters = { ';': {'pattern': ':'}, 'a': {'pattern': '<-'}, '<': {'pattern': '<-'}, ':': {'pattern': ':='}}
+    
+    Plug 'junegunn/vim-peekaboo'        " extend hash and at "
+
+    Plug 'junegunn/vim-easy-align',     { 'on': ['<Plug>(EasyAlign)', 'EasyAlign'] }
+    xmap ga <Plug>(EasyAlign)
+    nmap ga <Plug>(EasyAlign)
+    let g:easy_align_delimiters = { ';': {'pattern': ':'}, 'a': {'pattern': '<-'}, '<': {'pattern': '<-'}, ':': {'pattern': ':='}}
 
 
-	Plug 'itchyny/lightline.vim'
-	"let g:lightline = {'colorscheme': 'solarized'}
+    Plug 'itchyny/lightline.vim'
+    "let g:lightline = {'colorscheme': 'solarized'}
 
-	Plug 'edkolev/tmuxline.vim', {'on': ['Tmuxline', 'TmuxlineSimple', 'TmuxlineSnapshot'] }
-	let g:tmuxline_preset               = 'minimal'
-	let g:tmuxline_theme                = 'lightline'
-	let g:tmuxline_powerline_separators = 0
-	let g:tmuxline_status_justify       = 'left'
-	" Special prompt variables come from stftime and https://github.com/edkolev/tmuxline.vim
-	let g:tmuxline_preset = {
-		\'a'    : '#S',
-		\'cwin' : '#I #W',
-		\'win'  : '#I #W',
-		\'y'    : '%a %b %e',
-		\'z'    : '%-l:%M %p'}
-	nmap <leader>tm :Tmuxline<CR>
+    Plug 'edkolev/tmuxline.vim', {'on': ['Tmuxline', 'TmuxlineSimple', 'TmuxlineSnapshot'] }
+    let g:tmuxline_preset               = 'minimal'
+    let g:tmuxline_theme                = 'lightline'
+    let g:tmuxline_powerline_separators = 0
+    let g:tmuxline_status_justify       = 'left'
+    " Special prompt variables come from stftime and https://github.com/edkolev/tmuxline.vim
+    let g:tmuxline_preset = {
+        \'a'    : '#S',
+        \'cwin' : '#I #W',
+        \'win'  : '#I #W',
+        \'y'    : '%a %b %e',
+        \'z'    : '%-l:%M %p'}
+    nmap <leader>tm :Tmuxline<CR>
 
-	" Test tmux settings from vim (weird, I know) by typing ,tm
-	" If good, run :TmuxlineSnapshot ~/.tmux.snapshot
-	" Then merge that into the bottom of your .tmux.conf
-	
+    " Test tmux settings from vim (weird, I know) by typing ,tm
+    " If good, run :TmuxlineSnapshot ~/.tmux.snapshot
+    " Then merge that into the bottom of your .tmux.conf
+    
     Plug 'kassio/neoterm'
 
-	Plug 'regedarek/ZoomWin'			" <ctrl-w>o zoom in/out window
+    Plug 'regedarek/ZoomWin'            " <ctrl-w>o zoom in/out window
 
     " For R language
     Plug 'jalvesaq/Nvim-r',   { 'for': 'r' }
     Plug 'jalvesaq/colorout', { 'for': 'r' }
     vmap <silent> <Space> <Plug>RSendSelection<Esc><Esc>
     nmap <silent> <Space> :call SendLineToR("stay")<CR><Esc><Home><Down>
-	"nmap <silent> <S-C-l> :call SendLineToR("system('clear')")<CR><Esc><Home><Down>
+    "nmap <silent> <S-C-l> :call SendLineToR("system('clear')")<CR><Esc><Home><Down>
 
     let R_assign = 0
     let R_args = ['--no-save', '--quiet']
@@ -387,9 +404,9 @@ call plug#begin('~/.config/nvim/plugged')
     Plug 'tpope/vim-repeat'
     Plug 'tpope/vim-commentary'                     " smarter commenting with gc
 
-    Plug 'airblade/vim-gitgutter'					" shows git diff marks in the gutter
-	nmap <silent> <leader>tu :GitGutterToggle<CR>	
-	let g:gitgutter_enabled = 1						" off by default
+    Plug 'airblade/vim-gitgutter'                   " shows git diff marks in the gutter
+    nmap <silent> <leader>tu :GitGutterToggle<CR>   
+    let g:gitgutter_enabled = 1                     " off by default
 
 call plug#end()
 
@@ -398,17 +415,17 @@ nmap <silent> <leader>tn :set invnumber<CR>
 
 let g:iron_map_defaults=0
 augroup ironmapping
-	autocmd!
-	autocmd Filetype python nmap <buffer> <leader>t <Plug>(iron-send-motion)
-	autocmd Filetype python vmap <buffer> <leader>t <Plug>(iron-send-motion)
-	autocmd Filetype python nmap <buffer> <leader>. <Plug>(iron-repeat-cmd)
+    autocmd!
+    autocmd Filetype python nmap <buffer> <leader>t <Plug>(iron-send-motion)
+    autocmd Filetype python vmap <buffer> <leader>t <Plug>(iron-send-motion)
+    autocmd Filetype python nmap <buffer> <leader>. <Plug>(iron-repeat-cmd)
 augroup END
 
 
 " Wrapping autocmd in a group per http://bit.ly/15wKRrM
 augroup my_au
     autocmd!
-	"    au FileType python setlocal expandtab ts=2 sw=2 sts=2
+    "    au FileType python setlocal expandtab ts=2 sw=2 sts=2
     au FileType make setlocal noexpandtab
 
     " place this after plugins have loaded
@@ -427,22 +444,22 @@ augroup my_au
     " Turn off line wrapping when working on HTML files
     au BufNewFile,BufRead *.html setlocal nowrap
 
-	" Go into insert mode when entering terminal
-	" au BufEnter * if &buftype == 'terminal' | :startinsert | endif
+    " Go into insert mode when entering terminal
+    " au BufEnter * if &buftype == 'terminal' | :startinsert | endif
 augroup END
 
 augroup rainbow_paren
-	autocmd!
-	autocmd FileType r RainbowParentheses
-	autocmd FileType python RainbowParentheses
+    autocmd!
+    autocmd FileType r RainbowParentheses
+    autocmd FileType python RainbowParentheses
 augroup END
 
 function! TogglePresentationMode()
-	colorscheme solarized8_dark
-	set nolist
+    colorscheme solarized8_dark
+    set nolist
 endfunction
 nnoremap <leader>tp :call TogglePresentationMode()<cr>
-	
+    
 
 " Remember the cursor position for every file
 function! PositionCursorFromViminfo()
@@ -548,12 +565,12 @@ highlight CursorLine cterm=none ctermbg=Blue
 "highlight CursorLine cterm=none ctermbg=LightGrey 
 
 " The order for next two lines here might matter
-set termguicolors					" Set the cursor color
-colorscheme solarized8_dark
+set termguicolors                   " Set the cursor color
+" colorscheme solarized8_light
 
 au VimLeave * set guicursor=a:block-blinkon0
 
-highlight Cursor guifg=#FF00FF guibg=#FF00FF		" magenta cursor
+highlight Cursor guifg=#FF00FF guibg=#FF00FF        " magenta cursor
 "highlight CursorLine cterm=none ctermbg=none guifg=#FFFF00 guibg=#FFFF00
 highlight CursorLine guifg=#FF0000 guibg=#DDDD00
 
@@ -580,9 +597,9 @@ autocmd Filetype pug set ts=2 sts=0 sw=2 expandtab
 " help :digraph
 inoremap <expr> <C-K> ShowDigraphs()
 function! ShowDigraphs()
-	digraphs
-	call getchar()
-	return "\<C-K>"
+    digraphs
+    call getchar()
+    return "\<C-K>"
 endfunction
 
 au TermOpen * setlocal nonumber norelativenumber
