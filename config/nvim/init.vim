@@ -83,29 +83,33 @@ nnoremap <silent> <leader>/ :set hlsearch! hlsearch?<CR>
 nnoremap <leader>c :set cursorcolumn!<CR>
 nnoremap <leader>l :set cursorline!<CR>
 
-" Colors (solarized) g
-let g:solar_state = 0 
+" 
+" Set solarized to dark or light depending on what 
+" iterm profile the session was launched with.
+" 
+let g:solar_state=0 
 function! SetDefaultSolar()          " ,x toggles dark/light
-    if $ITERM_PROFILE ==? 'solarized-dark'
+    if $ITERM_PROFILE == 'solarized-dark'
         call SolarDark()
     else
         call SolarLight()
     endif
+	call lightline#colorscheme()
 endfunction
 autocmd VimEnter * call SetDefaultSolar()
 
 function! SolarDark()
-	let g:solar_state = 0
+	let g:solar_state=0
+    colorscheme PaperColor "solarized8_dark
     set background=dark
-    hi colorcolumn ctermbg = darkgrey
-    colorscheme solarized8_dark
+    hi colorcolumn ctermbg=darkgrey
 endfunction
 
 function! SolarLight()
-	let g:solar_state = 1
+	let g:solar_state=1
+	colorscheme PaperColor "solarized_light
 	set background=light
-	hi colorcolumn ctermbg = lightgrey
-	colorscheme solarized8_light
+	hi colorcolumn ctermbg=lightgrey
 endfunction
 
 function! ToggleColors()
@@ -308,11 +312,11 @@ endif
 call plug#begin('~/.config/nvim/plugged')
 
     Plug 'lifepillar/vim-solarized8'        " for solarized8_dark or solarized8_light
+	Plug 'NLKNguyen/papercolor-theme'
 
     Plug 'kchmck/vim-coffee-script'         " syntax: coffee script
     Plug 'digitaltoad/vim-pug'              " syntax: pug
     Plug 'iloginow/vim-stylus'              " syntax: stylus
-    Plug 'rust-lang/rust.vim'               " syntax: rust
 
     " Plug 'chrisbra/csv.vim'
     "
@@ -325,7 +329,7 @@ call plug#begin('~/.config/nvim/plugged')
     Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
     Plug 'junegunn/fzf.vim'
     nnoremap <silent> <leader>ff        :FZF<CR>
-    nnoremap <silent> <C-P> :Files<CR>
+    nnoremap <silent> <C-T> :Files<CR>
     nmap <leader>fc     :Commits<CR>
     "let g:fzf_layout = { 'window': 'left' }
     au FileType fzf tnoremap <nowait><buffer> <esc> <c-g>
@@ -453,13 +457,6 @@ augroup rainbow_paren
     autocmd FileType r RainbowParentheses
     autocmd FileType python RainbowParentheses
 augroup END
-
-function! TogglePresentationMode()
-    colorscheme solarized8_dark
-    set nolist
-endfunction
-nnoremap <leader>tp :call TogglePresentationMode()<cr>
-    
 
 " Remember the cursor position for every file
 function! PositionCursorFromViminfo()
