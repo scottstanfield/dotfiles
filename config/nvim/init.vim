@@ -91,7 +91,11 @@ let g:solar_state=0
 function! SetDefaultSolar()          " ,x toggles dark/light
     if $ITERM_PROFILE == 'solarized-dark'
         call SolarDark()
-    else
+    elseif $ITERM_PROFILE == 'solarized-light'
+        call SolarLight()
+	elseif g:solar_state == 0
+        call SolarDark()
+	elseif g:solar_state == 1
         call SolarLight()
     endif
 	call lightline#colorscheme()
