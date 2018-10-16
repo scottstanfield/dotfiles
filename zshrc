@@ -241,8 +241,9 @@ path+=(~/.cargo/bin)
 
 # PYTHON
 # For the local, global python
-export PYTHONPATH="/Users/scott/Library/Python/2.7/bin"
-path+=(~/Library/Python/2.7/bin)
+#export PYTHONPATH="/Users/scott/Library/Python/2.7/bin"
+export PYTHONPATH="/home/scott/miniconda"
+path+=(~/miniconda/bin)
 
 # Add a snowman to the left-side prompt if we're in a pipenv subshell
 
