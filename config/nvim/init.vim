@@ -184,8 +184,9 @@ nnoremap <silent> <S-Left> :wincmd h<CR>
 nnoremap <silent> <S-Right> :wincmd l<CR>
 
 " keys to quickly resize window/pane splits
+" plus and minus (really underscore)
 nmap + <C-w>5+
-nmap - <C-w>5-
+nmap _ <C-w>5-
 nmap < <C-w>5<
 nmap > <C-w>5>
 
@@ -219,6 +220,7 @@ noremap K <Esc>
 nnoremap <silent> <leader>tw :set invwrap<CR>:set wrap?<CR>
 
 :cnoremap Wq wq
+:cnoremap Qa qa
 
 " Run this file through psql
 " map gp :wa<CR>:!psql -d INSERTDBNAMEHERE -f %<CR>
@@ -318,6 +320,9 @@ endif
 
 call plug#begin('~/.config/nvim/plugged')
 
+	Plug 'xolox/vim-misc'
+	Plug 'xolox/vim-notes'
+
 	Plug 'jalvesaq/vimcmdline'
 	let cmdline_map_start          = '<LocalLeader>s'
 	let cmdline_map_send           = '<Space>'
@@ -339,10 +344,9 @@ call plug#begin('~/.config/nvim/plugged')
 	let cmdline_app['python'] = 'ipython'
 	let cmdline_app['sh']     = 'bash'
 
-
     Plug 'lifepillar/vim-solarized8'        " for solarized8_dark or solarized8_light
 	Plug 'NLKNguyen/papercolor-theme'
-
+	Plug 'posva/vim-vue'					" syntax: vue
     Plug 'kchmck/vim-coffee-script'         " syntax: coffee script
     Plug 'digitaltoad/vim-pug'              " syntax: pug
     Plug 'iloginow/vim-stylus'              " syntax: stylus
@@ -380,12 +384,6 @@ call plug#begin('~/.config/nvim/plugged')
     
     Plug 'junegunn/vim-peekaboo'        " extend hash and at "
 
-    Plug 'junegunn/vim-easy-align',     { 'on': ['<Plug>(EasyAlign)', 'EasyAlign'] }
-    xmap ga <Plug>(EasyAlign)
-    nmap ga <Plug>(EasyAlign)
-    let g:easy_align_delimiters = { ';': {'pattern': ':'}, 'a': {'pattern': '<-'}, '<': {'pattern': '<-'}, ':': {'pattern': ':='}}
-
-
     Plug 'itchyny/lightline.vim'
     "let g:lightline = {'colorscheme': 'solarized'}
 
@@ -414,9 +412,6 @@ call plug#begin('~/.config/nvim/plugged')
     " For R language
     Plug 'jalvesaq/colorout', { 'for': 'r' }
     Plug 'jalvesaq/Nvim-r',   { 'for': 'r' }
-    vmap <silent> <Space> <Plug>RSendSelection<Esc><Esc>
-    nmap <silent> <Space> :call SendLineToR("stay")<CR><Esc><Home><Down>
-    "nmap <silent> <S-C-l> :call SendLineToR("system('clear')")<CR><Esc><Home><Down>
 
     let R_assign = 0
     let R_args = ['--no-save', '--quiet']
@@ -427,21 +422,33 @@ call plug#begin('~/.config/nvim/plugged')
     " to compile nvimcom (which updates automatically when you invoke nvim-r)
 
     " maltese
-    nmap <silent> ✠ :call SendLineToR("stay")<CR><Esc><Home><Down>
-    imap <silent> ✠ <Esc>:call SendLineToR("stay")<CR><Esc>A
-    vmap ✠ <Plug>RSendSelection<Esc><Esc>
-    " nmap <leader>fe :call SendFunctionToR("echo", "stay")<CR><Esc>
 
     Plug 'kshenoy/vim-signature'                    " show marks in margin
     Plug 'tpope/vim-surround'
     Plug 'tpope/vim-repeat'
     Plug 'tpope/vim-commentary'                     " smarter commenting with gc
+    Plug 'tpope/vim-vinegar'                     " smarter commenting with gc
+
+	Plug 'editorconfig/editorconfig-vim'			" multi-editor settings for .editorconfig
 
     Plug 'airblade/vim-gitgutter'                   " shows git diff marks in the gutter
     nmap <silent> <leader>tu :GitGutterToggle<CR>   
     let g:gitgutter_enabled = 1                     " off by default
 
 call plug#end()
+
+augroup rcode
+    autocmd!
+    au Filetype r vmap <silent> <Space> <Plug>RSendSelection<Esc><Esc>
+    au Filetype r nmap <silent> <Space> :call SendLineToR("stay")<CR><Esc><Home><Down>
+    "nmap <silent> <S-C-l> :call SendLineToR("system('clear')")<CR><Esc><Home><Down>
+	
+    au Filetype r nmap <silent> ✠ :call SendLineToR("stay")<CR><Esc><Home><Down>
+	au Filetype r imap <silent> ✠ <Esc>:call SendLineToR("stay")<CR><Esc>A
+    au Filetype r vmap ✠ <Plug>RSendSelection<Esc><Esc>
+    " nmap <leader>fe :call SendFunctionToR("echo", "stay")<CR><Esc>
+
+augroup END
 
 " Toggle Line numbers on/off
 nmap <silent> <leader>tn :set invnumber<CR>
@@ -629,3 +636,14 @@ function! ShowDigraphs()
 endfunction
 
 au TermOpen * setlocal nonumber norelativenumber
+
+" netrw settings
+nnoremap <silent> <c-p> :Vexplore<CR>
+" let g:netrw_banner = 0
+" let g:netrw_liststyle = 3
+" let g:netrw_browse_split = 4
+" let g:netrw_winsize = 25 
+" augroup ProjectDrawer
+" 	autocmd!
+" 	autocmd VimEnter * :Vexplore
+" augroup END
