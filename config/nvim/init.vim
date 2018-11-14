@@ -16,6 +16,8 @@ set clipboard+=unnamedplus
 " set nofoldenable              " start with all folds open
 "nnoremap <Enter> za
 
+" Fuck macros
+nnoremap <silent> q <space>
 
 " Map CMD-S to save files (iTerm2 passes it along as an anchor)
 nnoremap <silent> ⚓ :w<CR>
@@ -219,8 +221,8 @@ noremap K <Esc>
 " toggle line wrapping modes
 nnoremap <silent> <leader>tw :set invwrap<CR>:set wrap?<CR>
 
-:cnoremap Wq wq
-:cnoremap Qa qa
+cnoremap Wq wq
+cnoremap Qa qa
 
 " Run this file through psql
 " map gp :wa<CR>:!psql -d INSERTDBNAMEHERE -f %<CR>
@@ -320,6 +322,7 @@ endif
 
 call plug#begin('~/.config/nvim/plugged')
 
+	Plug 'sotte/presenting.vim'
 	Plug 'xolox/vim-misc'
 	Plug 'xolox/vim-notes'
 
@@ -412,6 +415,8 @@ call plug#begin('~/.config/nvim/plugged')
     " For R language
     Plug 'jalvesaq/colorout', { 'for': 'r' }
     Plug 'jalvesaq/Nvim-r',   { 'for': 'r' }
+    nmap <silent> <Space> :call SendLineToR("stay")<CR><Esc><Home><Down>
+    vmap <silent> <Space> <Plug>RSendSelection<Esc><Esc>
 
     let R_assign = 0
     let R_args = ['--no-save', '--quiet']
@@ -439,8 +444,8 @@ call plug#end()
 
 augroup rcode
     autocmd!
-    au Filetype r vmap <silent> <Space> <Plug>RSendSelection<Esc><Esc>
-    au Filetype r nmap <silent> <Space> :call SendLineToR("stay")<CR><Esc><Home><Down>
+    "au Filetype r nmap <silent> <Space> :call SendLineToR("stay")<CR><Esc><Home><Down>
+    "au Filetype r vmap <silent> <Space> <Plug>RSendSelection<Esc><Esc>
     "nmap <silent> <S-C-l> :call SendLineToR("system('clear')")<CR><Esc><Home><Down>
 	
     au Filetype r nmap <silent> ✠ :call SendLineToR("stay")<CR><Esc><Home><Down>
