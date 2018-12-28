@@ -1,3 +1,5 @@
+" neovim 3.1
+
 " move a visual block around
 " use arrow keys or control-movement keys to resize windows
 " change line highlight color
@@ -240,18 +242,29 @@ nnoremap <leader>m :silent !open -a "Marked 2.app" '%:p'<cr> :redraw!<cr>
 "    nnoremap <leader>r gq}               " *r*eformat current paragraph
 
 " Abbreviations From http://vimcasts.org/episodes/show-invisibles/
+" https://www.typography.com/blog/house-of-flying-reference-marks
+" *, †, ‡, §, ||, #, **, ††, ‡‡, §§, ||||, ###, ***, †††, ‡‡‡
+
+
+
+
+ab [dagger] †
+ab [obelus] †
+ab [dagger2] ‡
+ab [diesis] ‡
+ab [section] §
+ab [lozenge] ◊
 ab [check] ✓
 ab [x] ×
 ab [o] ○
-ab [dag] †
 ab [heart] ❤
 ab [cmd] ⌘
+ab [command] ⌘
 ab [shift] ⇧
+ab [capslock] ⇪
 ab [option] ⌥
 ab [ctrl] ⌃
 ab [tab] ⇥
-ab [section] §
-ab [lozenge] ◊
 ab [interpunct] ·
 ab [reference] ※
 ab [ellipse] …     
@@ -263,17 +276,19 @@ ab [shrug]  ¯\_(ツ)_/¯
 ab [yhat] ŷ
 ab [space] ␢
 ab [degree] ° 
+ab [deg] ° 
 ab [mu] µ
 ab [ss] §
 ab [sd] σ
 ab [blank] ␣
 
+
 " Toggle invisible whiteSpace ¬ ¶
 nnoremap <leader>i :set list!<CR>
 set listchars=eol:¬,tab:▸\.,trail:▫,nbsp:_,extends:»,precedes:«
 
-" Capital Y copies to the EOL
-nnoremap <S-y> y$
+" Capital Y copies to the EOL for consistency with other capital commands
+nnoremap Y y$
 
 " Page-up/down with Control harmonizes with vim keys
 nmap <C-j> <C-d>
@@ -383,7 +398,8 @@ call plug#begin('~/.config/nvim/plugged')
     Plug 'junegunn/vim-easy-align',     { 'on': ['<Plug>(EasyAlign)', 'EasyAlign'] }
     xmap ga <Plug>(EasyAlign)
     nmap ga <Plug>(EasyAlign)
-    let g:easy_align_delimiters = { ';': {'pattern': ':'}, 'a': {'pattern': '<-'}, '<': {'pattern': '<-'}, ':': {'pattern': ':='}}
+    let g:easy_align_delimiters = { ';': {'pattern': ':'}, '>': {'pattern': '>'}, 'a': {'pattern': '<-'}, '<': {'pattern': '<-'}, ':': {'pattern': ':='}}
+	au FileType markdown vmap <Leader><Bslash> :EasyAlign*<Bar><Enter>
     
     Plug 'junegunn/vim-peekaboo'        " extend hash and at "
 
@@ -433,6 +449,7 @@ call plug#begin('~/.config/nvim/plugged')
     Plug 'tpope/vim-repeat'
     Plug 'tpope/vim-commentary'                     " smarter commenting with gc
     Plug 'tpope/vim-vinegar'                     " smarter commenting with gc
+	Plug 'tpope/vim-unimpaired'
 
 	Plug 'editorconfig/editorconfig-vim'			" multi-editor settings for .editorconfig
 
@@ -448,11 +465,10 @@ augroup rcode
     "au Filetype r vmap <silent> <Space> <Plug>RSendSelection<Esc><Esc>
     "nmap <silent> <S-C-l> :call SendLineToR("system('clear')")<CR><Esc><Home><Down>
 	
-    au Filetype r nmap <silent> ✠ :call SendLineToR("stay")<CR><Esc><Home><Down>
-	au Filetype r imap <silent> ✠ <Esc>:call SendLineToR("stay")<CR><Esc>A
-    au Filetype r vmap ✠ <Plug>RSendSelection<Esc><Esc>
+    au FileType r nmap <silent> ✠ :call SendLineToR("stay")<CR><Esc><Home><Down>
+	au FileType r imap <silent> ✠ <Esc>:call SendLineToR("stay")<CR><Esc>A
+    au FileType r vmap ✠ <Plug>RSendSelection<Esc><Esc>
     " nmap <leader>fe :call SendFunctionToR("echo", "stay")<CR><Esc>
-
 augroup END
 
 " Toggle Line numbers on/off
@@ -639,6 +655,7 @@ function! ShowDigraphs()
     call getchar()
     return "\<C-K>"
 endfunction
+
 
 au TermOpen * setlocal nonumber norelativenumber
 
