@@ -257,6 +257,8 @@ ab [lozenge] ◊
 ab [check] ✓
 ab [x] ×
 ab [o] ○
+ab [.] •
+ab [>] ▸
 ab [heart] ❤
 ab [cmd] ⌘
 ab [command] ⌘
