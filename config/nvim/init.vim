@@ -340,8 +340,6 @@ endif
 call plug#begin('~/.config/nvim/plugged')
 
 	Plug 'sotte/presenting.vim'
-	Plug 'xolox/vim-misc'
-	Plug 'xolox/vim-notes'
 
 	Plug 'jalvesaq/vimcmdline'
 	let cmdline_map_start          = '<LocalLeader>s'
@@ -370,13 +368,6 @@ call plug#begin('~/.config/nvim/plugged')
     Plug 'kchmck/vim-coffee-script'         " syntax: coffee script
     Plug 'digitaltoad/vim-pug'              " syntax: pug
     Plug 'iloginow/vim-stylus'              " syntax: stylus
-
-    " Plug 'chrisbra/csv.vim'
-    "
-
-    Plug 'nixon/vim-vmath'
-    " vmap <expr> ++ VMATH_YankAndAnalyse()
-    " nmap        ++ vip++
 
     " After installing, run ~/.fzf/install
     Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
@@ -428,8 +419,6 @@ call plug#begin('~/.config/nvim/plugged')
     
     Plug 'kassio/neoterm'
 
-    Plug 'regedarek/ZoomWin'            " <ctrl-w>o zoom in/out window
-
     " For R language
     Plug 'jalvesaq/colorout', { 'for': 'r' }
     Plug 'jalvesaq/Nvim-r',   { 'for': 'r' }
@@ -451,9 +440,6 @@ call plug#begin('~/.config/nvim/plugged')
     Plug 'tpope/vim-repeat'
     Plug 'tpope/vim-commentary'                     " smarter commenting with gc
     Plug 'tpope/vim-vinegar'                     " smarter commenting with gc
-	Plug 'tpope/vim-unimpaired'
-
-	Plug 'editorconfig/editorconfig-vim'			" multi-editor settings for .editorconfig
 
     Plug 'airblade/vim-gitgutter'                   " shows git diff marks in the gutter
     nmap <silent> <leader>tu :GitGutterToggle<CR>   
