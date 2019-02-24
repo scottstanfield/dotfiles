@@ -46,7 +46,7 @@ alias rgc='rg --no-line-number --color never '              # clean version of r
 alias ping='prettyping --nolegend'
 
 
-# More suitable for .zshenv
+# Simple default prompt (impure is a better prompt)
 PROMPT='%n@%m %3~%(!.#.$)%(?.. [%?]) '
 
 # Tab completion
@@ -281,4 +281,28 @@ fi
 
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+
+##
+## Still testing this concept
+## If current folder has a .nvmrc then nvm use that version
+##
+
+autoload -U add-zsh-hook
+load-nvmrc() {
+  local nvmrc_path="$(nvm_find_nvmrc)"
+
+  if [ -n "$nvmrc_path" ]; then
+    echo "testing..."
+    local node_version="$(nvm version)"
+    local nvmrc_node_version=$(nvm version "$(cat "${nvmrc_path}")")
+
+    if [ "$nvmrc_node_version" = "N/A" ]; then
+      nvm install
+    elif [ "$nvmrc_node_version" != "$node_version" ]; then
+      nvm use
+      export LEFT_PROMPT_EXTRA="[$nvmrc_node_version] "
+    fi
+  fi
+}
+add-zsh-hook chpwd load-nvmrc
 
