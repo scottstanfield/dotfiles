@@ -16,25 +16,6 @@ rainbow() {
     done
 }
 
-tophistory() {
-	history | awk '{a[$2]++ } END{for(i in a){print a[i] " " i}}' | sort -rn | head -n 30
-}
-
-calc() {
-	echo "scale=3;$@" | bc -l
-}
-
-rpn() {
-	echo "3 k $@ p" | dc
-}
-
-loop () {
-	while true; do
-		$1
-		sleep ${2:-1}
-	done
-}
-
 zz() {
     if [[ -f $1 ]]; then
         case $1 in
@@ -58,22 +39,6 @@ zz() {
         echo "'$1' is not a valid file"
     fi
 }
-
-function psg() {
-    emulate -L zsh
-    unsetopt KSH_ARRAYS
-    if [[ -z "$1" ]] ; then
-        echo "psg - grep for process(es) by keyword" >&2
-        echo "Usage: psg " >&2 ; return 1
-    else
-        ps xauwww | grep -i --color=auto "[${1[1]}]${1[2,-1]}"
-    fi
-}
-
-# -------------------------------------------------------------------
-# shell function to define words
-# http://vikros.tumblr.com/post/23750050330/cute-little-function-time
-# -------------------------------------------------------------------
 
 if is_mac; then
     pman() { man $1 -t | open -f -a Preview } # open man pages in Preview
