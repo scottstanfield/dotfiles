@@ -5,6 +5,12 @@
 # % hyperfine --warmup 2 'zsh -i -c "exit"'
 # Time (mean ± σ):      1.613 s ±  0.129 s
 #
+# removing conda activate & azure cli
+# Time (mean ± σ):      1.281 s ±  0.020 s 
+#
+# After fixing up compdump at line 64!
+# Time (mean ± σ):     190.4 ms ±   4.8 ms 
+#
 # Without any plugins
 # Time (mean ± σ):     471.5 ms ±   8.4 ms 
 
@@ -18,6 +24,8 @@ path+=(~/bin . ~/.go/bin)
 # GNU specific paths for Mac (requires `brew install coreutils`)
 path=(/usr/local/opt/coreutils/libexec/gnubin $path)
 [[ -d /usr/local/opt/coreutils/libexec/gnuman ]] && manpath=(/usr/local/opt/coreutils/libexec/gnuman $MANPATH)
+
+path=($path /foo/bar)
 
 # Use the GNU version of ls/cat on Mac from coreutils
 [[ -d ~/dmz/dircolors ]] && eval $(dircolors ~/dmz/dircolors/dircolors.ansi-universal)
@@ -55,22 +63,19 @@ alias ping='prettyping --nolegend'
 # Simple default prompt (impure is a better prompt)
 PROMPT='%n@%m %3~%(!.#.$)%(?.. [%?]) '
 
-# Tab completion
-# autoload -Uz compinit && compinit
+# Speedup tip: https://gist.github.com/ctechols/ca1035271ad134841284
 autoload -Uz compinit
-if [[ -n ~/.zcompdump(#qN.mh+24) ]]; then
-	compinit;
-else
-	compinit -C;
-fi;
-
+for dump in ~/.zcompdump(N.mh+24); do
+	compinit
+done
+compinit -C
 
 setopt complete_in_word         # cd /ho/sco/tm<TAB> expands to /home/scott/tmp
 setopt auto_menu                # show completion menu on succesive tab presses
 
 # MISC
 setopt autocd                   # cd to a folder just by typing it's name
-setopt extendedglob		# ls *(.) shows just files; ls *(/) for folders
+setopt extendedglob		        # ls *(.) shows just files; ls *(/) for folders
 setopt interactive_comments     # allow # comments in shell; good for copy/paste
 unsetopt correct_all            # I don't care for 'suggestions' from ZSH
 export BLOCK_SIZE="'1"          # Add commas to file sizes
@@ -94,8 +99,7 @@ for c in $ZSH/lib/*.zsh; do
   source $c
 done
 
-plugins=(impure colorize hub ripgrep zsh-syntax-highlighting)
-plugins=(colorize hub ripgrep zsh-syntax-highlighting)
+plugins=(impure ripgrep zsh-syntax-highlighting)
 
 for p in $plugins; do
   fpath=($ZSH/plugins/$p $fpath)
@@ -244,19 +248,14 @@ path+=(~/.cargo/bin)
 # PYTHON
 # For the local, global python
 #export PYTHONPATH="/Users/scott/Library/Python/2.7/bin"
-export PYTHONPATH="/home/scott/miniconda"
-path+=(~/miniconda/bin)
-
 # Add a snowman to the left-side prompt if we're in a pipenv subshell
 
 # If using Anaconda, comment out this block below:
 if [[ -f ~/miniconda3/etc/profile.d/conda.sh ]]; then
-    source ~/miniconda3/etc/profile.d/conda.sh activate
-    conda activate intelpy
-else
-    path+=(~/.local/bin)
-    if (( ${+PIPENV_ACTIVE} )); then LEFT_PROMPT_EXTRA="☃ "; fi
-    alias pips="[ -e Pipfile ] && pipenv shell || echo 'No Pipfile found. Try: pipenv install'"
+    export PYTHONPATH="/home/scott/miniconda"
+    path+=(~/miniconda/bin)
+    # source ~/miniconda3/etc/profile.d/conda.sh activate
+    # conda activate intelpy
 fi
 
 ## JAVA
@@ -264,39 +263,27 @@ fi
 
 # Azure CLI bash completion
 #
-if (( $+commands[az] )) ; then
-  autoload bashcompinit && bashcompinit
-  source /usr/local/Cellar/azure-cli/2.0.44/etc/bash_completion.d/az
-fi
+# if (( $+commands[az] )) ; then
+#   autoload bashcompinit && bashcompinit
+#   source /usr/local/Cellar/azure-cli/2.0.44/etc/bash_completion.d/az
+# fi
 
 
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
 ## NODE
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" --no-use           # Still must type 'nvm use default'
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-## Still testing this concept
-## If current folder has a .nvmrc then nvm use that version
+declare -a NODE_GLOBALS=(`find ~/.nvm/versions/node -maxdepth 3 -type l -wholename '*/bin/*' | xargs -n1 basename | sort | uniq`)
+NODE_GLOBALS+=("node")
+NODE_GLOBALS+=("nvm")
 
-autoload -U add-zsh-hook
-load-nvmrc() {
-  if [[ -n $NVM_DIR ]]; then
-    local nvmrc_path="$(nvm_find_nvmrc)"
-    if [ -n "$nvmrc_path" ]; then
-      local node_version="$(nvm version)"
-      local nvmrc_node_version=$(nvm version "$(cat "${nvmrc_path}")")
-
-      if [ "$nvmrc_node_version" = "N/A" ]; then
-        nvm install
-      elif [ "$nvmrc_node_version" != "$node_version" ]; then
-        nvm use
-        export LEFT_PROMPT_EXTRA="[$nvmrc_node_version] "
-      fi
-    fi
- fi
+load_nvm () {
+    export NVM_DIR=~/.nvm
+    [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
 }
-add-zsh-hook chpwd load-nvmrc
+
+for cmd in "${NODE_GLOBALS[@]}"; do
+    eval "${cmd}(){ unset -f ${NODE_GLOBALS}; load_nvm; ${cmd} \$@ }"
+done
 
