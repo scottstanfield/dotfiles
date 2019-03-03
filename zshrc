@@ -1,6 +1,12 @@
 # Scott Stanfield
 # http://git.io/dmz
+
+# Timing startup
+# % hyperfine --warmup 2 'zsh -i -c "exit"'
+# Time (mean ± σ):      1.613 s ±  0.129 s
 #
+# Without any plugins
+# Time (mean ± σ):     471.5 ms ±   8.4 ms 
 
 umask 007
 
@@ -89,6 +95,7 @@ for c in $ZSH/lib/*.zsh; do
 done
 
 plugins=(impure colorize hub ripgrep zsh-syntax-highlighting)
+plugins=(colorize hub ripgrep zsh-syntax-highlighting)
 
 for p in $plugins; do
   fpath=($ZSH/plugins/$p $fpath)
@@ -105,8 +112,6 @@ done
 
 COMPLETION_WAITING_DOTS="true"
 
-###################################################
-###################################################
 ###################################################
 
 export LANGUAGE=en_US.UTF-8
@@ -200,6 +205,7 @@ export LC_ALL="${LANGUAGE}"
 export LC_CTYPE="${LANGUAGE}"
 
 
+# FuzzyFinder
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export FZF_DEFAULT_OPTS='--ansi --height 40% --extended'
 export FZF_DEFAULT_COMMAND='rg --files --no-ignore --follow -g "!{.git,node_modules,env}" 2> /dev/null'
@@ -213,8 +219,9 @@ ZSH_HIGHLIGHT_STYLES[builtin]=fg=blue
 ZSH_HIGHLIGHT_STYLES[command]=fg=blue
 ZSH_HIGHLIGHT_STYLES[alias]=fg=blue
 ZSH_HIGHLIGHT_STYLES[function]=fg=blue
-#ZSH_HIGHLIGHT_STYLES[path_prefix]=underline   # incomplete paths are underlined
 ZSH_HIGHLIGHT_STYLES[comment]=fg=yellow	      # comments at end of command (not black)
+
+#ZSH_HIGHLIGHT_STYLES[path_prefix]=underline   # incomplete paths are underlined
 
 # Put your machine-specific settings here
 [[ -f ~/.secret ]] && source ~/.secret
@@ -222,14 +229,9 @@ ZSH_HIGHLIGHT_STYLES[comment]=fg=yellow	      # comments at end of command (not 
 ##
 ## Programming language specific
 ##
-#
+
 # R Language
 export R_LIBS=~/.R/lib
-
-# NODE
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" --no-use           # Still must type 'nvm use default'
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 # GO
 export GOPATH=~/.go
@@ -248,7 +250,6 @@ path+=(~/miniconda/bin)
 # Add a snowman to the left-side prompt if we're in a pipenv subshell
 
 # If using Anaconda, comment out this block below:
-
 if [[ -f ~/miniconda3/etc/profile.d/conda.sh ]]; then
     source ~/miniconda3/etc/profile.d/conda.sh activate
     conda activate intelpy
@@ -258,51 +259,44 @@ else
     alias pips="[ -e Pipfile ] && pipenv shell || echo 'No Pipfile found. Try: pipenv install'"
 fi
 
-# what am I using perl for?
-# PATH="/home/scott/perl5/bin${PATH:+:${PATH}}"; export PATH;
-# PERL5LIB="/home/scott/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
-# PERL_LOCAL_LIB_ROOT="/home/scott/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
-# PERL_MB_OPT="--install_base \"/home/scott/perl5\""; export PERL_MB_OPT;
-# PERL_MM_OPT="INSTALL_BASE=/home/scott/perl5"; export PERL_MM_OPT;
-
-# tabtab source for serverless package
-# uninstall by removing these lines or running `tabtab uninstall serverless`
-#[[ -f /home/scott/.nvm/versions/node/v10.4.0/lib/node_modules/serverless/node_modules/tabtab/.completions/serverless.zsh ]] && . /home/scott/.nvm/versions/node/v10.4.0/lib/node_modules/serverless/node_modules/tabtab/.completions/serverless.zsh
-#
+## JAVA
 [[ -f /usr/libexec/java_home ]] && JAVA_HOME=$(/usr/libexec/java_home)
 
 # Azure CLI bash completion
 #
 if (( $+commands[az] )) ; then
-    autoload bashcompinit && bashcompinit
-    source /usr/local/Cellar/azure-cli/2.0.44/etc/bash_completion.d/az
+  autoload bashcompinit && bashcompinit
+  source /usr/local/Cellar/azure-cli/2.0.44/etc/bash_completion.d/az
 fi
 
 
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
-##
+## NODE
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" --no-use           # Still must type 'nvm use default'
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
 ## Still testing this concept
 ## If current folder has a .nvmrc then nvm use that version
-##
 
 autoload -U add-zsh-hook
 load-nvmrc() {
-  local nvmrc_path="$(nvm_find_nvmrc)"
+  if [[ -n $NVM_DIR ]]; then
+    local nvmrc_path="$(nvm_find_nvmrc)"
+    if [ -n "$nvmrc_path" ]; then
+      local node_version="$(nvm version)"
+      local nvmrc_node_version=$(nvm version "$(cat "${nvmrc_path}")")
 
-  if [ -n "$nvmrc_path" ]; then
-    echo "testing..."
-    local node_version="$(nvm version)"
-    local nvmrc_node_version=$(nvm version "$(cat "${nvmrc_path}")")
-
-    if [ "$nvmrc_node_version" = "N/A" ]; then
-      nvm install
-    elif [ "$nvmrc_node_version" != "$node_version" ]; then
-      nvm use
-      export LEFT_PROMPT_EXTRA="[$nvmrc_node_version] "
+      if [ "$nvmrc_node_version" = "N/A" ]; then
+        nvm install
+      elif [ "$nvmrc_node_version" != "$node_version" ]; then
+        nvm use
+        export LEFT_PROMPT_EXTRA="[$nvmrc_node_version] "
+      fi
     fi
-  fi
+ fi
 }
 add-zsh-hook chpwd load-nvmrc
 
