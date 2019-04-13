@@ -428,7 +428,7 @@ call plug#begin('~/.config/nvim/plugged')
     let R_assign = 0
     let R_args = ['--no-save', '--quiet']
     " let R_hi_fun = 0   " workaround no longer needed
-    let R_tmpdir = '~scott/R/tmp'
+    let R_tmpdir = '~/.R/tmp'
     let R_source_args = 'print.eval=F'
     " I needed to run `brew link --force readline` in order to get gcc5
     " to compile nvimcom (which updates automatically when you invoke nvim-r)

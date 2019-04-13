@@ -23,6 +23,7 @@ link config/nvim/init.vim ~/.config/nvim/init.vim
 
 # Setup R
 mkdir -p ~/.R/lib
+mkdir -p ~/.R/tmp
 link R/Makevars ~/.R/Makevars
 link Rprofile ~/.Rprofile
 
