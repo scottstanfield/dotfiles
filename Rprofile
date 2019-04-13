@@ -34,6 +34,7 @@
         })
         cat(sprintf(paste('data.table v', utils::packageDescription('data.table')$Version, '\n', sep='')))
     }
+  }
 }
 
 # must-have globals
