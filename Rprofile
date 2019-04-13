@@ -28,10 +28,12 @@
 
     if ('data.table' %in% utils::installed.packages()[,1])
     {
-        library(data.table, verbose=F)
-        setDTthreads(0)
+        suppressMessages({
+          library(data.table, verbose=F)
+          setDTthreads(0)   # allocate all the available threads/CPUs
+        })
+        cat(sprintf(paste('data.table v', utils::packageDescription('data.table')$Version, '\n', sep='')))
     }
-  }
 }
 
 # must-have globals
