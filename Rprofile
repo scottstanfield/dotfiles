@@ -21,13 +21,17 @@
 
   if (interactive())
   {
-      suppressMessages({
+    if ('magrittr' %in% utils::installed.packages()[,1])
+    {
         library(magrittr)
-        library(data.table, verbose=F)
-        printf(paste('data.table v', utils::packageDescription('data.table')$Version, '\n', sep=''))
-      })
-  }
+    }
 
+    if ('data.table' %in% utils::installed.packages()[,1])
+    {
+        library(data.table, verbose=F)
+        setDTthreads(0)
+    }
+  }
 }
 
 # must-have globals
