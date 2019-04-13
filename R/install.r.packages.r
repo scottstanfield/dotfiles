@@ -1,4 +1,4 @@
-#!/usr/bin/env Rscript
+#!Rscript --vanilla
 
 install.packages('data.table', repos='https://Rdatatable.github.io/data.table')
 install.packages('magrittr')
@@ -6,4 +6,6 @@ install.packages('magrittr')
 install.packages('remotes')		# a lighter-weight devtools package
 remotes::install_github('jalvesaq/colorout')
 remotes::install_github('cran/setwidth')
+
+install.packages('R.utils')   # for data.table gzip support
 
