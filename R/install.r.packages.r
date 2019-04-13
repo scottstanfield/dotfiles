@@ -1,8 +1,4 @@
-#!Rscript --vanilla
-
-r <- getOption('repos')
-r["CRAN"] <- "http://cran.cnr.berkeley.edu"
-options(repos=r)
+#!Rscript
 
 cat("§ data.table \n")
 install.packages('data.table', repos='https://Rdatatable.github.io/data.table')
