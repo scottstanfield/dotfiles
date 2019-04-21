@@ -27,6 +27,9 @@ mkdir -p ~/.R/tmp
 link R/Makevars ~/.R/Makevars
 link Rprofile ~/.Rprofile
 
+# minimal vimrc for vim 8
+link vimrc ~/.vimrc
+
 # Setup git
 link gitconfig ~/.gitconfig
 link gitignore ~/.gitignore

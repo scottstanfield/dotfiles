@@ -82,6 +82,7 @@ highlight TermCursor ctermfg=red
 
 " Hide the Magenta with ,/
 nnoremap <silent> <leader>/ :set hlsearch! hlsearch?<CR>
+nnoremap / :set hlsearch<cr>/
 
 " Highlight current line and column
 nnoremap <leader>c :set cursorcolumn!<CR>
