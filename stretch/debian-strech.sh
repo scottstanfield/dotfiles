@@ -37,13 +37,9 @@ passwd scott
 sudo chsh -s /usr/bin/zsh $(whoami)
 
 ## clone dmz repo
-sudo chsh -s /usr/bin/zsh ubuntu
-cd
+## Log out, log back in
 git clone https://github.com/scottstanfield/dmz.git
-cd dmz
-
-# do the rest by hand
-echo "cd ~/dmz && ./install.sh"
+cd ~/dmz
 ./install.sh				# <-- this prompts to continue
 
 
