@@ -57,7 +57,7 @@ alias df='df -h'  # human readable
 alias t='tmux -2 new-session -A -s "bonsai"'		# set variable in .secret
 alias rg='rg --pretty --smart-case'
 alias rgc='rg --no-line-number --color never '              # clean version of rg suitable for piping
-alias ping='prettyping --nolegend'
+#alias ping='prettyping --nolegend'
 
 
 # Simple default prompt (impure is a better prompt)
