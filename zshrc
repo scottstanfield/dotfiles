@@ -261,35 +261,27 @@ fi
 ## JAVA
 [[ -f /usr/libexec/java_home ]] && JAVA_HOME=$(/usr/libexec/java_home)
 
-# Azure CLI bash completion
-#
-# if (( $+commands[az] )) ; then
-#   autoload bashcompinit && bashcompinit
-#   source /usr/local/Cellar/azure-cli/2.0.44/etc/bash_completion.d/az
-# fi
+## NODE: test for NVM and load it lazily
+if [ -d "~/.nvm/versions/node" ]; then
+    declare -a NODE_GLOBALS=($(find ~/.nvm/versions/node -maxdepth 3 -type l -wholename '*/bin/*' 2>/dev/null | xargs -n1 basename | sort | uniq))
+    NODE_GLOBALS+=("node")
+    NODE_GLOBALS+=("nvm")
 
+    load_nvm () {
+        export NVM_DIR=~/.nvm
+        [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+    }
 
+    for cmd in "${NODE_GLOBALS[@]}"; do
+        eval "${cmd}(){ unset -f ${NODE_GLOBALS}; load_nvm; ${cmd} \$@ }"
+    done
+fi
 
-test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
-
-## NODE
-
-# declare -a NODE_GLOBALS=(`find ~/.nvm/versions/node -maxdepth 3 -type l -wholename '*/bin/*' | xargs -n1 basename | sort | uniq`)
-# NODE_GLOBALS+=("node")
-# NODE_GLOBALS+=("nvm")
-
-# load_nvm () {
-#     export NVM_DIR=~/.nvm
-#     [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
-# }
-
-# for cmd in "${NODE_GLOBALS[@]}"; do
-#     eval "${cmd}(){ unset -f ${NODE_GLOBALS}; load_nvm; ${cmd} \$@ }"
-# done
-
-
+## Google Cloud CLI
 # # The next line updates PATH for the Google Cloud SDK.
-# if [ -f '/Users/scott/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/scott/Downloads/google-cloud-sdk/path.zsh.inc'; fi
+# if [ -f '$HOME/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '$HOME/Downloads/google-cloud-sdk/path.zsh.inc'; fi
 
 # # The next line enables shell command completion for gcloud.
-# if [ -f '/Users/scott/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/scott/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
+# if [ -f '$HOME/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '$HOME/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
+
+
