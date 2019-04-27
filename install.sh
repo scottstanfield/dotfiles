@@ -52,6 +52,9 @@ link agignore ~/.agignore
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git \
 	$PWD/plugins/zsh-syntax-highlighting
 
+# fixing potential insecure group writable folders
+compaudit | xargs chmod g-w
+
 
 # Post-install step
 echo 'launchng nvim to run :PlugInstall...'
