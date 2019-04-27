@@ -252,11 +252,13 @@ path+=(~/.cargo/bin)
 #export PYTHONPATH="/Users/scott/Library/Python/2.7/bin"
 # Add a snowman to the left-side prompt if we're in a pipenv subshell
 
+
 # If using Anaconda, comment out this block below:
 if [[ -f ~/miniconda3/etc/profile.d/conda.sh ]]; then
     export PYTHONPATH="/home/scott/miniconda3"
     path+=(~/miniconda3/bin)
     source ~/miniconda3/etc/profile.d/conda.sh activate
+    if (( ${+CONDA_PROMPT_MODIFIER} )); then LEFT_PROMPT_EXTRA="${CONDA_PROMPT_MODIFIER}"; fi
     # conda activate bonsai     <-- 
 fi
 
