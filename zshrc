@@ -258,9 +258,18 @@ if [[ -f ~/miniconda3/etc/profile.d/conda.sh ]]; then
     export PYTHONPATH="/home/scott/miniconda3"
     path+=(~/miniconda3/bin)
     source ~/miniconda3/etc/profile.d/conda.sh activate
-    if (( ${+CONDA_PROMPT_MODIFIER} )); then LEFT_PROMPT_EXTRA="${CONDA_PROMPT_MODIFIER}"; fi
     # conda activate bonsai     <-- 
 fi
+
+function virtenv_indicator {
+    if [[ -z $CONDA_PROMPT_MODIFIER ]] then
+        psvar[1]=''
+    else
+        psvar[1]=${CONDA_DEFAULT_ENV##*/}
+    fi
+}
+add-zsh-hook precmd virtenv_indicator
+LEFT_PROMPT_EXTRA="%(1V.(%1v) .)"
 
 ## JAVA
 [[ -f /usr/libexec/java_home ]] && JAVA_HOME=$(/usr/libexec/java_home)
