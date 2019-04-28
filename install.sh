@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
 cd `dirname $0`
-set -e 
 
 # dmz: Setup my Dotfiles / viM / zshrc / gitconfig
 # http://git.io/dmz
@@ -53,7 +52,7 @@ git clone https://github.com/zsh-users/zsh-syntax-highlighting.git \
 	$PWD/plugins/zsh-syntax-highlighting
 
 # fixing potential insecure group writable folders
-compaudit | xargs chmod g-w
+# compaudit | xargs chmod g-w
 
 
 # Post-install step
