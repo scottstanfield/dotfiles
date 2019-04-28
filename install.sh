@@ -31,7 +31,7 @@ link Rprofile ~/.Rprofile
 link vimrc ~/.vimrc
 
 # Setup git
-link gitconfig ~/.gitconfig
+cp --no-clobber gitconfig ~/.gitconfig
 link gitignore ~/.gitignore
 
 # Setup tmux
