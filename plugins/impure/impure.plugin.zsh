@@ -171,7 +171,10 @@ prompt_pure_preprompt_render() {
     fi
 
     local left=""
-    local pathdetails="%F{blue}%~%f"
+    # only show the trailing two folders
+    # local pathdetails="%F{blue}%2~%f"
+    
+    local pathdetails="%F{blue}%3~%f"
     # [[ "$SSH_CONNECTION" != '' ]] && name_machine=' %F{242}%n@%m%f'       # if on SSH, use a different prompt
     [[ $UID -eq 0 ]] && name_machine=' %F{white}%n%f%F{242}@%m%f'           # if root
 
