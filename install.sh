@@ -4,7 +4,7 @@
 # http://git.io/dmz
 
 cd `dirname $0`
-set -o errexit		# exit on any error
+#set -o errexit		# exit on any error
 set -o nounset		# error on unassigned variables
 
 # Backup all files to $B
