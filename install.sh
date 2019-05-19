@@ -33,7 +33,7 @@ link Rprofile ~/.Rprofile
 link vimrc ~/.vimrc
 
 # Setup git
-link gitconfig ~/.gitconfig
+cp --no-clobber gitconfig ~/.gitconfig
 link gitignore ~/.gitignore
 
 # Setup tmux
@@ -53,6 +53,9 @@ link agignore ~/.agignore
 # Cloning zsh plugin
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git \
 	$PWD/plugins/zsh-syntax-highlighting
+
+# fixing potential insecure group writable folders
+# compaudit | xargs chmod g-w
 
 
 # Post-install step

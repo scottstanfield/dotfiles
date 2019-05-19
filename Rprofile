@@ -30,7 +30,7 @@
     {
         suppressMessages({
           library(data.table, verbose=F)
-          setDTthreads(0)   # allocate all the available threads/CPUs
+          setDTthreads(percent=90)   # allocate all the available threads/CPUs
         })
         cat(sprintf(paste('data.table v', utils::packageDescription('data.table')$Version, '\n', sep='')))
     }

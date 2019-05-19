@@ -108,14 +108,14 @@ autocmd VimEnter * call SetDefaultSolar()
 
 function! SolarDark()
 	let g:solar_state=0
-    colorscheme PaperColor "solarized8_dark
+    colorscheme solarized8
     set background=dark
     hi colorcolumn ctermbg=darkgrey
 endfunction
 
 function! SolarLight()
 	let g:solar_state=1
-	colorscheme PaperColor "solarized_light
+	colorscheme solarized8
 	set background=light
 	hi colorcolumn ctermbg=lightgrey
 endfunction

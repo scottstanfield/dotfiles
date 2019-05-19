@@ -55,6 +55,8 @@ alias cp="cp -a"
 alias pd='pushd'  # symmetry with cd
 alias df='df -h'  # human readable
 alias t='tmux -2 new-session -A -s "bonsai"'		# set variable in .secret
+alias ts='tmux -2 -S /var/tmux/campfire new-session -A -s campfire'
+alias tj='tmux -2 -S /var/tmux/campfire attach'
 alias rg='rg --pretty --smart-case'
 alias rgc='rg --no-line-number --color never '              # clean version of rg suitable for piping
 #alias ping='prettyping --nolegend'
@@ -246,7 +248,6 @@ path+=(~/.cargo/bin)
 
 ##
 ## Python via Anaconda (miniconda)
-#z
 ## Shows current active environment in the left prompt
 ##
 
@@ -271,7 +272,6 @@ LEFT_PROMPT_EXTRA="%(1V.%1v .)"
 ##
 ## JAVA
 ##
- 
 [[ -f /usr/libexec/java_home ]] && JAVA_HOME=$(/usr/libexec/java_home)
 
 ##
