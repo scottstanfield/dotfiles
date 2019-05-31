@@ -1,5 +1,8 @@
 " neovim 3.1
 
+
+let g:solar_state=1 
+
 " move a visual block around
 " use arrow keys or control-movement keys to resize windows
 " change line highlight color
@@ -43,15 +46,14 @@ ino <C-E> <End>
 ino <C-F> <Right>
 ino <C-B> <Left>
 ino <C-D> <Del>
-" control-K is for diagraphs
-" ino <C-K> <Esc>lDa
 ino <C-U> <Esc>d0xi
 ino <C-Y> <Esc>Pa
-
+" control-K is for diagraphs
+" ino <C-K> <Esc>lDa
 ino <C-X><C-S> <Esc>:w<CR>a
 
 " I rarely use macros, but I accidentally hit q all the time
-" map q <Nop>
+nmap <silent> q <Nop>
 
 " Ctrl-s to save current file (in normal and insert mode)
 imap <c-s> <Esc>:w<CR>a
@@ -173,8 +175,7 @@ set smartcase                   " But case-sensitive if has caps
 set scrolloff=3                 " Show 3 lines around cursor (more context)
 set noshowmode                  " hide the default mode text (e.g. -- INSERT --)
 
-" Open new split panes to the right and bottom, which feels more natural
-set splitbelow
+set splitbelow					" more natural split positions for new panes
 set splitright
 
 " #-----------------------------------------------------------------------
@@ -320,9 +321,9 @@ vnoremap . :norm.<CR>
 
 " Tabbed Windows g
 nnoremap <S-Tab> :tabn<CR>
+nnoremap <Tab> <C-w><C-w>
 " nnoremap <Tab> :tabp<CR>
 " move easily b/w panes with TAB
-nnoremap <Tab> <C-w><C-w>
 
 
 
@@ -384,6 +385,8 @@ call plug#begin('~/.config/nvim/plugged')
 
     Plug 'junegunn/rainbow_parentheses.vim'
     let g:rainbow#pairs = [['(', ')'], ['[', ']']]
+
+	Plug 'junegunn/vim-slash'
 
     Plug 'junegunn/goyo.vim'        
     let g:goyo_width = 100
@@ -599,8 +602,6 @@ hi Folded ctermbg=7 ctermfg=4
 "
 " Make / searches stand out in magenta
 highlight Search term=bold ctermbg=LightMagenta guibg=LightMagenta
-
-
 
 highlight CursorLine cterm=none ctermbg=Blue 
 

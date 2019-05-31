@@ -226,8 +226,7 @@ export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 # ZSH_HIGHLIGHT_STYLES[alias]=fg=blue
 # ZSH_HIGHLIGHT_STYLES[function]=fg=blue
 # ZSH_HIGHLIGHT_STYLES[comment]=fg=yellow	      # comments at end of command (not black)
-
-#ZSH_HIGHLIGHT_STYLES[path_prefix]=underline   # incomplete paths are underlined
+# ZSH_HIGHLIGHT_STYLES[path_prefix]=underline   # incomplete paths are underlined
 
 # Put your machine-specific settings here
 [[ -f ~/.secret ]] && source ~/.secret
@@ -247,36 +246,40 @@ path+=(~/.go/bin)
 # RUST
 path+=(~/.cargo/bin)
 
-# PYTHON
-# For the local, global python
-#export PYTHONPATH="/Users/scott/Library/Python/2.7/bin"
-# Add a snowman to the left-side prompt if we're in a pipenv subshell
+##
+## Python via Anaconda (miniconda)
+## Shows current active environment in the left prompt
+##
 
-
-# If using Anaconda, comment out this block below:
-if [[ -f ~/miniconda3/etc/profile.d/conda.sh ]]; then
-    export PYTHONPATH="/home/scott/miniconda3"
-    path+=(~/miniconda3/bin)
-    source ~/miniconda3/etc/profile.d/conda.sh activate
-    # conda activate bonsai     <-- 
+if [[ -f $HOME/miniconda3/etc/profile.d/conda.sh ]]; then
+    source $HOME/miniconda3/etc/profile.d/conda.sh
+    [[ -z $TMUX ]] || conda deactivate; conda activate
 fi
 
-function virtenv_indicator {
+function conda_indicator {
     if [[ -z $CONDA_PROMPT_MODIFIER ]] then
         psvar[1]=''
+    elif [[ $CONDA_DEFAULT_ENV == "base" ]] then
+        psvar[1]=''
     else
-        psvar[1]=${CONDA_DEFAULT_ENV##*/}
+        psvar[1]='('${CONDA_DEFAULT_ENV##*/}')'
     fi
 }
-add-zsh-hook precmd virtenv_indicator
-LEFT_PROMPT_EXTRA="%(1V.(%1v) .)"
+add-zsh-hook precmd conda_indicator
+LEFT_PROMPT_EXTRA="%(1V.%1v .)"
 
+
+##
 ## JAVA
+##
 [[ -f /usr/libexec/java_home ]] && JAVA_HOME=$(/usr/libexec/java_home)
 
+##
 ## NODE: test for NVM and load it lazily
-if [ -d "~/.nvm/versions/node" ]; then
-    declare -a NODE_GLOBALS=($(find ~/.nvm/versions/node -maxdepth 3 -type l -wholename '*/bin/*' 2>/dev/null | xargs -n1 basename | sort | uniq))
+##
+
+if [ -d "$HOME/.nvm/versions/node" ]; then
+    declare -a NODE_GLOBALS=($(find $HOME/.nvm/versions/node -maxdepth 3 -type l -wholename '*/bin/*' 2>/dev/null | xargs -n1 basename | sort | uniq))
     NODE_GLOBALS+=("node")
     NODE_GLOBALS+=("nvm")
 
@@ -292,9 +295,9 @@ fi
 
 ## Google Cloud CLI
 # # The next line updates PATH for the Google Cloud SDK.
-# if [ -f '$HOME/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '$HOME/Downloads/google-cloud-sdk/path.zsh.inc'; fi
+if [ -f '$HOME/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '$HOME/Downloads/google-cloud-sdk/path.zsh.inc'; fi
 
 # # The next line enables shell command completion for gcloud.
-# if [ -f '$HOME/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '$HOME/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
+if [ -f '$HOME/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '$HOME/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
 
 

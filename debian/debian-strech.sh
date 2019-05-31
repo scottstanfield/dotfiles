@@ -48,39 +48,16 @@ sudo apt install -y postgresql-client
 
 ## setup node
 sudo apt install -yq ca-certificates
-
 curl -sL https://deb.nodesource.com/setup_11.x | sudo bash -
 sudo apt install -y nodejs 
 
 ## setup nginx
 sudo apt-get install nginx
 
-## setup SSL
-# add backport BS: https://backports.debian.org/Instructions/
-cat > /etc/apt/sources.list.d/backports.list << EOF
-sudo deb http://deb.debian.org/debian stretch-backports main
-EOF
-sudo apt-get install certbot python-certbot-nginx -t stretch-backports
-
-## install docker (jesus christ)
-sudo apt-get install \
-    apt-transport-https \
-    ca-certificates \
-    curl \
-    gnupg2 \
-    software-properties-common
-curl -fsSL https://download.docker.com/linux/debian/gpg | sudo apt-key add -
-sudo add-apt-repository \
-   "deb [arch=amd64] https://download.docker.com/linux/debian \
-   $(lsb_release -cs) \
-   stable"
-sudo apt-get update
-sudo apt-get install docker-ce docker-ce-cli containerd.io
-sudo docker run hello-world
-
-## or
+## setup SSL via docker
 curl -sSL https://get.docker.com | sudo bash -
-
+sudo usermod -aG docker $(whoami)
+docker run hello-world
 
 ## install github public key
 curl -s https://github.com/scottstanfield.keys | grep ed25519  >> ~/.ssh/authorized_keys

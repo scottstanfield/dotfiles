@@ -1,15 +1,18 @@
 #!/usr/bin/env bash
 
-cd `dirname $0`
-
 # dmz: Setup my Dotfiles / viM / zshrc / gitconfig
 # http://git.io/dmz
 
-# assumes you have zsh and neovim installed
-# destroys existing links
+cd `dirname $0`
+#set -o errexit		# exit on any error
+set -o nounset		# error on unassigned variables
+
+# Backup all files to $B
+B="~/.backup"
+mkdir -p $B
 
 link() {
-  echo "Linking:" $PWD/$1 "->" $2
+  cp -pL $PWD/$1 $B						# (p)reserve attributes and deference symbolic links
   ln -sf $PWD/$1 $2
 }
 
