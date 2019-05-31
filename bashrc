@@ -20,12 +20,12 @@ export EDITOR="nvim"
 alias vi="${vic} -o"
 
 # Prompt: host␣path␣[nonzero]␣$ 
-RED="$(tput setaf 1)"
-GRN="$(tput setaf 2)"
-CYN="$(tput setaf 6)"
-END="$(tput sgr 0)"
-function nonzero_return() { RETVAL=$?; [ $RETVAL -ne 0 ] && echo "[$RETVAL] "; }
-export PS1="${GRN}\h ${CYN}\w ${RED}\`nonzero_return\`${END}${GRN}\$ ${END}"
+# RED="$(tput setaf 1)"
+# GRN="$(tput setaf 2)"
+# CYN="$(tput setaf 6)"
+# END="$(tput sgr 0)"
+# function nonzero_return() { RETVAL=$?; [ $RETVAL -ne 0 ] && echo "[$RETVAL] "; }
+# export PS1="${GRN}\h ${CYN}\w ${RED}\`nonzero_return\`${END}${GRN}\$ ${END}"
 
 # Non-essential aliases
 
@@ -37,3 +37,5 @@ alias pd='pushd'
 alias la="ls --color --group-directories-first -F -a"
 alias lla="ls --color --group-directories-first -F -la"
 alias gs="git status"
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
