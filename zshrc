@@ -19,7 +19,7 @@ umask 007
 # PATH
 typeset -U path                 # keep duplicates out of the path
 path=(/usr/local/bin $path)     # prepend files I install for system
-path+=(~/bin . ~/.go/bin)
+path+=(~/local/bin ~/bin . ~/.go/bin)
 
 # GNU specific paths for Mac (requires `brew install coreutils`)
 path=(/usr/local/opt/coreutils/libexec/gnubin $path)

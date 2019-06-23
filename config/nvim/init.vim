@@ -21,6 +21,9 @@ set clipboard+=unnamedplus
 " set nofoldenable              " start with all folds open
 "nnoremap <Enter> za
 
+" macros
+nnoremap <silent> q <space>
+
 " Map CMD-S to save files (iTerm2 passes it along as an anchor)
 nnoremap <silent> ⚓ :w<CR>
 inoremap <silent> ⚓ <ESC>:w<CR>a
@@ -91,7 +94,7 @@ nnoremap <leader>l :set cursorline!<CR>
 " Set solarized to dark or light depending on what 
 " iterm profile the session was launched with.
 " 
-let g:solar_state=0 
+let g:solar_state=1 
 function! SetDefaultSolar()          " ,x toggles dark/light
     if $ITERM_PROFILE == 'solarized-dark'
         call SolarDark()
