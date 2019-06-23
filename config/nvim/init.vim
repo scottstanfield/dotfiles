@@ -1,11 +1,17 @@
 " neovim 3.1
 
 
-let g:solar_state=1 
+" In order to keep this file compatible with VIM 8, consider using
+" the VIM 8 sane defaults from the list below
+" https://www.rosipov.com/blog/sane-vim-defaults-from-neovim/
+"
+" Vim 8 addressed a lot of the shortcommings that prompted Neovim's creation
+" but not all: https://codekoalas.com/blog/why-you-should-still-use-neovim
 
-" move a visual block around
-" use arrow keys or control-movement keys to resize windows
-" change line highlight color
+" A well-commented vimrc, but uses shortcodes
+" https://github.com/amix/vimrc/blob/master/vimrcs/basic.vim
+
+
 scriptencoding utf-8
 
 let mapleader = ","             " Our free key to prefix custom commands
@@ -21,7 +27,7 @@ set clipboard+=unnamedplus
 " set nofoldenable              " start with all folds open
 "nnoremap <Enter> za
 
-" macros
+" Fuck macros
 nnoremap <silent> q <space>
 
 " Map CMD-S to save files (iTerm2 passes it along as an anchor)
@@ -46,14 +52,15 @@ ino <C-E> <End>
 ino <C-F> <Right>
 ino <C-B> <Left>
 ino <C-D> <Del>
-ino <C-U> <Esc>d0xi
-ino <C-Y> <Esc>Pa
 " control-K is for diagraphs
 " ino <C-K> <Esc>lDa
+ino <C-U> <Esc>d0xi
+ino <C-Y> <Esc>Pa
+
 ino <C-X><C-S> <Esc>:w<CR>a
 
 " I rarely use macros, but I accidentally hit q all the time
-nmap <silent> q <Nop>
+" map q <Nop>
 
 " Ctrl-s to save current file (in normal and insert mode)
 imap <c-s> <Esc>:w<CR>a
@@ -84,55 +91,12 @@ highlight TermCursor ctermfg=red
 
 " Hide the Magenta with ,/
 nnoremap <silent> <leader>/ :set hlsearch! hlsearch?<CR>
-nnoremap / :set hlsearch<cr>/
 
 " Highlight current line and column
 nnoremap <leader>c :set cursorcolumn!<CR>
 nnoremap <leader>l :set cursorline!<CR>
 
-" 
-" Set solarized to dark or light depending on what 
-" iterm profile the session was launched with.
-" 
-let g:solar_state=1 
-function! SetDefaultSolar()          " ,x toggles dark/light
-    if $ITERM_PROFILE == 'solarized-dark'
-        call SolarDark()
-    elseif $ITERM_PROFILE == 'solarized-light'
-        call SolarLight()
-	elseif g:solar_state == 0
-        call SolarDark()
-	elseif g:solar_state == 1
-        call SolarLight()
-    endif
-	call lightline#colorscheme()
-endfunction
-autocmd VimEnter * call SetDefaultSolar()
 
-function! SolarDark()
-	let g:solar_state=0
-    colorscheme solarized8
-    set background=dark
-    hi colorcolumn ctermbg=darkgrey
-endfunction
-
-function! SolarLight()
-	let g:solar_state=1
-	colorscheme solarized8
-	set background=light
-	hi colorcolumn ctermbg=lightgrey
-endfunction
-
-function! ToggleColors()
-	if g:solar_state == 0 | call SolarLight() | else | call SolarDark() | endif
-endfunction
-noremap <leader>tc :call ToggleColors()<CR>
-
-" Remove next line comment to force dark color scheme.
-" Usually it's picked because iTerm2 will pass it in.
-" setenv ITERM_PROFILE solarized-dark
-
- 
 
 """""""""""""""""
 " TABS AND SPACES
@@ -157,7 +121,7 @@ set autochdir                   " always switch to current dir
 set wildmode=list:longest       " Complete files like a shell.
 set modeline
 set noerrorbells                " No beeping!
-set visualbell                  " No flashing either.
+set novisualbell                  " No flashing either.
 set wildignore+=*.jpg,*.gif,*.png,*.git,*.gem,*.zip,*.tar.gz,node_modules
 
 """""""""""
@@ -175,7 +139,8 @@ set smartcase                   " But case-sensitive if has caps
 set scrolloff=3                 " Show 3 lines around cursor (more context)
 set noshowmode                  " hide the default mode text (e.g. -- INSERT --)
 
-set splitbelow					" more natural split positions for new panes
+" Open new split panes to the right and bottom, which feels more natural
+set splitbelow
 set splitright
 
 " #-----------------------------------------------------------------------
@@ -321,12 +286,14 @@ vnoremap . :norm.<CR>
 
 " Tabbed Windows g
 nnoremap <S-Tab> :tabn<CR>
-nnoremap <Tab> <C-w><C-w>
 " nnoremap <Tab> :tabp<CR>
 " move easily b/w panes with TAB
+nnoremap <Tab> <C-w><C-w>
 
 
 
+
+autocmd! User nvim-r.vim echom 'nvim-r is now loaded'
 
  
 
@@ -343,26 +310,26 @@ call plug#begin('~/.config/nvim/plugged')
 
 	Plug 'sotte/presenting.vim'
 
-	Plug 'jalvesaq/vimcmdline'
-	let cmdline_map_start          = '<LocalLeader>s'
-	let cmdline_map_send           = '<Space>'
-	let cmdline_map_send_and_stay  = '<LocalLeader><Space>'
-	let cmdline_map_source_fun     = '<LocalLeader>f'
-	let cmdline_map_send_paragraph = '<LocalLeader>p'
-	let cmdline_map_send_block     = '<LocalLeader>b'
-	let cmdline_map_quit           = '<LocalLeader>q'
-	" vimcmdline options
-	let cmdline_vsplit      = 1      " Split the window vertically
-	let cmdline_esc_term    = 1      " Remap <Esc> to :stopinsert in Neovim's terminal
-	let cmdline_in_buffer   = 1      " Start the interpreter in a Neovim's terminal
-	let cmdline_term_height = 15     " Initial height of interpreter window or pane
-	let cmdline_term_width  = 80     " Initial width of interpreter window or pane
-	let cmdline_tmp_dir     = '/tmp' " Temporary directory to save files
-	let cmdline_outhl       = 1      " Syntax highlight the output
-	let cmdline_auto_scroll = 1      " Keep the cursor at the end of terminal (nvim)
-	let cmdline_app = {}
-	let cmdline_app['python'] = 'ipython'
-	let cmdline_app['sh']     = 'bash'
+	" Plug 'jalvesaq/vimcmdline'
+	" let cmdline_map_start          = '<LocalLeader>s'
+	" let cmdline_map_send           = '<Space>'
+	" let cmdline_map_send_and_stay  = '<LocalLeader><Space>'
+	" let cmdline_map_source_fun     = '<LocalLeader>f'
+	" let cmdline_map_send_paragraph = '<LocalLeader>p'
+	" let cmdline_map_send_block     = '<LocalLeader>b'
+	" let cmdline_map_quit           = '<LocalLeader>q'
+	" " vimcmdline options
+	" let cmdline_vsplit      = 1      " Split the window vertically
+	" let cmdline_esc_term    = 1      " Remap <Esc> to :stopinsert in Neovim's terminal
+	" let cmdline_in_buffer   = 1      " Start the interpreter in a Neovim's terminal
+	" let cmdline_term_height = 15     " Initial height of interpreter window or pane
+	" let cmdline_term_width  = 80     " Initial width of interpreter window or pane
+	" let cmdline_tmp_dir     = '/tmp' " Temporary directory to save files
+	" let cmdline_outhl       = 1      " Syntax highlight the output
+	" let cmdline_auto_scroll = 1      " Keep the cursor at the end of terminal (nvim)
+	" let cmdline_app = {}
+	" let cmdline_app['python'] = 'ipython'
+	" let cmdline_app['sh']     = 'bash'
 
     Plug 'lifepillar/vim-solarized8'        " for solarized8_dark or solarized8_light
 	Plug 'NLKNguyen/papercolor-theme'
@@ -374,8 +341,8 @@ call plug#begin('~/.config/nvim/plugged')
     " After installing, run ~/.fzf/install
     Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
     Plug 'junegunn/fzf.vim'
-    nnoremap <silent> <leader>ff        :FZF<CR>
-    nnoremap <silent> <C-T> :Files<CR>
+    nnoremap <silent> <leader>ff :FZF<CR>
+    nnoremap <silent> <leader>ft :Files<CR>		
     nmap <leader>fc     :Commits<CR>
     "let g:fzf_layout = { 'window': 'left' }
     au FileType fzf tnoremap <nowait><buffer> <esc> <c-g>
@@ -386,9 +353,8 @@ call plug#begin('~/.config/nvim/plugged')
     Plug 'junegunn/rainbow_parentheses.vim'
     let g:rainbow#pairs = [['(', ')'], ['[', ']']]
 
-	Plug 'junegunn/vim-slash'
+    Plug 'junegunn/goyo.vim', { 'for': 'markdown' }
 
-    Plug 'junegunn/goyo.vim'        
     let g:goyo_width = 100
     nmap <leader>tg :silent Goyo<CR>
 
@@ -423,16 +389,13 @@ call plug#begin('~/.config/nvim/plugged')
     
     Plug 'kassio/neoterm'
 
-    " For R language
+    " For R language (rlang)
     Plug 'jalvesaq/colorout', { 'for': 'r' }
     Plug 'jalvesaq/Nvim-r',   { 'for': 'r' }
-    nmap <silent> <Space> :call SendLineToR("stay")<CR><Esc><Home><Down>
-    vmap <silent> <Space> <Plug>RSendSelection<Esc><Esc>
 
     let R_assign = 0
     let R_args = ['--no-save', '--quiet']
-    " let R_hi_fun = 0   " workaround no longer needed
-    let R_tmpdir = '~/.R/tmp'
+	let R_tmpdir = '~scott/R/tmp'				" TODO: consider removing this
     let R_source_args = 'print.eval=F'
     " I needed to run `brew link --force readline` in order to get gcc5
     " to compile nvimcom (which updates automatically when you invoke nvim-r)
@@ -451,17 +414,78 @@ call plug#begin('~/.config/nvim/plugged')
 
 call plug#end()
 
+autocmd! User goyo.vim echom 'Goyo is now loaded!' 
+
+" colorscheme stuff has to go afer plug
+" https://github.com/junegunn/vim-plug/wiki/faq#im-getting-cannot-find-color-scheme--does-vim-plug-support-color-schemes
+
+" For jalvesaq/Nvim-R plugin
+function! RLanguageMapping()
+    nmap <silent> <Space> :call SendLineToR("stay")<CR><Esc><Home><Down>
+    vmap <silent> <Space> <Plug>RSendSelection<Esc><Esc>
+    nmap <silent> ✠       :call SendLineToR("stay")<CR><Esc><Home><Down>
+	imap <silent> ✠       <Esc>:call SendLineToR("stay")<CR><Esc>A
+    vmap ✠				  <Plug>RSendSelection<Esc><Esc>
+endfunction
+
 augroup rcode
     autocmd!
-    "au Filetype r nmap <silent> <Space> :call SendLineToR("stay")<CR><Esc><Home><Down>
-    "au Filetype r vmap <silent> <Space> <Plug>RSendSelection<Esc><Esc>
-    "nmap <silent> <S-C-l> :call SendLineToR("system('clear')")<CR><Esc><Home><Down>
-	
-    au FileType r nmap <silent> ✠ :call SendLineToR("stay")<CR><Esc><Home><Down>
-	au FileType r imap <silent> ✠ <Esc>:call SendLineToR("stay")<CR><Esc>A
-    au FileType r vmap ✠ <Plug>RSendSelection<Esc><Esc>
-    " nmap <leader>fe :call SendFunctionToR("echo", "stay")<CR><Esc>
+	au FileType r :call RLanguageMapping()
 augroup END
+
+" 
+" Set solarized to dark or light depending on what 
+" iterm profile the session was launched with.
+" 
+let g:solar_state=0 
+function! SetDefaultSolar()          " ,x toggles dark/light
+    if $ITERM_PROFILE == 'solarized-dark'
+        call SolarDark()
+    elseif $ITERM_PROFILE == 'solarized-light'
+        call SolarLight()
+	elseif g:solar_state == 0
+        call SolarDark()
+	elseif g:solar_state == 1
+        call SolarLight()
+    endif
+	call lightline#colorscheme()
+endfunction
+
+function! SolarDark()
+	let g:solar_state=0
+    colorscheme PaperColor "solarized8_dark
+    set background=dark
+    hi colorcolumn ctermbg=darkgrey
+endfunction
+
+function! SolarLight()
+	let g:solar_state=1
+	colorscheme PaperColor "solarized_light
+	set background=light
+	hi colorcolumn ctermbg=lightgrey
+endfunction
+
+function! ToggleColors()
+	if g:solar_state == 0 | call SolarLight() | else | call SolarDark() | endif
+endfunction
+noremap <leader>tc :call ToggleColors()<CR>
+
+" Doesn't work:
+" try
+" 	colorscheme PaperColor
+" 	set background=light
+" catch
+" endtry
+
+" Automatically set the colorscheme		TODO: seems really complex
+autocmd VimEnter * call SetDefaultSolar()
+
+" Remove next line comment to force dark color scheme.
+" Usually it's picked because iTerm2 will pass it in.
+" setenv ITERM_PROFILE solarized-dark
+
+ 
+
 
 " Toggle Line numbers on/off
 nmap <silent> <leader>tn :set invnumber<CR>
@@ -524,15 +548,12 @@ autocmd BufWritePre *.py :call TrimWhiteSpace()
 autocmd BufWritePre *.r :call TrimWhiteSpace()
 nnoremap <leader>$ :silent call TrimWhiteSpace()<CR>
 
-if has('persistent_undo')
-    set undofile "Enable persistent undo
-
-    " Set persistent undo directory
-    set undodir=~/.vim/undo
-    if !isdirectory(expand(&undodir))
-        call mkdir(expand(&undodir), 'p')
-    endif
-endif
+" TODO: Purge unused undo files: 
+" https://blog.debiania.in.ua/posts/2012-07-31-purging-vim-undodir.html
+"
+" TODO: where does neovim store undofiles?
+" https://alok.github.io/2018/10/17/underrated-vim-option-undofile-and-undodir/
+set undofile
 
 """"""""""""""""""""""""""""""""""""
 " Word processiong mode for Markdown
@@ -603,6 +624,8 @@ hi Folded ctermbg=7 ctermfg=4
 " Make / searches stand out in magenta
 highlight Search term=bold ctermbg=LightMagenta guibg=LightMagenta
 
+
+
 highlight CursorLine cterm=none ctermbg=Blue 
 
 " Colors
@@ -610,7 +633,6 @@ highlight CursorLine cterm=none ctermbg=Blue
 
 " The order for next two lines here might matter
 set termguicolors                   " Set the cursor color
-" colorscheme solarized8_light
 
 au VimLeave * set guicursor=a:block-blinkon0
 
