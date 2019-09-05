@@ -41,6 +41,7 @@ fi
 
 
 # Aliases
+alias b="bonsai"
 alias ls="ls ${lsflags}"
 alias ll="ls ${lsflags} -l"
 alias lla="ls ${lsflags} -la"
