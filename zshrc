@@ -22,7 +22,7 @@ path=(/usr/local/bin $path)     # prepend files I install for system
 path+=(~/local/bin ~/bin . ~/.go/bin)
 
 # GNU specific paths for Mac (requires `brew install coreutils`)
-path=(/usr/local/opt/coreutils/libexec/gnubin $path)
+[[ -d /usr/local/opt/coreutils/libexec/gnubin ]] && path=(/usr/local/opt/coreutils/libexec/gnubin $path)
 [[ -d /usr/local/opt/coreutils/libexec/gnuman ]] && manpath=(/usr/local/opt/coreutils/libexec/gnuman $MANPATH)
 
 path=($path /foo/bar)
@@ -272,7 +272,7 @@ LEFT_PROMPT_EXTRA="%(1V.%1v .)"
 ##
 ## JAVA
 ##
-[[ -f /usr/libexec/java_home ]] && JAVA_HOME=$(/usr/libexec/java_home)
+## [[ -f /usr/libexec/java_home ]] && JAVA_HOME=$(/usr/libexec/java_home)
 
 ##
 ## NODE: test for NVM and load it lazily
