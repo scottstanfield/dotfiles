@@ -11,6 +11,7 @@ set -o nounset		# error on unassigned variables
 B="~/.backup"
 mkdir -p $B
 
+# todo: cp -pL doesn't work on Mac
 link() {
   cp -pL $PWD/$1 $B						# (p)reserve attributes and deference symbolic links
   ln -sf $PWD/$1 $2
@@ -61,5 +62,8 @@ git clone https://github.com/zsh-users/zsh-syntax-highlighting.git \
 # Post-install step
 echo 'launchng nvim to run :PlugInstall...'
 nvim +PlugInstall +qall
+
+# now change shells
+echo 'sudo chsh -s $(which zsh) $(whoami)'
 
 
