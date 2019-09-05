@@ -310,26 +310,27 @@ call plug#begin('~/.config/nvim/plugged')
 
 	Plug 'sotte/presenting.vim'
 
-	" Plug 'jalvesaq/vimcmdline'
-	" let cmdline_map_start          = '<LocalLeader>s'
-	" let cmdline_map_send           = '<Space>'
-	" let cmdline_map_send_and_stay  = '<LocalLeader><Space>'
-	" let cmdline_map_source_fun     = '<LocalLeader>f'
-	" let cmdline_map_send_paragraph = '<LocalLeader>p'
-	" let cmdline_map_send_block     = '<LocalLeader>b'
-	" let cmdline_map_quit           = '<LocalLeader>q'
-	" " vimcmdline options
-	" let cmdline_vsplit      = 1      " Split the window vertically
-	" let cmdline_esc_term    = 1      " Remap <Esc> to :stopinsert in Neovim's terminal
-	" let cmdline_in_buffer   = 1      " Start the interpreter in a Neovim's terminal
-	" let cmdline_term_height = 15     " Initial height of interpreter window or pane
-	" let cmdline_term_width  = 80     " Initial width of interpreter window or pane
-	" let cmdline_tmp_dir     = '/tmp' " Temporary directory to save files
-	" let cmdline_outhl       = 1      " Syntax highlight the output
-	" let cmdline_auto_scroll = 1      " Keep the cursor at the end of terminal (nvim)
-	" let cmdline_app = {}
-	" let cmdline_app['python'] = 'ipython'
-	" let cmdline_app['sh']     = 'bash'
+	Plug 'jalvesaq/vimcmdline'
+	let cmdline_map_start          = '<LocalLeader>s'
+	let cmdline_map_send           = '<Space>'
+	let cmdline_map_send_and_stay  = '<LocalLeader><Space>'
+	let cmdline_map_source_fun     = '<LocalLeader>f'
+	let cmdline_map_send_paragraph = '<LocalLeader>p'
+	let cmdline_map_send_block     = '<LocalLeader>b'
+	let cmdline_map_quit           = '<LocalLeader>q'
+	" vimcmdline options
+	let cmdline_vsplit      = 0      " Split the window vertically
+	let cmdline_esc_term    = 1      " Remap <Esc> to :stopinsert in Neovim's terminal
+	let cmdline_in_buffer   = 1      " Start the interpreter in a Neovim's terminal
+	let cmdline_term_height = 15     " Initial height of interpreter window or pane
+	let cmdline_term_width  = 80     " Initial width of interpreter window or pane
+	let cmdline_tmp_dir     = '/tmp' " Temporary directory to save files
+	let cmdline_outhl       = 1      " Syntax highlight the output
+	let cmdline_auto_scroll = 1      " Keep the cursor at the end of terminal (nvim)
+	let cmdline_app = {}
+	let cmdline_app['python'] = 'ipython'
+	let cmdline_app['sh']     = 'bash'
+	let cmdline_app['julia']  = 'julia'
 
     Plug 'lifepillar/vim-solarized8'        " for solarized8_dark or solarized8_light
 	Plug 'NLKNguyen/papercolor-theme'
@@ -337,6 +338,8 @@ call plug#begin('~/.config/nvim/plugged')
     Plug 'kchmck/vim-coffee-script'         " syntax: coffee script
     Plug 'digitaltoad/vim-pug'              " syntax: pug
     Plug 'iloginow/vim-stylus'              " syntax: stylus
+
+	Plug 'JuliaEditorSupport/julia-vim'		" syntax: julia
 
     " After installing, run ~/.fzf/install
     Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
@@ -354,7 +357,6 @@ call plug#begin('~/.config/nvim/plugged')
     let g:rainbow#pairs = [['(', ')'], ['[', ']']]
 
     Plug 'junegunn/goyo.vim', { 'for': 'markdown' }
-
     let g:goyo_width = 100
     nmap <leader>tg :silent Goyo<CR>
 
@@ -365,6 +367,13 @@ call plug#begin('~/.config/nvim/plugged')
 	au FileType markdown vmap <Leader><Bslash> :EasyAlign*<Bar><Enter>
     
     Plug 'junegunn/vim-peekaboo'        " extend hash and at "
+	Plug 'leafgarland/typescript-vim'
+
+	Plug 'godlygeek/tabular'
+	Plug 'plasticboy/vim-markdown'
+	let g:vim_markdown_folding_disabled = 1
+	let g:vim_markdown_frontmatter = 1
+	let g:vim_markdown_strikethrough = 1
 
     Plug 'itchyny/lightline.vim'
     "let g:lightline = {'colorscheme': 'solarized'}
@@ -399,6 +408,11 @@ call plug#begin('~/.config/nvim/plugged')
     let R_source_args = 'print.eval=F'
     " I needed to run `brew link --force readline` in order to get gcc5
     " to compile nvimcom (which updates automatically when you invoke nvim-r)
+    nmap <silent> <Space> :call SendLineToR("stay")<CR><Esc><Home><Down>
+    vmap <silent> <Space> <Plug>RSendSelection<Esc><Esc>
+    nmap <silent> ✠       :call SendLineToR("stay")<CR><Esc><Home><Down>
+	imap <silent> ✠       <Esc>:call SendLineToR("stay")<CR><Esc>A
+    vmap ✠				  <Plug>RSendSelection<Esc><Esc>
 
     " maltese
 
@@ -583,11 +597,11 @@ function! Formd(option)
     :let save_view = winsaveview()
     :let flag = a:option
     :if flag == "-r"
-        :%! formd.py -r
+        :%! formd -r
     :elseif flag == "-i"
-        :%! formd.py -i
+        :%! formd -i
     :else
-        :%! formd.py -f
+        :%! formd -f
     :endif
     :call winrestview(save_view)
 endfunction
