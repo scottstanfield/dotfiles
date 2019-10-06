@@ -543,6 +543,7 @@ augroup rainbow_paren
     autocmd!
     autocmd FileType r RainbowParentheses
     autocmd FileType python RainbowParentheses
+    autocmd FileType bash RainbowParentheses
 augroup END
 
 " Remember the cursor position for every file
