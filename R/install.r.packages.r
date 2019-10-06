@@ -15,6 +15,15 @@ install.packages('remotes')
 cat("§ colorout \n")
 remotes::install_github('jalvesaq/colorout')
 
+# Can't get these two packages to work consistently, so comment out for now
+
+# cd /tmp
+# git clone https://github.com/jalvesaq/colorout
+# R CMD INSTALL colorout
+
+# git clone https://github.com/cran/setwidth
+# R CMD INSTALL setwidth
+
 # adapt R console output to terminal width
 cat("§ setwidth \n")
 remotes::install_github('cran/setwidth')
