@@ -1,7 +1,7 @@
 " neovim 3.1
 
 
-let g:solar_state=1 
+let g:solar_state=0 
 
 " move a visual block around
 " use arrow keys or control-movement keys to resize windows
@@ -94,7 +94,6 @@ nnoremap <leader>l :set cursorline!<CR>
 " Set solarized to dark or light depending on what 
 " iterm profile the session was launched with.
 " 
-let g:solar_state=1 
 function! SetDefaultSolar()          " ,x toggles dark/light
     if $ITERM_PROFILE == 'solarized-dark'
         call SolarDark()
