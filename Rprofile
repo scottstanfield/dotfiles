@@ -1,9 +1,10 @@
 # vim: filetype=r
 
-# Commenting this out now as MRAN 3.5.x correctly sets this up
-# local({
-#   options(repos = getOption('repos', 'http://cran.cnr.berkeley.edu'))
-# })
+# If using MRAN on Linux comment this out now as MRAN 3.5.x correctly sets this up
+# For Mac, there's no MRAN any more, so needing to set repo
+local({
+  options(repos = getOption('repos', 'http://cran.cnr.berkeley.edu'))
+})
 
 .First <- function()
 {

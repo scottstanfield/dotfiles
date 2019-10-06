@@ -20,9 +20,10 @@ umask 007
 typeset -U path                 # keep duplicates out of the path
 path=(/usr/local/bin $path)     # prepend files I install for system
 path+=(~/local/bin ~/bin . ~/.go/bin)
+path+=(/usr/local/opt/llvm/bin)
 
 # GNU specific paths for Mac (requires `brew install coreutils`)
-path=(/usr/local/opt/coreutils/libexec/gnubin $path)
+[[ -d /usr/local/opt/coreutils/libexec/gnubin ]] && path=(/usr/local/opt/coreutils/libexec/gnubin $path)
 [[ -d /usr/local/opt/coreutils/libexec/gnuman ]] && manpath=(/usr/local/opt/coreutils/libexec/gnuman $MANPATH)
 
 path=($path /foo/bar)
@@ -41,6 +42,7 @@ fi
 
 
 # Aliases
+alias b="bonsai"
 alias ls="ls ${lsflags}"
 alias ll="ls ${lsflags} -l"
 alias lla="ls ${lsflags} -la"
@@ -217,16 +219,16 @@ export FZF_DEFAULT_OPTS='--ansi --height 40% --extended'
 export FZF_DEFAULT_COMMAND='rg --files --no-ignore --follow -g "!{.git,node_modules,env}" 2> /dev/null'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
-# ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern cursor)
-# ZSH_HIGHLIGHT_PATTERNS+=('rm -rf' 'fg=white,bold,bg=red')
-# ZSH_HIGHLIGHT_PATTERNS+=('sudo ' 'fg=white,bold,bg=red')
-# ZSH_HIGHLIGHT_STYLES[path]=none
-# ZSH_HIGHLIGHT_STYLES[builtin]=fg=blue
-# ZSH_HIGHLIGHT_STYLES[command]=fg=blue
-# ZSH_HIGHLIGHT_STYLES[alias]=fg=blue
-# ZSH_HIGHLIGHT_STYLES[function]=fg=blue
-# ZSH_HIGHLIGHT_STYLES[comment]=fg=yellow	      # comments at end of command (not black)
-# ZSH_HIGHLIGHT_STYLES[path_prefix]=underline   # incomplete paths are underlined
+ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern cursor)
+ZSH_HIGHLIGHT_PATTERNS+=('rm -rf' 'fg=white,bold,bg=red')
+ZSH_HIGHLIGHT_PATTERNS+=('sudo ' 'fg=white,bold,bg=red')
+ZSH_HIGHLIGHT_STYLES[path]=none
+ZSH_HIGHLIGHT_STYLES[builtin]=fg=blue
+ZSH_HIGHLIGHT_STYLES[command]=fg=blue
+ZSH_HIGHLIGHT_STYLES[alias]=fg=blue
+ZSH_HIGHLIGHT_STYLES[function]=fg=blue
+ZSH_HIGHLIGHT_STYLES[comment]=fg=yellow	      # comments at end of command (not black)
+ZSH_HIGHLIGHT_STYLES[path_prefix]=underline   # incomplete paths are underlined
 
 # Put your machine-specific settings here
 [[ -f ~/.secret ]] && source ~/.secret
@@ -272,7 +274,7 @@ LEFT_PROMPT_EXTRA="%(1V.%1v .)"
 ##
 ## JAVA
 ##
-[[ -f /usr/libexec/java_home ]] && JAVA_HOME=$(/usr/libexec/java_home)
+## [[ -f /usr/libexec/java_home ]] && JAVA_HOME=$(/usr/libexec/java_home)
 
 ##
 ## NODE: test for NVM and load it lazily
@@ -293,11 +295,5 @@ if [ -d "$HOME/.nvm/versions/node" ]; then
     done
 fi
 
-## Google Cloud CLI
-# # The next line updates PATH for the Google Cloud SDK.
-if [ -f '$HOME/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '$HOME/Downloads/google-cloud-sdk/path.zsh.inc'; fi
-
-# # The next line enables shell command completion for gcloud.
-if [ -f '$HOME/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '$HOME/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
 
 

@@ -10,10 +10,10 @@ alias m="less"
 alias hg="history | grep -i"
 alias t="tmux -2 new-session -A -s hello"
 
+shopt -s histappend							# append rather than overwrite history
 export HISTCONTROL=ignoredups:erasedups
-export HISTSIZE=100000
-export HISTFILESIZE=100000
-shopt -s histappend
+export HISTSIZE=100000						# save last 100k commands
+export HISTFILESIZE=100000					# save last 100k commands
 
 which "nvim" &> /dev/null && vic="nvim" || vic="vim"
 export EDITOR="nvim"
