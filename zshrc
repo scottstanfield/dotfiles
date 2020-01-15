@@ -42,6 +42,9 @@ fi
 
 
 # Aliases
+alias p="python"
+alias j="julia --color=yes"
+alias julia="julia --color=yes"
 alias b="bonsai"
 alias ls="ls ${lsflags}"
 alias ll="ls ${lsflags} -l"
@@ -177,6 +180,7 @@ function man2() {
 
 
 # Functions
+function bak() { cp $1\{,.bak\} }
 function ff() { find . -iname "$1*" -print }
 function ht() { (head $1 && echo "---" && tail $1) | less }
 function monitor() { watch --no-title "clear; cat $1" }
