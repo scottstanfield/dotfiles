@@ -145,7 +145,7 @@ set wildignore+=*.jpg,*.gif,*.png,*.git,*.gem,*.zip,*.tar.gz,node_modules
 " UI CONFIG
 """""""""""
 let loaded_matchparen = 1       " Just use % instead of auto paren matching
-" set colorcolumn=80            " vertical line at 80 cols
+set colorcolumn=80            " vertical line at 80 cols
 set nostartofline               " Searches leave cursor on same column
 set ignorecase                  " Case-insensitive searching.
 set lazyredraw                  " No redraw during macro execution
@@ -327,6 +327,8 @@ call plug#begin('~/.config/nvim/plugged')
 
 	Plug 'sotte/presenting.vim'
 
+	Plug 'powerman/vim-plugin-AnsiEsc'
+
 	Plug 'jalvesaq/vimcmdline'
 	let cmdline_map_start          = '<LocalLeader>s'
 	let cmdline_map_send           = '<Space>'
@@ -348,6 +350,7 @@ call plug#begin('~/.config/nvim/plugged')
 	let cmdline_app['python'] = 'ipython'
 	let cmdline_app['sh']     = 'bash'
 	let cmdline_app['julia']  = 'julia'
+	let cmdline_app['javascript']  = 'node'
 
     Plug 'lifepillar/vim-solarized8'        " for solarized8_dark or solarized8_light
 	Plug 'NLKNguyen/papercolor-theme'
@@ -540,7 +543,8 @@ augroup my_au
     " Set textwidth like a boss http://blog.ezyang.com/2010/03/vim-textwidth/
     au FileType text,markdown setlocal textwidth=72 colorcolumn=80
     au FileType stylus,jade set tabstop=2|set softtabstop=2|set shiftwidth=2|set expandtab
-    au FileType javascript set tabstop=4|set shiftwidth=4|set expandtab
+    "au FileType javascript set tabstop=4|set shiftwidth=4|set expandtab
+    au FileType javascript set tabstop=2|set shiftwidth=2|set expandtab
     au FileType r set ts=2 softtabstop=2 shiftwidth=2 expandtab
     au FileType zsh set tabstop=4|set shiftwidth=4|set expandtab
 
