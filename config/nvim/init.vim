@@ -1,6 +1,5 @@
 " neovim 3.1
 
-
 let g:solar_state=0 
 " In order to keep this file compatible with VIM 8, consider using
 " the VIM 8 sane defaults from the list below
@@ -325,6 +324,7 @@ endif
 
 call plug#begin('~/.config/nvim/plugged')
 
+	Plug 'ekalinin/Dockerfile.vim'
 	Plug 'sotte/presenting.vim'
 
 	Plug 'jalvesaq/vimcmdline'
