@@ -10,7 +10,6 @@ set -o errexit  # Exit on error. Append "|| true" if you expect an error.
 set -o errtrace # Exit on error inside any functions or subshells.
 set -o nounset  # Do not allow use of undefined vars. Use ${VAR:-} to use an undefined VAR
 set -o pipefail # Catch the error in case mysqldump fails (but gzip succeeds) in `mysqldump |gzip`
-shopt -s nullglob globstar
 
 ##
 ## Preconditions
@@ -23,6 +22,7 @@ die()     { ret=$?; printf "%s\n" "$@" >&2; exit "$ret"; }
 # println "${BASH_VERSINFO[*]: 0:3}"
 bv=${BASH_VERSINFO[0]}${BASH_VERSINFO[0]}
 ((bv > 42)) || die "Need Bash version 4.2 or greater. You have $BASH_VERSION"
+shopt -s nullglob globstar
 
 require nvim
 require git
