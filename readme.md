@@ -18,3 +18,12 @@ To install on Ubuntu:
 
 ```
 
+
+## node install via nvm
+
+```
+	mkdir ~/.nvm
+	curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.0/install.sh | bash
+	. ~/.nvm/nvm.sh
+	nvm install node
+```

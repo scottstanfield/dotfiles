@@ -55,10 +55,7 @@ else
 fi
 
 
-# Aliases
-alias sql="mssql-cli"
-alias c="conda"
-alias b="bonsai"
+
 alias ls="ls ${lsflags}"
 alias ll="ls ${lsflags} -l"
 alias lla="ls ${lsflags} -la"
@@ -187,6 +184,7 @@ function man2() {
 
 
 # Functions
+function bak() { cp $1\{,.bak\} }
 function ff() { find . -iname "$1*" -print }
 function ht() { (head $1 && echo "---" && tail $1) | less }
 function monitor() { watch --no-title "clear; cat $1" }
@@ -322,6 +320,12 @@ if [ -d "$HOME/.nvm" ]; then
 fi
 
 
+# Move these to .zshrc.scott
 
-
-
+# Aliases
+alias c="conda"
+alias p="python"
+alias j="julia --color=yes"
+alias julia="julia --color=yes"
+alias sql="mssql-cli"
+alias b="bonsai"
