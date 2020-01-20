@@ -62,8 +62,10 @@ cp -n  gitconfig  $HOME/.gitconfig
 link   gitignore  $HOME/.gitignore
 
 # Cloning zsh plugin
-git clone https://github.com/zsh-users/zsh-syntax-highlighting.git \
-	$PWD/plugins/zsh-syntax-highlighting
+if [[ ! -d $PWD/plugins/zsh-syntax-highlighting ]]; then
+	git clone https://github.com/zsh-users/zsh-syntax-highlighting.git \
+		$PWD/plugins/zsh-syntax-highlighting
+fi
 
 # fixing potential insecure group writable folders
 # compaudit | xargs chmod g-w
