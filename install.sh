@@ -40,9 +40,11 @@ B=$(mktemp -d /tmp/dotfiles.XXXX)
 println "Backing up important files to ${B}"
 
 link() {
-  println "linking $1 -> $2 with backup to $B"
-  cp -pL $PWD/$1 $B						# (p)reserve attributes and deference symbolic links
-  ln -sf $PWD/$1 $2
+  if [[ -e $1 ]]; then
+	println "linking $1 -> $2 with backup to $B"
+	cp -pL $PWD/$1 $B						# (p)reserve attributes and deference symbolic links
+	ln -sf $PWD/$1 $2
+  fi
 }
 
 # Setup zshrc
