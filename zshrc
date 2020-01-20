@@ -20,13 +20,11 @@ umask 007
 typeset -U path                 # keep duplicates out of the path
 path=(/usr/local/bin $path)     # prepend files I install for system
 path+=(~/local/bin ~/bin . ~/.go/bin)
-path+=(/usr/local/opt/llvm/bin)
+path=(/usr/local/opt/llvm/bin $path)
 
 # GNU specific paths for Mac (requires `brew install coreutils`)
 [[ -d /usr/local/opt/coreutils/libexec/gnubin ]] && path=(/usr/local/opt/coreutils/libexec/gnubin $path)
 [[ -d /usr/local/opt/coreutils/libexec/gnuman ]] && manpath=(/usr/local/opt/coreutils/libexec/gnuman $MANPATH)
-
-path=($path /foo/bar)
 
 # Use the GNU version of ls/cat on Mac from coreutils
 
@@ -215,7 +213,7 @@ function gg() { git commit -m "$*" }
 
 
 export r_arch=x86_64
-export CC=gcc
+export CC=$(which clang)
 export CXX=g++
 export LC_ALL="${LANGUAGE}"
 export LC_CTYPE="${LANGUAGE}"
@@ -245,7 +243,7 @@ ZSH_HIGHLIGHT_STYLES[path_prefix]=underline   # incomplete paths are underlined
 ## Programming language specific
 ##
 
-# R Language
+# R Language (rlang)
 export R_LIBS=~/.R/lib
 
 # GO
