@@ -316,7 +316,7 @@ fi
 
 
 # Move these to .zshrc.scott
-source $HOME/.zshrc.$USER
+[[ -f ~/.$HOME/.zshrc.$USER ]] && source $HOME/.zshrc.$USER
 
 # Put your machine-specific settings here
 # ~/.secret is not checked into source control
