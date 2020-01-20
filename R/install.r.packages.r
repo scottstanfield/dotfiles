@@ -1,4 +1,4 @@
-#!Rscript
+#!/usr/bin/env Rscript
 
 cat("§ data.table \n")
 #install.packages('data.table', repos='https://Rdatatable.github.io/data.table')
