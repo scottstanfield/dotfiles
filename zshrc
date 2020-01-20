@@ -236,9 +236,6 @@ ZSH_HIGHLIGHT_STYLES[function]=fg=blue
 ZSH_HIGHLIGHT_STYLES[comment]=fg=yellow	      # comments at end of command (not black)
 ZSH_HIGHLIGHT_STYLES[path_prefix]=underline   # incomplete paths are underlined
 
-# Put your machine-specific settings here
-[[ -f ~/.secret ]] && source ~/.secret
-
 ##
 ## Programming language specific
 ##
@@ -320,4 +317,9 @@ fi
 
 # Move these to .zshrc.scott
 source $HOME/.zshrc.$USER
+
+# Put your machine-specific settings here
+# ~/.secret is not checked into source control
+[[ -f ~/.secret ]] && source ~/.secret
+
 
