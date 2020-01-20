@@ -1,0 +1,8 @@
+# Aliases
+alias c="conda"
+alias p="python"
+alias j="julia --color=yes"
+alias julia="julia --color=yes"
+alias sql="mssql-cli"
+alias b="bonsai"
+

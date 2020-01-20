@@ -67,7 +67,7 @@ alias m="less"
 alias cp="cp -a"
 alias pd='pushd'  # symmetry with cd
 alias df='df -h'  # human readable
-alias t='tmux -2 new-session -A -s "bonsai"'		# set variable in .secret
+alias t='tmux -2 new-session -A -s "$(hostname)"'		# set variable in .secret
 alias ts='tmux -2 -S /var/tmux/campfire new-session -A -s campfire'
 alias tj='tmux -2 -S /var/tmux/campfire attach'
 alias rg='rg --pretty --smart-case'
@@ -319,11 +319,5 @@ fi
 
 
 # Move these to .zshrc.scott
+source $HOME/.zshrc.$USER
 
-# Aliases
-alias c="conda"
-alias p="python"
-alias j="julia --color=yes"
-alias julia="julia --color=yes"
-alias sql="mssql-cli"
-alias b="bonsai"
