@@ -14,5 +14,5 @@ shopt -s nullglob globstar
 # Setup R
 mkdir -p $HOME/.R/lib
 mkdir -p $HOME/.R/tmp
-cp --no-clobber R/Makevars $HOME/.R/Makevars
+cp --no-clobber Makevars $HOME/.R/Makevars
 cp --no-clobber Rprofile $HOME/.Rprofile
