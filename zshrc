@@ -212,11 +212,11 @@ function gg() { git commit -m "$*" }
 
 
 
-export r_arch=x86_64
-export CC=$(which clang)
-export CXX=g++
-export LC_ALL="${LANGUAGE}"
-export LC_CTYPE="${LANGUAGE}"
+# export r_arch=x86_64
+# export CC=$(which clang)
+# export CXX=g++
+# export LC_ALL="${LANGUAGE}"
+# export LC_CTYPE="${LANGUAGE}"
 
 
 # FuzzyFinder
