@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 # vim:filetype=sh:
 
+# Bash "strict mode": http://redsymbol.net/articles/unofficial-bash-strict-mode/
+
 require() { hash "$@" || exit 127; }
 println() { printf '%s\n' "$*"; }
 die()     { ret=$?; printf "%s\n" "$@" >&2; exit "$ret"; }
