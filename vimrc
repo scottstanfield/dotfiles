@@ -1,5 +1,13 @@
 " Minimal .vimrc for VIM v8
 
+" Had some slow startup issues with nvim that I suspected had
+" something to do with macOS Catalina. Step 1:
+" nvim --cmd 'profile start profile.txt' --cmd 'profile func *'
+" Bottom of file shows the top 10 slowest functions. Found
+" a call to xsel, which is the X11 clipboard.
+" https://stackoverflow.com/questions/47822357/how-to-use-x11-forwarding-to-copy-from-vim-to-local-machine
+" lead me to reset the X11 clipboard in XQuartz preferences: fixed!
+
 set encoding=utf-8
 
 syntax on						" turn on synax coloring
