@@ -62,8 +62,10 @@ link bashrc       $HOME/.bashrc
 link bash_profile $HOME/.bash_profile
 link agignore     $HOME/.agignore					# brew{apt} the_silver_searcher{-ag}
 
-cp -n  gitconfig  $HOME/.gitconfig
+link   gitconfig  $HOME/.gitconfig
 link   gitignore  $HOME/.gitignore
+
+touch $HOME/.gitconfig.local			# put your [user] settings here
 
 # Cloning zsh plugin
 if [[ ! -d $PWD/plugins/zsh-syntax-highlighting ]]; then

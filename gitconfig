@@ -1,54 +1,56 @@
 ; vim: ft=gitconfig
 
-[core]
-	editor = vim
-	status = auto
-	branch = auto
-	interactive = auto
-	diff = auto
-	autocrlf = input   # set to input on Mac/Linux, true on Windows
-[alias]
-	lg  = log --graph --decorate --pretty=oneline -abbrev-commit 
-	lg2 = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit 
-	co = checkout
-	up = !git pull --rebase --prune --tags $@ 
-	save = !git add -A && git commit -m 'SAVEPOINT'
-	undo = reset HEAD~1 --mixed
-	amend = commit -a --amend
-	wipe = !git add -A && git commit -qm 'WIPE SAVEPOINT' && git reset HEAD~1 --hard
-	workflow = !open http://haacked.com/archive/2014/07/28/github-flow-aliases/
-	bclean = "!f() { git branch --merged ${1-master} | grep -v " ${1-master}$" | xargs git branch -d; }; f"
-	bdone = "!f() { git checkout ${1-master} && git up && git bclean ${1-master}; }; f"
-
-	delete-remote-stale-branches = !git branch -r --merged origin/master | sed -e 's/origin\\///' | grep -v master | xargs -p -n 1 git push origin --delete
-	list-remote-stale-branches = !git branch -r --merged origin/master | sed -e 's/origin\\///' | grep -v master 
-
-	dsf = "!f() { [ -z \"$GIT_PREFIX\" ] || cd \"$GIT_PREFIX\" && git diff --ignore-space-change --color \"$@\" | diff-so-fancy  | less --tabs=4 -RFX; }; f"
-[push]   
-	default  = simple
-
-[diff] 
-	mnemonicprefix = true
-	rename = copy
-
-[grep]
-	lineNumber = true
-
-[color]
-	ui = true
-
-[pager]
- 	diff = less --tabs=4 -RFX 
-
-; Don't use this since it messes up Plug installs in vim
-; [url "ssh://git@github.com/"] 
-; 	insteadOf = https://github.com 
-
 ; Load [user] details from a local file (not version controlled)
 [include]
-	path=~/.gitconfig.local
+    path=~/.gitconfig.local
+;
+; Don't use this since it messes up Plug installs in vim
+; [url "ssh://git@github.com/"]
+;   insteadOf = https://github.com
+
+[core]
+    editor = vim
+    status = auto
+    branch = auto
+    interactive = auto
+    diff = auto
+    autocrlf = input   # set to input on Mac/Linux, true on Windows
+[alias]
+    lg  = log --graph --decorate --pretty=oneline --abbrev-commit 
+    lg2 = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit 
+    co = checkout
+    up = !git pull --rebase --prune --tags $@ 
+    save = !git add -A && git commit -m 'SAVEPOINT'
+    undo = reset HEAD~1 --mixed
+    amend = commit -a --amend
+    wipe = !git add -A && git commit -qm 'WIPE SAVEPOINT' && git reset HEAD~1 --hard
+    workflow = !open http://haacked.com/archive/2014/07/28/github-flow-aliases/
+    bclean = "!f() { git branch --merged ${1-master} | grep -v " ${1-master}$" | xargs git branch -d; }; f"
+    bdone = "!f() { git checkout ${1-master} && git up && git bclean ${1-master}; }; f"
+
+    delete-remote-stale-branches = !git branch -r --merged origin/master | sed -e 's/origin\\///' | grep -v master | xargs -p -n 1 git push origin --delete
+    list-remote-stale-branches = !git branch -r --merged origin/master | sed -e 's/origin\\///' | grep -v master 
+
+    dsf = "!f() { [ -z \"$GIT_PREFIX\" ] || cd \"$GIT_PREFIX\" && git diff --ignore-space-change --color \"$@\" | diff-so-fancy  | less --tabs=4 -RFX; }; f"
+[push]   
+    default  = simple
+
+[diff] 
+    mnemonicprefix = true
+    rename = copy
+
+[grep]
+    lineNumber = true
+
+[color]
+    ui = true
+
+[pager]
+    diff = less --tabs=4 -RFX 
+
+
 [filter "lfs"]
-	clean = git-lfs clean -- %f
-	smudge = git-lfs smudge -- %f
-	process = git-lfs filter-process
-	required = true
+    clean = git-lfs clean -- %f
+    smudge = git-lfs smudge -- %f
+    process = git-lfs filter-process
+    required = true
