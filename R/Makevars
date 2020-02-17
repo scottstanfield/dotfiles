@@ -10,5 +10,5 @@ CXX=clang++
 # -O3 should be faster than -O2 (default) level optimisation .
 CFLAGS=-g -O3 -Wall -pedantic -std=gnu99 -mtune=native -pipe
 CXXFLAGS=-g -O3 -Wall -pedantic -std=c++11 -mtune=native -pipe
-LDFLAGS=-L/usr/local/opt/gettext/lib -L/usr/local/opt/llvm/lib -Wl,-rpath,/usr/local/opt/llvm/lib
+LDFLAGS=-L/usr/local/opt/openblas/lib -L/usr/local/opt/gettext/lib -L/usr/local/opt/llvm/lib -Wl,-rpath,/usr/local/opt/llvm/lib
 CPPFLAGS=-I/usr/local/opt/gettext/include -I/usr/local/opt/llvm/include

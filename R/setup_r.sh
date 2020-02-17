@@ -14,5 +14,9 @@ shopt -s nullglob globstar
 # Setup R
 mkdir -p $HOME/.R/lib
 mkdir -p $HOME/.R/tmp
-cp --no-clobber R/Makevars $HOME/.R/Makevars
+
+# The line below is for clang/llvm, which is Mac specific
+# Skip for now until cross platform soution
+#cp --no-clobber Makevars $HOME/.R/Makevars
+
 cp --no-clobber Rprofile $HOME/.Rprofile

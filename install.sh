@@ -10,7 +10,6 @@ set -o errexit  # Exit on error. Append "|| true" if you expect an error.
 set -o errtrace # Exit on error inside any functions or subshells.
 set -o nounset  # Do not allow use of undefined vars. Use ${VAR:-} to use an undefined VAR
 set -o pipefail # Catch the error in case mysqldump fails (but gzip succeeds) in `mysqldump |gzip`
-shopt -s nullglob globstar
 
 ##
 ## Preconditions
@@ -23,6 +22,7 @@ die()     { ret=$?; printf "%s\n" "$@" >&2; exit "$ret"; }
 # println "${BASH_VERSINFO[*]: 0:3}"
 bv=${BASH_VERSINFO[0]}${BASH_VERSINFO[0]}
 ((bv > 42)) || die "Need Bash version 4.2 or greater. You have $BASH_VERSION"
+shopt -s nullglob globstar
 
 require nvim
 require git
@@ -40,9 +40,11 @@ B=$(mktemp -d /tmp/dotfiles.XXXX)
 println "Backing up important files to ${B}"
 
 link() {
-  println "linking $1 -> $2 with backup to $B"
-  cp -pL $PWD/$1 $B						# (p)reserve attributes and deference symbolic links
-  ln -sf $PWD/$1 $2
+  if [[ -e $1 ]]; then
+	println "linking $1 -> $2 with backup to $B"
+	cp -pL $PWD/$1 $B						# (p)reserve attributes and deference symbolic links
+	ln -sf $PWD/$1 $2
+  fi
 }
 
 # Setup zshrc
@@ -52,6 +54,7 @@ mkdir -p $HOME/.config/nvim
 link config/nvim/init.vim $HOME/.config/nvim/init.vim
 
 link zshrc        $HOME/.zshrc
+link zshrc.$USER  $HOME/.zshrc.$USER
 link vimrc        $HOME/.vimrc						# minimal vimrc for VIM v8
 link tmux.conf    $HOME/.tmux.conf
 link bashrc       $HOME/.bashrc
@@ -62,8 +65,10 @@ cp -n  gitconfig  $HOME/.gitconfig
 link   gitignore  $HOME/.gitignore
 
 # Cloning zsh plugin
-git clone https://github.com/zsh-users/zsh-syntax-highlighting.git \
-	$PWD/plugins/zsh-syntax-highlighting
+if [[ ! -d $PWD/plugins/zsh-syntax-highlighting ]]; then
+	git clone https://github.com/zsh-users/zsh-syntax-highlighting.git \
+		$PWD/plugins/zsh-syntax-highlighting
+fi
 
 # fixing potential insecure group writable folders
 # compaudit | xargs chmod g-w

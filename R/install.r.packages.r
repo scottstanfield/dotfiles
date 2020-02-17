@@ -1,7 +1,8 @@
-#!Rscript
+#!/usr/bin/env Rscript
 
 cat("§ data.table \n")
-install.packages('data.table', repos='https://Rdatatable.github.io/data.table')
+#install.packages('data.table', repos='https://Rdatatable.github.io/data.table')
+install.packages('data.table')
 
 # for %>% pipe
 cat("§ magrittr \n")
