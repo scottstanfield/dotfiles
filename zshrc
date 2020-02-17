@@ -299,8 +299,7 @@ LEFT_PROMPT_EXTRA="%(1V.%1v .)"
 ##
 
 if [ -d "$HOME/.nvm" ]; then
-    declare -a NODE_GLOBALS
-    # declare -a NODE_GLOBALS=($(find $HOME/.nvm/versions/node -maxdepth 3 -type l -wholename '*/bin/*' 2>/dev/null | xargs -n1 basename | sort | uniq))
+    declare -a NODE_GLOBALS=($(find $HOME/.nvm/versions/node -maxdepth 3 -type l -wholename '*/bin/*' 2>/dev/null | xargs -n1 basename | sort | uniq))
     NODE_GLOBALS+=("node")
     NODE_GLOBALS+=("nvm")
 
@@ -316,7 +315,7 @@ fi
 
 
 # Move these to .zshrc.scott
-[[ -f ~/.$HOME/.zshrc.$USER ]] && source $HOME/.zshrc.$USER
+[[ -f $HOME/.zshrc.$USER ]] && source $HOME/.zshrc.$USER
 
 # Put your machine-specific settings here
 # ~/.secret is not checked into source control
