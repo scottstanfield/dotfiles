@@ -55,6 +55,7 @@ link config/nvim/init.vim $HOME/.config/nvim/init.vim
 
 link zshrc        $HOME/.zshrc
 link zshrc.$USER  $HOME/.zshrc.$USER
+link zlogin       $HOME/.zlogin
 link vimrc        $HOME/.vimrc						# minimal vimrc for VIM v8
 link tmux.conf    $HOME/.tmux.conf
 link bashrc       $HOME/.bashrc
