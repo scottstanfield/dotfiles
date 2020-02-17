@@ -8,7 +8,8 @@
 	diff = auto
 	autocrlf = input   # set to input on Mac/Linux, true on Windows
 [alias]
-	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit 
+	lg  = log --graph --decorate --pretty=oneline -abbrev-commit 
+	lg2 = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit 
 	co = checkout
 	up = !git pull --rebase --prune --tags $@ 
 	save = !git add -A && git commit -m 'SAVEPOINT'
