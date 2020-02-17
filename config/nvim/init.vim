@@ -324,6 +324,14 @@ endif
 
 call plug#begin('~/.config/nvim/plugged')
 
+	" silicon code highlighter
+	Plug 'segeljakt/vim-silicon', { 'branch': 'version-2' }	
+
+	" Slideshows with remarkjs
+	Plug 'idbrii/vim-remarkjs'
+	Plug 'idbrii/vim-gogo'
+	Plug 'tyru/open-browser.vim'
+
 	Plug 'ekalinin/Dockerfile.vim'
 	Plug 'sotte/presenting.vim'
 
@@ -530,6 +538,12 @@ augroup ironmapping
     autocmd Filetype python nmap <buffer> <leader>t <Plug>(iron-send-motion)
     autocmd Filetype python vmap <buffer> <leader>t <Plug>(iron-send-motion)
     autocmd Filetype python nmap <buffer> <leader>. <Plug>(iron-repeat-cmd)
+augroup END
+
+augroup yaml_syntax
+	autocmd!
+	autocmd BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml
+	autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
 augroup END
 
 
