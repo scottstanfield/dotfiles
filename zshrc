@@ -255,7 +255,7 @@ if [ -d "$HOME/miniconda3" ]; then
     python_globals+=("conda")
 
     load_conda() {
-        cs="$('/home/scott/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+        cs="$("$HOME/miniconda3/bin/conda" 'shell.zsh' 'hook' 2> /dev/null)"
         eval "$cs"
     }
 
