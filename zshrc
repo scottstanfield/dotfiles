@@ -132,17 +132,28 @@ export LANGUAGE=en_US.UTF-8
 # LESS (is more)
 export PAGER=less
 less_options=(
-    --quit-if-one-screen     # If the entire text fits on one screen, just show it and quit. (like cat)
-    --no-init                # Do not clear the screen first.
-    --ignore-case            # Like "smartcase" in Vim: ignore case unless the search pattern is mixed.
-    --chop-long-lines        # Do not automatically wrap long lines.
-    --RAW-CONTROL-CHARS      # Allow ANSI colour escapes, but no other escapes.
-    --quiet                  # No bell when trying to scroll past the end of the buffer.
-    --dumb                   # Do not complain when we are on a dumb terminal.
+    --quit-if-one-screen     # -F If the entire text fits on one screen, just show it and quit. (like cat)
+    --no-init                # -X Do not clear the screen first.
+    --ignore-case            # -i Like "smartcase" in Vim: ignore case unless the search pattern is mixed.
+    --chop-long-lines        # -S Do not automatically wrap long lines.
+    --RAW-CONTROL-CHARS      # -R Allow ANSI colour escapes, but no other escapes.
+    --quiet                  # -q No bell when trying to scroll past the end of the buffer.
+    --dumb                   # -d Do not complain when we are on a dumb terminal.
+    --LONG-PROMPT            # -M most verbose prompt
 );
 export LESS="${less_options[*]}";
 unset less_options;
+
+# http://joepvd.github.io/less-a-love-story.html
 export LESSCHARSET='utf-8'
+export LESS_TERMCAP_mb=$'\e[01;31m'       # begin blinking
+export LESS_TERMCAP_md=$'\e[01;38;5;74m'  # begin bold
+export LESS_TERMCAP_me=$'\e[0m'           # end mode
+export LESS_TERMCAP_so=$'\e[38;5;070m'    # begin standout (info box, search)
+export LESS_TERMCAP_se=$'\e[0m'           # end standout-mode
+export LESS_TERMCAP_us=$'\e[04;38;5;146m' # begin underline
+export LESS_TERMCAP_ue=$'\e[0m'           # end underline
+export MAN_KEEP_FORMATTING=1
 
 # BSD LS colors
 export LSCOLORS=exfxcxdxbxegedabagacad
