@@ -114,10 +114,10 @@ COMPLETION_WAITING_DOTS="true"
 autoload -Uz compinit
 () {
     setopt local_options extendedglob
-    if [[ -n ~/.zcompdump(#qN.m1) ]]; then
+    if [[ -n $HOME/.zcompdump(#qN.m1) ]]; then
         echo "compiling compinit..."
         compinit
-        touch .zcompdump
+        touch $HOME/.zcompdump
     else
         compinit -C         # happy path, skip compile
     fi
