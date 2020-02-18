@@ -238,9 +238,6 @@ ZSH_HIGHLIGHT_STYLES[function]=fg=blue
 ZSH_HIGHLIGHT_STYLES[comment]=fg=yellow	      # comments at end of command (not black)
 ZSH_HIGHLIGHT_STYLES[path_prefix]=underline   # incomplete paths are underlined
 
-# Put your machine-specific settings here
-[[ -f ~/.secret ]] && source ~/.secret
-
 ##
 ## Programming language specific
 ##
@@ -310,5 +307,11 @@ if [ -d "$HOME/.nvm/versions/node" ]; then
         eval "${cmd}(){ unset -f ${NODE_GLOBALS}; load_nvm; ${cmd} \$@ }"
     done
 fi
+
+# Put your machine-specific settings here
+[[ -f $HOME/.zshrc.$USER ]] && source $HOME/.zshrc.$USER
+
+# Put your machine-specific settings here
+[[ -f $HOME/.secret ]] && source $HOME/.secret
 
 
