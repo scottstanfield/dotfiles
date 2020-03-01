@@ -291,6 +291,7 @@ LEFT_PROMPT_EXTRA="%(1V.%1v .)"
 
 ##
 ## NODE: test for NVM and load it lazily
+## consider replacing the below with https://github.com/lukechilds/zsh-nvm
 ##
 
 if [ -d "$HOME/.nvm/versions/node" ]; then
@@ -299,7 +300,7 @@ if [ -d "$HOME/.nvm/versions/node" ]; then
     NODE_GLOBALS+=("nvm")
 
     load_nvm () {
-        export NVM_DIR=~/.nvm
+        export NVM_DIR=$HOME/.nvm
         [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
     }
 
