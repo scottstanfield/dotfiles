@@ -53,6 +53,9 @@ link() {
 mkdir -p $HOME/.config/nvim
 link config/nvim/init.vim $HOME/.config/nvim/init.vim
 
+mkdir -p $HOME/.docker
+link docker/config.json $HOME/.docker/config.json
+
 link zshrc        $HOME/.zshrc
 link zshrc.$USER  $HOME/.zshrc.$USER
 link zlogin       $HOME/.zlogin
