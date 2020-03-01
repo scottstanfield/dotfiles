@@ -10,6 +10,7 @@ let g:solar_state=0
 
 " A well-commented vimrc, but uses shortcodes
 " https://github.com/amix/vimrc/blob/master/vimrcs/basic.vim
+" Danish Praka has a good list of plugins: https://danishpraka.sh/2018/06/30/vim-plugins-i-use.html
 
 scriptencoding utf-8
 
@@ -337,7 +338,7 @@ call plug#begin('~/.config/nvim/plugged')
 
 	Plug 'powerman/vim-plugin-AnsiEsc'
 
-	Plug 'jalvesaq/vimcmdline'
+	Plug 'scottstanfield/vimcmdline'
 	let cmdline_map_start          = '<LocalLeader>s'
 	let cmdline_map_send           = '<Space>'
 	let cmdline_map_send_and_stay  = '<LocalLeader><Space>'
@@ -479,7 +480,7 @@ augroup END
 " Set solarized to dark or light depending on what 
 " iterm profile the session was launched with.
 " 
-let g:solar_state=0 
+let g:solar_state=1 
 function! SetDefaultSolar()          " ,x toggles dark/light
     if $ITERM_PROFILE == 'solarized-dark'
         call SolarDark()
