@@ -8,3 +8,7 @@ alias b="bat -n"
 alias mp="multipass"
 alias d="docker"
 
+alias db="docker build"
+alias dr="docker run"
+alias di="docker images"
+alias dps="docker ps"
