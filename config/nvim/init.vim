@@ -428,6 +428,7 @@ call plug#begin('~/.config/nvim/plugged')
     Plug 'kassio/neoterm'
 
     " For R language (rlang)
+	" R and Docker: https://github.com/jalvesaq/Nvim-R/issues/259
     Plug 'jalvesaq/colorout', { 'for': 'r' }
     Plug 'jalvesaq/Nvim-r',   { 'for': 'r' }
 
