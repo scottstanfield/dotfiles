@@ -316,3 +316,5 @@ fi
 [[ -f $HOME/.secret ]] && source $HOME/.secret
 
 
+export DOCKER_BUILDKIT=1
+
