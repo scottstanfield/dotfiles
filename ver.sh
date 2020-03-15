@@ -22,10 +22,14 @@ shopt -s nullglob globstar
 
 # Preferred way to cd to where this script is running
 # https://stackoverflow.com/questions/4774054/reliable-way-for-a-bash-script-to-get-the-full-path-to-itself
+
+# ver1
+__dir2="$(dirname "$(readlink -f "$0")")"
+println "$__dir2"
+
+# ver2
 __dir="$(cd "$(dirname "$0")" ; pwd -P )"
-cd "$__dir"
 println "$__dir"
-ls
 
 # __dir="$(cd "$(dirname "$(realpath "${BASH_SOURCE[0]}")")" && pwd)"
 # println "$__dir"
