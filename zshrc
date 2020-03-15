@@ -255,15 +255,17 @@ path+=(~/.cargo/bin)
 
 ##
 ## Anaconda: test for conda and load it lazily
+## curl https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh -o /tmp/conda.sh
+## bash /tmp/conda.sh -b -p $HOME/miniconda
 ##
 
-if [ -d "$HOME/miniconda3" ]; then
+if [ -d "$HOME/miniconda" ]; then
     declare -a python_globals=("python")
     python_globals+=("python3")
     python_globals+=("conda")
 
     load_conda() {
-        cs="$("$HOME/miniconda3/bin/conda" 'shell.zsh' 'hook' 2> /dev/null)"
+        cs="$("$HOME/miniconda/bin/conda" 'shell.zsh' 'hook' 2> /dev/null)"
         eval "$cs"
     }
 

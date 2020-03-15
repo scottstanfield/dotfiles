@@ -123,6 +123,7 @@ set smartindent       " explicitly turn off. C-style doesn't work with R comment
 set nowrap              " do not wrap lines please
 set tabstop=4
 set softtabstop=4
+set expandtab
 set shiftwidth=4        " no clue what this does
 set shiftround          " if spaces, TAB maps to right spot
 
