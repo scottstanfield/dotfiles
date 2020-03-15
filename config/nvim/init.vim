@@ -229,9 +229,6 @@ nnoremap <leader>m :silent !open -a "Marked 2.app" '%:p'<cr> :redraw!<cr>
 " https://www.typography.com/blog/house-of-flying-reference-marks
 " *, †, ‡, §, ||, #, **, ††, ‡‡, §§, ||||, ###, ***, †††, ‡‡‡
 
-
-
-
 ab [dagger] †
 ab [obelus] †
 ab [dagger2] ‡
@@ -258,6 +255,7 @@ ab [bar] ―
 ab [left] ←
 ab [right] →
 ab [pi] π
+ab [tau] τ
 ab [shrug]  ¯\_(ツ)_/¯
 ab [yhat] ŷ
 ab [space] ␢
