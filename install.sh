@@ -84,11 +84,10 @@ fi
 
 
 # Post-install step
-echo 'launchng nvim to run :PlugInstall...'
-nvim +PlugInstall +qall
+echo "now run: nvim +PlugInstall +qall"
 
 # now change shells
-echo 'sudo chsh -s $(which zsh) $(whoami)'
+echo 'and: sudo chsh -s $(which zsh) $(whoami)'
 
 exit 0
 
