@@ -17,7 +17,10 @@
 # Profile startup times by adding this to you .zshrc: zmodload zsh/zprof
 # Start a new zsh. Then run and inspect: zprof > startup.txt
 
-umask 007
+umask 007 
+
+# For Clear Linux or Docker (not sure which)
+export SHELL=${SHELL:-`which zsh`}
 
 # PATH
 typeset -U path                 # keep duplicates out of the path

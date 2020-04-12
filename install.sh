@@ -56,6 +56,9 @@ link config/nvim/init.vim $HOME/.config/nvim/init.vim
 mkdir -p $HOME/.docker
 link docker/config.json $HOME/.docker/config.json
 
+# On Clear Linux Docker, $USER is unset
+USER=${USER:-`whoami`}
+
 link zshrc        $HOME/.zshrc
 link zshrc.$USER  $HOME/.zshrc.$USER
 link zlogin       $HOME/.zlogin
