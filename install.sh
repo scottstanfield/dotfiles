@@ -85,9 +85,8 @@ fi
 # Install fuzzy finder
 git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && ~/.fzf/install --all
 
-
-# Post-install step
-echo "now run: nvim +PlugInstall +qall"
+# Install neovim plugins
+nvim --headless +PlugInstall +qall
 
 # now change shells
 echo 'and: sudo chsh -s $(which zsh) $(whoami)'
