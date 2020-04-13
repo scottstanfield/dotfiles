@@ -128,7 +128,7 @@ set shiftwidth=4        " no clue what this does
 set shiftround          " if spaces, TAB maps to right spot
 
 " Change tabs to spaces, or the other way around. Good for Python!
-nmap <leader>1 :set et<cr>:retab<cr>    
+nmap <leader>1 :set et<cr>:retab<cr>
 nmap <leader>2 :set noet<cr>:retab!<cr>
 
 " General
@@ -139,19 +139,19 @@ set autochdir                   " always switch to current dir
 set wildmode=list:longest       " Complete files like a shell.
 set modeline
 set noerrorbells                " No beeping!
-set novisualbell                  " No flashing either.
+set novisualbell                " No flashing either.
 set wildignore+=*.jpg,*.gif,*.png,*.git,*.gem,*.zip,*.tar.gz,node_modules
 
 """""""""""
 " UI CONFIG
 """""""""""
-let loaded_matchparen = 1       " Just use % instead of auto paren matching
-set colorcolumn=80            " vertical line at 80 cols
+let loaded_matchparen=1         " Just use % instead of auto paren matching
+set colorcolumn=80              " vertical line at 80 cols
 set nostartofline               " Searches leave cursor on same column
 set ignorecase                  " Case-insensitive searching.
 set lazyredraw                  " No redraw during macro execution
 set number                      " Show line numbers.
-set shortmess=atIF               " stifle the long interrupt prompts
+set shortmess=atIF              " stifle the long interrupt prompts
 set showmode                    " Display the mode you're in.
 set smartcase                   " But case-sensitive if has caps
 set scrolloff=3                 " Show 3 lines around cursor (more context)
@@ -326,8 +326,8 @@ call plug#begin('~/.config/nvim/plugged')
 
 	Plug 'tpope/vim-speeddating'
 
-	" silicon code highlighter
-	Plug 'segeljakt/vim-silicon', { 'branch': 'version-2' }	
+	" silicon code highlighter (Generate images of source code)
+	" Plug 'segeljakt/vim-silicon', { 'branch': 'version-2' }	
 
 	" Slideshows with remarkjs
 	Plug 'idbrii/vim-remarkjs'
@@ -372,7 +372,7 @@ call plug#begin('~/.config/nvim/plugged')
 	Plug 'JuliaEditorSupport/julia-vim'		" syntax: julia
 
     " After installing, run ~/.fzf/install
-    Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+    " Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
     Plug 'junegunn/fzf.vim'
     nnoremap <silent> <leader>ff :FZF<CR>
     nnoremap <silent> <leader>ft :Files<CR>		
@@ -388,7 +388,7 @@ call plug#begin('~/.config/nvim/plugged')
 
     Plug 'junegunn/goyo.vim', { 'for': 'markdown' }
     let g:goyo_width = 100
-    nmap <leader>tg :silent Goyo<CR>
+    nmap <leader>tx :silent Goyo<CR>
 
     Plug 'junegunn/vim-easy-align',     { 'on': ['<Plug>(EasyAlign)', 'EasyAlign'] }
     xmap ga <Plug>(EasyAlign)
@@ -439,11 +439,11 @@ call plug#begin('~/.config/nvim/plugged')
     let R_source_args = 'print.eval=F'
     " I needed to run `brew link --force readline` in order to get gcc5
     " to compile nvimcom (which updates automatically when you invoke nvim-r)
-    nmap <silent> <Space> :call SendLineToR("stay")<CR><Esc><Home><Down>
-    vmap <silent> <Space> <Plug>RSendSelection<Esc><Esc>
-    nmap <silent> ✠       :call SendLineToR("stay")<CR><Esc><Home><Down>
-	imap <silent> ✠       <Esc>:call SendLineToR("stay")<CR><Esc>A
-    vmap ✠				  <Plug>RSendSelection<Esc><Esc>
+    " nmap <silent> <Space> :call SendLineToR("stay")<CR><Esc><Home><Down>
+    " vmap <silent> <Space> <Plug>RSendSelection<Esc><Esc>
+    " nmap <silent> ✠       :call SendLineToR("stay")<CR><Esc><Home><Down>
+	" imap <silent> ✠       <Esc>:call SendLineToR("stay")<CR><Esc>A
+    " vmap ✠				  <Plug>RSendSelection<Esc><Esc>
 
     " maltese
 
@@ -454,7 +454,7 @@ call plug#begin('~/.config/nvim/plugged')
     Plug 'tpope/vim-vinegar'                     " smarter commenting with gc
 
     Plug 'airblade/vim-gitgutter'                   " shows git diff marks in the gutter
-    nmap <silent> <leader>tu :GitGutterToggle<CR>   
+    nmap <silent> <leader>tg :GitGutterToggle<CR>   
     let g:gitgutter_enabled = 1                     " off by default
 
 call plug#end()
@@ -528,8 +528,6 @@ autocmd VimEnter * call SetDefaultSolar()
 " Remove next line comment to force dark color scheme.
 " Usually it's picked because iTerm2 will pass it in.
 " setenv ITERM_PROFILE solarized-dark
-
- 
 
 
 " Toggle Line numbers on/off

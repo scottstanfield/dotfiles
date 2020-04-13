@@ -82,6 +82,9 @@ fi
 # fixing potential insecure group writable folders
 # compaudit | xargs chmod g-w
 
+# Install fuzzy finder
+git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && ~/.fzf/install --all
+
 
 # Post-install step
 echo "now run: nvim +PlugInstall +qall"

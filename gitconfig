@@ -20,6 +20,7 @@
     autocrlf = input   # set to input on Mac/Linux, true on Windows
 	excludesfile = ~/.gitignore
 	whitespace = fix,-indent-with-non-tab,trailing-space,cr-at-eol
+
 [alias]
     lg  = log --graph --decorate --pretty=oneline --abbrev-commit 
     lg2 = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit 
