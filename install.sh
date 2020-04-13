@@ -86,6 +86,7 @@ fi
 git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && ~/.fzf/install --all
 
 # Install neovim plugins
+echo "Installing vim plugins..."
 nvim --headless +PlugInstall +qall
 
 # now change shells
