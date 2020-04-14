@@ -27,7 +27,6 @@ set clipboard+=unnamedplus
 " set nofoldenable              " start with all folds open
 "nnoremap <Enter> za
 
-" Fuck macros
 nnoremap <silent> q <space>
 
 " Map CMD-S to save files (iTerm2 passes it along as an anchor)

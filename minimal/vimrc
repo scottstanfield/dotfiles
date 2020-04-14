@@ -41,7 +41,7 @@ inoremap jk <Esc>
 
 set listchars=eol:¶,trail:•,tab:▸\         " whitespace characters
 set scrolloff=999                          " center cursor position vertically
-set showbreak=¬\						   " for lines that wrap
+set showbreak=¬						       " for lines that wrap
 
 set hlsearch
 nnoremap <leader>/ :set hlsearch! hlsearch? <CR>
@@ -72,5 +72,4 @@ vnoremap <S-Tab> <gv
 nnoremap <S-Tab> :tabn<CR>
 nnoremap <Tab> <C-w><C-w>
 
-" Fuck macros
 nnoremap <silent> q <space>
