@@ -1,6 +1,6 @@
 " neovim 3.1
 
-let g:solar_state=0 
+let g:solar_state=1 
 " In order to keep this file compatible with VIM 8, consider using
 " the VIM 8 sane defaults from the list below
 " https://www.rosipov.com/blog/sane-vim-defaults-from-neovim/
@@ -111,7 +111,7 @@ function! SetDefaultSolar()          " ,x toggles dark/light
     endif
 	call lightline#colorscheme()
 endfunction
-autocmd VimEnter * call SetDefaultSolar()
+autocmd VimEnter * call SolarLight()
 
 
 """""""""""""""""
@@ -229,6 +229,7 @@ nnoremap <leader>m :silent !open -a "Marked 2.app" '%:p'<cr> :redraw!<cr>
 " https://www.typography.com/blog/house-of-flying-reference-marks
 " *, †, ‡, §, ||, #, **, ††, ‡‡, §§, ||||, ###, ***, †††, ‡‡‡
 
+ab [clock] ◴
 ab [dagger] †
 ab [obelus] †
 ab [dagger2] ‡
@@ -236,6 +237,7 @@ ab [diesis] ‡
 ab [section] §
 ab [lozenge] ◊
 ab [check] ✓
+ab [plusminus] ±
 ab [x] ×
 ab [o] ○
 ab [.] •
@@ -265,6 +267,12 @@ ab [mu] µ
 ab [ss] §
 ab [sd] σ
 ab [blank] ␣
+ab [1/4] ¼
+ab [1/2] ½
+ab [3/4] ¾
+ab [1/3] ⅓
+ab [2/3] ⅔
+
 
 
 " Toggle invisible whiteSpace ¬ ¶
@@ -362,7 +370,7 @@ call plug#begin('~/.config/nvim/plugged')
 	let cmdline_app['javascript']  = 'node'
 
     Plug 'lifepillar/vim-solarized8'        " for solarized8_dark or solarized8_light
-	Plug 'NLKNguyen/papercolor-theme'
+	" Plug 'NLKNguyen/papercolor-theme'
 	Plug 'posva/vim-vue'					" syntax: vue
     Plug 'kchmck/vim-coffee-script'         " syntax: coffee script
     Plug 'digitaltoad/vim-pug'              " syntax: pug
@@ -483,9 +491,9 @@ augroup END
 " 
 let g:solar_state=1 
 function! SetDefaultSolar()          " ,x toggles dark/light
-    if $ITERM_PROFILE == 'solarized-dark'
+    if $ITERM_PROFILE == 'Solarized Dark'
         call SolarDark()
-    elseif $ITERM_PROFILE == 'solarized-light'
+    elseif $ITERM_PROFILE == 'Solarized Light'
         call SolarLight()
 	elseif g:solar_state == 0
         call SolarDark()
@@ -497,15 +505,15 @@ endfunction
 
 function! SolarDark()
 	let g:solar_state=0
-    colorscheme PaperColor "solarized8_dark
     set background=dark
-    hi colorcolumn ctermbg=darkgrey
+    colorscheme solarized8_flat
+    " hi colorcolumn ctermbg=darkgrey
 endfunction
 
 function! SolarLight()
 	let g:solar_state=1
-	colorscheme PaperColor "solarized_light
 	set background=light
+	colorscheme solarized8_flat
 	hi colorcolumn ctermbg=lightgrey
 endfunction
 
