@@ -22,7 +22,37 @@
 # \e8   => restore cursor position
 # \e[K  => clears everything after the cursor on the current line
 # \e[2K => clear everything on the current line
-#
+
+# small dot: ·
+# multiplication x: ×
+# large multiplication x: ✖
+# guillemet: »
+# section: §
+# black circle: ●
+# lozenge: ◊
+# implies: ⇒
+# ordered set: ≻
+# bigger greater than: ❯
+ 
+# Keeping this here for bold color reference
+# PROMPT='$green%m %{$fg_bold[green]%}%4~%{$fg_bold[red]%}%(?.. [%?]) $(prompt_tail) '
+
+function prompt_tail {
+    local error="×"
+    local su="⚡"
+    local regular="»"
+
+    local normal="%(!.$su.$regular)"
+    local promptchar="%(?.$normal.$error)"
+
+    if [[ `tput cols` -gt 60 ]]; then
+        B+=$promptchar
+    else
+        B+="\n$promptchar"
+    fi
+    B+="%f"
+    echo $B
+}
 
 function prompt_error {
     local B=''
@@ -36,32 +66,71 @@ function tail_color {
     echo $B
 }
 
-function prompt_tail {
-    local error="×"
-    local su="⚡"
-    local regular="»"
+prompt_pure_preprompt_render() {
+    # store the current prompt_subst setting so that it can be restored later
+    local prompt_subst_status=$options[prompt_subst]
 
-    # small dot: ·
-    # multiplication x: ×
-    # large multiplication x: ✖
-    # guillemet: »
-    # section: §
-    # black circle: ●
-    # lozenge: ◊
-    # implies: ⇒
-    # ordered set: ≻
-    # bigger greater than: ❯
+    # make sure prompt_subst is unset to prevent parameter expansion in preprompt
+    setopt local_options no_prompt_subst
 
-    local normal="%(!.$su.$regular)"
-    local promptchar="%(?.$normal.$error)"
+    # check that no command is currently running, the preprompt will otherwise be rendered in the wrong place
+    [[ -n ${prompt_pure_cmd_timestamp+x} && "$1" != "precmd" ]] && return
 
-    if [[ `tput cols` -gt 60 ]]; then
-        B+=$promptchar
-    else
-        B+="\n$promptchar"
+    # set color for git branch/dirty status, change color if dirty checking has been delayed
+    local git_color=100
+    [[ -n ${prompt_pure_git_last_dirty_check_timestamp+x} ]] && git_color=red
+
+    ####################
+    # LEFT-SIDE PROMPT
+    ####################
+    local host="●"
+    [[ $(hostname) != "ss-mbp16" ]] && host='%m'
+    local user=""
+    [[ $USER != "scott" ]] && user='%n@'
+    local color='%F{blue}'
+    [[ $UID -eq 0 ]] && color='$F{red}'
+    local host_user="$color$user$host%f"
+
+    # show trailing three folders %f in yellow (good for Solarized)
+    local cwd="%F{yellow}%3~%f"
+
+    local left=""
+    left+="${LEFT_PROMPT_EXTRA}"           # set in .zshrc or a pipenv command to indicate subshell
+    left+="${host_user} "                  # username@hostname
+    left+="${cwd} "                        # ~/foo/bar
+    left+="$(tail_color)$(prompt_tail) " # turn tail red if last cmd exited with an error 
+
+    ####################
+    # RIGHT-SIDE PROMPT
+    ####################
+
+    # command execution time (if any)
+    local right=""
+    right+="%F{yellow}${prompt_pure_cmd_exec_time}%f"
+
+    # repo name
+    right+="%F{$git_color}${vcs_info_msg_0_}${prompt_pure_git_dirty}%f"
+
+    # arrows for push / pull
+    right+="%F{cyan}${prompt_pure_git_arrows}%f"
+
+    # make sure prompt_pure_last_preprompt is a global array
+    typeset -g -a prompt_pure_last_preprompt
+
+    PROMPT="$left"
+    RPROMPT="$(prompt_error)$right"
+
+    # if executing through precmd, do not perform fancy terminal editing
+    if [[ "$1" != "precmd" ]]; then
+        # only redraw if the expanded preprompt has changed
+        [[ "${prompt_pure_last_preprompt[2]}" != "${(S%%)right}" ]] || return
+
+        # redraw prompt (also resets cursor position)
+        zle && zle .reset-prompt
     fi
-    B+="%f"
-    echo $B
+
+    # store both unexpanded and expanded preprompt for comparison
+    prompt_pure_last_preprompt=("$right" "${(S%%)right}")
 }
 
 
@@ -123,75 +192,6 @@ prompt_pure_preexec() {
     prompt_pure_cmd_timestamp=$EPOCHSECONDS
 }
 
-prompt_pure_preprompt_render() {
-    # store the current prompt_subst setting so that it can be restored later
-    local prompt_subst_status=$options[prompt_subst]
-
-    # make sure prompt_subst is unset to prevent parameter expansion in preprompt
-    setopt local_options no_prompt_subst
-
-    # check that no command is currently running, the preprompt will otherwise be rendered in the wrong place
-    [[ -n ${prompt_pure_cmd_timestamp+x} && "$1" != "precmd" ]] && return
-
-    # set color for git branch/dirty status, change color if dirty checking has been delayed
-    local git_color=100
-    [[ -n ${prompt_pure_git_last_dirty_check_timestamp+x} ]] && git_color=red
-    # Keeping this here for bold color reference
-    # PROMPT='$green%m %{$fg_bold[green]%}%4~%{$fg_bold[red]%}%(?.. [%?]) $(prompt_tail) '
-
-    ####################
-    # LEFT-SIDE PROMPT
-    ####################
-    local host="●"
-    [[ $(hostname) != "ss-mbp16" ]] && host='%m'
-    local user=""
-    [[ $USER != "scott" ]] && user='%n@'
-    local color='%F{blue}'
-    [[ $UID -eq 0 ]] && color='$F{red}'
-    local host_user="$color$user$host%f"
-
-    # show trailing three folders %f in yellow (good for Solarized)
-    local cwd="%F{yellow}%3~%f"
-
-    local left=""
-    left+="${LEFT_PROMPT_EXTRA}"           # set in .zshrc or a pipenv command to indicate subshell
-    left+="${host_user} "                  # username@hostname
-    left+="${cwd} "                        # ~/foo/bar
-    left+="$(tail_color)$(prompt_tail)%f " # turn tail red if last cmd exited with an error 
-
-    ####################
-    # RIGHT-SIDE PROMPT
-    ####################
-
-    # command execution time (if any)
-    local right=""
-    right+="%F{yellow}${prompt_pure_cmd_exec_time}%f"
-
-    # repo name
-    right+="%F{$git_color}${vcs_info_msg_0_}${prompt_pure_git_dirty}%f"
-
-    # arrows for push / pull
-    right+="%F{cyan}${prompt_pure_git_arrows}%f"
-
-    # make sure prompt_pure_last_preprompt is a global array
-    typeset -g -a prompt_pure_last_preprompt
-
-    PROMPT="$left"
-    RPROMPT="$(prompt_error)$right"
-
-    # if executing through precmd, do not perform fancy terminal editing
-    if [[ "$1" != "precmd" ]]; then
-        # only redraw if the expanded preprompt has changed
-        [[ "${prompt_pure_last_preprompt[2]}" != "${(S%%)right}" ]] || return
-
-        # redraw prompt (also resets cursor position)
-        zle && zle .reset-prompt
-    fi
-
-    # store both unexpanded and expanded preprompt for comparison
-    prompt_pure_last_preprompt=("$right" "${(S%%)right}")
-}
-
 prompt_pure_precmd() {
     # check exec time and store it in a variable
     prompt_pure_check_cmd_exec_time
@@ -232,6 +232,7 @@ prompt_pure_async_git_dirty() {
     # git status is hard to parse
     # A == added (changes to be committed)
     # ?? == untracked
+    # no matter the state, it will show * to flag as modified in some way
 
     (( $? )) && echo "*"
 }
