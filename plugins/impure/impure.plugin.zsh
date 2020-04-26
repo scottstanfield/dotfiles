@@ -116,32 +116,11 @@ prompt_pure_check_git_arrows() {
     [[ -n $arrows ]] && prompt_pure_git_arrows=" ${arrows}"
 }
 
-prompt_pure_set_title() {
-    # emacs terminal does not support settings the title
-    (( ${+EMACS} )) && return
-
-    # tell the terminal we are setting the title
-    print -n '\e]0;'
-    # show hostname if connected through ssh
-    [[ -n $SSH_CONNECTION ]] && print -Pn '(%m) '
-    case $1 in
-        expand-prompt)
-            print -Pn $2;;
-        ignore-escape)
-            print -rn $2;;
-    esac
-    # end set title
-    print -n '\a'
-}
-
 prompt_pure_preexec() {
     # attempt to detect and prevent prompt_pure_async_git_fetch from interfering with user initiated git or hub fetch
     [[ $2 =~ (git|hub)\ .*(pull|fetch) ]] && async_flush_jobs 'prompt_pure'
 
     prompt_pure_cmd_timestamp=$EPOCHSECONDS
-
-    # shows the current dir and executed command in the title while a process is active
-    prompt_pure_set_title 'ignore-escape' "$PWD:t: $2"
 }
 
 prompt_pure_preprompt_render() {
@@ -163,33 +142,30 @@ prompt_pure_preprompt_render() {
     ####################
     # LEFT-SIDE PROMPT
     ####################
-    local name_machine='%F{white}%n@%m%f'
-    if [[ $(whoami) == "scott" ]]; then
-        name_machine='%F{blue}%m%f'
-    else
-        name_machine='%F{blue}%n@%m%f'
-    fi
+    local host="●"
+    [[ $(hostname) != "ss-mbp16" ]] && host='%m'
+    local user=""
+    [[ $USER != "scott" ]] && user='%n@'
+    local color='%F{blue}'
+    [[ $UID -eq 0 ]] && color='$F{red}'
+    local host_user="$color$user$host%f"
+
+    # show trailing three folders %f in yellow (good for Solarized)
+    local cwd="%F{yellow}%3~%f"
 
     local left=""
-
-    # show trailing three folders %f in yellow
-    # yellow (shows as orange) works well in Solarized light & dark
-    local pathdetails="%F{yellow}%3~%f"
-
-    # [[ "$SSH_CONNECTION" != '' ]] && name_machine=' %F{242}%n@%m%f'       # if on SSH, use a different prompt
-    [[ $UID -eq 0 ]] && name_machine=' %F{white}%n%f%F{242}@%m%f'           # if root
-
-    left+="${LEFT_PROMPT_EXTRA}"             # set in .zshrc or a pipenv command to indicate subshell
-    left+="${name_machine} "                 # username@hostname
-    left+="${pathdetails} "                  # ~/foo/bar
-    left+="$(tail_color)$(prompt_tail)%f "   # turn tail red if last exited with an error code (shown on right)
+    left+="${LEFT_PROMPT_EXTRA}"           # set in .zshrc or a pipenv command to indicate subshell
+    left+="${host_user} "                  # username@hostname
+    left+="${cwd} "                        # ~/foo/bar
+    left+="$(tail_color)$(prompt_tail)%f " # turn tail red if last cmd exited with an error 
 
     ####################
     # RIGHT-SIDE PROMPT
     ####################
 
     # command execution time (if any)
-    local right="%F{yellow}${prompt_pure_cmd_exec_time}%f"
+    local right=""
+    right+="%F{yellow}${prompt_pure_cmd_exec_time}%f"
 
     # repo name
     right+="%F{$git_color}${vcs_info_msg_0_}${prompt_pure_git_dirty}%f"
@@ -226,9 +202,6 @@ prompt_pure_precmd() {
 
     # check for git arrows
     prompt_pure_check_git_arrows
-
-    # shows the full path in the title
-    prompt_pure_set_title 'expand-prompt' '%~'
 
     # get vcs info
     vcs_info
