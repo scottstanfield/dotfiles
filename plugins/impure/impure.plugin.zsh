@@ -37,7 +37,34 @@
 # Keeping this here for bold color reference
 # PROMPT='$green%m %{$fg_bold[green]%}%4~%{$fg_bold[red]%}%(?.. [%?]) $(prompt_tail) '
 
-function prompt_tail {
+function prompt_error {
+    local B=''
+    B="%(?.%F{16}.%F{red}[%?])"
+    echo $B
+}
+
+function p_short() {
+    [[ `tput cols` -gt 60 ]]
+}
+
+function p_head() {
+    local host="●"
+    [[ $(hostname) != "ss-mbp16" ]] && host='%m'
+    local user=""
+    [[ $USER != "scott" ]] && user='%n@'
+    local color='%F{blue}'
+    [[ $UID -eq 0 ]] && color='$F{red}'
+    echo "$color$user$host%f"
+}
+
+function p_path() {
+    local B="%F{yellow}"
+    B+="%3~"        # three dirs
+    B+="%f"         # reset color
+    echo $B
+}
+
+function p_tail {
     local error="×"
     local su="⚡"
     local regular="»"
@@ -45,24 +72,16 @@ function prompt_tail {
     local normal="%(!.$su.$regular)"
     local promptchar="%(?.$normal.$error)"
 
+    # color the tail based on command's error condition
+    local B=''
+    B="%(?.%F{yellow}.%F{red})"
+
     if [[ `tput cols` -gt 60 ]]; then
         B+=$promptchar
     else
         B+="\n$promptchar"
     fi
     B+="%f"
-    echo $B
-}
-
-function prompt_error {
-    local B=''
-    B="%(?.%F{16}.%F{red}[%?])"
-    echo $B
-}
-
-function tail_color {
-    local B=''
-    B="%(?.%F{yellow}.%F{red})"
     echo $B
 }
 
@@ -83,22 +102,11 @@ prompt_pure_preprompt_render() {
     ####################
     # LEFT-SIDE PROMPT
     ####################
-    local host="●"
-    [[ $(hostname) != "ss-mbp16" ]] && host='%m'
-    local user=""
-    [[ $USER != "scott" ]] && user='%n@'
-    local color='%F{blue}'
-    [[ $UID -eq 0 ]] && color='$F{red}'
-    local host_user="$color$user$host%f"
 
-    # show trailing three folders %f in yellow (good for Solarized)
-    local cwd="%F{yellow}%3~%f"
-
-    local left=""
-    left+="${LEFT_PROMPT_EXTRA}"           # set in .zshrc or a pipenv command to indicate subshell
-    left+="${host_user} "                  # username@hostname
-    left+="${cwd} "                        # ~/foo/bar
-    left+="$(tail_color)$(prompt_tail) " # turn tail red if last cmd exited with an error 
+    local left="${LEFT_PROMPT_EXTRA}" # set in .zshrc or a pipenv command to indicate subshell
+    left+="$(p_head) "                # username@hostname
+    left+="$(p_path) "                # ~/foo/bar
+    left+="$(p_tail) "                # turn tail red if last cmd exited with an error
 
     ####################
     # RIGHT-SIDE PROMPT
