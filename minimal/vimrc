@@ -16,7 +16,7 @@ set ignorecase                  " Case-insensitive searching.
 set laststatus=2				" 2 lines of status on the bottom
 
 set number                      " Show line numbers.
-set shortmess=atIF               " stifle the long interrupt prompts
+set shortmess=atIF              " stifle the long interrupt prompts
 set showmode                    " Display the mode you're in.
 set smartcase                   " But case-sensitive if has caps
 set scrolloff=3                 " Show 3 lines around cursor (more context)
