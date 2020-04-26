@@ -32,7 +32,7 @@ function prompt_error {
 
 function tail_color {
     local B=''
-    B="%(?.%F{green}.%F{red})"
+    B="%(?.%F{yellow}.%F{red})"
     echo $B
 }
 
