@@ -24,7 +24,7 @@ export SHELL=${SHELL:-`which zsh`}
 
 # PATH
 typeset -U path                 # keep duplicates out of the path
-path=(/usr/local/bin $path)     # prepend files I install for system
+path=(/usr/local/bin /usr/local/opt/libiconv/bin $path)     # prepend files I install for system
 path+=(~/local/bin ~/bin . ~/.go/bin)
 path+=(/usr/local/opt/llvm/bin)
 
@@ -322,4 +322,7 @@ fi
 
 
 export DOCKER_BUILDKIT=1
+
+export LDFLAGS="-L/usr/local/opt/libiconv/lib"
+export CPPFLAGS="-I/usr/local/opt/libiconv/include"
 
