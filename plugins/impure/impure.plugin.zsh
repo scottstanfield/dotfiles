@@ -229,6 +229,10 @@ prompt_pure_async_git_dirty() {
         test -z "$(command git status --porcelain --ignore-submodules -unormal)"
     fi
 
+    # git status is hard to parse
+    # A == added (changes to be committed)
+    # ?? == untracked
+
     (( $? )) && echo "*"
 }
 
