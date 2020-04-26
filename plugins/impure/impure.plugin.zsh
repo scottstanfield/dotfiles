@@ -29,6 +29,7 @@
 # guillemet: »
 # section: §
 # black circle: ●
+# small star ✶
 # lozenge: ◊
 # implies: ⇒
 # ordered set: ≻
@@ -43,15 +44,21 @@ function prompt_error {
     echo $B
 }
 
-function p_short() {
-    [[ `tput cols` -gt 60 ]]
+function is_narrow() {
+    [[ `tput cols` -lt 60 ]]
 }
 
 function p_head() {
     local host="●"
+    is_narrow && host="✶"
+
     [[ $(hostname) != "ss-mbp16" ]] && host='%m'
+    is_narrow && host="✶"
+
     local user=""
     [[ $USER != "scott" ]] && user='%n@'
+    is_narrow && user=""
+
     local color='%F{blue}'
     [[ $UID -eq 0 ]] && color='$F{red}'
     echo "$color$user$host%f"
@@ -59,7 +66,7 @@ function p_head() {
 
 function p_path() {
     local B="%F{yellow}"
-    B+="%3~"        # three dirs
+    is_narrow && B+="%1~" || B+="%3~"
     B+="%f"         # reset color
     echo $B
 }
@@ -75,12 +82,7 @@ function p_tail {
     # color the tail based on command's error condition
     local B=''
     B="%(?.%F{yellow}.%F{red})"
-
-    if [[ `tput cols` -gt 60 ]]; then
-        B+=$promptchar
-    else
-        B+="\n$promptchar"
-    fi
+    B+="%(?.$normal.$error)"
     B+="%f"
     echo $B
 }
