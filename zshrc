@@ -27,6 +27,7 @@ typeset -U path                 # keep duplicates out of the path
 path=(/usr/local/bin /usr/local/opt/libiconv/bin $path)     # prepend files I install for system
 path+=(~/local/bin ~/bin . ~/.go/bin)
 path+=(/usr/local/opt/llvm/bin)
+path+=($HOME/.local/bin)        # for python -U apps
 
 # GNU specific paths for Mac (requires `brew install coreutils`)
 [[ -d /usr/local/opt/coreutils/libexec/gnubin ]] && path=(/usr/local/opt/coreutils/libexec/gnubin $path)
