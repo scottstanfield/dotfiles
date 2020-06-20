@@ -1,3 +1,6 @@
+# vim:filetype=dircolors:
+# https://github.com/sentientmachine/erics_vim_syntax_and_color_highlighting/blob/master/.dircolors_gentoo
+#
 # Exact Solarized color theme for the color GNU ls utility.
 # Designed for dircolors (GNU coreutils) 5.97
 #
@@ -166,6 +169,7 @@ FILE 00
 DIR 01;35
 # symbolic link
 LINK 35
+OTHER_WRITABLE        38;5;220;1
 
 # pipe, socket, block device, character device (blue bg)
 FIFO 30;44
