@@ -147,21 +147,6 @@ Module.symvers
 Mkfile.old
 dkms.conf
 
-###
-### CMake.gitignore
-###
-
-CMakeLists.txt.user
-CMakeCache.txt
-CMakeFiles
-CMakeScripts
-Testing
-Makefile
-cmake_install.cmake
-install_manifest.txt
-compile_commands.json
-CTestTestfile.cmake
-_deps
 
 ###
 ### Images.gitignore
@@ -436,7 +421,6 @@ __pycache__/
 
 # Distribution / packaging
 .Python
-build/
 develop-eggs/
 dist/
 downloads/

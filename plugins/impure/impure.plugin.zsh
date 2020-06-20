@@ -49,7 +49,9 @@ function is_narrow() {
 }
 
 function p_head() {
-    local host="●"
+
+    # user@host path
+    local host="§"
     is_narrow && host="✶"
 
     [[ $(hostname) != "ss-mbp16" ]] && host='%m'

@@ -272,6 +272,7 @@ ab [1/2] ½
 ab [3/4] ¾
 ab [1/3] ⅓
 ab [2/3] ⅔
+ab [lambda] λ
 
 
 
@@ -312,13 +313,6 @@ nnoremap <S-Tab> :tabn<CR>
 " nnoremap <Tab> :tabp<CR>
 " move easily b/w panes with TAB
 nnoremap <Tab> <C-w><C-w>
-
-
-
-
-autocmd! User nvim-r.vim echom 'nvim-r is now loaded'
-
- 
 
 """""""""
 " PLUGINS
@@ -375,8 +369,21 @@ call plug#begin('~/.config/nvim/plugged')
     Plug 'kchmck/vim-coffee-script'         " syntax: coffee script
     Plug 'digitaltoad/vim-pug'              " syntax: pug
     Plug 'iloginow/vim-stylus'              " syntax: stylus
+    Plug 'niftylettuce/vim-jinja'              " syntax: nunjucks markup
 
 	Plug 'JuliaEditorSupport/julia-vim'		" syntax: julia
+
+    Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+        augroup nerd_loader
+            autocmd!
+            autocmd VimEnter * silent! autocmd! FileExplorer
+            autocmd BufEnter,BufNew *
+                \  if isdirectory(expand('<amatch>'))
+                \|   call plug#load('nerdtree')
+                \|   execute 'autocmd! nerd_loader'
+                \| endif
+        augroup END
+        nnoremap <leader>n :NERDTreeToggle<cr>
 
     " After installing, run ~/.fzf/install
     " Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
@@ -394,7 +401,7 @@ call plug#begin('~/.config/nvim/plugged')
     let g:rainbow#pairs = [['(', ')'], ['[', ']']]
 
     Plug 'junegunn/goyo.vim', { 'for': 'markdown' }
-    let g:goyo_width = 100
+    let g:goyo_width = 80
     nmap <leader>tx :silent Goyo<CR>
 
     Plug 'junegunn/vim-easy-align',     { 'on': ['<Plug>(EasyAlign)', 'EasyAlign'] }
@@ -437,16 +444,16 @@ call plug#begin('~/.config/nvim/plugged')
 
     " For R language (rlang)
 	" R and Docker: https://github.com/jalvesaq/Nvim-R/issues/259
-    Plug 'jalvesaq/colorout', { 'for': 'r' }
-    Plug 'jalvesaq/Nvim-r',   { 'for': 'r' }
+    " Plug 'jalvesaq/colorout', { 'for': 'r' }
+    Plug 'jalvesaq/Nvim-r', {'branch': 'stable' }
 
-    let R_assign = 0
-    let R_args = ['--no-save', '--quiet']
-	let R_tmpdir = '~scott/R/tmp'				" TODO: consider removing this
-    let R_source_args = 'print.eval=F'
-    " I needed to run `brew link --force readline` in order to get gcc5
+    " let R_assign = 0
+    " let R_args = ['--no-save', '--quiet']
+	" let R_tmpdir = '~scott/R/tmp'				" TODO: consider removing this
+    " let R_source_args = 'print.eval=F'
+    " " I needed to run `brew link --force readline` in order to get gcc5
     " to compile nvimcom (which updates automatically when you invoke nvim-r)
-    " nmap <silent> <Space> :call SendLineToR("stay")<CR><Esc><Home><Down>
+    " map <silent> <Space> :call SendLineToR("stay")<CR><Esc><Home><Down>
     " vmap <silent> <Space> <Plug>RSendSelection<Esc><Esc>
     " nmap <silent> ✠       :call SendLineToR("stay")<CR><Esc><Home><Down>
 	" imap <silent> ✠       <Esc>:call SendLineToR("stay")<CR><Esc>A
@@ -471,21 +478,6 @@ autocmd! User goyo.vim echom 'Goyo is now loaded!'
 " colorscheme stuff has to go afer plug
 " https://github.com/junegunn/vim-plug/wiki/faq#im-getting-cannot-find-color-scheme--does-vim-plug-support-color-schemes
 
-" For jalvesaq/Nvim-R plugin
-function! RLanguageMapping()
-    nmap <silent> <Space> :call SendLineToR("stay")<CR><Esc><Home><Down>
-    vmap <silent> <Space> <Plug>RSendSelection<Esc><Esc>
-    nmap <silent> ✠       :call SendLineToR("stay")<CR><Esc><Home><Down>
-	imap <silent> ✠       <Esc>:call SendLineToR("stay")<CR><Esc>A
-    vmap ✠				  <Plug>RSendSelection<Esc><Esc>
-endfunction
-
-augroup rcode
-    autocmd!
-	au FileType r :call RLanguageMapping()
-augroup END
-
-" 
 " Set solarized to dark or light depending on what 
 " iterm profile the session was launched with.
 " 

@@ -163,7 +163,7 @@ NORMAL 00
 # normal file
 FILE 00
 # directory
-DIR 36
+DIR 01;35
 # symbolic link
 LINK 35
 
