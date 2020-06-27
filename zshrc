@@ -3,40 +3,105 @@
 
 # Timing startup
 # % hyperfine --warmup 2 'zsh -i -c "exit"'
-# Time (mean ± σ):      1.613 s ±  0.129 s
-#
-# removing conda activate & azure cli
-# Time (mean ± σ):      1.281 s ±  0.020 s 
-#
-# After fixing up compdump at line 64!
-# Time (mean ± σ):     190.4 ms ±   4.8 ms 
-#
-# Without any plugins
-# Time (mean ± σ):     471.5 ms ±   8.4 ms 
+
+# Superfast as of Jun 20, 2020
+# Benchmark #1: zsh -i -c "exit"
+#   Time (mean ± σ):     137.3 ms ±   4.5 ms    [User: 61.5 ms, System: 71.6 ms]
+#   Range (min … max):   130.8 ms … 152.2 ms    19 runs
 
 # Profile startup times by adding this to you .zshrc: zmodload zsh/zprof
 # Start a new zsh. Then run and inspect: zprof > startup.txt
 
 umask 007 
 
-# For Clear Linux or Docker (not sure which)
-export SHELL=${SHELL:-`which zsh`}
+is_linux() { [[ $SHELL_PLATFORM == 'linux' || $SHELL_PLATFORM == 'bsd' ]]; }
+is_osx() { [[ $SHELL_PLATFORM == 'osx' ]]; }
 
-# PATH
-typeset -U path                 # keep duplicates out of the path
-path=(/usr/local/bin /usr/local/opt/libiconv/bin $path)     # prepend files I install for system
-path+=(~/local/bin ~/bin . ~/.go/bin)
-path+=(/usr/local/opt/llvm/bin)
-path+=($HOME/.local/bin)        # for python -U apps
+export LANG=en_US.UTF-8
+export SHELL=${SHELL:-`which zsh`} # For Clear Linux or Docker (not sure which)
+export VISUAL=nvim
+export PAGER=less
 
-# GNU specific paths for Mac (requires `brew install coreutils`)
-[[ -d /usr/local/opt/coreutils/libexec/gnubin ]] && path=(/usr/local/opt/coreutils/libexec/gnubin $path)
-[[ -d /usr/local/opt/coreutils/libexec/gnuman ]] && manpath=(/usr/local/opt/coreutils/libexec/gnuman $MANPATH)
+##
+## PATH
+## macOS assumes GNU core utils installed: 
+## brew install coreutils findutils gawk gnu-sed gnu-tar grep makeZZ
+##
+## To insert GNU binaries before macOS BSD versions, run this to import matching folders:
+## :r! find /usr/local/opt -type d -follow -name gnubin -print
+## It's slow: just add them all, and remove ones that don't match at end
+## Same with gnuman
+## :r! find /usr/local/opt -type d -follow -name gnuman -print
+##
+## For zsh (N-/) ==> https://stackoverflow.com/a/9352979
+## Note: I had /Library/Apple/usr/bin because of /etc/path.d/100-rvictl (REMOVED)
+##
+## Dangerous to put /usr/local/bin in front of /usr/bin, but yolo 
+## https://superuser.com/a/580611
+##
 
-# Use the GNU version of ls/cat on Mac from coreutils
+# Keep duplicates (Unique) out of these paths
+typeset -gU path fpath manpath
+
+path=(
+    $HOME/bin
+    $HOME/.local/bin
+
+    /usr/local/opt/grep/libexec/gnubin
+    /usr/local/opt/make/libexec/gnubin
+    /usr/local/opt/findutils/libexec/gnubin
+    /usr/local/opt/gawk/libexec/gnubin
+    /usr/local/opt/gnu-sed/libexec/gnubin
+    /usr/local/opt/gnu-tar/libexec/gnubin
+    /usr/local/opt/coreutils/libexec/gnubin
+
+    /usr/local/opt/libiconv/bin     # iconv utility
+    /usr/local/opt/llvm/bin         # llvm
+
+    $HOME/.cargo/bin
+    $HOME/.go/bin
+
+    /usr/local/bin
+    /usr/bin
+    /usr/sbin
+    /bin
+    /sbin
+
+    $path[@]
+)
+
+# Now, remove paths that don't exist...
+path=($^path(N))
+
+manpath=(
+    /usr/local/opt/findutils/libexec/gnuman
+    /usr/local/opt/gnu-sed/libexec/gnuman
+    /usr/local/opt/make/libexec/gnuman
+    /usr/local/opt/gawk/libexec/gnuman
+    /usr/local/opt/grep/libexec/gnuman
+    /usr/local/opt/gnu-tar/libexec/gnuman
+    /usr/local/opt/coreutils/libexec/gnuman
+
+    /usr/local/share/man
+    /usr/share/man
+
+    $manpath[@]
+)
+manpath=($^manpath(N))
+
+## end of path
+
+
+##
+## LS and colors
+## 
+
+## Tips: https://gist.github.com/syui/11322769c45f42fad962
+
+# Load GNU colors for GNU version of ls
 [[ -d ~/dmz/dircolors ]] && eval $(dircolors ~/dmz/dircolors/dircolors.ansi-universal)
 
-# BSD LS colors
+# BSD LS colors as backup
 export LSCOLORS=exfxcxdxbxegedabagacad
 
 # GNU and BSD (macOS) ls flags aren't compatible
@@ -50,6 +115,7 @@ fi
 
 
 # Aliases
+alias path='echo $PATH | tr : "\n" | cat -n'
 alias b="bonsai"
 alias ls="ls ${lsflags}"
 alias ll="ls ${lsflags} -l"
@@ -134,10 +200,7 @@ autoload -Uz compinit
 
 ###################################################
 
-export LANGUAGE=en_US.UTF-8
-
 # LESS (is more)
-export PAGER=less
 less_options=(
     --quit-if-one-screen     # -F If the entire text fits on one screen, just show it and quit. (like cat)
     --no-init                # -X Do not clear the screen first.
@@ -242,14 +305,6 @@ ZSH_HIGHLIGHT_STYLES[path_prefix]=underline   # incomplete paths are underlined
 
 # R Language
 export R_LIBS=~/.R/lib
-
-# GO
-export GOPATH=~/.go
-path+=(~/.go/bin)
-[[ -s "~/.gvm/scripts/gvm" ]] && source "~/.gvm/scripts/gvm" && gvm use go1.9 > /dev/null  # || echo "gvm init failed"
-
-# RUST
-path+=(~/.cargo/bin)
 
 ##
 ## Anaconda: test for conda and load it lazily

@@ -1,5 +1,5 @@
 # vim:filetype=dircolors:
-# https://github.com/sentientmachine/erics_vim_syntax_and_color_highlighting/blob/master/.dircolors_gentoo
+# https://github.com/sentientmachine/erics_vim_syntax_and_color_highlighting
 #
 # Exact Solarized color theme for the color GNU ls utility.
 # Designed for dircolors (GNU coreutils) 5.97

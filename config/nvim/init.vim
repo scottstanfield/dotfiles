@@ -95,24 +95,6 @@ nnoremap <silent> <leader>/ :set hlsearch! hlsearch?<CR>
 nnoremap <leader>c :set cursorcolumn!<CR>
 nnoremap <leader>l :set cursorline!<CR>
 
-" 
-" Set solarized to dark or light depending on what 
-" iterm profile the session was launched with.
-" 
-function! SetDefaultSolar()          " ,x toggles dark/light
-    if $ITERM_PROFILE == 'solarized-dark'
-        call SolarDark()
-    elseif $ITERM_PROFILE == 'solarized-light'
-        call SolarLight()
-	elseif g:solar_state == 0
-        call SolarDark()
-	elseif g:solar_state == 1
-        call SolarLight()
-    endif
-	call lightline#colorscheme()
-endfunction
-autocmd VimEnter * call SolarLight()
-
 
 """""""""""""""""
 " TABS AND SPACES
@@ -475,58 +457,6 @@ call plug#end()
 
 autocmd! User goyo.vim echom 'Goyo is now loaded!' 
 
-" colorscheme stuff has to go afer plug
-" https://github.com/junegunn/vim-plug/wiki/faq#im-getting-cannot-find-color-scheme--does-vim-plug-support-color-schemes
-
-" Set solarized to dark or light depending on what 
-" iterm profile the session was launched with.
-" 
-let g:solar_state=1 
-function! SetDefaultSolar()          " ,x toggles dark/light
-    if $ITERM_PROFILE == 'Solarized Dark'
-        call SolarDark()
-    elseif $ITERM_PROFILE == 'Solarized Light'
-        call SolarLight()
-	elseif g:solar_state == 0
-        call SolarDark()
-	elseif g:solar_state == 1
-        call SolarLight()
-    endif
-	call lightline#colorscheme()
-endfunction
-
-function! SolarDark()
-	let g:solar_state=0
-    set background=dark
-    colorscheme solarized8_flat
-    " hi colorcolumn ctermbg=darkgrey
-endfunction
-
-function! SolarLight()
-	let g:solar_state=1
-	set background=light
-	colorscheme solarized8_flat
-	hi colorcolumn ctermbg=lightgrey
-endfunction
-
-function! ToggleColors()
-	if g:solar_state == 0 | call SolarLight() | else | call SolarDark() | endif
-endfunction
-noremap <leader>tc :call ToggleColors()<CR>
-
-" Doesn't work:
-" try
-" 	colorscheme PaperColor
-" 	set background=light
-" catch
-" endtry
-
-" Automatically set the colorscheme		TODO: seems really complex
-autocmd VimEnter * call SetDefaultSolar()
-
-" Remove next line comment to force dark color scheme.
-" Usually it's picked because iTerm2 will pass it in.
-" setenv ITERM_PROFILE solarized-dark
 
 
 " Toggle Line numbers on/off
@@ -743,3 +673,58 @@ nnoremap <silent> <c-p> :Vexplore<CR>
 " 	autocmd!
 " 	autocmd VimEnter * :Vexplore
 " augroup END
+
+" colorscheme stuff has to go afer plug
+" https://github.com/junegunn/vim-plug/wiki/faq#im-getting-cannot-find-color-scheme--does-vim-plug-support-color-schemes
+
+" Set solarized to dark or light depending on what 
+" iterm profile the session was launched with.
+" 
+let g:solar_state=1 
+function! SetDefaultSolar()          " ,x toggles dark/light
+    if $ITERM_PROFILE == 'Solarized Dark'
+        call SolarDark()
+    elseif $ITERM_PROFILE == 'Solarized Light'
+        call SolarLight()
+	elseif g:solar_state == 0
+        call SolarDark()
+	elseif g:solar_state == 1
+        call SolarLight()
+    endif
+	call lightline#colorscheme()
+endfunction
+
+function! SolarDark()
+	let g:solar_state=0
+    set background=dark
+    colorscheme solarized8_flat
+    " hi colorcolumn ctermbg=darkgrey
+endfunction
+
+function! SolarLight()
+	let g:solar_state=1
+	set background=light
+	colorscheme solarized8_flat
+	hi colorcolumn ctermbg=lightgrey
+endfunction
+
+function! ToggleColors()
+	if g:solar_state == 0 | call SolarLight() | else | call SolarDark() | endif
+endfunction
+noremap <leader>tc :call ToggleColors()<CR>
+
+" Doesn't work:
+" try
+" 	colorscheme PaperColor
+" 	set background=light
+" catch
+" endtry
+
+set background=light
+colorscheme solarized8_flat
+" Automatically set the colorscheme		TODO: seems really complex
+"autocmd VimEnter * call SetDefaultSolar()
+
+" Remove next line comment to force dark color scheme.
+" Usually it's picked because iTerm2 will pass it in.
+" setenv ITERM_PROFILE solarized-dark
