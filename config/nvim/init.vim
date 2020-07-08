@@ -156,7 +156,8 @@ nnoremap <silent> <S-Right> :wincmd l<CR>
 " keys to quickly resize window/pane splits
 " plus and minus (really underscore)
 nmap + <C-w>5+
-nmap _ <C-w>5-
+nmap = <C-w>5+
+nmap - <C-w>5-
 nmap < <C-w>5<
 nmap > <C-w>5>
 
@@ -170,6 +171,7 @@ inoremap jk <Esc>l
 " Q for formatting paragraph or selection
 vnoremap Q gq
 nnoremap Q gqap
+nnoremap <C-q> :q<cr>
 
 " Sane navigation for wrapped lines
 nnoremap j gj
@@ -177,13 +179,16 @@ nnoremap k gk
 
 " Use capital H/L for first/last non-whitespace character on line
 noremap H ^
-noremap L g_
+"noremap L g_
 
 " Select current line, excluding indents (great for copying to clipboard)
 nnoremap vv ^vg_
 
 " Disable K from looking stuff up
 noremap K <Esc>
+
+" split window vertically into two linked columns--very cool
+noremap <silent> <leader>vs :<C-u>let @z=&so<CR>:set so=0 noscb<CR>:bo vs<CR>Ljzt:setl scb<CR><C-w>p:setl scb<CR>:let &so=@z<CR>
 
 " ideas taken from Janus
 " toggle line wrapping modes
@@ -245,9 +250,11 @@ ab [yhat] ŷ
 ab [space] ␢
 ab [degree] ° 
 ab [deg] ° 
-ab [mu] µ
 ab [ss] §
+ab [mu] µ
 ab [sd] σ
+ab [Sigma] Σ
+ab [sigma] σ
 ab [blank] ␣
 ab [1/4] ¼
 ab [1/2] ½
@@ -384,7 +391,7 @@ call plug#begin('~/.config/nvim/plugged')
 
     Plug 'junegunn/goyo.vim', { 'for': 'markdown' }
     let g:goyo_width = 80
-    nmap <leader>tx :silent Goyo<CR>
+    nmap <leader>tm :silent Goyo<CR>
 
     Plug 'junegunn/vim-easy-align',     { 'on': ['<Plug>(EasyAlign)', 'EasyAlign'] }
     xmap ga <Plug>(EasyAlign)
@@ -395,6 +402,7 @@ call plug#begin('~/.config/nvim/plugged')
     Plug 'junegunn/vim-peekaboo'        " extend hash and at "
 	Plug 'leafgarland/typescript-vim'
 
+    " vim as a markdown editor: https://secluded.site/vim-as-a-markdown-editor
 	Plug 'godlygeek/tabular'
 	Plug 'plasticboy/vim-markdown'
 	let g:vim_markdown_folding_disabled = 1
@@ -416,7 +424,7 @@ call plug#begin('~/.config/nvim/plugged')
         \'win'  : '#I #W',
         \'y'    : '%a %b %e',
         \'z'    : '%-l:%M %p'}
-    nmap <leader>tm :Tmuxline<CR>
+    "nmap <leader>tm :Tmuxline<CR>
 
     " Test tmux settings from vim (weird, I know) by typing ,tm
     " If good, run :TmuxlineSnapshot ~/.tmux.snapshot
@@ -426,13 +434,13 @@ call plug#begin('~/.config/nvim/plugged')
 
     " For R language (rlang)
 	" R and Docker: https://github.com/jalvesaq/Nvim-R/issues/259
-    " Plug 'jalvesaq/colorout', { 'for': 'r' }
+    Plug 'jalvesaq/colorout', { 'for': 'r' }
     Plug 'jalvesaq/Nvim-r', {'branch': 'stable' }
 
-    " let R_assign = 0
-    " let R_args = ['--no-save', '--quiet']
-	" let R_tmpdir = '~scott/R/tmp'				" TODO: consider removing this
-    " let R_source_args = 'print.eval=F'
+    let R_assign = 0
+    let R_args = ['--no-save', '--quiet']
+	let R_tmpdir = '~scott/R/tmp'				" TODO: consider removing this
+    let R_source_args = 'print.eval=F'
     " " I needed to run `brew link --force readline` in order to get gcc5
     " to compile nvimcom (which updates automatically when you invoke nvim-r)
     " map <silent> <Space> :call SendLineToR("stay")<CR><Esc><Home><Down>
@@ -458,6 +466,25 @@ call plug#end()
 autocmd! User goyo.vim echom 'Goyo is now loaded!' 
 
 
+" spelling [s ]s z= zg
+augroup markdown
+    autocmd!
+    "autocmd Filetype markdown setlocal spell spelllang=en_us
+    autocmd filetype markdown set conceallevel=2
+    autocmd filetype markdown set cursorline
+augroup END
+
+" buffers
+" https://dev.to/nickjj/writing-and-previewing-markdown-in-real-time-with-vim-8-3icf
+
+" plasticboy/vim-markdown settings
+let g:vim_markdown_conceal = 2
+let g:vim_markdown_conceal_code_blocks = 0
+let g:vim_markdown_toml_frontmatter = 1
+let g:vim_markdown_frontmatter = 1
+let g:vim_markdown_strikethrough = 1
+let g:vim_markdown_edit_url_in = 'tab'
+let g:vim_markdown_follow_anchor = 1
 
 " Toggle Line numbers on/off
 nmap <silent> <leader>tn :set invnumber<CR>
@@ -720,7 +747,7 @@ noremap <leader>tc :call ToggleColors()<CR>
 " catch
 " endtry
 
-set background=light
+set background=dark
 colorscheme solarized8_flat
 " Automatically set the colorscheme		TODO: seems really complex
 "autocmd VimEnter * call SetDefaultSolar()
@@ -728,3 +755,4 @@ colorscheme solarized8_flat
 " Remove next line comment to force dark color scheme.
 " Usually it's picked because iTerm2 will pass it in.
 " setenv ITERM_PROFILE solarized-dark
+

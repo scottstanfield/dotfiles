@@ -11,6 +11,8 @@ shopt -s nullglob globstar
 ## Start here
 ##
 
+brew install pkg-config
+
 # Setup R
 mkdir -p $HOME/.R/lib
 mkdir -p $HOME/.R/tmp
