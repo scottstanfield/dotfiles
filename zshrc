@@ -107,10 +107,10 @@ export LSCOLORS=exfxcxdxbxegedabagacad
 # GNU and BSD (macOS) ls flags aren't compatible
 ls --version &>/dev/null
 if [ $? -eq 0 ]; then
-  lsflags="--color --group-directories-first -F"
+    lsflags="--color --group-directories-first -F"
 else
-  lsflags="-GF"
-  export CLICOLOR=1
+    lsflags="-GF"
+    export CLICOLOR=1
 fi
 
 
@@ -118,9 +118,11 @@ fi
 alias path='echo $PATH | tr : "\n" | cat -n'
 alias b="bonsai"
 alias ls="ls ${lsflags}"
-alias ll="ls ${lsflags} -l"
+alias ll="ls ${lsflags} -l --sort=time --reverse --time-style=long-iso"
+alias lx="ls ${lsflags} -Xl"
 alias lls="ls ${lsflags} -l --sort=size --reverse"
 alias llt="ls ${lsflags} -l --sort=time --reverse --time-style=long-iso"
+alias lt="ls ${lsflags} -l --sort=time --reverse --time-style=long-iso"
 alias lla="ls ${lsflags} -la"
 alias la="ls ${lsflags} -la"
 alias h="history"
@@ -137,6 +139,7 @@ alias tj='tmux -2 -S /var/tmux/campfire attach'
 alias rg='rg --pretty --smart-case'
 alias rgc='rg --no-line-number --color never '              # clean version of rg suitable for piping
 #alias ping='prettyping --nolegend'
+alias dc='docker-compose'
 
 
 # Simple default prompt (impure is a better prompt)
@@ -166,19 +169,19 @@ bindkey ' '  magic-space
 export ZSH=$HOME/dmz
 
 for c in $ZSH/lib/*.zsh; do
-  source $c
+    source $c
 done
 
 plugins=(impure ripgrep zsh-syntax-highlighting)
 
 for p in $plugins; do
-  fpath=($ZSH/plugins/$p $fpath)
+    fpath=($ZSH/plugins/$p $fpath)
 done
 
 for p in $plugins; do
-  if [ -f $ZSH/plugins/$p/$p.plugin.zsh ]; then
-    source $ZSH/plugins/$p/$p.plugin.zsh
-  fi
+    if [ -f $ZSH/plugins/$p/$p.plugin.zsh ]; then
+        source $ZSH/plugins/$p/$p.plugin.zsh
+    fi
 done
 
 COMPLETION_WAITING_DOTS="true"
@@ -186,14 +189,14 @@ COMPLETION_WAITING_DOTS="true"
 # startup speedup tip: https://gist.github.com/ctechols/ca1035271ad134841284
 autoload -Uz compinit
 () {
-    setopt local_options extendedglob
-    if [[ -n $HOME/.zcompdump(#qN.m1) ]]; then
-        echo "compiling compinit..."
-        compinit
-        touch $HOME/.zcompdump
-    else
-        compinit -C         # happy path, skip compile
-    fi
+setopt local_options extendedglob
+if [[ -n $HOME/.zcompdump(#qN.m1) ]]; then
+    echo "compiling compinit..."
+    compinit
+    touch $HOME/.zcompdump
+else
+    compinit -C         # happy path, skip compile
+fi
 }
 
 
@@ -210,9 +213,9 @@ less_options=(
     --quiet                  # -q No bell when trying to scroll past the end of the buffer.
     --dumb                   # -d Do not complain when we are on a dumb terminal.
     --LONG-PROMPT            # -M most verbose prompt
-);
-export LESS="${less_options[*]}";
-unset less_options;
+    );
+    export LESS="${less_options[*]}";
+    unset less_options;
 
 # http://joepvd.github.io/less-a-love-story.html
 # export LESSCHARSET='utf-8'
@@ -232,9 +235,9 @@ alias vi="${vic} -o"
 alias zshrc="${vic} ~/.zshrc"
 
 if [[ $EDITOR  == "nvim" ]]; then
-	alias vimrc="nvim ~/.config/nvim/init.vim"
+    alias vimrc="nvim ~/.config/nvim/init.vim"
 else
-	alias vimrc="vim ~/.vimrc"
+    alias vimrc="vim ~/.vimrc"
 fi
 alias v="/usr/bin/vi"
 
@@ -249,7 +252,7 @@ alias ssh="TERM=xterm-256color ssh -Y"
 
 # macOS specific
 function man2() {
-  man -t $@ | open -f -a "Preview"
+    man -t $@ | open -f -a "Preview"
 }
 
 
@@ -263,15 +266,15 @@ function zcolors() { for code in {000..255}; do print -P -- "$code: %F{$code}Tes
 
 # Automatically ls after you cd
 function chpwd() {
-	emulate -L zsh
-	ls
+    emulate -L zsh
+    ls
 }
 #
 # GIT
 # Do this: git config --global url.ssh://git@github.com/.insteadOf https://github.com
 hubpath=$(which hub)
 if (( $+commands[hub] )); then
-	alias git=$hubpath
+    alias git=$hubpath
 fi
 
 # Use diff-so-fancy if found in path
@@ -376,3 +379,4 @@ export DOCKER_BUILDKIT=1
 export LDFLAGS="-L/usr/local/opt/libiconv/lib"
 export CPPFLAGS="-I/usr/local/opt/libiconv/include"
 
+export HOMEBREW_NO_AUTO_UPDATE=1
