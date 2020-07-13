@@ -1,5 +1,5 @@
 # Scott Stanfield
-# http://git.io/dmz
+# http://git.io/dmz/
 
 # Timing startup
 # % hyperfine --warmup 2 'zsh -i -c "exit"'
@@ -116,7 +116,6 @@ fi
 
 # Aliases
 alias path='echo $PATH | tr : "\n" | cat -n'
-alias b="bonsai"
 alias ls="ls ${lsflags}"
 alias ll="ls ${lsflags} -l --sort=time --reverse --time-style=long-iso"
 alias lx="ls ${lsflags} -Xl"
@@ -138,8 +137,8 @@ alias ts='tmux -2 -S /var/tmux/campfire new-session -A -s campfire'
 alias tj='tmux -2 -S /var/tmux/campfire attach'
 alias rg='rg --pretty --smart-case'
 alias rgc='rg --no-line-number --color never '              # clean version of rg suitable for piping
-#alias ping='prettyping --nolegend'
 alias dc='docker-compose'
+alias fd='findfd'
 
 
 # Simple default prompt (impure is a better prompt)
