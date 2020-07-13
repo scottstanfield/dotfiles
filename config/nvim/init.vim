@@ -377,7 +377,7 @@ call plug#begin('~/.config/nvim/plugged')
 
     " After installing, run ~/.fzf/install
     " Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-    Plug 'junegunn/fzf.vim'
+    Plug 'junegunn/fzf'
     nnoremap <silent> <leader>ff :FZF<CR>
     nnoremap <silent> <leader>ft :Files<CR>		
     nmap <leader>fc     :Commits<CR>
