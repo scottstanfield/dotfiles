@@ -117,11 +117,12 @@ fi
 # Aliases
 alias path='echo $PATH | tr : "\n" | cat -n'
 alias ls="ls ${lsflags}"
-alias ll="ls ${lsflags} -l --sort=time --reverse --time-style=long-iso"
-alias lx="ls ${lsflags} -Xl"
+alias ll="ls ${lsflags} -l --sort=extension"
 alias lls="ls ${lsflags} -l --sort=size --reverse"
 alias llt="ls ${lsflags} -l --sort=time --reverse --time-style=long-iso"
+alias lld="ls ${lsflags} -l --sort=time --reverse --time-style=long-iso"
 alias lt="ls ${lsflags} -l --sort=time --reverse --time-style=long-iso"
+alias lx="ls ${lsflags} -Xl"
 alias lla="ls ${lsflags} -la"
 alias la="ls ${lsflags} -la"
 alias h="history"
@@ -307,6 +308,7 @@ ZSH_HIGHLIGHT_STYLES[path_prefix]=underline   # incomplete paths are underlined
 
 # R Language
 export R_LIBS=~/.R/lib
+export R_LIBS="/usr/local/Cellar/r/4.0.0_1/lib/R/library"
 
 ##
 ## Anaconda: test for conda and load it lazily

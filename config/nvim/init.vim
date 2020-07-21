@@ -362,6 +362,7 @@ call plug#begin('~/.config/nvim/plugged')
     Plug 'niftylettuce/vim-jinja'              " syntax: nunjucks markup
 
 	Plug 'JuliaEditorSupport/julia-vim'		" syntax: julia
+    Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
 
     Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
         augroup nerd_loader
