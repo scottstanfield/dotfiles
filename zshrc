@@ -12,8 +12,6 @@
 # Profile startup times by adding this to you .zshrc: zmodload zsh/zprof
 # Start a new zsh. Then run and inspect: zprof > startup.txt
 
-umask 007 
-
 is_linux() { [[ $SHELL_PLATFORM == 'linux' || $SHELL_PLATFORM == 'bsd' ]]; }
 is_osx() { [[ $SHELL_PLATFORM == 'osx' ]]; }
 
@@ -99,7 +97,7 @@ manpath=($^manpath(N))
 ## Tips: https://gist.github.com/syui/11322769c45f42fad962
 
 # Load GNU colors for GNU version of ls
-[[ -d ~/dmz/dircolors ]] && eval $(dircolors ~/dmz/dircolors/dircolors.ansi-universal)
+[[ -d ~/dmz/dircolors ]] && eval $(dircolors ~/dmz/dircolors/dircolors.256dark)
 
 # BSD LS colors as backup
 export LSCOLORS=exfxcxdxbxegedabagacad
@@ -118,6 +116,7 @@ fi
 alias path='echo $PATH | tr : "\n" | cat -n'
 alias ls="ls ${lsflags}"
 alias ll="ls ${lsflags} -l --sort=extension"
+alias lln="ls ${lsflags} -l"
 alias lls="ls ${lsflags} -l --sort=size --reverse"
 alias llt="ls ${lsflags} -l --sort=time --reverse --time-style=long-iso"
 alias lld="ls ${lsflags} -l --sort=time --reverse --time-style=long-iso"
@@ -133,13 +132,12 @@ alias m="less"
 alias cp="cp -a"
 alias pd='pushd'  # symmetry with cd
 alias df='df -h'  # human readable
-alias t='tmux -2 new-session -A -s "campfire"'		# set variable in .secret
-alias ts='tmux -2 -S /var/tmux/campfire new-session -A -s campfire'
+alias t='tmux -2 new-session -A -s "bonsai"'		# set variable in .secret
+alias ts='tmux -2 -S /var/tmux/campfire new-session -A -s bonsai'
 alias tj='tmux -2 -S /var/tmux/campfire attach'
 alias rg='rg --pretty --smart-case'
 alias rgc='rg --no-line-number --color never '              # clean version of rg suitable for piping
 alias dc='docker-compose'
-alias fd='findfd'
 
 
 # Simple default prompt (impure is a better prompt)
@@ -162,6 +160,11 @@ bindkey '\e[3~' delete-char
 bindkey '^p' history-search-backward
 bindkey '^n' history-search-forward
 bindkey ' '  magic-space
+
+# ctrl-e will edit command line in $EDITOR
+autoload edit-command-line
+zle -N edit-command-line
+bindkey "^e" edit-command-line
 
 ####################################
 # Stripped-down version of oh-my-zsh
@@ -248,7 +251,8 @@ alias r='R --no-save --quiet'
 alias make="make --no-print-directory"
 alias grep="grep --color=auto"
 alias shs="ssh -Y"    # enable X11 forwarding back to the Mac running XQuartz to display graphs
-alias ssh="TERM=xterm-256color ssh -Y"
+#alias ssh="TERM=xterm-256color ssh -Y"
+alias ssh="TERM=xterm-256color ssh"
 
 # macOS specific
 function man2() {
