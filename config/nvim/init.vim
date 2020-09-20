@@ -145,7 +145,7 @@ set splitright
 " #-----------------------------------------------------------------------
 " # <leader>q will put a surround a line with comment blocks like this ^ v
 " #-----------------------------------------------------------------------
-nnoremap <leader>q <Esc>yyp<Esc>Vr-r#<Esc>yykPj
+"nnoremap <leader>q <Esc>yyp<Esc>Vr-r#<Esc>yykPj
 
 
 nnoremap <silent> <S-Up> :wincmd k<CR>
@@ -315,7 +315,10 @@ endif
 
 call plug#begin('~/.config/nvim/plugged')
 
-	Plug 'tpope/vim-speeddating'
+    Plug 'editorconfig/editorconfig-vim'
+    Plug 'lifepillar/vim-colortemplate'
+	" Plug 'tpope/vim-speeddating'
+    Plug 'tpope/vim-fugitive'
 
 	" silicon code highlighter (Generate images of source code)
 	" Plug 'segeljakt/vim-silicon', { 'branch': 'version-2' }	
@@ -583,13 +586,13 @@ set undofile
 " Go into WordProcessorMode when typing Markdown paragraphs: <leader>0
 " http://www.drbunsen.org/writing-in-vim/
 func! WordProcessorMode()
+    setlocal tw=80
     setlocal formatoptions=1t
     setlocal noexpandtab
     map j gj
     map k gk
-    setlocal spell spelllang=en_us
+    "setlocal spell spelllang=en_us
     set complete+=s
-    set formatprg=par
     setlocal wrap
     setlocal linebreak
 endfu
