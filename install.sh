@@ -68,6 +68,7 @@ link bashrc       $HOME/.bashrc
 link bash_profile $HOME/.bash_profile
 link agignore     $HOME/.agignore					# brew{apt} the_silver_searcher{-ag}
 link inputrc      $HOME/.inputrc
+link alacritty.yml $HOME/.alacritty.yml
 
 link   gitconfig  $HOME/.gitconfig
 link   gitignore  $HOME/.gitignore
