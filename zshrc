@@ -5,12 +5,28 @@
 # % hyperfine --warmup 2 'zsh -i -c "exit"'
 
 # Superfast as of Jun 20, 2020
-# Benchmark #1: zsh -i -c "exit"
+# Benchmark 16" MacBook Pro #1: zsh -i -c "exit"
 #   Time (mean ± σ):     137.3 ms ±   4.5 ms    [User: 61.5 ms, System: 71.6 ms]
 #   Range (min … max):   130.8 ms … 152.2 ms    19 runs
+#
+# Benchmark iMacPro 2019
+#  Time (mean ± σ):      92.9 ms ±   0.9 ms    [User: 51.0 ms, System: 38.4 ms]
+#  Range (min … max):    91.7 ms …  95.5 ms    31 runs
 
 # Profile startup times by adding this to you .zshrc: zmodload zsh/zprof
 # Start a new zsh. Then run and inspect: zprof > startup.txt
+
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+#typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
+
+source ~/.zsh/zsh-snap/znap.zsh
+
 
 is_linux() { [[ $SHELL_PLATFORM == 'linux' || $SHELL_PLATFORM == 'bsd' ]]; }
 is_osx() { [[ $SHELL_PLATFORM == 'osx' ]]; }
@@ -19,6 +35,7 @@ export LANG=en_US.UTF-8
 export SHELL=${SHELL:-`which zsh`} # For Clear Linux or Docker (not sure which)
 export VISUAL=nvim
 export PAGER=less
+export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.zsh}"
 
 ##
 ## PATH
@@ -154,6 +171,12 @@ unsetopt correct_all            # I don't care for 'suggestions' from ZSH
 export BLOCK_SIZE="'1"          # Add commas to file sizes
 ZLE_REMOVE_SUFFIX_CHARS=$' \t\n;&' # These "eat" the auto prior space after a tab complete
 
+# Options
+setopt autocd autopushd chaselinks pushdignoredups pushdsilent
+setopt NO_caseglob extendedglob globdots globstarshort nullglob numericglobsort
+setopt histfcntllock histignorealldups histreduceblanks histsavenodups sharehistory
+setopt NO_flowcontrol interactivecomments rcquotes
+
 # BINDKEY
 bindkey -e
 bindkey '\e[3~' delete-char
@@ -170,22 +193,6 @@ bindkey "^e" edit-command-line
 # Stripped-down version of oh-my-zsh
 ####################################
 export ZSH=$HOME/dmz
-
-for c in $ZSH/lib/*.zsh; do
-    source $c
-done
-
-plugins=(impure ripgrep zsh-syntax-highlighting)
-
-for p in $plugins; do
-    fpath=($ZSH/plugins/$p $fpath)
-done
-
-for p in $plugins; do
-    if [ -f $ZSH/plugins/$p/$p.plugin.zsh ]; then
-        source $ZSH/plugins/$p/$p.plugin.zsh
-    fi
-done
 
 COMPLETION_WAITING_DOTS="true"
 
@@ -273,13 +280,6 @@ function chpwd() {
     emulate -L zsh
     ls
 }
-#
-# GIT
-# Do this: git config --global url.ssh://git@github.com/.insteadOf https://github.com
-hubpath=$(which hub)
-if (( $+commands[hub] )); then
-    alias git=$hubpath
-fi
 
 # Use diff-so-fancy if found in path
 hash "diff-so-fancy" &> /dev/null && alias gd="git dsf" || alias gd="git diff"
@@ -295,16 +295,16 @@ export FZF_DEFAULT_OPTS='--ansi --height 40% --extended'
 export FZF_DEFAULT_COMMAND='rg --files --no-ignore --follow -g "!{.git,node_modules,env}" 2> /dev/null'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
-ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern cursor)
-ZSH_HIGHLIGHT_PATTERNS+=('rm -rf' 'fg=white,bold,bg=red')
-ZSH_HIGHLIGHT_PATTERNS+=('sudo ' 'fg=white,bold,bg=red')
-ZSH_HIGHLIGHT_STYLES[path]='none'
-ZSH_HIGHLIGHT_STYLES[builtin]=fg=blue
-ZSH_HIGHLIGHT_STYLES[command]=fg=blue
-ZSH_HIGHLIGHT_STYLES[alias]=fg=blue
-ZSH_HIGHLIGHT_STYLES[function]=fg=blue
-ZSH_HIGHLIGHT_STYLES[comment]=fg=yellow	      # comments at end of command (not black)
-ZSH_HIGHLIGHT_STYLES[path_prefix]=underline   # incomplete paths are underlined
+# ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern cursor)
+# ZSH_HIGHLIGHT_PATTERNS+=('rm -rf' 'fg=white,bold,bg=red')
+# ZSH_HIGHLIGHT_PATTERNS+=('sudo ' 'fg=white,bold,bg=red')
+# ZSH_HIGHLIGHT_STYLES[path]='none'
+# ZSH_HIGHLIGHT_STYLES[builtin]=fg=blue
+# ZSH_HIGHLIGHT_STYLES[command]=fg=blue
+# ZSH_HIGHLIGHT_STYLES[alias]=fg=blue
+# ZSH_HIGHLIGHT_STYLES[function]=fg=blue
+# ZSH_HIGHLIGHT_STYLES[comment]=fg=yellow	      # comments at end of command (not black)
+# ZSH_HIGHLIGHT_STYLES[path_prefix]=underline   # incomplete paths are underlined
 
 ##
 ## Programming language specific
@@ -344,8 +344,9 @@ function conda_indicator {
         psvar[1]='('${CONDA_DEFAULT_ENV##*/}')'
     fi
 }
-add-zsh-hook precmd conda_indicator
-LEFT_PROMPT_EXTRA="%(1V.%1v .)"
+
+#add-zsh-hook precmd conda_indicator
+#LEFT_PROMPT_EXTRA="%(1V.%1v .)"
 
 ##
 ## JAVA
@@ -385,3 +386,42 @@ export LDFLAGS="-L/usr/local/opt/libiconv/lib"
 export CPPFLAGS="-I/usr/local/opt/libiconv/include"
 
 export HOMEBREW_NO_AUTO_UPDATE=1
+
+
+znap source zsh-completions
+znap source zsh-syntax-highlighting
+znap source zsh-async
+znap source z
+znap source zsh-colored-man-pages
+znap source zsh-abbrev-alias
+znap source fzf-tab
+znap source powerlevel10k
+
+# From Oh-my-ZSH
+znap source oh-my-zsh lib/completion
+
+# From Prezto
+znap source prezto
+znap source prezto \
+	modules/helper \
+	modules/completion \
+	modules/environment \
+	modules/terminal \
+	modules/editor \
+	modules/history \
+	modules/directory \
+	modules/syntax-highlighting \
+	modules/zsh-history-substring-search \
+	modules/utility
+fpath+=( $(znap path prezto) )
+
+# Pure prompt
+#znap source pure
+#fpath+=$(znap path pure)
+#autoload -Uz promptinit && promptinit
+#prompt pure
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+
