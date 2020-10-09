@@ -18,14 +18,10 @@ require() { hash "$@" || exit 127; }
 println() { printf '%s\n' "$*"; }
 die()     { ret=$?; printf "%s\n" "$@" >&2; exit "$ret"; }
 
-# Minimum Bash version check > 4.2. Why? For associative array safety.
-# println "${BASH_VERSINFO[*]: 0:3}"
-bv=${BASH_VERSINFO[0]}${BASH_VERSINFO[0]}
-((bv > 42)) || die "Need Bash version 4.2 or greater. You have $BASH_VERSION"
-shopt -s nullglob globstar
 
 require nvim
 require git
+require dircolors
 
 # Change directories to where this script is located
 cd "$(dirname "$(realpath "${BASH_SOURCE[0]}")")"
@@ -84,15 +80,21 @@ fi
 # fixing potential insecure group writable folders
 # compaudit | xargs chmod g-w
 
+# Setup termcap for tmux
+# Italics + true color + iTerm + tmux + vim
+# https://medium.com/@dubistkomisch/how-to-actually-get-italics-and-true-colour-to-work-in-iterm-tmux-vim-9ebe55ebc2be
+tic -x termcap/tmux-256color.terminfo || true
+tic -x termcap/xterm-256color-italic.terminfo || true
+
 # Install fuzzy finder
 git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && ~/.fzf/install --all
 
 # Install neovim plugins
-echo "Installing vim plugins..."
+println "Installing vim plugins..."
 nvim +PlugInstall +qall
 
 # now change shells
-echo 'and: sudo chsh -s $(which zsh) $(whoami)'
+println 'and: sudo chsh -s $(which zsh) $(whoami)'
 
 exit 0
 
