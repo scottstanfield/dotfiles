@@ -83,6 +83,8 @@ fi
 # Setup termcap for tmux
 # Italics + true color + iTerm + tmux + vim
 # https://medium.com/@dubistkomisch/how-to-actually-get-italics-and-true-colour-to-work-in-iterm-tmux-vim-9ebe55ebc2be
+# Understanding TERM strings 
+# https://sanctum.geek.nz/arabesque/term-strings/
 tic -x termcap/tmux-256color.terminfo || true
 tic -x termcap/xterm-256color-italic.terminfo || true
 
