@@ -4,6 +4,9 @@
 " https://danishpraka.sh/2018/06/30/vim-plugins-i-use.html
 " https://dev.to/casonadams/ditch-vscode-for-neovim-25ca
 
+" zR • open all folds
+" zM • close all folds
+
 let g:solar_state=1 
 
 let mapleader = ","             " Our free key to prefix custom commands
@@ -18,10 +21,13 @@ endif
 
 call plug#begin('~/.config/nvim/plugged')
 
+    " Essential
+    Plug 'sheerun/vim-polyglot'             " all the best language / syntax packs
+    Plug 'csexton/trailertrash.vim'         "
     Plug 'editorconfig/editorconfig-vim'
     Plug 'lifepillar/vim-colortemplate'
     Plug 'tpope/vim-fugitive'
-    Plug 'csexton/trailertrash.vim'
+    Plug 'ryanoasis/vim-devicons'
 
     " Highlight a code block in visual mode and :Silicon to generate a nice PNG
     Plug 'segeljakt/vim-silicon'
@@ -37,27 +43,17 @@ call plug#begin('~/.config/nvim/plugged')
 
     " Plug 'scottstanfield/vimcmdline'
 
-    " THEMES
+    " colorschemes 
     Plug 'lifepillar/vim-solarized8'
     Plug 'NLKNguyen/papercolor-theme'
+    Plug 'dracula/vim'
+    Plug 'junegunn/seoul256.vim'
     
-    " SYNTAX
-    Plug 'ekalinin/Dockerfile.vim'          " syntax: dockerfile
-    Plug 'posva/vim-vue'                    " syntax: vue
-    Plug 'kchmck/vim-coffee-script'         " syntax: coffee script
-    Plug 'digitaltoad/vim-pug'              " syntax: pug
-    Plug 'iloginow/vim-stylus'              " syntax: stylus
-    Plug 'leafgarland/typescript-vim'       " syntax: typescript
-
     Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
     Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
     Plug 'junegunn/fzf.vim'
-    " Great for vim "presentation
     Plug 'junegunn/limelight.vim'
-    nmap <leader>tl :Limelight!! 0.7<CR>
-
     Plug 'junegunn/rainbow_parentheses.vim'
-    let g:rainbow#pairs = [['(', ')'], ['[', ']']]
 
     Plug 'junegunn/goyo.vim', { 'for': 'markdown' }
     let g:goyo_width = 80
@@ -86,18 +82,6 @@ call plug#begin('~/.config/nvim/plugged')
     " R and Docker: https://github.com/jalvesaq/Nvim-R/issues/259
     Plug 'jalvesaq/colorout', { 'for': 'r' }
     Plug 'jalvesaq/Nvim-r', {'branch': 'stable' }
-    let R_assign = 0
-    let R_args = ['--no-save', '--quiet']
-    let R_tmpdir = '~scott/R/tmp'               " TODO: consider removing this
-    let R_source_args = 'print.eval=F'
-    " " I needed to run `brew link --force readline` in order to get gcc5
-    " to compile nvimcom (which updates automatically when you invoke nvim-r)
-    " map <silent> <Space> :call SendLineToR("stay")<CR><Esc><Home><Down>
-    " vmap <silent> <Space> <Plug>RSendSelection<Esc><Esc>
-    " nmap <silent> ✠       :call SendLineToR("stay")<CR><Esc><Home><Down>
-    " imap <silent> ✠       <Esc>:call SendLineToR("stay")<CR><Esc>A
-    " vmap ✠                  <Plug>RSendSelection<Esc><Esc>
-
     Plug 'kshenoy/vim-signature'                    " show marks in margin
     Plug 'tpope/vim-surround'
     Plug 'tpope/vim-repeat'
@@ -113,6 +97,38 @@ call plug#end()
 
 " Plugin Configurations {{{
 
+function! ColorDracula()
+    let g:airline_theme=''
+    color dracula
+endfunction
+
+function! ColorSeoul256()
+    let g:airline_theme='silver'
+    color seoul256
+endfunction
+
+nmap <leader>e1 :call ColorDracula()<cr>
+nmap <leader>e2 :call ColorSeoul256()<cr>
+
+
+" junegunn/rainbow_parenthesis
+let g:rainbow#pairs = [['(', ')'], ['[', ']']]
+
+nmap <leader>tl :Limelight!! 0.7<CR>
+
+" jalvesaq/Nvim-r {{{
+    let R_assign = 0
+    let R_args = ['--no-save', '--quiet']
+    let R_tmpdir = '~scott/R/tmp'               " TODO: consider removing this
+    let R_source_args = 'print.eval=F'
+    " " I needed to run `brew link --force readline` in order to get gcc5
+    " to compile nvimcom (which updates automatically when you invoke nvim-r)
+    " map <silent> <Space> :call SendLineToR("stay")<CR><Esc><Home><Down>
+    " vmap <silent> <Space> <Plug>RSendSelection<Esc><Esc>
+    " nmap <silent> ✠       :call SendLineToR("stay")<CR><Esc><Home><Down>
+    " imap <silent> ✠       <Esc>:call SendLineToR("stay")<CR><Esc>A
+    " vmap ✠                  <Plug>RSendSelection<Esc><Esc>
+"}}}
 " edkolev/tmuxline.vim {{{
 let g:tmuxline_preset               = 'minimal'
 let g:tmuxline_theme                = 'lightline'
@@ -132,6 +148,7 @@ let g:tmuxline_preset = {
 " Then merge that into the bottom of your .tmux.conf
 " }}}
 " fuzzyfinder {{{
+nnoremap <silent> <c-p> :FZF<CR>
 nnoremap <silent> <leader>ff :FZF<CR>
 nnoremap <silent> <leader>ft :Files<CR>     
 nmap <leader>fc     :Commits<CR>
@@ -151,6 +168,10 @@ au FileType fzf tnoremap <nowait><buffer> <esc> <c-g>
     let g:vim_markdown_toml_frontmatter = 1
 "}}}
 " Nerdtree {{{
+let g:NERDTreeShowHidden=1
+let g:NERDTreeMinimalUI=1
+let g:NERDTreeIgnore=['\.git$[[dir]]']
+
 augroup nerd_loader
     autocmd!
     autocmd VimEnter * silent! autocmd! FileExplorer
@@ -161,9 +182,9 @@ augroup nerd_loader
         \| endif
 augroup END
 nnoremap <leader>n :NERDTreeToggle<cr>
+nnoremap <c-t> :NERDTreeToggle<cr>
 " }}}
-
-" scottstanfield/vimcmdline
+" scottstanfield/vimcmdline {{{
 " let cmdline_map_start          = '<LocalLeader>s'
 " let cmdline_map_send           = '<Space>'
 " let cmdline_map_send_and_stay  = '<LocalLeader><Space>'
@@ -185,6 +206,14 @@ nnoremap <leader>n :NERDTreeToggle<cr>
 " let cmdline_app['julia']  = 'julia'
 " let cmdline_app['javascript']  = 'node'
 " }}}
+" TrailerTrash {{{
+nmap <silent> <leader>$ :TrailerTrim<cr>
+nmap <silent> <leader>w :Trailer<cr>
+let g:show_trailertrash = 1
+autocmd FileType c,python,r,javascript BufWritePre :call TrailerTrim()
+" }}}
+
+" }}} Plugin configuration
 
 " INSERT MODE  {{{
 " readline: mimic emacs like line-editing in insert-mode
@@ -362,6 +391,11 @@ nnoremap k gk
 " toggle line wrapping modes
 nnoremap <silent> <leader>tw :set invwrap<CR>:set wrap?<CR>
 
+" Toggle invisible whiteSpace ¬ ¶
+nnoremap <leader>i :set list!<CR>
+set listchars=eol:¬,tab:▸\.,trail:▫,nbsp:_,extends:»,precedes:«
+
+
 " Toggle Line numbers on/off
 nmap <silent> <leader>tn :set invnumber<CR>
 
@@ -381,6 +415,15 @@ noremap <leader>ts :call ToggleSplit()<CR>
 " Highlight current line and column
 nnoremap <leader>c :set cursorcolumn!<CR>
 nnoremap <leader>l :set cursorline!<CR>
+
+function! ToggleFolds()
+    if &foldlevel > 0
+        set foldlevel=0
+    else
+        set foldlevel=3
+    endif
+endfunction
+nnoremap zz :call ToggleFolds()<cr>
 
 
 "}}}
@@ -426,8 +469,6 @@ au TermOpen * setlocal nonumber norelativenumber
 "}}}
 
 " Folding {{{
-" zR • open all folds
-" zM • close all folds
 
 highlight folded ctermbg=7 ctermfg=4
 set foldmethod=marker
@@ -519,43 +560,7 @@ augroup END
 
 " }}}
 
-" Whitespace at EOL {{{
-" Trim trailing characters when files are saved
-" function! TrimWhiteSpace()
-"     silent! keepjumps execute ':' %s/\s\+$//e
-" endfunction   
-" autocmd FileType c,python,r,javascript BufWritePre :call TrimeWhiteSpace()
-" nnoremap <leader>$ :silent call TrimWhiteSpace()<CR>
 
-" function! s:xx1(line1,line2)
-"     let pos=getpos(".")
-"     let _s=@/
-"     silent! keepjumps execute ':' . a:line1 . ',' . a:line2 . 's/\\\@<!\s\+$//'
-"     let @/=_s
-"     call setpos(".",pos)
-" endfunction
-
-" command! -range=% TrimWhitespace call <SID>xx1(<line1>,<line2>)
-
-" " TODO: fix this  
-
-" highlight ExtraWhitespace ctermbg=red guibg=red
-" match ExtraWhitespace /\s\+$/
-" match Todo /\s\+$/
-"
-" TrailerTrash
-nmap <silent> <leader>$ :TrailerTrim<cr>
-nmap <silent> <leader>w :Trailer<cr>
-
-let g:show_trailertrash = 1
-
-autocmd FileType c,python,r,javascript BufWritePre :call TrailerTrim()
-
-" Toggle invisible whiteSpace ¬ ¶
-nnoremap <leader>i :set list!<CR>
-set listchars=eol:¬,tab:▸\.,trail:▫,nbsp:_,extends:»,precedes:«
-
-"}}}
 
 " Markdown and Word processing mode {{{
 " Go into WordProcessorMode when typing Markdown paragraphs: <leader>0
