@@ -213,17 +213,6 @@ less_options=(
     export LESS="${less_options[*]}";
     unset less_options;
 
-# http://joepvd.github.io/less-a-love-story.html
-# export LESSCHARSET='utf-8'
-# export LESS_TERMCAP_mb=$'\e[01;31m'       # begin blinking
-# export LESS_TERMCAP_md=$'\e[01;38;5;74m'  # begin bold
-# export LESS_TERMCAP_me=$'\e[0m'           # end mode
-# export LESS_TERMCAP_so=$'\e[38;5;070m'    # begin standout (info box, search)
-# export LESS_TERMCAP_se=$'\e[0m'           # end standout-mode
-# export LESS_TERMCAP_us=$'\e[04;38;5;146m' # begin underline
-# export LESS_TERMCAP_ue=$'\e[0m'           # end underline
-# export MAN_KEEP_FORMATTING=1
-
 # Which editor: vi, vim or neovim (nvim)
 which "nvim" &> /dev/null && vic="nvim" || vic="vim"
 export EDITOR=${vic}
@@ -238,7 +227,6 @@ fi
 alias v="/usr/bin/vi"
 
 # Aliases
-alias ag="ag --literal "
 alias R="R --no-save"
 alias r='R --no-save --quiet'
 alias make="make --no-print-directory"
@@ -246,12 +234,6 @@ alias grep="grep --color=auto"
 alias shs="ssh -Y"    # enable X11 forwarding back to the Mac running XQuartz to display graphs
 #alias ssh="TERM=xterm-256color ssh -Y"
 alias ssh="TERM=xterm-256color ssh"
-
-# macOS specific
-function man2() {
-    man -t $@ | open -f -a "Preview"
-}
-
 
 # Functions
 function ff() { find . -iname "$1*" -print }
