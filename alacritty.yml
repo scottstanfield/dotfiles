@@ -4,14 +4,13 @@ font:
   size: 20.0
   normal:
     family: MesloLGS NF
-
-    # style: Regular
-  # bold:
-    # family: Hack Nerd Font
-    # style: Bold
-  # italic:
-    # family: Hack Nerd Font
-    # style: Italic
+    style: Regular
+  bold:
+    family: MesloLGS NF
+    style: Bold
+  italic:
+    family: MesloLGS NF
+    style: Italic
 
 # Colors
 # Solarized Flattened: https://github.com/romainl/flattened
@@ -92,7 +91,7 @@ schemes:
       
   gruvbox_dark: &gdark
     primary:
-      background: '#282828'
+      background: '#1d2021'
       foreground: '#ebdbb2'
     normal:
       black:   '#282828'
