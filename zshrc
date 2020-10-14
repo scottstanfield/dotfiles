@@ -141,7 +141,7 @@ alias lt="ls ${lsflags} -l --sort=time --reverse --time-style=long-iso"
 alias lx="ls ${lsflags} -Xl"
 alias lla="ls ${lsflags} -la"
 alias la="ls ${lsflags} -la"
-alias h="history"
+#alias h="history"
 alias hg="history | grep -i"
 alias @="printenv | sort | grep -i"
 alias ,="cd .."
@@ -160,6 +160,8 @@ alias dc='docker-compose'
 # Simple default prompt (impure is a better prompt)
 PROMPT='%n@%m %3~%(!.#.$)%(?.. [%?]) '
 
+unsetopt correct
+unsetopt correct_all
 setopt complete_in_word         # cd /ho/sco/tm<TAB> expands to /home/scott/tmp
 setopt auto_menu                # show completion menu on succesive tab presses
 
@@ -167,7 +169,6 @@ setopt auto_menu                # show completion menu on succesive tab presses
 setopt autocd                   # cd to a folder just by typing it's name
 setopt interactive_comments     # allow # comments in shell; good for copy/paste
 setopt extendedglob
-unsetopt correct_all            # I don't care for 'suggestions' from ZSH
 export BLOCK_SIZE="'1"          # Add commas to file sizes
 ZLE_REMOVE_SUFFIX_CHARS=$' \t\n;&' # These "eat" the auto prior space after a tab complete
 
@@ -189,9 +190,6 @@ autoload edit-command-line
 zle -N edit-command-line
 bindkey "^e" edit-command-line
 
-####################################
-# Stripped-down version of oh-my-zsh
-####################################
 export ZSH=$HOME/dmz
 
 COMPLETION_WAITING_DOTS="true"
@@ -243,6 +241,11 @@ function take() { mkdir -p $1 && cd $1 }
 function cols() { head -1 $1 | tr , \\n | cat -n | column }		# show CSV header
 function zcolors() { for code in {000..255}; do print -P -- "$code: %F{$code}Test%f"; done | column}
 
+function h() {
+  print -z $( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) | fzf +s --tac --height "50%" | sed -E 's/ *[0-9]*\*? *//' | sed -E 's/\\/\\\\/g')
+}
+
+
 # Automatically ls after you cd
 function chpwd() {
     emulate -L zsh
@@ -257,11 +260,6 @@ function gc() { git clone ssh://git@github.com/"$*" }
 function gg() { git commit -m "$*" }
 
 
-# FuzzyFinder
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-export FZF_DEFAULT_OPTS='--ansi --height 40% --extended'
-export FZF_DEFAULT_COMMAND='rg --files --no-ignore --follow -g "!{.git,node_modules,env}" 2> /dev/null'
-export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
 
 ##
@@ -316,20 +314,20 @@ function conda_indicator {
 ## consider replacing the below with https://github.com/lukechilds/zsh-nvm
 ##
 
-if [ -d "$HOME/.nvm/versions/node" ]; then
-    declare -a NODE_GLOBALS=($(find $HOME/.nvm/versions/node -maxdepth 3 -type l -wholename '*/bin/*' 2>/dev/null | xargs -n1 basename | sort | uniq))
-    NODE_GLOBALS+=("node")
-    NODE_GLOBALS+=("nvm")
+# if [ -d "$HOME/.nvm/versions/node" ]; then
+#     declare -a NODE_GLOBALS=($(find $HOME/.nvm/versions/node -maxdepth 3 -type l -wholename '*/bin/*' 2>/dev/null | xargs -n1 basename | sort | uniq))
+#     NODE_GLOBALS+=("node")
+#     NODE_GLOBALS+=("nvm")
 
-    load_nvm () {
-        export NVM_DIR=$HOME/.nvm
-        [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
-    }
+#     load_nvm () {
+#         export NVM_DIR=$HOME/.nvm
+#         [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+#     }
 
-    for cmd in "${NODE_GLOBALS[@]}"; do
-        eval "${cmd}(){ unset -f ${NODE_GLOBALS}; load_nvm; ${cmd} \$@ }"
-    done
-fi
+#     for cmd in "${NODE_GLOBALS[@]}"; do
+#         eval "${cmd}(){ unset -f ${NODE_GLOBALS}; load_nvm; ${cmd} \$@ }"
+#     done
+# fi
 
 # Put your machine-specific settings here
 [[ -f $HOME/.zshrc.$USER ]] && source $HOME/.zshrc.$USER
@@ -345,10 +343,6 @@ export CPPFLAGS="-I/usr/local/opt/libiconv/include"
 
 export HOMEBREW_NO_AUTO_UPDATE=1
 
-
-#znap source fzf-tab
-#zstyle ':fzf-tab:*' ignore 5
-
 znap source zsh-completions
 znap source zsh-syntax-highlighting
 #znap source zsh-async
@@ -356,9 +350,6 @@ znap source zsh-syntax-highlighting
 #znap source zsh-colored-man-pages
 #znap source zsh-abbrev-alias
 znap source powerlevel10k
-
-## From Oh-my-ZSH
-#znap source oh-my-zsh lib/completion
 
 ##From Prezto
 znap source prezto
@@ -368,12 +359,24 @@ znap source prezto \
 	modules/completion \
 	modules/environment \
 	modules/terminal \
-	modules/editor \
 	modules/history \
 	modules/directory \
-	modules/syntax-highlighting \
-	modules/utility
+	modules/editor  \
+	modules/syntax-highlighting 
+
 fpath+=( $(znap path prezto) )
+
+	# modules/utility
+
+# FuzzyFinder
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+export FZF_DEFAULT_OPTS='--ansi --height 40% --extended'
+export FZF_DEFAULT_COMMAND='rg --files --no-ignore --follow -g "!{.git,node_modules,env}" 2> /dev/null'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+
+znap source fzf-tab
+zstyle ':fzf-tab:*' ignore 5
+
 
 # Pure prompt
 #znap source pure

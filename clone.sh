@@ -3,7 +3,6 @@ znap clone \
 	https://github.com/zsh-users/zsh-syntax-highlighting.git \
 	https://github.com/mafredri/zsh-async.git \
 	https://github.com/rupa/z.git \
-	https://github.com/robbyrussell/oh-my-zsh.git \
 	https://github.com/sorin-ionescu/prezto.git \
 	https://github.com/sindresorhus/pure.git \
 	https://github.com/ael-code/zsh-colored-man-pages.git \

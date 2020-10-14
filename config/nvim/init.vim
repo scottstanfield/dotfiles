@@ -481,7 +481,7 @@ vnoremap <space> zf
 " Check spelling: [s ]s z= zg
 augroup markdown
     autocmd!
-    autocmd Filetype markdown setlocal spell spelllang=en_us
+    "autocmd Filetype markdown setlocal spell spelllang=en_us
     autocmd filetype markdown set conceallevel=2
     autocmd filetype markdown set cursorline
 augroup END
