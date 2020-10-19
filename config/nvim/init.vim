@@ -14,6 +14,7 @@ let localleader = "\\"
 let g:plug_shallow=1
 
 " PLUGINS {{{
+
 " https://github.com/junegunn/vim-plug
 if empty(glob('~/.config/nvim/autoload/plug.vim'))
   silent !curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
@@ -52,10 +53,13 @@ call plug#begin('~/.config/nvim/plugged')
     Plug 'junegunn/seoul256.vim'
     
     Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+    Plug 'ryanoasis/vim-devicons'
+
     Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
     Plug 'junegunn/fzf.vim'
     Plug 'junegunn/limelight.vim'
     Plug 'junegunn/rainbow_parentheses.vim'
+    Plug 'junegunn/vim-peekaboo'        
 
     Plug 'junegunn/goyo.vim', { 'for': 'markdown' }
     let g:goyo_width = 80
@@ -67,50 +71,55 @@ call plug#begin('~/.config/nvim/plugged')
     let g:easy_align_delimiters = { ';': {'pattern': ':'}, '>': {'pattern': '>'}, 'a': {'pattern': '<-'}, '<': {'pattern': '<-'}, ':': {'pattern': ':='}}
     au FileType markdown vmap <Leader><Bslash> :EasyAlign*<Bar><Enter>
     
-    Plug 'junegunn/vim-peekaboo'        " extend hash and at "
 
     " vim as a markdown editor: https://secluded.site/vim-as-a-markdown-editor
     Plug 'godlygeek/tabular'
 
     Plug 'plasticboy/vim-markdown'
     Plug 'itchyny/lightline.vim'
-    "let g:lightline = {'colorscheme': 'solarized'}
+    let g:lightline = {'colorscheme': 'solarized'}
 
     Plug 'edkolev/tmuxline.vim', {'on': ['Tmuxline', 'TmuxlineSimple', 'TmuxlineSnapshot'] }
     
     Plug 'kassio/neoterm'
 
-    " For R language (rlang)
-    " R and Docker: https://github.com/jalvesaq/Nvim-R/issues/259
     Plug 'jalvesaq/colorout', { 'for': 'r' }
     Plug 'jalvesaq/Nvim-r', {'branch': 'stable' }
     Plug 'kshenoy/vim-signature'                    " show marks in margin
+
     Plug 'tpope/vim-surround'
     Plug 'tpope/vim-repeat'
     Plug 'tpope/vim-commentary'                     " smarter commenting with gc
-    Plug 'tpope/vim-vinegar'                     " smarter commenting with gc
+    Plug 'tpope/vim-vinegar'                        " smarter commenting with gc
 
     Plug 'airblade/vim-gitgutter'                   " shows git diff marks in the gutter
-    nmap <silent> <leader>tg :GitGutterToggle<CR>   
-    let g:gitgutter_enabled = 0                     " off by default
 
 call plug#end()
 " }}}
 
 " Plugin Configurations {{{
 
+function! ColorSolarizedDark()
+    let g:airline_theme='solarized'
+    colorscheme solarized8_high
+    call lightline#colorscheme()
+endfunction
+
 function! ColorDracula()
-    let g:airline_theme=''
     color dracula
+    let g:lightline = {'colorscheme': 'ayu_light'}
+    call lightline#colorscheme()
 endfunction
 
 function! ColorSeoul256()
-    let g:airline_theme='silver'
     color seoul256
+    let g:airline_theme='silver'
+    call lightline#colorscheme()
 endfunction
 
-nmap <leader>e1 :call ColorDracula()<cr>
-nmap <leader>e2 :call ColorSeoul256()<cr>
+nmap <leader>e1 :call ColorSolarizedDark()<cr>
+nmap <leader>e2 :call ColorDracula()<cr>
+nmap <leader>e3 :call ColorSeoul256()<cr>
 
 
 " junegunn/rainbow_parenthesis
@@ -118,6 +127,10 @@ let g:rainbow#pairs = [['(', ')'], ['[', ']']]
 
 nmap <leader>tl :Limelight!! 0.7<CR>
 
+" junegunn/goyo.vim {{{
+let g:goyo_width = 80
+nmap <leader>tm :silent Goyo<CR>
+" }}}
 " jalvesaq/Nvim-r {{{
     let R_assign = 0
     let R_args = ['--no-save', '--quiet']
@@ -213,6 +226,10 @@ nmap <silent> <leader>$ :TrailerTrim<cr>
 nmap <silent> <leader>w :Trailer<cr>
 let g:show_trailertrash = 1
 autocmd FileType c,python,r,javascript BufWritePre :call TrailerTrim()
+" }}}
+" airblade/vim-gutter {{{
+    nmap <silent> <leader>tg :GitGutterToggle<CR>   
+    let g:gitgutter_enabled = 0                     " off by default
 " }}}
 
 " }}} Plugin configuration
@@ -445,6 +462,13 @@ noremap <silent> <leader>vs :<C-u>let @z=&so<CR>:set so=0 noscb<CR>:bo vs<CR>Ljz
 "}}}
 
 " NEOVIM terminal commands {{{
+
+function! OpenTerminal()
+  split term://zsh
+  resize 10
+endfunction
+nnoremap <c-n> :call OpenTerminal()<CR>
+
 cnoremap Wq wq
 cnoremap Qa qa
 
@@ -468,6 +492,7 @@ nnoremap <M-l> <C-w>l
 nnoremap <M-t> :split term://zsh
 
 au TermOpen * setlocal nonumber norelativenumber
+au BufEnter * if &buftype == 'terminal' | :startinsert | endif
 "}}}
 
 " Folding {{{

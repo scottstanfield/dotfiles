@@ -54,6 +54,10 @@ extras=(
     tokei
 )
 
+neovim=(
+    silicon
+)
+
 casks=(
     rectangle
     karabiner-elements
