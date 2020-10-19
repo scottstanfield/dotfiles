@@ -25,8 +25,6 @@ fi
 
 typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
 
-source ~/.zsh/zsh-snap/znap.zsh
-
 
 is_linux() { [[ $SHELL_PLATFORM == 'linux' || $SHELL_PLATFORM == 'bsd' ]]; }
 is_osx() { [[ $SHELL_PLATFORM == 'osx' ]]; }
@@ -128,6 +126,9 @@ else
     export CLICOLOR=1
 fi
 
+#lsflags+=" --hide [A-Z]* "
+# for macOS only
+lsflags+=" --hide Music --hide Movies --hide Pictures --hide Public --hide Library --hide Applications "
 
 # Aliases
 alias path='echo $PATH | tr : "\n" | cat -n'
@@ -149,9 +150,7 @@ alias m="less"
 alias cp="cp -a"
 alias pd='pushd'  # symmetry with cd
 alias df='df -h'  # human readable
-alias t='tmux -2 new-session -A -s "bonsai"'		# set variable in .secret
-alias ts='tmux -2 -S /var/tmux/campfire new-session -A -s bonsai'
-alias tj='tmux -2 -S /var/tmux/campfire attach'
+alias t='tmux -2 new-session -A -s "cabin"'		# set variable in .secret
 alias rg='rg --pretty --smart-case'
 alias rgc='rg --no-line-number --color never '              # clean version of rg suitable for piping
 alias dc='docker-compose'
@@ -179,11 +178,11 @@ setopt histfcntllock histignorealldups histreduceblanks histsavenodups sharehist
 setopt NO_flowcontrol interactivecomments rcquotes
 
 # BINDKEY
-bindkey -e
-bindkey '\e[3~' delete-char
-bindkey '^p' history-search-backward
-bindkey '^n' history-search-forward
-bindkey ' '  magic-space
+# bindkey -e
+# bindkey '\e[3~' delete-char
+# bindkey '^p' history-search-backward
+# bindkey '^n' history-search-forward
+# bindkey ' '  magic-space
 
 # ctrl-e will edit command line in $EDITOR
 autoload edit-command-line
@@ -305,11 +304,6 @@ function conda_indicator {
 #LEFT_PROMPT_EXTRA="%(1V.%1v .)"
 
 ##
-## JAVA
-##
-## [[ -f /usr/libexec/java_home ]] && JAVA_HOME=$(/usr/libexec/java_home)
-
-##
 ## NODE: test for NVM and load it lazily
 ## consider replacing the below with https://github.com/lukechilds/zsh-nvm
 ##
@@ -337,34 +331,32 @@ function conda_indicator {
 
 
 export DOCKER_BUILDKIT=1
-
 export LDFLAGS="-L/usr/local/opt/libiconv/lib"
 export CPPFLAGS="-I/usr/local/opt/libiconv/include"
-
 export HOMEBREW_NO_AUTO_UPDATE=1
 
-znap source zsh-completions
-znap source zsh-syntax-highlighting
+# znap source zsh-completions
+# znap source zsh-syntax-highlighting
 #znap source zsh-async
 #znap source z
 #znap source zsh-colored-man-pages
 #znap source zsh-abbrev-alias
-znap source powerlevel10k
+#znap source powerlevel10k
 
 ##From Prezto
-znap source prezto
-znap source prezto \
-    modules/history \
-	modules/helper \
-	modules/completion \
-	modules/environment \
-	modules/terminal \
-	modules/history \
-	modules/directory \
-	modules/editor  \
-	modules/syntax-highlighting 
+# znap source prezto
+# znap source prezto \
+#     modules/history \
+# 	modules/helper \
+# 	modules/completion \
+# 	modules/environment \
+# 	modules/terminal \
+# 	modules/history \
+# 	modules/directory \
+# 	modules/editor  \
+# 	modules/syntax-highlighting 
 
-fpath+=( $(znap path prezto) )
+# fpath+=( $(znap path prezto) )
 
 	# modules/utility
 
@@ -374,8 +366,8 @@ export FZF_DEFAULT_OPTS='--ansi --height 40% --extended'
 export FZF_DEFAULT_COMMAND='rg --files --no-ignore --follow -g "!{.git,node_modules,env}" 2> /dev/null'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
-znap source fzf-tab
-zstyle ':fzf-tab:*' ignore 5
+# znap source fzf-tab
+# zstyle ':fzf-tab:*' ignore 5
 
 
 # Pure prompt
@@ -384,17 +376,34 @@ zstyle ':fzf-tab:*' ignore 5
 #autoload -Uz promptinit && promptinit
 #prompt pure
 
-ZSH_HIGHLIGHT_STYLES[comment]=fg=yellow	      # comments at end of command (not black)
-ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern cursor)
-ZSH_HIGHLIGHT_PATTERNS+=('rm -rf' 'fg=white,bold,bg=red')
-ZSH_HIGHLIGHT_PATTERNS+=('sudo ' 'fg=white,bold,bg=red')
-ZSH_HIGHLIGHT_STYLES[path]='none'
-ZSH_HIGHLIGHT_STYLES[builtin]=fg=blue
-ZSH_HIGHLIGHT_STYLES[command]=fg=blue
-ZSH_HIGHLIGHT_STYLES[alias]=fg=blue
-ZSH_HIGHLIGHT_STYLES[function]=fg=blue
-ZSH_HIGHLIGHT_STYLES[path_prefix]=underline   # incomplete paths are underlined
+# ZSH_HIGHLIGHT_STYLES[comment]=fg=yellow	      # comments at end of command (not black)
+# ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern cursor)
+# ZSH_HIGHLIGHT_PATTERNS+=('rm -rf' 'fg=white,bold,bg=red')
+# ZSH_HIGHLIGHT_PATTERNS+=('sudo ' 'fg=white,bold,bg=red')
+# ZSH_HIGHLIGHT_STYLES[path]='none'
+# ZSH_HIGHLIGHT_STYLES[builtin]=fg=blue
+# ZSH_HIGHLIGHT_STYLES[command]=fg=blue
+# ZSH_HIGHLIGHT_STYLES[alias]=fg=blue
+# ZSH_HIGHLIGHT_STYLES[function]=fg=blue
+# ZSH_HIGHLIGHT_STYLES[path_prefix]=underline   # incomplete paths are underlined
 
+
+
+[[ ! -f ~/.zinit/bin/zinit.zsh ]] && {
+    command mkdir -p ~/.zinit
+    command git clone --depth=1 https://github.com/zdharma/zinit ~/.zinit/bin
+}
+
+source "$HOME/.zinit/bin/zinit.zsh"
+autoload -Uz _zinit
+(( ${+_comps} )) && _comps[zinit]=_zinit
+
+zinit ice depth=1; zinit light romkatv/powerlevel10k 
+
+BASE16_SHELL=$HOME/.config/base16-shell/
+[ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+

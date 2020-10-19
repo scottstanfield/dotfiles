@@ -11,6 +11,7 @@ let g:solar_state=1
 
 let mapleader = ","             " Our free key to prefix custom commands
 let localleader = "\\"
+let g:plug_shallow=1
 
 " PLUGINS {{{
 " https://github.com/junegunn/vim-plug
@@ -22,12 +23,13 @@ endif
 call plug#begin('~/.config/nvim/plugged')
 
     " Essential
-    Plug 'sheerun/vim-polyglot'             " all the best language / syntax packs
+    "Plug 'sheerun/vim-polyglot'             " all the best language / syntax packs
     Plug 'csexton/trailertrash.vim'         "
     Plug 'editorconfig/editorconfig-vim'
     Plug 'lifepillar/vim-colortemplate'
     Plug 'tpope/vim-fugitive'
-    Plug 'ryanoasis/vim-devicons'
+    "Plug 'ryanoasis/vim-devicons'
+    Plug 'chriskempson/base16-vim'
 
     " Highlight a code block in visual mode and :Silicon to generate a nice PNG
     Plug 'segeljakt/vim-silicon'
@@ -45,7 +47,7 @@ call plug#begin('~/.config/nvim/plugged')
 
     " colorschemes 
     Plug 'lifepillar/vim-solarized8'
-    Plug 'NLKNguyen/papercolor-theme'
+    "Plug 'NLKNguyen/papercolor-theme'
     Plug 'dracula/vim'
     Plug 'junegunn/seoul256.vim'
     
@@ -655,8 +657,21 @@ function! ToggleColors()
 endfunction
 noremap <leader>tc :call ToggleColors()<CR>
 
-set background=dark
-try
-  colorscheme solarized8_high
-catch
-endtry
+" set background=dark
+" try
+"   colorscheme solarized8_high
+" catch
+" endtry
+
+colorscheme base16-default-dark
+if filereadable(expand("~/.vimrc_background"))
+  let base16colorspace=256
+  source ~/.vimrc_background
+  set background=dark
+endif
+
+highlight Comment cterm=italic
+set t_ZH=[3m
+set t_ZR=[23m
+
+
