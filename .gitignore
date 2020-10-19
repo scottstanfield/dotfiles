@@ -1,3 +1,4 @@
 plugins/zsh-syntax-highlighting
 plugins/znvm
 .DS_Store
+*.zwc
