@@ -19,11 +19,12 @@
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
+# if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+#   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+# fi
 
-typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
+#typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
+typeset -g POWERLEVEL9K_INSTANT_PROMPT=off
 
 
 is_linux() { [[ $SHELL_PLATFORM == 'linux' || $SHELL_PLATFORM == 'bsd' ]]; }
@@ -127,7 +128,8 @@ else
 fi
 
 #lsflags+=" --hide [A-Z]* "
-# for macOS only
+# Hide stupid $HOME folders created by macOS from command line
+# chflags hidden Movies Music Pictures Public Applications Library
 lsflags+=" --hide Music --hide Movies --hide Pictures --hide Public --hide Library --hide Applications "
 
 # Aliases
@@ -150,7 +152,7 @@ alias m="less"
 alias cp="cp -a"
 alias pd='pushd'  # symmetry with cd
 alias df='df -h'  # human readable
-alias t='tmux -2 new-session -A -s "cabin"'		# set variable in .secret
+alias t='tmux -2 new-session -A -s "moab"'		# set variable in .secret
 alias rg='rg --pretty --smart-case'
 alias rgc='rg --no-line-number --color never '              # clean version of rg suitable for piping
 alias dc='docker-compose'
@@ -159,15 +161,9 @@ alias dc='docker-compose'
 # Simple default prompt (impure is a better prompt)
 PROMPT='%n@%m %3~%(!.#.$)%(?.. [%?]) '
 
-unsetopt correct
-unsetopt correct_all
-setopt complete_in_word         # cd /ho/sco/tm<TAB> expands to /home/scott/tmp
-setopt auto_menu                # show completion menu on succesive tab presses
-
 # MISC
 setopt autocd                   # cd to a folder just by typing it's name
 setopt interactive_comments     # allow # comments in shell; good for copy/paste
-setopt extendedglob
 export BLOCK_SIZE="'1"          # Add commas to file sizes
 ZLE_REMOVE_SUFFIX_CHARS=$' \t\n;&' # These "eat" the auto prior space after a tab complete
 
@@ -178,14 +174,14 @@ setopt histfcntllock histignorealldups histreduceblanks histsavenodups sharehist
 setopt NO_flowcontrol interactivecomments rcquotes
 
 # BINDKEY
-# bindkey -e
-# bindkey '\e[3~' delete-char
-# bindkey '^p' history-search-backward
-# bindkey '^n' history-search-forward
-# bindkey ' '  magic-space
+bindkey -e
+bindkey '\e[3~' delete-char
+bindkey '^p' history-search-backward
+bindkey '^n' history-search-forward
+bindkey ' '  magic-space
 
 # ctrl-e will edit command line in $EDITOR
-autoload edit-command-line
+autoload -Uz endit-command-line
 zle -N edit-command-line
 bindkey "^e" edit-command-line
 
@@ -355,10 +351,16 @@ export HOMEBREW_NO_AUTO_UPDATE=1
 # 	modules/directory \
 # 	modules/editor  \
 # 	modules/syntax-highlighting 
-
 # fpath+=( $(znap path prezto) )
 
-	# modules/utility
+# znap source fzf-tab
+# zstyle ':fzf-tab:*' ignore 5
+
+# Pure prompt
+#znap source pure
+#fpath+=$(znap path pure)
+#autoload -Uz promptinit && promptinit
+#prompt pure
 
 # FuzzyFinder
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
@@ -366,15 +368,6 @@ export FZF_DEFAULT_OPTS='--ansi --height 40% --extended'
 export FZF_DEFAULT_COMMAND='rg --files --no-ignore --follow -g "!{.git,node_modules,env}" 2> /dev/null'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
-# znap source fzf-tab
-# zstyle ':fzf-tab:*' ignore 5
-
-
-# Pure prompt
-#znap source pure
-#fpath+=$(znap path pure)
-#autoload -Uz promptinit && promptinit
-#prompt pure
 
 # ZSH_HIGHLIGHT_STYLES[comment]=fg=yellow	      # comments at end of command (not black)
 # ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern cursor)
@@ -389,16 +382,54 @@ export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
 
 
+# Zinit installer {{{
 [[ ! -f ~/.zinit/bin/zinit.zsh ]] && {
     command mkdir -p ~/.zinit
     command git clone --depth=1 https://github.com/zdharma/zinit ~/.zinit/bin
 }
-
 source "$HOME/.zinit/bin/zinit.zsh"
 autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
+# }}}
 
-zinit ice depth=1; zinit light romkatv/powerlevel10k 
+
+# | completions | # {{{
+zinit ice wait silent blockf; 
+zplugin snippet PZT::modules/completion/init.zsh
+unsetopt correct
+unsetopt correct_all
+setopt extended_glob
+setopt complete_in_word         # cd /ho/sco/tm<TAB> expands to /home/scott/tmp
+setopt auto_menu                # show completion menu on succesive tab presses
+
+# }}}
+
+zinit light chriskempson/base16-shell
+zinit ice depth=1; zinit light romkatv/powerlevel10k
+
+zinit ice as"program" cp"httpstat.sh -> httpstat" pick"httpstat"
+zinit light b4b4r07/httpstat
+
+zinit ice blockf
+zinit light zsh-users/zsh-completions
+#zinit light zsh-users/zsh-autosuggestions           # ghosts the remainder of command
+
+# | history | #
+
+# | syntax highlighting | <-- needs to be last zinit #
+zinit light zdharma/fast-syntax-highlighting
+
+#zinit pack for fzf
+
+# This is a weird way of loading 4 git-related repos/scripts; consider removing
+zinit light-mode for \
+    zinit-zsh/z-a-bin-gem-node
+zinit as"null" wait"3" lucid for \
+    sbin Fakerr/git-recall \
+    sbin paulirish/git-open \
+    sbin davidosomething/git-my \
+    sbin"bin/git-dsf;bin/diff-so-fancy" zdharma/zsh-diff-so-fancy
+
 
 BASE16_SHELL=$HOME/.config/base16-shell/
 [ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"

@@ -24,12 +24,13 @@ endif
 call plug#begin('~/.config/nvim/plugged')
 
     " Essential
-    "Plug 'sheerun/vim-polyglot'             " all the best language / syntax packs
+    Plug 'sheerun/vim-polyglot'             " all the best language / syntax packs
+    Plug 'ryanoasis/vim-devicons'
+
     Plug 'csexton/trailertrash.vim'         "
     Plug 'editorconfig/editorconfig-vim'
     Plug 'lifepillar/vim-colortemplate'
     Plug 'tpope/vim-fugitive'
-    "Plug 'ryanoasis/vim-devicons'
     Plug 'chriskempson/base16-vim'
 
     " Highlight a code block in visual mode and :Silicon to generate a nice PNG
@@ -688,12 +689,14 @@ noremap <leader>tc :call ToggleColors()<CR>
 " catch
 " endtry
 
-colorscheme base16-default-dark
+try
 if filereadable(expand("~/.vimrc_background"))
   let base16colorspace=256
   source ~/.vimrc_background
   set background=dark
 endif
+catch
+endtry
 
 highlight Comment cterm=italic
 set t_ZH=[3m

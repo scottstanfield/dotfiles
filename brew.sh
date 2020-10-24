@@ -52,6 +52,7 @@ extras=(
     xsv
     fd-find
     tokei
+    lsd
 )
 
 neovim=(

@@ -2,3 +2,7 @@ plugins/zsh-syntax-highlighting
 plugins/znvm
 .DS_Store
 *.zwc
+*.zwc.old
+*zcompdump*
+._zinit
+.zinit_lastupd
