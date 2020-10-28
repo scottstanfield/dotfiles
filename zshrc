@@ -181,9 +181,9 @@ bindkey '^n' history-search-forward
 bindkey ' '  magic-space
 
 # ctrl-e will edit command line in $EDITOR
-autoload -Uz endit-command-line
-zle -N edit-command-line
-bindkey "^e" edit-command-line
+# autoload -Uz endit-command-line
+# zle -N edit-command-line
+# bindkey "^i" edit-command-line
 
 export ZSH=$HOME/dmz
 
@@ -331,36 +331,6 @@ export LDFLAGS="-L/usr/local/opt/libiconv/lib"
 export CPPFLAGS="-I/usr/local/opt/libiconv/include"
 export HOMEBREW_NO_AUTO_UPDATE=1
 
-# znap source zsh-completions
-# znap source zsh-syntax-highlighting
-#znap source zsh-async
-#znap source z
-#znap source zsh-colored-man-pages
-#znap source zsh-abbrev-alias
-#znap source powerlevel10k
-
-##From Prezto
-# znap source prezto
-# znap source prezto \
-#     modules/history \
-# 	modules/helper \
-# 	modules/completion \
-# 	modules/environment \
-# 	modules/terminal \
-# 	modules/history \
-# 	modules/directory \
-# 	modules/editor  \
-# 	modules/syntax-highlighting 
-# fpath+=( $(znap path prezto) )
-
-# znap source fzf-tab
-# zstyle ':fzf-tab:*' ignore 5
-
-# Pure prompt
-#znap source pure
-#fpath+=$(znap path pure)
-#autoload -Uz promptinit && promptinit
-#prompt pure
 
 # FuzzyFinder
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
@@ -418,9 +388,6 @@ zinit light zsh-users/zsh-completions
 
 # | history | #
 
-# | syntax highlighting | <-- needs to be last zinit #
-zinit light zdharma/fast-syntax-highlighting
-
 #zinit pack for fzf
 
 # This is a weird way of loading 4 git-related repos/scripts; consider removing
@@ -432,6 +399,12 @@ zinit as"null" wait"3" lucid for \
     sbin davidosomething/git-my \
     sbin"bin/git-dsf;bin/diff-so-fancy" zdharma/zsh-diff-so-fancy
 
+# | syntax highlighting | <-- needs to be last zinit #
+zinit light zdharma/fast-syntax-highlighting
+fast-theme -q default
+FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}path]='fg=cyan'
+FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}path-to-dir]='fg=cyan,underline'
+FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}comment]='fg=gray'
 
 BASE16_SHELL=$HOME/.config/base16-shell/
 [ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"
