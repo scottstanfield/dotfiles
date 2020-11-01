@@ -43,6 +43,7 @@ core=(
     zsh
     tmux
     ripgrep
+    tree
 )
 
 extras=(
