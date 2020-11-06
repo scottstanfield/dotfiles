@@ -66,6 +66,10 @@ link agignore     $HOME/.agignore					# brew{apt} the_silver_searcher{-ag}
 link inputrc      $HOME/.inputrc
 link alacritty.yml $HOME/.alacritty.yml
 
+# This is the stupidest name for an app yet. And it should be in .config/.hammerspoon
+mkdir -p $HOME/.hammerspoon
+link init.lua $HOME/.hammerspoon
+
 link   gitconfig  $HOME/.gitconfig
 link   gitignore  $HOME/.gitignore
 

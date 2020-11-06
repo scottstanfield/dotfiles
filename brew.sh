@@ -54,6 +54,9 @@ extras=(
     fd-find
     tokei
     lsd
+    hammerspoon
+    bat
+    hexyl
 )
 
 neovim=(

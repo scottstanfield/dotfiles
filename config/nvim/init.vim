@@ -64,7 +64,7 @@ call plug#begin('~/.config/nvim/plugged')
 
     Plug 'junegunn/goyo.vim', { 'for': 'markdown' }
     let g:goyo_width = 80
-    nmap <leader>tm :silent Goyo<CR>
+    nmap <leader>to :silent Goyo<CR>
 
     Plug 'junegunn/vim-easy-align',     { 'on': ['<Plug>(EasyAlign)', 'EasyAlign'] }
     xmap ga <Plug>(EasyAlign)
@@ -129,7 +129,7 @@ let g:rainbow#pairs = [['(', ')'], ['[', ']']]
 nmap <leader>tl :Limelight!! 0.7<CR>
 
 " junegunn/goyo.vim {{{
-let g:goyo_width = 80
+let g:goyo_width = 70
 nmap <leader>tm :silent Goyo<CR>
 " }}}
 " jalvesaq/Nvim-r {{{
