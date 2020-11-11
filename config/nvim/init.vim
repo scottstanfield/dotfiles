@@ -588,8 +588,6 @@ augroup END
 
 " }}}
 
-
-
 " Markdown and Word processing mode {{{
 " Go into WordProcessorMode when typing Markdown paragraphs: <leader>0
 " http://www.drbunsen.org/writing-in-vim/
@@ -689,17 +687,15 @@ noremap <leader>tc :call ToggleColors()<CR>
 " catch
 " endtry
 
-try
-if filereadable(expand("~/.vimrc_background"))
-  let base16colorspace=256
-  source ~/.vimrc_background
-  set background=dark
-endif
-catch
-endtry
-
 highlight Comment cterm=italic
 set t_ZH=[3m
 set t_ZR=[23m
+
+if filereadable(expand("~/.vimrc_background"))
+  let base16colorspace=256
+  set background=dark
+  source ~/.vimrc_background
+endif
+
 
 
