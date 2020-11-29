@@ -46,6 +46,7 @@ core=(
     tree
 )
 
+# rust programs
 extras=(
     scrubcsv 
     hyperfine 

@@ -7,7 +7,7 @@
 " zR • open all folds
 " zM • close all folds
 
-let g:solar_state=1 
+let g:solar_state=1
 
 let mapleader = ","             " Our free key to prefix custom commands
 let localleader = "\\"
@@ -47,12 +47,12 @@ call plug#begin('~/.config/nvim/plugged')
 
     " Plug 'scottstanfield/vimcmdline'
 
-    " colorschemes 
+    " colorschemes
     Plug 'lifepillar/vim-solarized8'
     "Plug 'NLKNguyen/papercolor-theme'
     Plug 'dracula/vim'
     Plug 'junegunn/seoul256.vim'
-    
+
     Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
     Plug 'ryanoasis/vim-devicons'
 
@@ -60,7 +60,7 @@ call plug#begin('~/.config/nvim/plugged')
     Plug 'junegunn/fzf.vim'
     Plug 'junegunn/limelight.vim'
     Plug 'junegunn/rainbow_parentheses.vim'
-    Plug 'junegunn/vim-peekaboo'        
+    Plug 'junegunn/vim-peekaboo'
 
     Plug 'junegunn/goyo.vim', { 'for': 'markdown' }
     let g:goyo_width = 80
@@ -71,7 +71,7 @@ call plug#begin('~/.config/nvim/plugged')
     nmap ga <Plug>(EasyAlign)
     let g:easy_align_delimiters = { ';': {'pattern': ':'}, '>': {'pattern': '>'}, 'a': {'pattern': '<-'}, '<': {'pattern': '<-'}, ':': {'pattern': ':='}}
     au FileType markdown vmap <Leader><Bslash> :EasyAlign*<Bar><Enter>
-    
+
 
     " vim as a markdown editor: https://secluded.site/vim-as-a-markdown-editor
     Plug 'godlygeek/tabular'
@@ -81,7 +81,7 @@ call plug#begin('~/.config/nvim/plugged')
     let g:lightline = {'colorscheme': 'solarized'}
 
     Plug 'edkolev/tmuxline.vim', {'on': ['Tmuxline', 'TmuxlineSimple', 'TmuxlineSnapshot'] }
-    
+
     Plug 'kassio/neoterm'
 
     Plug 'jalvesaq/colorout', { 'for': 'r' }
@@ -166,7 +166,7 @@ let g:tmuxline_preset = {
 " fuzzyfinder {{{
 nnoremap <silent> <c-p> :FZF<CR>
 nnoremap <silent> <leader>ff :FZF<CR>
-nnoremap <silent> <leader>ft :Files<CR>     
+nnoremap <silent> <leader>ft :Files<CR>
 nmap <leader>fc     :Commits<CR>
 "let g:fzf_layout = { 'window': 'left' }
 au FileType fzf tnoremap <nowait><buffer> <esc> <c-g>
@@ -226,10 +226,10 @@ nnoremap <c-t> :NERDTreeToggle<cr>
 nmap <silent> <leader>$ :TrailerTrim<cr>
 nmap <silent> <leader>w :Trailer<cr>
 let g:show_trailertrash = 1
-autocmd FileType c,python,r,javascript BufWritePre :call TrailerTrim()
+"autocmd FileType c,python,r,javascript BufWritePre :call TrailerTrim()
 " }}}
 " airblade/vim-gutter {{{
-    nmap <silent> <leader>tg :GitGutterToggle<CR>   
+    nmap <silent> <leader>tg :GitGutterToggle<CR>
     let g:gitgutter_enabled = 0                     " off by default
 " }}}
 
@@ -265,11 +265,11 @@ endfunction
 " Hide the Magenta with ,/
 nnoremap <silent> <leader>/ :set hlsearch! hlsearch?<CR>
 
-set termguicolors 
+set termguicolors
 hi Cursor guifg=green guibg=green
 hi Cursor2 guifg=red guibg=red
 set guicursor=n-v-c:block-Cursor/lCursor,i-ci-ve:ver25-Cursor2/lCursor2,r-cr:hor20,o:hor50
-  
+
 " highlight Cursor guifg=white guibg=black
 " highlight iCursor guifg=white guibg=steelblue
 " set guicursor=n-v-c:block-Cursor
@@ -286,7 +286,7 @@ set clipboard+=unnamedplus      " Use system clipboard
 " Vertical Split lighten color of vertical split and remove | bar
 " https://stackoverflow.com/questions/9001337/vim-split-bar-styling
 "highlight VertSplit ctermfg=bg
-set fillchars+=vert:\ 
+set fillchars+=vert:\
 
 set hidden                      " switch buffers w/o saving
 set undofile
@@ -362,7 +362,7 @@ vnoremap > >gv
 vnoremap < <gv
 vnoremap <Tab> >gv
 vnoremap <S-Tab> <gv
-" Make Control-T uppercase the current word 
+" Make Control-T uppercase the current word
 inoremap <C-t> <ESC>bgUWea
 
 " Add the . command to visual mode
@@ -453,7 +453,7 @@ nnoremap zz :call ToggleFolds()<cr>
 "nnoremap vv ^vg_|       " Select current line, excluding indents (great for copying to clipboard)
 "noremap K <Esc>|        " Disable K from looking stuff up
 "noremap H ^|           " Use capital H/L for first/last non-whitespace character on line
-"noremap L g_           
+"noremap L g_
 
 " split window vertically into two linked columns--very cool
 noremap <silent> <leader>vs :<C-u>let @z=&so<CR>:set so=0 noscb<CR>:bo vs<CR>Ljzt:setl scb<CR><C-w>p:setl scb<CR>:let &so=@z<CR>
@@ -608,7 +608,7 @@ nnoremap <leader>t0 :silent call WordProcessorMode()
 " This script assumes formd is in your path at:
 " ~/bin/formd/formd
 " http://drbunsen.github.com/formd/
- 
+
 function! Formd(option)
     :let save_view = winsaveview()
     :let flag = a:option
@@ -621,7 +621,7 @@ function! Formd(option)
     :endif
     :call winrestview(save_view)
 endfunction
- 
+
 " Toggle hyperlinks in Markdown on/off
 nnoremap <leader>th :call Formd("-f")<CR>
 " nmap <leader>fi :call Formd("-i")<CR>
@@ -649,10 +649,10 @@ endfunction
 " colorscheme stuff has to go afer plug
 " https://github.com/junegunn/vim-plug/wiki/faq#im-getting-cannot-find-color-scheme--does-vim-plug-support-color-schemes
 
-" Set solarized to dark or light depending on what 
+" Set solarized to dark or light depending on what
 " iterm profile the session was launched with.
-" 
-let g:solar_state=1 
+"
+let g:solar_state=1
 function! SetDefaultSolar()          " ,x toggles dark/light
     elseif g:solar_state == 0
         call SolarDark()
