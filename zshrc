@@ -16,9 +16,12 @@
 # Profile startup times by adding this to you .zshrc: zmodload zsh/zprof
 # Start a new zsh. Then run and inspect: zprof > startup.txt
 
+# TODO: Workaround for /usr/local/share/zsh made group/world writeable
+ZSH_DISABLE_COMPFIX=true
+# compaudit | xargs chmod go-w
+
 #typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
 typeset -g POWERLEVEL9K_INSTANT_PROMPT=off
-
 
 is_linux() { [[ $SHELL_PLATFORM == 'linux' || $SHELL_PLATFORM == 'bsd' ]]; }
 is_osx() { [[ $SHELL_PLATFORM == 'osx' ]]; }
@@ -257,37 +260,6 @@ function gg() { git commit -m "$*" }
 export R_LIBS=~/.R/lib
 export R_LIBS="/usr/local/Cellar/r/4.0.0_1/lib/R/library"
 
-##
-## Anaconda: test for conda and load it lazily
-## curl https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh -o /tmp/conda.sh
-## bash /tmp/conda.sh -b -p $HOME/miniconda
-##
-
-if [ -d "$HOME/miniconda" ]; then
-    declare -a python_globals=("python")
-    python_globals+=("python3")
-    python_globals+=("conda")
-
-    load_conda() {
-        cs="$("$HOME/miniconda/bin/conda" 'shell.zsh' 'hook' 2> /dev/null)"
-        eval "$cs"
-    }
-
-    for cmd in "${python_globals[@]}"; do
-        eval "${cmd}(){ unset -f ${python_globals}; load_conda; ${cmd} \$@ }"
-    done
-fi
-
-function conda_indicator {
-    if [[ -z $CONDA_PROMPT_MODIFIER ]] then
-        psvar[1]=''
-    elif [[ $CONDA_DEFAULT_ENV == "base" ]] then
-        psvar[1]=''
-    else
-        psvar[1]='('${CONDA_DEFAULT_ENV##*/}')'
-    fi
-}
-
 #add-zsh-hook precmd conda_indicator
 #LEFT_PROMPT_EXTRA="%(1V.%1v .)"
 
@@ -359,7 +331,7 @@ zinit light lukechilds/zsh-nvm
 
 # | completions | # {{{
 zinit ice wait silent blockf; 
-zplugin snippet PZT::modules/completion/init.zsh
+zinit snippet PZT::modules/completion/init.zsh
 unsetopt correct
 unsetopt correct_all
 setopt extended_glob
@@ -380,11 +352,13 @@ zinit light zsh-users/zsh-completions
 
 # | history | #
 
-#zinit pack for fzf
-
 # This is a weird way of loading 4 git-related repos/scripts; consider removing
 zinit light-mode for \
-    zinit-zsh/z-a-bin-gem-node
+    zinit-zsh/z-a-bin-gem-node \
+    zinit-zsh/z-a-patch-dl
+
+zinit pack"binary+keys" for fzf
+
 zinit as"null" wait"3" lucid for \
     sbin Fakerr/git-recall \
     sbin paulirish/git-open \
@@ -405,6 +379,37 @@ FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}comment]='fg=gray'
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 
+##
+## Anaconda: test for conda and load it lazily
+## curl https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh -o /tmp/conda.sh
+## bash /tmp/conda.sh -b -p $HOME/miniconda
+##
+
+if [ -d "$HOME/miniconda" ]; then
+    declare -a python_globals=("python")
+    python_globals+=("python3")
+    python_globals+=("conda")
+
+    load_conda() {
+        cs="$("$HOME/miniconda/bin/conda" 'shell.zsh' 'hook' 2> /dev/null)"
+        eval "$cs"
+    }
+
+    for cmd in "${python_globals[@]}"; do
+        eval "${cmd}(){ unset -f ${python_globals}; load_conda; ${cmd} \$@ }"
+    done
+fi
+
+function conda_indicator {
+    if [[ -z $CONDA_PROMPT_MODIFIER ]] then
+        psvar[1]=''
+    elif [[ $CONDA_DEFAULT_ENV == "base" ]] then
+        psvar[1]=''
+    else
+        psvar[1]='('${CONDA_DEFAULT_ENV##*/}')'
+    fi
+}
+
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
@@ -420,4 +425,3 @@ else
 fi
 unset __conda_setup
 # <<< conda initialize <<<
-
