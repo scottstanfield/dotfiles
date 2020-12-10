@@ -268,7 +268,8 @@ nnoremap <silent> <leader>/ :set hlsearch! hlsearch?<CR>
 set termguicolors
 hi Cursor guifg=green guibg=green
 hi Cursor2 guifg=red guibg=red
-set guicursor=n-v-c:block-Cursor/lCursor,i-ci-ve:ver25-Cursor2/lCursor2,r-cr:hor20,o:hor50
+" TODO: fix cursor for insert mode 
+"set guicursor=n-v-c:block-Cursor/lCursor,i-ci-ve:ver25-Cursor2/lCursor2,r-cr:hor20,o:hor50
 
 " highlight Cursor guifg=white guibg=black
 " highlight iCursor guifg=white guibg=steelblue
@@ -339,6 +340,8 @@ set splitright                  " and to the right
 
 " MAPS {{{
 
+" Make ctrl-6 the same as ctrl-^
+nnoremap <c-6> <c-^>
 " Flip back to previous file
 nnoremap `` <c-^>
 nnoremap <leader><leader> <c-^>
@@ -586,6 +589,13 @@ augroup END
 " endfunction
 " autocmd BufReadPost * call PositionCursorFromViminfo()
 
+" see :help restore-cursor
+autocmd BufReadPost *
+  \ if line("'\"") >= 1 && line("'\"") <= line("$") && &ft !~# 'commit'
+  \ |   exe "normal! g`\""
+  \ | endif
+
+
 " }}}
 
 " Markdown and Word processing mode {{{
@@ -695,4 +705,34 @@ set background=dark
 colorscheme solarized8_high
 
 
+" if filereadable(expand("~/.vimrc_background"))
+"   let base16colorspace=256
+"   set background=dark
+"   source ~/.vimrc_background
+" endif
+
+
+
+" CAPSLOCK {{{
+  " Insert and command-line mode Caps Lock.
+  " Lock search keymap to be the same as insert mode.
+  set imsearch=-1
+  " Load the keymap that acts like capslock.
+
+try
+    set keymap=insert-only_capslock
+    " Turn it off by default.
+    set iminsert=0
+    " kill capslock when leaving insert mode
+    autocmd InsertLeave * set iminsert=0
+    let b:keymap_name="CAPS"
+    set statusline^=%k
+catch
+endtry
+
+highlight Cursor guifg=NONE guibg=Green
+highlight lCursor guifg=NONE guibg=Cyan
+
+  
+" }}}
 

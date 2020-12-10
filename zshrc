@@ -16,9 +16,12 @@
 # Profile startup times by adding this to you .zshrc: zmodload zsh/zprof
 # Start a new zsh. Then run and inspect: zprof > startup.txt
 
+# TODO: Workaround for /usr/local/share/zsh made group/world writeable
+ZSH_DISABLE_COMPFIX=true
+# compaudit | xargs chmod go-w
+
 #typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
 typeset -g POWERLEVEL9K_INSTANT_PROMPT=off
-
 
 is_linux() { [[ $SHELL_PLATFORM == 'linux' || $SHELL_PLATFORM == 'bsd' ]]; }
 is_osx() { [[ $SHELL_PLATFORM == 'osx' ]]; }
@@ -257,37 +260,6 @@ function gg() { git commit -m "$*" }
 export R_LIBS=~/.R/lib
 export R_LIBS="/usr/local/Cellar/r/4.0.0_1/lib/R/library"
 
-##
-## Anaconda: test for conda and load it lazily
-## curl https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh -o /tmp/conda.sh
-## bash /tmp/conda.sh -b -p $HOME/miniconda
-##
-
-if [ -d "$HOME/miniconda" ]; then
-    declare -a python_globals=("python")
-    python_globals+=("python3")
-    python_globals+=("conda")
-
-    load_conda() {
-        cs="$("$HOME/miniconda/bin/conda" 'shell.zsh' 'hook' 2> /dev/null)"
-        eval "$cs"
-    }
-
-    for cmd in "${python_globals[@]}"; do
-        eval "${cmd}(){ unset -f ${python_globals}; load_conda; ${cmd} \$@ }"
-    done
-fi
-
-function conda_indicator {
-    if [[ -z $CONDA_PROMPT_MODIFIER ]] then
-        psvar[1]=''
-    elif [[ $CONDA_DEFAULT_ENV == "base" ]] then
-        psvar[1]=''
-    else
-        psvar[1]='('${CONDA_DEFAULT_ENV##*/}')'
-    fi
-}
-
 #add-zsh-hook precmd conda_indicator
 #LEFT_PROMPT_EXTRA="%(1V.%1v .)"
 
@@ -354,7 +326,7 @@ zinit light lukechilds/zsh-nvm
 
 # | completions | # {{{
 zinit ice wait silent blockf; 
-zplugin snippet PZT::modules/completion/init.zsh
+zinit snippet PZT::modules/completion/init.zsh
 unsetopt correct
 unsetopt correct_all
 setopt extended_glob
@@ -383,13 +355,6 @@ zinit pack"binary+keys" for fzf
 zinit pack for ls_colors
 zinit pack"bgn" for fzy
 
-
-zinit as"null" wait"3" lucid for \
-    sbin Fakerr/git-recall \
-    sbin paulirish/git-open \
-    sbin davidosomething/git-my \
-    sbin"bin/git-dsf;bin/diff-so-fancy" zdharma/zsh-diff-so-fancy
-
 # | syntax highlighting | <-- needs to be last zinit #
 zinit light zdharma/fast-syntax-highlighting
 fast-theme -q default
@@ -404,21 +369,6 @@ FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}comment]='fg=gray'
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 
-
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/usr/local/Caskroom/miniconda/base/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/usr/local/Caskroom/miniconda/base/etc/profile.d/conda.sh" ]; then
-        . "/usr/local/Caskroom/miniconda/base/etc/profile.d/conda.sh"
-    else
-        export PATH="/usr/local/Caskroom/miniconda/base/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-# <<< conda initialize <<<
 
 
 export CLICOLOR=1
@@ -442,4 +392,3 @@ export FZF_DEFAULT_COMMAND='rg --files --no-ignore --follow -g "!{.git,node_modu
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
 function http { /usr/bin/http --pretty=all --verbose $@ | less -R; }
-
