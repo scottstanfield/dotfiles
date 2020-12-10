@@ -105,10 +105,10 @@ manpath=($^manpath(N))
 ## Tips: https://gist.github.com/syui/11322769c45f42fad962
 
 # Load GNU colors for GNU version of ls
-[[ -d ~/dmz/dircolors ]] && eval $(dircolors ~/dmz/dircolors/dircolors.256dark)
+# [[ -d ~/dmz/dircolors ]] && eval $(dircolors ~/dmz/dircolors/dircolors.256dark)
 
 # BSD LS colors as backup
-export LSCOLORS=exfxcxdxbxegedabagacad
+# export LSCOLORS=exfxcxdxbxegedabagacad
 
 # GNU and BSD (macOS) ls flags aren't compatible
 ls --version &>/dev/null
@@ -324,11 +324,6 @@ export CPPFLAGS="-I/usr/local/opt/libiconv/include"
 export HOMEBREW_NO_AUTO_UPDATE=1
 
 
-# FuzzyFinder
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-export FZF_DEFAULT_OPTS='--ansi --height 40% --extended'
-export FZF_DEFAULT_COMMAND='rg --files --no-ignore --follow -g "!{.git,node_modules,env}" 2> /dev/null'
-export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
 
 # ZSH_HIGHLIGHT_STYLES[comment]=fg=yellow	      # comments at end of command (not black)
@@ -376,15 +371,19 @@ zinit light b4b4r07/httpstat
 
 zinit ice blockf
 zinit light zsh-users/zsh-completions
-#zinit light zsh-users/zsh-autosuggestions           # ghosts the remainder of command
 
 # | history | #
 
-#zinit pack for fzf
-
 # This is a weird way of loading 4 git-related repos/scripts; consider removing
 zinit light-mode for \
-    zinit-zsh/z-a-bin-gem-node
+    zinit-zsh/z-a-bin-gem-node \
+    zinit-zsh/z-a-patch-dl
+
+zinit pack"binary+keys" for fzf
+zinit pack for ls_colors
+zinit pack"bgn" for fzy
+
+
 zinit as"null" wait"3" lucid for \
     sbin Fakerr/git-recall \
     sbin paulirish/git-open \
@@ -420,4 +419,27 @@ else
 fi
 unset __conda_setup
 # <<< conda initialize <<<
+
+
+export CLICOLOR=1
+export LANG="en_US.UTF-8"
+export GOPATH=$HOME/.go
+
+export EDITOR="vim"
+export BLOCK_SIZE="'1"  # add commas to file size listings
+
+
+# Moab specific
+alias logs="docker logs control -f"
+alias t="tmux -2 new-session -A -s moabian"
+alias dc="docker-compose"
+
+
+# FuzzyFinder
+#[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+export FZF_DEFAULT_OPTS='--ansi --height 40% --extended'
+export FZF_DEFAULT_COMMAND='rg --files --no-ignore --follow -g "!{.git,node_modules,env}" 2> /dev/null'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+
+function http { /usr/bin/http --pretty=all --verbose $@ | less -R; }
 
