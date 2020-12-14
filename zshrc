@@ -54,8 +54,12 @@ export PAGER=less
 typeset -gU path fpath manpath
 
 path=(
+    .
     $HOME/bin
     $HOME/.local/bin
+
+    $HOME/moab/bin
+    /usr/local/go/bin
 
     /usr/local/opt/grep/libexec/gnubin
     /usr/local/opt/make/libexec/gnubin
@@ -163,9 +167,10 @@ export BLOCK_SIZE="'1"          # Add commas to file sizes
 ZLE_REMOVE_SUFFIX_CHARS=$' \t\n;&' # These "eat" the auto prior space after a tab complete
 
 # Options
+setopt append_history inc_append_history share_history
+setopt histfcntllock histignorealldups histreduceblanks histsavenodups
 setopt autocd autopushd chaselinks pushdignoredups pushdsilent
 setopt NO_caseglob extendedglob globdots globstarshort nullglob numericglobsort
-setopt histfcntllock histignorealldups histreduceblanks histsavenodups sharehistory
 setopt NO_flowcontrol interactivecomments rcquotes
 
 # BINDKEY
@@ -345,11 +350,19 @@ zinit ice blockf
 zinit light zsh-users/zsh-completions
 
 # | history | #
+zinit snippet OMZL::history.zsh
 
 # This is a weird way of loading 4 git-related repos/scripts; consider removing
 zinit light-mode for \
     zinit-zsh/z-a-bin-gem-node \
     zinit-zsh/z-a-patch-dl
+
+
+zinit wait"1" lucid from"gh-r" as"null" for \
+    sbin"**/fd"         @sharkdp/fd \
+    sbin"**/bat"        @sharkdp/bat \
+    sbin"*/delta"       dandavison/delta \
+    sbin"exa* -> exa"   ogham/exa
 
 zinit pack"binary+keys" for fzf
 zinit pack for ls_colors
