@@ -255,20 +255,6 @@ alias gs="git status 2>/dev/null"
 function gc() { git clone ssh://git@github.com/"$*" }
 function gg() { git commit -m "$*" }
 
-
-
-
-##
-## Programming language specific
-##
-
-# R Language
-export R_LIBS=~/.R/lib
-export R_LIBS="/usr/local/Cellar/r/4.0.0_1/lib/R/library"
-
-#add-zsh-hook precmd conda_indicator
-#LEFT_PROMPT_EXTRA="%(1V.%1v .)"
-
 ##
 ## NODE: test for NVM and load it lazily
 ## consider replacing the below with https://github.com/lukechilds/zsh-nvm
@@ -381,7 +367,6 @@ FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}comment]='fg=gray'
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
 
 
 
