@@ -48,30 +48,22 @@ link() {
 # Setup neovim
 mkdir -p $HOME/.config/nvim
 link config/nvim/init.vim $HOME/.config/nvim/init.vim
-
-mkdir -p $HOME/.docker
-link docker/config.json $HOME/.docker/config.json
-
-# On Clear Linux Docker, $USER is unset
-USER=${USER:-`whoami`}
-
-link zshrc         $HOME/.zshrc
-link zshrc.$USER   $HOME/.zshrc.$USER
-link zlogin        $HOME/.zlogin
-link vimrc         $HOME/.vimrc						# minimal vimrc for VIM v8
-link tmux.conf     $HOME/.tmux.conf
-link bashrc        $HOME/.bashrc
-link bash_profile  $HOME/.bash_profile
-link inputrc       $HOME/.inputrc
-link alacritty.yml $HOME/.alacritty.yml
-link p10k.zsh      $HOME/.p10k.zsh
+link zshrc                $HOME/.zshrc
+link zshrc.$USER          $HOME/.zshrc.$USER
+link zlogin               $HOME/.zlogin
+link vimrc                $HOME/.vimrc						# minimal vimrc for VIM v8
+link tmux.conf            $HOME/.tmux.conf
+link bashrc               $HOME/.bashrc
+link bash_profile         $HOME/.bash_profile
+link inputrc              $HOME/.inputrc
+link alacritty.yml        $HOME/.alacritty.yml
+link p10k.zsh             $HOME/.p10k.zsh
+link gitconfig            $HOME/.gitconfig
+link gitignore            $HOME/.gitignore
 
 # This is the stupidest name for an app yet. And it should be in .config/.hammerspoon
 mkdir -p $HOME/.hammerspoon
 link init.lua $HOME/.hammerspoon
-
-link   gitconfig  $HOME/.gitconfig
-link   gitignore  $HOME/.gitignore
 
 touch $HOME/.gitconfig.local			# put your [user] settings here
 
