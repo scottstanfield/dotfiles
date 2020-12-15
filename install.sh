@@ -62,7 +62,6 @@ link vimrc        $HOME/.vimrc						# minimal vimrc for VIM v8
 link tmux.conf    $HOME/.tmux.conf
 link bashrc       $HOME/.bashrc
 link bash_profile $HOME/.bash_profile
-link agignore     $HOME/.agignore					# brew{apt} the_silver_searcher{-ag}
 link inputrc      $HOME/.inputrc
 link alacritty.yml $HOME/.alacritty.yml
 
