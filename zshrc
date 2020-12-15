@@ -54,7 +54,6 @@ export PAGER=less
 typeset -gU path fpath manpath
 
 path=(
-    .
     $HOME/bin
     $HOME/.local/bin
 
@@ -82,6 +81,8 @@ path=(
     /sbin
 
     $path[@]
+
+    .
 )
 
 # Now, remove paths that don't exist...
