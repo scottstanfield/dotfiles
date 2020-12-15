@@ -260,9 +260,6 @@ function gg() { git commit -m "$*" }
 export R_LIBS=~/.R/lib
 export R_LIBS="/usr/local/Cellar/r/4.0.0_1/lib/R/library"
 
-#add-zsh-hook precmd conda_indicator
-#LEFT_PROMPT_EXTRA="%(1V.%1v .)"
-
 ##
 ## NODE: test for NVM and load it lazily
 ## consider replacing the below with https://github.com/lukechilds/zsh-nvm
@@ -378,50 +375,3 @@ FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}comment]='fg=gray'
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-
-##
-## Anaconda: test for conda and load it lazily
-## curl https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh -o /tmp/conda.sh
-## bash /tmp/conda.sh -b -p $HOME/miniconda
-##
-
-if [ -d "$HOME/miniconda" ]; then
-    declare -a python_globals=("python")
-    python_globals+=("python3")
-    python_globals+=("conda")
-
-    load_conda() {
-        cs="$("$HOME/miniconda/bin/conda" 'shell.zsh' 'hook' 2> /dev/null)"
-        eval "$cs"
-    }
-
-    for cmd in "${python_globals[@]}"; do
-        eval "${cmd}(){ unset -f ${python_globals}; load_conda; ${cmd} \$@ }"
-    done
-fi
-
-function conda_indicator {
-    if [[ -z $CONDA_PROMPT_MODIFIER ]] then
-        psvar[1]=''
-    elif [[ $CONDA_DEFAULT_ENV == "base" ]] then
-        psvar[1]=''
-    else
-        psvar[1]='('${CONDA_DEFAULT_ENV##*/}')'
-    fi
-}
-
-
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/usr/local/Caskroom/miniconda/base/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/usr/local/Caskroom/miniconda/base/etc/profile.d/conda.sh" ]; then
-        . "/usr/local/Caskroom/miniconda/base/etc/profile.d/conda.sh"
-    else
-        export PATH="/usr/local/Caskroom/miniconda/base/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-# <<< conda initialize <<<
