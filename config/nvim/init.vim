@@ -691,15 +691,19 @@ function! ToggleColors()
 endfunction
 noremap <leader>tc :call ToggleColors()<CR>
 
-set background=dark
-try
-  colorscheme solarized8_high
-catch
-endtry
+" set background=dark
+" try
+"   colorscheme solarized8_high
+" catch
+" endtry
 
 highlight Comment cterm=italic
 set t_ZH=[3m
 set t_ZR=[23m
+
+set background=dark
+colorscheme solarized8_high
+
 
 " if filereadable(expand("~/.vimrc_background"))
 "   let base16colorspace=256
@@ -714,13 +718,18 @@ set t_ZR=[23m
   " Lock search keymap to be the same as insert mode.
   set imsearch=-1
   " Load the keymap that acts like capslock.
-  set keymap=insert-only_capslock
-  " Turn it off by default.
-  set iminsert=0
-  " kill capslock when leaving insert mode
-  autocmd InsertLeave * set iminsert=0
-  let b:keymap_name="CAPS"
-  set statusline^=%k
+
+try
+    set keymap=insert-only_capslock
+    " Turn it off by default.
+    set iminsert=0
+    " kill capslock when leaving insert mode
+    autocmd InsertLeave * set iminsert=0
+    let b:keymap_name="CAPS"
+    set statusline^=%k
+catch
+endtry
+
 highlight Cursor guifg=NONE guibg=Green
 highlight lCursor guifg=NONE guibg=Cyan
 
