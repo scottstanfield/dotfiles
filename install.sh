@@ -55,15 +55,16 @@ link docker/config.json $HOME/.docker/config.json
 # On Clear Linux Docker, $USER is unset
 USER=${USER:-`whoami`}
 
-link zshrc        $HOME/.zshrc
-link zshrc.$USER  $HOME/.zshrc.$USER
-link zlogin       $HOME/.zlogin
-link vimrc        $HOME/.vimrc						# minimal vimrc for VIM v8
-link tmux.conf    $HOME/.tmux.conf
-link bashrc       $HOME/.bashrc
-link bash_profile $HOME/.bash_profile
-link inputrc      $HOME/.inputrc
+link zshrc         $HOME/.zshrc
+link zshrc.$USER   $HOME/.zshrc.$USER
+link zlogin        $HOME/.zlogin
+link vimrc         $HOME/.vimrc						# minimal vimrc for VIM v8
+link tmux.conf     $HOME/.tmux.conf
+link bashrc        $HOME/.bashrc
+link bash_profile  $HOME/.bash_profile
+link inputrc       $HOME/.inputrc
 link alacritty.yml $HOME/.alacritty.yml
+link p10k.zsh      $HOME/.p10k.zsh
 
 # This is the stupidest name for an app yet. And it should be in .config/.hammerspoon
 mkdir -p $HOME/.hammerspoon
