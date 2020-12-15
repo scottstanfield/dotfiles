@@ -75,12 +75,6 @@ link   gitignore  $HOME/.gitignore
 
 touch $HOME/.gitconfig.local			# put your [user] settings here
 
-# Cloning zsh plugin
-if [[ ! -d $PWD/plugins/zsh-syntax-highlighting ]]; then
-	git clone https://github.com/zsh-users/zsh-syntax-highlighting.git \
-		$PWD/plugins/zsh-syntax-highlighting
-fi
-
 # fixing potential insecure group writable folders
 # compaudit | xargs chmod g-w
 
@@ -91,9 +85,6 @@ fi
 # https://sanctum.geek.nz/arabesque/term-strings/
 tic -x termcap/tmux-256color.terminfo || true
 tic -x termcap/xterm-256color-italic.terminfo || true
-
-# Install fuzzy finder
-git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && ~/.fzf/install --all
 
 # Install neovim plugins
 println "Installing vim plugins..."
