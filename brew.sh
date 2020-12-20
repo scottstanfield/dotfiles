@@ -58,6 +58,7 @@ extras=(
     hammerspoon
     bat
     hexyl
+    shellharden
 )
 
 neovim=(

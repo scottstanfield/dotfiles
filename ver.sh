@@ -25,8 +25,8 @@ bv=${BASH_VERSINFO[0]}${BASH_VERSINFO[0]}
 
 # Preferred way to cd to where this script is running
 # https://stackoverflow.com/questions/4774054/reliable-way-for-a-bash-script-to-get-the-full-path-to-itself
-readonly _D="$(dirname "$(readlink -f "$0")")" && cd $_D
-println "Location of script:" $_D
+readonly _D="$(dirname "$(readlink -f "$0")")" && cd "$_D"
+println "Location of script:" "$_D"
 ls -
 
 # backup a file by appending bash
