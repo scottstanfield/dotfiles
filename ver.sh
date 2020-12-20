@@ -3,7 +3,9 @@
 
 # Bash "strict mode": http://redsymbol.net/articles/unofficial-bash-strict-mode/
 # https://github.com/anordal/shellharden/blob/master/how_to_do_things_safely_in_bash.md
+# https://betterdev.blog/minimal-safe-bash-script-template/
 # set -Eeuo pipefile
+
 set -o errexit  # Exit on error. Append "|| true" if you expect an error.
 set -o errtrace # Exit on error inside any functions or subshells.
 set -o nounset  # Do not allow use of undefined vars. Use ${VAR:-} to use an undefined VAR
