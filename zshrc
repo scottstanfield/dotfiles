@@ -294,6 +294,9 @@ zinit light b4b4r07/httpstat
 zinit ice blockf
 zinit light zsh-users/zsh-completions
 
+zinit snippet OMZP::ssh-agent
+#zinit snippet :omz:plugins:ssh-agent identities id_rsa
+
 # | history | #
 
 # This is a weird way of loading 4 git-related repos/scripts; consider removing
