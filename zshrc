@@ -302,7 +302,6 @@ zinit ice blockf
 zinit light zsh-users/zsh-completions
 
 # | history | #
-zinit snippet OMZL::history.zsh
 
 # This is a weird way of loading 4 git-related repos/scripts; consider removing
 zinit light-mode for \
