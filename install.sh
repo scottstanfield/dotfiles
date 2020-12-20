@@ -22,7 +22,6 @@ die()     { ret=$?; printf "%s\n" "$@" >&2; exit "$ret"; }
 require curl
 require nvim
 require git
-require dircolors
 
 # Change directories to where this script is located
 cd "$(dirname "$(realpath "${BASH_SOURCE[0]}")")"
