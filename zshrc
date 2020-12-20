@@ -5,12 +5,22 @@
 # % hyperfine --warmup 2 'zsh -i -c "exit"'
 
 # Superfast as of Jun 20, 2020
-# Benchmark #1: zsh -i -c "exit"
+# Benchmark 16" MacBook Pro #1: zsh -i -c "exit"
 #   Time (mean ± σ):     137.3 ms ±   4.5 ms    [User: 61.5 ms, System: 71.6 ms]
 #   Range (min … max):   130.8 ms … 152.2 ms    19 runs
+#
+# Benchmark iMacPro 2019
+#  Time (mean ± σ):      92.9 ms ±   0.9 ms    [User: 51.0 ms, System: 38.4 ms]
+#  Range (min … max):    91.7 ms …  95.5 ms    31 runs
 
 # Profile startup times by adding this to you .zshrc: zmodload zsh/zprof
 # Start a new zsh. Then run and inspect: zprof > startup.txt
+
+# TODO: Workaround for /usr/local/share/zsh made group/world writeable
+ZSH_DISABLE_COMPFIX=true
+# compaudit | xargs chmod go-w
+
+typeset -g POWERLEVEL9K_INSTANT_PROMPT=off
 
 is_linux() { [[ $SHELL_PLATFORM == 'linux' || $SHELL_PLATFORM == 'bsd' ]]; }
 is_osx() { [[ $SHELL_PLATFORM == 'osx' ]]; }
@@ -44,6 +54,11 @@ typeset -gU path fpath manpath
 path=(
     $HOME/bin
     $HOME/.local/bin
+    $HOME/.cargo/bin
+    $HOME/.go/bin
+
+    $HOME/moab/bin
+    /usr/local/go/bin
 
     /usr/local/opt/grep/libexec/gnubin
     /usr/local/opt/make/libexec/gnubin
@@ -56,9 +71,6 @@ path=(
     /usr/local/opt/libiconv/bin     # iconv utility
     /usr/local/opt/llvm/bin         # llvm
 
-    $HOME/.cargo/bin
-    $HOME/.go/bin
-
     /usr/local/bin
     /usr/bin
     /usr/sbin
@@ -66,6 +78,8 @@ path=(
     /sbin
 
     $path[@]
+
+    .
 )
 
 # Now, remove paths that don't exist...
@@ -87,20 +101,8 @@ manpath=(
 )
 manpath=($^manpath(N))
 
-## end of path
-
-
-##
 ## LS and colors
-## 
-
 ## Tips: https://gist.github.com/syui/11322769c45f42fad962
-
-# Load GNU colors for GNU version of ls
-[[ -d ~/dmz/dircolors ]] && eval $(dircolors ~/dmz/dircolors/dircolors.256dark)
-
-# BSD LS colors as backup
-export LSCOLORS=exfxcxdxbxegedabagacad
 
 # GNU and BSD (macOS) ls flags aren't compatible
 ls --version &>/dev/null
@@ -111,9 +113,12 @@ else
     export CLICOLOR=1
 fi
 
+#lsflags+=" --hide [A-Z]* "
+# Hide stupid $HOME folders created by macOS from command line
+# chflags hidden Movies Music Pictures Public Applications Library
+lsflags+=" --hide Music --hide Movies --hide Pictures --hide Public --hide Library --hide Applications --hide OneDrive"
 
 # Aliases
-alias path='echo $PATH | tr : "\n" | cat -n'
 alias ls="ls ${lsflags}"
 alias ll="ls ${lsflags} -l --sort=extension"
 alias lln="ls ${lsflags} -l"
@@ -124,7 +129,8 @@ alias lt="ls ${lsflags} -l --sort=time --reverse --time-style=long-iso"
 alias lx="ls ${lsflags} -Xl"
 alias lla="ls ${lsflags} -la"
 alias la="ls ${lsflags} -la"
-alias h="history"
+alias path='echo $PATH | tr : "\n" | cat -n'
+alias h="history 1"
 alias hg="history | grep -i"
 alias @="printenv | sort | grep -i"
 alias ,="cd .."
@@ -132,76 +138,47 @@ alias m="less"
 alias cp="cp -a"
 alias pd='pushd'  # symmetry with cd
 alias df='df -h'  # human readable
-alias t='tmux -2 new-session -A -s "bonsai"'		# set variable in .secret
-alias ts='tmux -2 -S /var/tmux/campfire new-session -A -s bonsai'
-alias tj='tmux -2 -S /var/tmux/campfire attach'
+alias t='tmux -2 new-session -A -s "moab"'		# set variable in .secret
 alias rg='rg --pretty --smart-case'
 alias rgc='rg --no-line-number --color never '              # clean version of rg suitable for piping
 alias dc='docker-compose'
 
-
 # Simple default prompt (impure is a better prompt)
 PROMPT='%n@%m %3~%(!.#.$)%(?.. [%?]) '
-
-setopt complete_in_word         # cd /ho/sco/tm<TAB> expands to /home/scott/tmp
-setopt auto_menu                # show completion menu on succesive tab presses
 
 # MISC
 setopt autocd                   # cd to a folder just by typing it's name
 setopt interactive_comments     # allow # comments in shell; good for copy/paste
-setopt extendedglob
-unsetopt correct_all            # I don't care for 'suggestions' from ZSH
 export BLOCK_SIZE="'1"          # Add commas to file sizes
 ZLE_REMOVE_SUFFIX_CHARS=$' \t\n;&' # These "eat" the auto prior space after a tab complete
+
+# HISTORY
+HISTFILE=${ZDOTDIR:-$HOME}/.zsh_history
+HISTSIZE=3000
+SAVEHIST=3000
+
+# Options
+setopt append_history inc_append_history  share_history
+setopt histfcntllock  histignorealldups   histreduceblanks histsavenodups
+setopt autocd         autopushd           chaselinks       pushdignoredups pushdsilent
+setopt NO_caseglob    extendedglob        globdots         globstarshort   nullglob numericglobsort
+setopt NO_flowcontrol interactivecomments rcquotes
 
 # BINDKEY
 bindkey -e
 bindkey '\e[3~' delete-char
-bindkey '^p' history-search-backward
-bindkey '^n' history-search-forward
-bindkey ' '  magic-space
+bindkey '^p'    history-search-backward
+bindkey '^n'    history-search-forward
+bindkey ' '     magic-space
 
 # ctrl-e will edit command line in $EDITOR
-autoload edit-command-line
-zle -N edit-command-line
-bindkey "^e" edit-command-line
+# autoload -Uz endit-command-line
+# zle -N edit-command-line
+# bindkey "^i" edit-command-line
 
-####################################
-# Stripped-down version of oh-my-zsh
-####################################
 export ZSH=$HOME/dmz
 
-for c in $ZSH/lib/*.zsh; do
-    source $c
-done
-
-plugins=(impure ripgrep zsh-syntax-highlighting)
-
-for p in $plugins; do
-    fpath=($ZSH/plugins/$p $fpath)
-done
-
-for p in $plugins; do
-    if [ -f $ZSH/plugins/$p/$p.plugin.zsh ]; then
-        source $ZSH/plugins/$p/$p.plugin.zsh
-    fi
-done
-
 COMPLETION_WAITING_DOTS="true"
-
-# startup speedup tip: https://gist.github.com/ctechols/ca1035271ad134841284
-autoload -Uz compinit
-() {
-setopt local_options extendedglob
-if [[ -n $HOME/.zcompdump(#qN.m1) ]]; then
-    echo "compiling compinit..."
-    compinit
-    touch $HOME/.zcompdump
-else
-    compinit -C         # happy path, skip compile
-fi
-}
-
 
 
 ###################################################
@@ -220,17 +197,6 @@ less_options=(
     export LESS="${less_options[*]}";
     unset less_options;
 
-# http://joepvd.github.io/less-a-love-story.html
-# export LESSCHARSET='utf-8'
-# export LESS_TERMCAP_mb=$'\e[01;31m'       # begin blinking
-# export LESS_TERMCAP_md=$'\e[01;38;5;74m'  # begin bold
-# export LESS_TERMCAP_me=$'\e[0m'           # end mode
-# export LESS_TERMCAP_so=$'\e[38;5;070m'    # begin standout (info box, search)
-# export LESS_TERMCAP_se=$'\e[0m'           # end standout-mode
-# export LESS_TERMCAP_us=$'\e[04;38;5;146m' # begin underline
-# export LESS_TERMCAP_ue=$'\e[0m'           # end underline
-# export MAN_KEEP_FORMATTING=1
-
 # Which editor: vi, vim or neovim (nvim)
 which "nvim" &> /dev/null && vic="nvim" || vic="vim"
 export EDITOR=${vic}
@@ -245,7 +211,6 @@ fi
 alias v="/usr/bin/vi"
 
 # Aliases
-alias ag="ag --literal "
 alias R="R --no-save"
 alias r='R --no-save --quiet'
 alias make="make --no-print-directory"
@@ -254,134 +219,138 @@ alias shs="ssh -Y"    # enable X11 forwarding back to the Mac running XQuartz to
 #alias ssh="TERM=xterm-256color ssh -Y"
 alias ssh="TERM=xterm-256color ssh"
 
-# macOS specific
-function man2() {
-    man -t $@ | open -f -a "Preview"
-}
-
-
 # Functions
-function ff() { find . -iname "$1*" -print }
-function ht() { (head $1 && echo "---" && tail $1) | less }
+function ff()      { find . -iname "$1*" -print }
+function ht()      { (head $1 && echo "---" && tail $1) | less }
 function monitor() { watch --no-title "clear; cat $1" }
-function take() { mkdir -p $1 && cd $1 }
-function cols() { head -1 $1 | tr , \\n | cat -n | column }		# show CSV header
+function take()    { mkdir -p $1 && cd $1 }
+function cols()    { head -1 $1 | tr , \\n | cat -n | column }		# show CSV header
 function zcolors() { for code in {000..255}; do print -P -- "$code: %F{$code}Test%f"; done | column}
+
+function h() {
+  print -z $( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) | fzf +s --tac --height "50%" | sed -E 's/ *[0-9]*\*? *//' | sed -E 's/\\/\\\\/g')
+}
 
 # Automatically ls after you cd
 function chpwd() {
     emulate -L zsh
     ls
 }
-#
-# GIT
-# Do this: git config --global url.ssh://git@github.com/.insteadOf https://github.com
-hubpath=$(which hub)
-if (( $+commands[hub] )); then
-    alias git=$hubpath
-fi
-
-# Use diff-so-fancy if found in path
-hash "diff-so-fancy" &> /dev/null && alias gd="git dsf" || alias gd="git diff"
 
 alias gs="git status 2>/dev/null"
 function gc() { git clone ssh://git@github.com/"$*" }
 function gg() { git commit -m "$*" }
 
 
-# FuzzyFinder
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-export FZF_DEFAULT_OPTS='--ansi --height 40% --extended'
-export FZF_DEFAULT_COMMAND='rg --files --no-ignore --follow -g "!{.git,node_modules,env}" 2> /dev/null'
-export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-
-ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern cursor)
-ZSH_HIGHLIGHT_PATTERNS+=('rm -rf' 'fg=white,bold,bg=red')
-ZSH_HIGHLIGHT_PATTERNS+=('sudo ' 'fg=white,bold,bg=red')
-ZSH_HIGHLIGHT_STYLES[path]='none'
-ZSH_HIGHLIGHT_STYLES[builtin]=fg=blue
-ZSH_HIGHLIGHT_STYLES[command]=fg=blue
-ZSH_HIGHLIGHT_STYLES[alias]=fg=blue
-ZSH_HIGHLIGHT_STYLES[function]=fg=blue
-ZSH_HIGHLIGHT_STYLES[comment]=fg=yellow	      # comments at end of command (not black)
-ZSH_HIGHLIGHT_STYLES[path_prefix]=underline   # incomplete paths are underlined
-
-##
-## Programming language specific
-##
-
-# R Language
-export R_LIBS=~/.R/lib
-export R_LIBS="/usr/local/Cellar/r/4.0.0_1/lib/R/library"
-
-##
-## Anaconda: test for conda and load it lazily
-## curl https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh -o /tmp/conda.sh
-## bash /tmp/conda.sh -b -p $HOME/miniconda
-##
-
-if [ -d "$HOME/miniconda" ]; then
-    declare -a python_globals=("python")
-    python_globals+=("python3")
-    python_globals+=("conda")
-
-    load_conda() {
-        cs="$("$HOME/miniconda/bin/conda" 'shell.zsh' 'hook' 2> /dev/null)"
-        eval "$cs"
-    }
-
-    for cmd in "${python_globals[@]}"; do
-        eval "${cmd}(){ unset -f ${python_globals}; load_conda; ${cmd} \$@ }"
-    done
-fi
-
-function conda_indicator {
-    if [[ -z $CONDA_PROMPT_MODIFIER ]] then
-        psvar[1]=''
-    elif [[ $CONDA_DEFAULT_ENV == "base" ]] then
-        psvar[1]=''
-    else
-        psvar[1]='('${CONDA_DEFAULT_ENV##*/}')'
-    fi
-}
-add-zsh-hook precmd conda_indicator
-LEFT_PROMPT_EXTRA="%(1V.%1v .)"
-
-##
-## JAVA
-##
-## [[ -f /usr/libexec/java_home ]] && JAVA_HOME=$(/usr/libexec/java_home)
-
-##
-## NODE: test for NVM and load it lazily
-## consider replacing the below with https://github.com/lukechilds/zsh-nvm
-##
-
-if [ -d "$HOME/.nvm/versions/node" ]; then
-    declare -a NODE_GLOBALS=($(find $HOME/.nvm/versions/node -maxdepth 3 -type l -wholename '*/bin/*' 2>/dev/null | xargs -n1 basename | sort | uniq))
-    NODE_GLOBALS+=("node")
-    NODE_GLOBALS+=("nvm")
-
-    load_nvm () {
-        export NVM_DIR=$HOME/.nvm
-        [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
-    }
-
-    for cmd in "${NODE_GLOBALS[@]}"; do
-        eval "${cmd}(){ unset -f ${NODE_GLOBALS}; load_nvm; ${cmd} \$@ }"
-    done
-fi
-
 # Put your machine-specific settings here
 [[ -f $HOME/.zshrc.$USER ]] && source $HOME/.zshrc.$USER
 
 # Put your machine-specific settings here
-[[ -f $HOME/.secret ]] && source $HOME/.secret
+[[ -f $HOME/.machine ]] && source $HOME/.machine
 
 
 export DOCKER_BUILDKIT=1
-
 export LDFLAGS="-L/usr/local/opt/libiconv/lib"
 export CPPFLAGS="-I/usr/local/opt/libiconv/include"
-
 export HOMEBREW_NO_AUTO_UPDATE=1
+
+# ZINIT installer {{{
+[[ ! -f ~/.zinit/bin/zinit.zsh ]] && {
+    print -P "%F{33}▓▒░ %F{220}Installing zsh %F{33}zinit%F{220} plugin manager (%F{33}zdharma/zinit%F{220})…%f"
+    command mkdir -p "$HOME/.zinit" && command chmod g-rwX "$HOME/.zinit"
+    command git clone --depth=1 https://github.com/zdharma/zinit "$HOME/.zinit/bin" && \
+        print -P "%F{33}▓▒░ %F{34}Installation successful.%f%b" || \
+        print -P "%F{160}▓▒░ Install failed.%f%b"
+}
+source "$HOME/.zinit/bin/zinit.zsh"
+autoload -Uz _zinit
+(( ${+_comps} )) && _comps[zinit]=_zinit
+# }}}
+
+export NVM_LAZY_LOAD=true
+zinit light lukechilds/zsh-nvm
+
+# | completions | # {{{
+zinit ice wait silent blockf; 
+zinit snippet PZT::modules/completion/init.zsh
+unsetopt correct
+unsetopt correct_all
+setopt extended_glob
+setopt complete_in_word         # cd /ho/sco/tm<TAB> expands to /home/scott/tmp
+setopt auto_menu                # show completion menu on succesive tab presses
+
+# }}}
+
+zinit light chriskempson/base16-shell
+
+zinit ice depth=1; zinit light romkatv/powerlevel10k
+
+zinit ice as"program" cp"httpstat.sh -> httpstat" pick"httpstat" 
+zinit light b4b4r07/httpstat
+
+zinit ice blockf
+zinit light zsh-users/zsh-completions
+
+zinit snippet OMZP::ssh-agent
+
+# | history | #
+
+# This is a weird way of loading 4 git-related repos/scripts; consider removing
+zinit light-mode for \
+    zinit-zsh/z-a-bin-gem-node \
+    zinit-zsh/z-a-patch-dl
+
+# For git command extensions
+zinit as"null" wait"1" lucid for \
+    sbin                davidosomething/git-my
+
+zinit wait"1" lucid from"gh-r" as"null" for \
+    sbin"**/fd"                 @sharkdp/fd      \
+    sbin"**/bat"                @sharkdp/bat     \
+    sbin"*/delta"               dandavison/delta \
+    sbin"exa* -> exa"           ogham/exa        \
+    sbin"glow" bpick"*.tar.gz"  charmbracelet/glow
+
+
+# Use diff-so-fancy if found in path
+alias gd="git diff"
+
+zinit pack"binary+keys" for fzf
+zinit pack for ls_colors
+
+# | syntax highlighting | <-- needs to be last zinit #
+zinit light zdharma/fast-syntax-highlighting
+fast-theme -q default
+FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}path]='fg=cyan'
+FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}path-to-dir]='fg=cyan,underline'
+FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}comment]='fg=gray'
+
+# BASE16_SHELL=$HOME/.config/base16-shell/
+# [ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+
+
+export CLICOLOR=1
+export LANG="en_US.UTF-8"
+export GOPATH=$HOME/.go
+
+export EDITOR="vim"
+export BLOCK_SIZE="'1"  # add commas to file size listings
+
+
+# Moab specific
+alias logs="docker logs control -f"
+alias t="tmux -2 new-session -A -s moabian"
+alias dc="docker-compose"
+
+
+# FuzzyFinder
+#[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+# export FZF_DEFAULT_OPTS='--ansi --height 40% --extended'
+# export FZF_DEFAULT_COMMAND='rg --files --no-ignore --follow -g "!{.git,node_modules,env}" 2> /dev/null'
+# export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+
+function http { /usr/bin/http --pretty=all --verbose $@ | less -R; }

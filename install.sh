@@ -18,14 +18,11 @@ require() { hash "$@" || exit 127; }
 println() { printf '%s\n' "$*"; }
 die()     { ret=$?; printf "%s\n" "$@" >&2; exit "$ret"; }
 
-# Minimum Bash version check > 4.2. Why? For associative array safety.
-# println "${BASH_VERSINFO[*]: 0:3}"
-bv=${BASH_VERSINFO[0]}${BASH_VERSINFO[0]}
-((bv > 42)) || die "Need Bash version 4.2 or greater. You have $BASH_VERSION"
-shopt -s nullglob globstar
 
+require curl
 require nvim
 require git
+require dircolors
 
 # Change directories to where this script is located
 cd "$(dirname "$(realpath "${BASH_SOURCE[0]}")")"
@@ -37,62 +34,56 @@ cd "$(dirname "$(realpath "${BASH_SOURCE[0]}")")"
 
 # Create temp folder for important files to backup
 B=$(mktemp -d /tmp/dotfiles.XXXX)
-println "Backing up important files to ${B}"
+println "Backing up important files to $B"
 
 link() {
   if [[ -e $1 ]]; then
 	println "linking $1 -> $2 with backup to $B"
-	cp -pL $PWD/$1 $B						# (p)reserve attributes and deference symbolic links
-	ln -sf $PWD/$1 $2
+	cp -pL "$PWD/$1" "$B"						# (p)reserve attributes and deference symbolic links
+	ln -sf "$PWD/$1" "$2"
   fi
 }
 
 # Setup zshrc
 
 # Setup neovim
-mkdir -p $HOME/.config/nvim
-link config/nvim/init.vim $HOME/.config/nvim/init.vim
+mkdir -p "$HOME"/.config/nvim
+link config/nvim/init.vim "$HOME"/.config/nvim/init.vim
+link zshrc                "$HOME"/.zshrc
+link zlogin               "$HOME"/.zlogin
+link vimrc                "$HOME"/.vimrc						# minimal vimrc for VIM v8
+link tmux.conf            "$HOME"/.tmux.conf
+link bashrc               "$HOME"/.bashrc
+link bash_profile         "$HOME"/.bash_profile
+link inputrc              "$HOME"/.inputrc
+link alacritty.yml        "$HOME"/.alacritty.yml
+link p10k.zsh             "$HOME"/.p10k.zsh
+link gitconfig            "$HOME"/.gitconfig
+link gitignore            "$HOME"/.gitignore
 
-mkdir -p $HOME/.docker
-link docker/config.json $HOME/.docker/config.json
+# This is the stupidest name for an app yet. And it should be in .config/.hammerspoon
+mkdir -p "$HOME"/.hammerspoon
+link init.lua "$HOME"/.hammerspoon
 
-# On Clear Linux Docker, $USER is unset
-USER=${USER:-`whoami`}
-
-link zshrc        $HOME/.zshrc
-link zshrc.$USER  $HOME/.zshrc.$USER
-link zlogin       $HOME/.zlogin
-link vimrc        $HOME/.vimrc						# minimal vimrc for VIM v8
-link tmux.conf    $HOME/.tmux.conf
-link bashrc       $HOME/.bashrc
-link bash_profile $HOME/.bash_profile
-link agignore     $HOME/.agignore					# brew{apt} the_silver_searcher{-ag}
-link inputrc      $HOME/.inputrc
-link alacritty.yml $HOME/.alacritty.yml
-
-link   gitconfig  $HOME/.gitconfig
-link   gitignore  $HOME/.gitignore
-
-touch $HOME/.gitconfig.local			# put your [user] settings here
-
-# Cloning zsh plugin
-if [[ ! -d $PWD/plugins/zsh-syntax-highlighting ]]; then
-	git clone https://github.com/zsh-users/zsh-syntax-highlighting.git \
-		$PWD/plugins/zsh-syntax-highlighting
-fi
+touch "$HOME"/.gitconfig.local			# put your [user] settings here
 
 # fixing potential insecure group writable folders
 # compaudit | xargs chmod g-w
 
-# Install fuzzy finder
-git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && ~/.fzf/install --all
+# Setup termcap for tmux
+# Italics + true color + iTerm + tmux + vim
+# https://medium.com/@dubistkomisch/how-to-actually-get-italics-and-true-colour-to-work-in-iterm-tmux-vim-9ebe55ebc2be
+# Understanding TERM strings 
+# https://sanctum.geek.nz/arabesque/term-strings/
+tic -x termcap/tmux-256color.terminfo || true
+tic -x termcap/xterm-256color-italic.terminfo || true
 
 # Install neovim plugins
-echo "Installing vim plugins..."
+println "Installing vim plugins..."
 nvim +PlugInstall +qall
 
 # now change shells
-echo 'and: sudo chsh -s $(which zsh) $(whoami)'
+println 'and: sudo chsh -s $(which zsh) $(whoami)'
 
 exit 0
 
