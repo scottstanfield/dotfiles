@@ -101,19 +101,8 @@ manpath=(
 )
 manpath=($^manpath(N))
 
-## end of path
-
-##
 ## LS and colors
-## 
-
 ## Tips: https://gist.github.com/syui/11322769c45f42fad962
-
-# Load GNU colors for GNU version of ls
-# [[ -d ~/dmz/dircolors ]] && eval $(dircolors ~/dmz/dircolors/dircolors.256dark)
-
-# BSD LS colors as backup
-# export LSCOLORS=exfxcxdxbxegedabagacad
 
 # GNU and BSD (macOS) ls flags aren't compatible
 ls --version &>/dev/null
@@ -130,7 +119,6 @@ fi
 lsflags+=" --hide Music --hide Movies --hide Pictures --hide Public --hide Library --hide Applications --hide OneDrive"
 
 # Aliases
-alias path='echo $PATH | tr : "\n" | cat -n'
 alias ls="ls ${lsflags}"
 alias ll="ls ${lsflags} -l --sort=extension"
 alias lln="ls ${lsflags} -l"
@@ -141,7 +129,8 @@ alias lt="ls ${lsflags} -l --sort=time --reverse --time-style=long-iso"
 alias lx="ls ${lsflags} -Xl"
 alias lla="ls ${lsflags} -la"
 alias la="ls ${lsflags} -la"
-#alias h="history"
+alias path='echo $PATH | tr : "\n" | cat -n'
+alias h="history 1"
 alias hg="history | grep -i"
 alias @="printenv | sort | grep -i"
 alias ,="cd .."
@@ -154,7 +143,6 @@ alias rg='rg --pretty --smart-case'
 alias rgc='rg --no-line-number --color never '              # clean version of rg suitable for piping
 alias dc='docker-compose'
 
-
 # Simple default prompt (impure is a better prompt)
 PROMPT='%n@%m %3~%(!.#.$)%(?.. [%?]) '
 
@@ -163,6 +151,11 @@ setopt autocd                   # cd to a folder just by typing it's name
 setopt interactive_comments     # allow # comments in shell; good for copy/paste
 export BLOCK_SIZE="'1"          # Add commas to file sizes
 ZLE_REMOVE_SUFFIX_CHARS=$' \t\n;&' # These "eat" the auto prior space after a tab complete
+
+# HISTORY
+HISTFILE=${ZDOTDIR:-$HOME}/.zsh_history
+HISTSIZE=3000
+SAVEHIST=3000
 
 # Options
 setopt append_history inc_append_history  share_history
