@@ -256,7 +256,7 @@ function gg() { git commit -m "$*" }
 [[ -f $HOME/.zshrc.$USER ]] && source $HOME/.zshrc.$USER
 
 # Put your machine-specific settings here
-[[ -f $HOME/.secret ]] && source $HOME/.secret
+[[ -f $HOME/.machine ]] && source $HOME/.machine
 
 
 export DOCKER_BUILDKIT=1
