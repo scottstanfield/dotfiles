@@ -295,7 +295,6 @@ zinit ice blockf
 zinit light zsh-users/zsh-completions
 
 zinit snippet OMZP::ssh-agent
-#zinit snippet :omz:plugins:ssh-agent identities id_rsa
 
 # | history | #
 
