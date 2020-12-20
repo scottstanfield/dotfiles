@@ -293,9 +293,6 @@ zinit light zsh-users/zsh-completions
 
 zinit snippet OMZP::ssh-agent
 
-zinit ice as"program" pick"bin/git-dsf"
-zinit light zdharma/zsh-diff-so-fancy
-
 # | history | #
 
 # This is a weird way of loading 4 git-related repos/scripts; consider removing
@@ -308,15 +305,15 @@ zinit as"null" wait"1" lucid for \
     sbin                davidosomething/git-my
 
 zinit wait"1" lucid from"gh-r" as"null" for \
-    sbin"**/fd"         @sharkdp/fd \
-    sbin"**/bat"        @sharkdp/bat \
-    sbin"*/delta"       dandavison/delta \
-    sbin"exa* -> exa"   ogham/exa \
-    sbin"**/glow"       charmbracelet/glow
+    sbin"**/fd"                 @sharkdp/fd      \
+    sbin"**/bat"                @sharkdp/bat     \
+    sbin"*/delta"               dandavison/delta \
+    sbin"exa* -> exa"           ogham/exa        \
+    sbin"glow" bpick"*.tar.gz"  charmbracelet/glow
+
 
 # Use diff-so-fancy if found in path
 alias gd="git diff"
-hash "diff-so-fancy" &> /dev/null && alias dsf="git dsf"
 
 zinit pack"binary+keys" for fzf
 zinit pack for ls_colors
@@ -327,9 +324,6 @@ fast-theme -q default
 FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}path]='fg=cyan'
 FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}path-to-dir]='fg=cyan,underline'
 FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}comment]='fg=gray'
-
-FAST_HIGHLIGHT_PATTERNS+=('rm -rf' 'fg=white,bold,bg=red')
-FAST_HIGHLIGHT_PATTERNS+=('sudo ' 'fg=white,bold,bg=red')
 
 # BASE16_SHELL=$HOME/.config/base16-shell/
 # [ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"
