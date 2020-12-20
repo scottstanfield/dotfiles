@@ -448,7 +448,6 @@ function! ToggleFolds()
 endfunction
 nnoremap zz :call ToggleFolds()<cr>
 
-
 "}}}
 
 " OBSOLETE; kept for historical reasons{{{
@@ -605,8 +604,6 @@ func! WordProcessorMode()
     setlocal tw=80
     setlocal formatoptions=1t
     setlocal noexpandtab
-    map j gj
-    map k gk
     "setlocal spell spelllang=en_us
     set complete+=s
     setlocal wrap
