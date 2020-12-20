@@ -237,9 +237,6 @@ function chpwd() {
     ls
 }
 
-# Use diff-so-fancy if found in path
-hash "diff-so-fancy" &> /dev/null && alias gd="git dsf" || alias gd="git diff"
-
 alias gs="git status 2>/dev/null"
 function gc() { git clone ssh://git@github.com/"$*" }
 function gg() { git commit -m "$*" }
@@ -296,6 +293,9 @@ zinit light zsh-users/zsh-completions
 
 zinit snippet OMZP::ssh-agent
 
+zinit ice as"program" pick"bin/git-dsf"
+zinit light zdharma/zsh-diff-so-fancy
+
 # | history | #
 
 # This is a weird way of loading 4 git-related repos/scripts; consider removing
@@ -303,11 +303,20 @@ zinit light-mode for \
     zinit-zsh/z-a-bin-gem-node \
     zinit-zsh/z-a-patch-dl
 
+# For git command extensions
+zinit as"null" wait"1" lucid for \
+    sbin                davidosomething/git-my
+
 zinit wait"1" lucid from"gh-r" as"null" for \
     sbin"**/fd"         @sharkdp/fd \
     sbin"**/bat"        @sharkdp/bat \
     sbin"*/delta"       dandavison/delta \
-    sbin"exa* -> exa"   ogham/exa
+    sbin"exa* -> exa"   ogham/exa \
+    sbin"**/glow"       charmbracelet/glow
+
+# Use diff-so-fancy if found in path
+alias gd="git diff"
+hash "diff-so-fancy" &> /dev/null && alias dsf="git dsf"
 
 zinit pack"binary+keys" for fzf
 zinit pack for ls_colors

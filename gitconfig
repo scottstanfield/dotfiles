@@ -20,6 +20,20 @@
     autocrlf = input   # set to input on Mac/Linux, true on Windows
 	excludesfile = ~/.gitignore
 	whitespace = fix,-indent-with-non-tab,trailing-space,cr-at-eol
+	pager = delta
+
+
+[delta]
+	#features = side-by-side line-numbers decorations
+	features = line-numbers decorations
+    whitespace-error-style = 22 reverse
+    hunk-header-style = omit
+
+[delta "decorations"]
+    file-style = bold yellow ul
+    file-decoration-style = none
+
+
 
 [alias]
     lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit 
@@ -36,7 +50,6 @@
     delete-remote-stale-branches = !git branch -r --merged origin/master | sed -e 's/origin\\///' | grep -v master | xargs -p -n 1 git push origin --delete
     list-remote-stale-branches = !git branch -r --merged origin/master | sed -e 's/origin\\///' | grep -v master 
 
-    dsf = "!f() { [ -z \"$GIT_PREFIX\" ] || cd \"$GIT_PREFIX\" && git diff --ignore-space-change --color \"$@\" | diff-so-fancy  | less --tabs=4 -RFX; }; f"
 [push]   
     default  = simple
 
@@ -54,9 +67,6 @@
 	current = yellow bold
 	local = green bold
 	remote = cyan bold
-
-[pager]
-    diff = less --tabs=4 -RFX 
 
 
 [filter "lfs"]
