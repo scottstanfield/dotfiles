@@ -52,6 +52,12 @@ export PAGER=less
 typeset -gU path fpath manpath
 
 path=(
+    /opt/homebrew/bin
+    /opt/homebrew/Cellar/coreutils/**/gnubin
+    /opt/homebrew/Cellar/gnu-sed/**/gnubin
+    /opt/homebrew/Cellar/gnu-tar/**/gnubin
+    /opt/homebrew/Cellar/grep/**/gnubin
+
     $HOME/bin
     $HOME/.local/bin
     $HOME/.cargo/bin
@@ -108,15 +114,15 @@ manpath=($^manpath(N))
 ls --version &>/dev/null
 if [ $? -eq 0 ]; then
     lsflags="--color --group-directories-first -F"
+
+	# Hide stupid $HOME folders created by macOS from command line
+	# chflags hidden Movies Music Pictures Public Applications Library
+	lsflags+=" --hide Music --hide Movies --hide Pictures --hide Public --hide Library --hide Applications --hide OneDrive"
 else
     lsflags="-GF"
     export CLICOLOR=1
 fi
 
-#lsflags+=" --hide [A-Z]* "
-# Hide stupid $HOME folders created by macOS from command line
-# chflags hidden Movies Music Pictures Public Applications Library
-lsflags+=" --hide Music --hide Movies --hide Pictures --hide Public --hide Library --hide Applications --hide OneDrive"
 
 # Aliases
 alias ls="ls ${lsflags}"
@@ -142,6 +148,7 @@ alias t='tmux -2 new-session -A -s "moab"'		# set variable in .secret
 alias rg='rg --pretty --smart-case'
 alias rgc='rg --no-line-number --color never '              # clean version of rg suitable for piping
 alias dc='docker-compose'
+alias dust='dust -r'
 
 # Simple default prompt (impure is a better prompt)
 PROMPT='%n@%m %3~%(!.#.$)%(?.. [%?]) '
@@ -353,4 +360,4 @@ alias dc="docker-compose"
 # export FZF_DEFAULT_COMMAND='rg --files --no-ignore --follow -g "!{.git,node_modules,env}" 2> /dev/null'
 # export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
-function http { /usr/bin/http --pretty=all --verbose $@ | less -R; }
+function http { command http --pretty=all --verbose $@ | less -R; }
