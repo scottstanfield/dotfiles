@@ -265,7 +265,9 @@ endfunction
 " Hide the Magenta with ,/
 nnoremap <silent> <leader>/ :set hlsearch! hlsearch?<CR>
 
-set termguicolors
+if has('termguicolors')
+    set termguicolors
+endif
 hi Cursor guifg=green guibg=green
 hi Cursor2 guifg=red guibg=red
 " TODO: fix cursor for insert mode 
@@ -559,18 +561,6 @@ augroup my_au
 
     " Go into insert mode when entering terminal
     " au BufEnter * if &buftype == 'terminal' | :startinsert | endif
-augroup END
-
-
-" http://blog.erw.dk/2016/04/19/entering-dates-and-times-in-vim/
-" ctrl-A and ctrl-Z increment & decrement dates
-augroup date_macros
-    autocmd!
-    inoremap <expr> ,t strftime("%H:%M")
-    inoremap <expr> ,T strftime("%H:%M:%S")
-    inoremap <expr> ,d strftime("%Y-%m-%d")
-    inoremap <expr> ,l strftime("%Y-%m-%d %H:%M")
-    inoremap ,, ,
 augroup END
 
 augroup rainbow_paren
