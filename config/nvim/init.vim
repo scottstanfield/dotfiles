@@ -265,18 +265,19 @@ endfunction
 " Hide the Magenta with ,/
 nnoremap <silent> <leader>/ :set hlsearch! hlsearch?<CR>
 
-set termguicolors
-hi Cursor guifg=green guibg=green
-hi Cursor2 guifg=red guibg=red
+" foo
+"set termguicolors
+" hi Cursor guifg=green guibg=green
+" hi Cursor2 guifg=red guibg=red
 " TODO: fix cursor for insert mode 
 "set guicursor=n-v-c:block-Cursor/lCursor,i-ci-ve:ver25-Cursor2/lCursor2,r-cr:hor20,o:hor50
 
-" highlight Cursor guifg=white guibg=black
-" highlight iCursor guifg=white guibg=steelblue
-" set guicursor=n-v-c:block-Cursor
-" set guicursor+=i:ver100-iCursor
-" set guicursor+=n-v-c:blinkon0
-" set guicursor+=i:blinkwait10
+ " highlight Cursor guifg=white guibg=black
+ " highlight iCursor guifg=white guibg=steelblue
+ " set guicursor=n-v-c:block-Cursor
+ " set guicursor+=i:ver100-iCursor
+ " set guicursor+=n-v-c:blinkon0
+ " set guicursor+=i:blinkwait10
 
 " }}}
 
@@ -727,8 +728,8 @@ try
 catch
 endtry
 
-highlight Cursor guifg=NONE guibg=Green
-highlight lCursor guifg=NONE guibg=Cyan
+" highlight Cursor guifg=NONE guibg=Green
+" highlight lCursor guifg=NONE guibg=Cyan
 
   
 " }}}
