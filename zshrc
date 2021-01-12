@@ -131,7 +131,7 @@ alias lla="ls ${lsflags} -la"
 alias la="ls ${lsflags} -la"
 alias path='echo $PATH | tr : "\n" | cat -n'
 alias h="history 1"
-alias hg="history | grep -i"
+alias hg="history 1 | grep -i"
 alias @="printenv | sort | grep -i"
 alias ,="cd .."
 alias m="less"
@@ -250,8 +250,8 @@ function gg() { git commit -m "$*" }
 
 
 export DOCKER_BUILDKIT=1
-export LDFLAGS="-L/usr/local/opt/libiconv/lib"
-export CPPFLAGS="-I/usr/local/opt/libiconv/include"
+# export LDFLAGS="-L/usr/local/opt/libiconv/lib"
+# export CPPFLAGS="-I/usr/local/opt/libiconv/include"
 export HOMEBREW_NO_AUTO_UPDATE=1
 
 # ZINIT installer {{{
