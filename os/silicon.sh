@@ -23,88 +23,54 @@ install_brew() {
 
 ## tested bottles
 bottles=(
-    git
-    zsh
-    bash readline
-    openssl@1.1
-    node python@3.9 ruby
-    autoconf automake cmake lua sqlite
-    xz
-    gnu-sed
-    gnu-tar
+    autoconf automake   cmake lua         sqlite
+    bash     readline   git   gnu-sed     gnu-tar
+    node     python@3.9 ruby  openssl@1.1 xz zsh
 )
 #brew install ${bottles[*]}
 
 universal=(
     hammerspoon
+    fzf
 )
 brew install ${universal[*]}
 
 brew install font-meslo-lg-nerd-font
 
 libs=(
-    libev libevent libffi
-    libidn libmpc libomp libpng libsodium libtasn1 libtiff libtool
-    libunistring libyaml 
+    libev   libevent libffi       libidn   libmpc
+    libomp  libpng   libsodium    libtasn1 libtiff
+    libtool libyaml  libunistring
 )
 brew install ${libs[*]}
 
 fromsource=(
    luajit
    neovim
+   silicon
 )
 brew install --build-from-source ${fromsource[*]}
 
 gnu=(
-    less
-    make
-    coreutils
-    binutils
-    diffutils
-    findutils
-    gawk
-    gnu-tar
-    gnu-which
-    gnutls
-    grep
-    gzip
-    watch
-    wdiff
-    wget
+    binutils coreutils diffutils findutils
+    gawk     gnu-tar   gnu-which gnutls
+    grep     gzip      less      make watch wdiff wget
 )
 
 core=(
-    git
-    neovim
-    openssh
-    rsync
-    unzip
-    vim
-    zsh
-    tmux
-    ripgrep
-    tree
+    git  neovim openssh ripgrep rsync
+    tmux tree   unzip   vim     zsh
 )
 
-# mostly rust programs
+# rust programs
 extras=(
-    scrubcsv 
-    hyperfine 
-    dust
-    xsv
-    tokei
-    lsd
-    hammerspoon
-    bat
-    hexyl
-    shellharden
-    htop
-    procs
+    bat         dust      fd  glow  hammerspoon hexyl
+    htop        hyperfine lsd procs scrubcsv
+    shellharden tokei     xsv
 )
 
-neovim=(
-    silicon
-)
+
+cargo install silicon
 
 casks=(
     rectangle
@@ -118,7 +84,3 @@ casks=(
 #brew install ${core[*]}
 #brew cask install ${casks[*]}
 #HOMEBREW_NO_AUTO_UPDATE=1 brew install ${extras[*]}
-
-hash
-
-exit 0

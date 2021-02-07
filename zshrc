@@ -165,13 +165,9 @@ alias gd="git diff"
 alias grep="grep --color=auto"
 alias gs="git status 2>/dev/null"
 alias h="history 1"
-alias h="history 1"
 alias hg="history 1 | grep -i"
-alias hg="history | grep -i"
-alias la="ls ${lsflags} -la"
 alias la="ls ${lsflags} -la"
 alias ll="ls ${lsflags} -l --sort=extension"
-alias lla="ls ${lsflags} -la"
 alias lla="ls ${lsflags} -la"
 alias lld="ls ${lsflags} -l --sort=time --reverse --time-style=long-iso"
 alias lln="ls ${lsflags} -l"
@@ -183,7 +179,6 @@ alias lt="ls ${lsflags} -l --sort=time --reverse --time-style=long-iso"
 alias lx="ls ${lsflags} -Xl"
 alias m="less"
 alias path='echo $PATH | tr : "\n" | cat -n'
-alias path='echo $PATH | tr : "\n" | cat -n'
 alias pd='pushd'  # symmetry with cd
 alias rg='rg --pretty --smart-case'
 alias rgc='rg --no-line-number --color never '
@@ -194,7 +189,7 @@ function gg()      { git commit -m "$*" }
 function http      { command http --pretty=all --verbose $@ | less -R; }
 function fixzsh    { compaudit | xargs chmod go-w }
 function ff()      { find . -iname "$1*" -print }
-function ht()      { (head $1 && echo "---" && tail $1) | less }
+#function ht()      { (head $1 && echo "---" && tail $1) | less }
 function monitor() { watch --no-title "clear; cat $1" }
 function take()    { mkdir -p $1 && cd $1 }
 function cols()    { head -1 $1 | tr , \\n | cat -n | column }		# show CSV header
@@ -287,8 +282,13 @@ zinit ice depth=1; zinit light romkatv/powerlevel10k
 zinit ice as"program" cp"httpstat.sh -> httpstat" pick"httpstat" 
 zinit light b4b4r07/httpstat
 
-zinit ice blockf
-zinit light zsh-users/zsh-completions
+zinit fpath -f /opt/homebrew/share/zsh/site-functions
+# autoload compinit
+# compinit
+# zinit compinit
+
+# zinit ice blockf atpull'zinit creinstall -q .'
+# zinit light zsh-users/zsh-completions
 
 zinit snippet OMZP::ssh-agent
 
@@ -296,7 +296,11 @@ zinit snippet OMZP::ssh-agent
 zinit light-mode for \
     zinit-zsh/z-a-bin-gem-node \
     zinit-zsh/z-a-patch-dl \
+    zinit-zsh/z-a-rust \
     zinit-zsh/z-a-meta-plugins
+
+zinit ice cargo'!lsd'
+zinit light zdharma/null
 
 # For git command extensions
 zinit as"null" wait"1" lucid for \

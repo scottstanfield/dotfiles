@@ -1,16 +1,10 @@
 live_config_reload: true
 
 font:
-  size: 20.0
+  size: 18.0
   normal:
-    family: MesloLGS NF
+    family: MesloLGMDZ Nerd Font
     style: Regular
-  bold:
-    family: MesloLGS NF
-    style: Bold
-  italic:
-    family: MesloLGS NF
-    style: Italic
 
 # Colors
 # Solarized Flattened: https://github.com/romainl/flattened
@@ -69,6 +63,9 @@ colors: *dark
 key_bindings:
   - { key: Return,      mods: Command,    action: ToggleSimpleFullscreen }
   
+env:
+  TERM: xterm-256color
+
 # Configuration for Alacritty, the GPU enhanced terminal emulator.
 
 # Any items in the `env` entry below will be added as
@@ -391,7 +388,7 @@ window:
 #
 # Window opacity as a floating point number from `0.0` to `1.0`.
 # The value `0.0` is completely transparent and `1.0` is opaque.
-#background_opacity: 1.0
+background_opacity: 1.0
 
 #selection:
   #semantic_escape_chars: ",│`|:\"' ()[]{}<>\t"
