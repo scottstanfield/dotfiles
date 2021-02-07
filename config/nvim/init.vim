@@ -272,7 +272,11 @@ hi Cursor guifg=green guibg=green
 hi Cursor2 guifg=red guibg=red
 
 " TODO: fix cursor for insert mode 
-"set guicursor=n-v-c:block-Cursor/lCursor,i-ci-ve:ver25-Cursor2/lCursor2,r-cr:hor20,o:hor50
+"set guicursor=n-v-c:block-Cursor/lCursor-blinkon0,i-ci-ve:ver25-Cursor2/lCursor2,r-cr:hor20,o:hor50
+
+set guicursor=n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50
+		  \,a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor
+		  \,sm:block-blinkwait175-blinkoff150-blinkon175
 
  " highlight Cursor guifg=white guibg=black
  " highlight iCursor guifg=white guibg=steelblue
