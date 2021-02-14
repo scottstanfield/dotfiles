@@ -1,0 +1,9 @@
+# The program sources include "alacritty" and "alacritty-direct", which are
+# copied from "xterm-256color" and "xterm-direct" (but using semicolon for
+# subparameter delimiter).  Refactored here to use ncurses building blocks -TD
+alacritty|alacritty terminal emulator,
+	rs1=\Ec\E]104\007, use=xterm+256color,
+	use=alacritty+common,
+
+alacritty-direct|alacritty with direct color indexing,
+	use=xterm+indirect, use=alacritty+common,
