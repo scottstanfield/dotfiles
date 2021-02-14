@@ -333,3 +333,10 @@ FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}comment]='fg=gray'
 
 # Put "cargo installed" apps first in the path, to accomodate Silicon M1 overrides
 path=($HOME/.cargo/bin $path)
+
+
+# Moab specific
+alias logs="docker logs control -f"
+alias dc="docker-compose"
+alias p=python3
+alias d=docker
