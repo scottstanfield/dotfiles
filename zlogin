@@ -13,7 +13,7 @@
 if [[ -o INTERACTIVE && -t 2 ]]; then
 
     if [[ -z "$TMUX" ]]; then
-        hash splash && splash
+        hash splash &>/dev/null && splash
     fi
 
 fi >&2
