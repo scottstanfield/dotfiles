@@ -1,5 +1,3 @@
-# General
-.DS_Store
-.AppleDouble
-.LSOverride
-*.o
+Library/
+Pictures/
+Documents/davinci-media
