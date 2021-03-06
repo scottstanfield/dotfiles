@@ -57,7 +57,7 @@ bindkey ' '     magic-space
 export KEYTIMEOUT=1
 autoload -Uz edit-command-line
 zle -N edit-command-line
-bindkey '\033' edit-command-line
+bindkey '' edit-command-line
 
 ##
 ## PATH
@@ -340,3 +340,15 @@ alias logs="docker logs control -f"
 alias dc="docker-compose"
 alias p=python3
 alias d=docker
+
+if [[ -x /home/pi/.cargo/bin/exa ]]; then
+    exaflags="--classify --color-scale --bytes --group-directories-first --git"
+    alias ls="exa ${exaflags}"
+    alias ll="exa ${exaflags} --long "
+    alias lld="exa ${exaflags} --all --long --sort date"
+    alias lle="exa ${exaflags} --all --long --sort extension"
+    alias lls="exa ${exaflags} --all --long --sort size"
+    alias lla="exa ${exaflags} --all --long --sort size"
+fi 
+
+
