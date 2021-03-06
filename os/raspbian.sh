@@ -1,11 +1,16 @@
 #!/usr/bin/env bash
-set -Eeuo pipefile
+set -Eeo pipefail
 
-die()     { local ret=$?; printf "%s\n" "$@" >&2; exit "$ret"; }
+function pause {
+  >/dev/tty printf '%s' "${*:-Press any key to continue... }"
+  [[ $ZSH_VERSION ]] && read -krs  # Use -u0 to read from STDIN
+  [[ $BASH_VERSION ]] && </dev/tty read -rsn1
+  printf '\n'
+}
 
-# Preferred way to cd to where this script is running
-# https://stackoverflow.com/questions/4774054/reliable-way-for-a-bash-script-to-get-the-full-path-to-itself
-readonly _D="$(dirname "$(readlink -f "$0")")" && cd "$_D"
+printf "Install neovim, zsh, rust and exa tool? It takes 5 minutes.\n"
+pause 'Press SPACE to continue or CTRL-C to quit'
 
-sudo apt-install -y neovim zsh
+sudo apt-get install -y neovim zsh
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+cargo install exa                       # takes 5 minutes on RPi 4!
