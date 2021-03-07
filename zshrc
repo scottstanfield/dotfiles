@@ -88,8 +88,9 @@ path=(
     /opt/homebrew/Cellar/grep/**/gnubin
 
     $HOME/bin
-    $HOME/.local/bin
+    $HOME/.poetry/bin
     $HOME/.cargo/bin
+    $HOME/.local/bin
     $HOME/.go/bin
 
     $HOME/moab/bin
@@ -246,6 +247,8 @@ fi
 export DOCKER_BUILDKIT=1
 export HOMEBREW_NO_AUTO_UPDATE=1
 
+eval "$(pyenv init -)"
+
 ##
 ## zinit plugin installer
 ##
@@ -341,7 +344,6 @@ alias dc="docker-compose"
 alias p=python3
 alias d=docker
 
-if [[ -x /home/pi/.cargo/bin/exa ]]; then
     exaflags="--classify --color-scale --bytes --group-directories-first --git"
     alias ls="exa ${exaflags}"
     alias ll="exa ${exaflags} --long "
@@ -349,6 +351,11 @@ if [[ -x /home/pi/.cargo/bin/exa ]]; then
     alias lle="exa ${exaflags} --all --long --sort extension"
     alias lls="exa ${exaflags} --all --long --sort size"
     alias lla="exa ${exaflags} --all --long --sort size"
-fi 
 
+light_color='base16-atelier-sulphurpool-light.yml'
+dark_color='base16-atelier-sulphurpool.yml'
 
+colorflags="-c ~/.alacritty.yml -C ~/.config/alacritty/colors/colors"
+alias day="alacritty-colorscheme ${colorflags} -V apply $light_color"
+alias night="alacritty-colorscheme ${colorflags} -V apply $dark_color"
+alias toggle="alacritty-colorscheme ${colorflags} -V toggle $light_color $dark_color"

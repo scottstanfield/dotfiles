@@ -29,6 +29,8 @@ call plug#begin('~/.config/nvim/plugged')
 
     Plug 'mileszs/ack.vim'
 
+    Plug 'atelierbram/vim-colors_atelier-schemes'
+
     Plug 'csexton/trailertrash.vim'         "
     Plug 'editorconfig/editorconfig-vim'
     Plug 'lifepillar/vim-colortemplate'
@@ -260,6 +262,49 @@ function! ShowDigraphs()
     call getchar()
     return "\<C-K>"
 endfunction
+
+" }}}
+
+" Abbreviations {{{
+" Abbreviations From http://vimcasts.org/episodes/show-invisibles/
+" https://www.typography.com/blog/house-of-flying-reference-marks
+" *, †, ‡, §, ||, #, **, ††, ‡‡, §§, ||||, ###, ***, †††, ‡‡‡
+
+ab [dagger] †
+ab [obelus] †
+ab [dagger2] ‡
+ab [diesis] ‡
+ab [section] §
+ab [lozenge] ◊
+ab [check] ✓
+ab [x] ×
+ab [o] ○
+ab [.] •
+ab [>] ▸
+ab [heart] ❤
+ab [cmd] ⌘
+ab [command] ⌘
+ab [shift] ⇧
+ab [capslock] ⇪
+ab [option] ⌥
+ab [ctrl] ⌃
+ab [tab] ⇥
+ab [interpunct] ·
+ab [reference] ※
+ab [ellipse] …     
+ab [bar] ―
+ab [left] ←
+ab [right] →
+ab [pi] π
+ab [shrug]  ¯\_(ツ)_/¯
+ab [yhat] ŷ
+ab [space] ␢
+ab [degree] ° 
+ab [deg] ° 
+ab [mu] µ
+ab [ss] §
+ab [sd] σ
+ab [blank] ␣
 
 " }}}
 
@@ -666,7 +711,7 @@ let g:ack_use_cword_for_empty_search = 1
 cnoreabbrev Ack Ack!
 
 " Maps <leader>/ so we're ready to type the search keyword
-nnoremap <Leader>/ :Ack!<Space>
+" nnoremap <Leader>/ :Ack!<Space>
 
 " Navigate quickfix list with ease
 nnoremap <silent> [q :cprevious<CR>
@@ -717,15 +762,15 @@ highlight Comment cterm=italic
 set t_ZH=[3m
 set t_ZR=[23m
 
-set background=dark
-colorscheme solarized8_high
+" set background=dark
+" colorscheme solarized8_high
 
 
-" if filereadable(expand("~/.vimrc_background"))
-"   let base16colorspace=256
-"   set background=dark
-"   source ~/.vimrc_background
-" endif
+if filereadable(expand("~/.vimrc_background"))
+  let base16colorspace=256
+  set background=dark
+  source ~/.vimrc_background
+endif
 
 
 
