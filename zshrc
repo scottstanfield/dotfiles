@@ -105,6 +105,7 @@ path=(
     /usr/local/opt/coreutils/libexec/gnubin
 
     /usr/local/bin
+    /usr/local/sbin
     /usr/bin
     /usr/sbin
     /bin
@@ -359,3 +360,8 @@ colorflags="-c ~/.alacritty.yml -C ~/.config/alacritty/colors/colors"
 alias day="alacritty-colorscheme ${colorflags} -V apply $light_color"
 alias night="alacritty-colorscheme ${colorflags} -V apply $dark_color"
 alias toggle="alacritty-colorscheme ${colorflags} -V toggle $light_color $dark_color"
+
+function idot()    { dot -Tsvg -Gsize=${1:-9},${2:-16}\! | rsvg-convert | ~/bin/imgcat }
+function iplot()   { awk -f ~/bin/plot.awk | rsvg-convert -z ${1:-1} | ~/bin/imgcat }
+
+#export PATH="$HOME/.poetry/bin:$PATH"
