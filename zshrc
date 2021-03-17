@@ -248,8 +248,6 @@ fi
 export DOCKER_BUILDKIT=1
 export HOMEBREW_NO_AUTO_UPDATE=1
 
-eval "$(pyenv init -)"
-
 ##
 ## zinit plugin installer
 ##

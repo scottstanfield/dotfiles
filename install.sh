@@ -59,6 +59,7 @@ link alacritty.yml        "$HOME"/.alacritty.yml
 link p10k.zsh             "$HOME"/.p10k.zsh
 link gitconfig            "$HOME"/.gitconfig
 link gitignore            "$HOME"/.gitignore
+link vimrc_background     "$HOME"/.vimrc_background
 
 # This is the stupidest name for an app yet. And it should be in .config/.hammerspoon
 mkdir -p "$HOME"/.hammerspoon
