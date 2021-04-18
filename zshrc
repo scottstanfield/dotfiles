@@ -343,13 +343,14 @@ alias dc="docker-compose"
 alias p=python3
 alias d=docker
 
-    exaflags="--classify --color-scale --bytes --group-directories-first --git"
-    alias ls="exa ${exaflags}"
-    alias ll="exa ${exaflags} --long "
-    alias lld="exa ${exaflags} --all --long --sort date"
-    alias lle="exa ${exaflags} --all --long --sort extension"
-    alias lls="exa ${exaflags} --all --long --sort size"
-    alias lla="exa ${exaflags} --all --long --sort size"
+exaflags="--classify --color-scale --bytes --group-directories-first --git"
+
+alias ls="exa ${exaflags} "$*""
+alias ll="exa ${exaflags} --long "
+alias lld="exa ${exaflags} --all --long --sort date"
+alias lle="exa ${exaflags} --all --long --sort extension"
+alias lls="exa ${exaflags} --all --long --sort size"
+alias lla="exa ${exaflags} --all --long --sort size"
 
 light_color='base16-atelier-sulphurpool-light.yml'
 dark_color='base16-atelier-sulphurpool.yml'
