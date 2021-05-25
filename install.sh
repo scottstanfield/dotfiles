@@ -75,15 +75,15 @@ touch "$HOME"/.gitconfig.local			# put your [user] settings here
 # https://medium.com/@dubistkomisch/how-to-actually-get-italics-and-true-colour-to-work-in-iterm-tmux-vim-9ebe55ebc2be
 # Understanding TERM strings 
 # https://sanctum.geek.nz/arabesque/term-strings/
-tic -x termcap/tmux-256color.terminfo || true
-tic -x termcap/xterm-256color-italic.terminfo || true
+# tic -x termcap/tmux-256color.terminfo || true
+# tic -x termcap/xterm-256color-italic.terminfo || true
 
 # Install neovim plugins
-println "Installing vim plugins..."
-nvim +PlugInstall +qall
+# println "Installing vim plugins..."
+# nvim +PlugInstall +qall
 
-# now change shells
-println 'and: sudo chsh -s $(which zsh) $(whoami)'
+# # now change shells
+# println 'and: sudo chsh -s $(which zsh) $(whoami)'
 
 exit 0
 
