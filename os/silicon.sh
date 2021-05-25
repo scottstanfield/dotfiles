@@ -28,7 +28,15 @@ universal=(
 )
 brew install ${universal[*]}
 
+brew tap homebrew/cask-fonts
 brew install font-meslo-lg-nerd-font
+
+# minimal
+# bash zsh git
+# font-meslo-lg-nerd-font
+# hammerspoon
+# neovim 
+# less wget  tmux
 
 libs=(
     libev   libevent libffi       libidn   libmpc
@@ -77,3 +85,5 @@ casks=(
 #brew install ${core[*]}
 #brew cask install ${casks[*]}
 #HOMEBREW_NO_AUTO_UPDATE=1 brew install ${extras[*]}
+
+softwareupdate --install-rosetta
