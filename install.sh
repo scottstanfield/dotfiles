@@ -78,6 +78,10 @@ touch "$HOME"/.gitconfig.local			# put your [user] settings here
 # tic -x termcap/tmux-256color.terminfo || true
 # tic -x termcap/xterm-256color-italic.terminfo || true
 
+# empty .ssh folder
+umask 077 
+mkdir $HOME/.ssh 2&>/dev/null || true
+
 # Install neovim plugins
 # println "Installing vim plugins..."
 # nvim +PlugInstall +qall
