@@ -57,7 +57,8 @@ bindkey ' '     magic-space
 export KEYTIMEOUT=1
 autoload -Uz edit-command-line
 zle -N edit-command-line
-bindkey '' edit-command-line
+bindkey '' edit-command-line
+
 
 ##
 ## PATH
@@ -186,6 +187,7 @@ alias rg='rg --pretty --smart-case'
 alias rgc='rg --no-line-number --color never '
 alias ssh="TERM=xterm-256color ssh"
 alias t='tmux -2 new-session -A -s "moab"'
+alias dkrr='docker run --rm -it -u1000:1000 -v$(pwd):/work -w /work -e DISPLAY=$DISPLAY'
 
 function gg()      { git commit -m "$*" }
 function http      { command http --pretty=all --verbose $@ | less -R; }
@@ -266,7 +268,7 @@ autoload -Uz _zinit
 # }}}
 
 export NVM_LAZY_LOAD=true
-zinit light lukechilds/zsh-nvm
+#zinit light lukechilds/zsh-nvm
 
 # | completions | # {{{
 zinit ice wait silent blockf; 
