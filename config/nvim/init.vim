@@ -587,6 +587,11 @@ augroup yaml_syntax
     autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
 augroup END
 
+augroup templates
+    autocmd!
+    autocmd BufNewFile *.html    0r ~/.config/nvim/templates/template.html
+augroup END
+
 
 " Wrapping autocmd in a group per http://bit.ly/15wKRrM
 augroup my_au
