@@ -33,8 +33,8 @@ export LANG="en_US.UTF-8"
 export PAGER=less
 
 HISTFILE=${ZDOTDIR:-$HOME}/.zsh_history
-HISTSIZE=3000
-SAVEHIST=3000
+HISTSIZE=10000
+SAVEHIST=10000
 
 setopt append_history inc_append_history  share_history
 setopt histfcntllock  histignorealldups   histreduceblanks histsavenodups
@@ -87,6 +87,8 @@ path=(
     /opt/homebrew/Cellar/gnu-sed/**/gnubin
     /opt/homebrew/Cellar/gnu-tar/**/gnubin
     /opt/homebrew/Cellar/grep/**/gnubin
+
+    $HOME/Library/Python/3.9/bin
 
     $HOME/bin
     $HOME/.poetry/bin
@@ -357,7 +359,9 @@ alias lla="exa ${exaflags} --all --long --sort size"
 light_color='base16-atelier-sulphurpool-light.yml'
 dark_color='base16-atelier-sulphurpool.yml'
 
-colorflags="-c ~/.alacritty.yml -C ~/.config/alacritty/colors/colors"
+# pip3 install --user alacritty-colorscheme
+# git clone https://github.com/aaron-williamson/base16-alacritty $HOME/.config
+colorflags="-c ~/.alacritty.yml -C ~/.config/base16/colors"
 alias day="alacritty-colorscheme ${colorflags} -V apply $light_color"
 alias night="alacritty-colorscheme ${colorflags} -V apply $dark_color"
 alias toggle="alacritty-colorscheme ${colorflags} -V toggle $light_color $dark_color"

@@ -14,21 +14,46 @@ require xcode-select
 
 export HOMEBREW_NO_INSTALL_CLEANUP
 
-## tested bottles
-bottles=(
-    autoconf automake   cmake lua         sqlite
-    bash     readline   git   gnu-sed     gnu-tar
-    node     python@3.9 ruby  openssl@1.1 xz zsh
+languages=(
+	python@3.9
+	ruby
+	lua
+	node
+	rust
 )
-#brew install ${bottles[*]}
+
+bottles=(
+    autoconf 
+    automake
+    cmake
+    bash
+    readline
+    git   
+    gnu-sed     
+    gnu-tar
+    openssl     
+    xz 
+    zsh
+)
 
 universal=(
     hammerspoon
     fzf
 )
+<<<<<<< HEAD
 brew install ${universal[*]}
 
+brew tap homebrew/cask-fonts
 brew install font-meslo-lg-nerd-font
+=======
+>>>>>>> 7c8bf87 (Install fonts)
+
+# minimal
+# bash zsh git
+# font-meslo-lg-nerd-font
+# hammerspoon
+# neovim 
+# less wget  tmux
 
 libs=(
     libev   libevent libffi       libidn   libmpc
@@ -42,7 +67,6 @@ fromsource=(
    neovim
    silicon
 )
-brew install --build-from-source ${fromsource[*]}
 
 gnu=(
     binutils coreutils diffutils findutils
@@ -62,7 +86,6 @@ extras=(
     shellharden tokei     xsv
 )
 
-
 cargo install silicon
 
 casks=(
@@ -73,7 +96,13 @@ casks=(
     miniconda
 )
 
-#brew install ${gnu[*]}
-#brew install ${core[*]}
-#brew cask install ${casks[*]}
+brew install --build-from-source ${fromsource[*]}
+brew install ${universal[*]}
+brew install font-meslo-lg-nerd-font
+brew install ${bottles[*]}
+brew install ${gnu[*]}
+brew install ${core[*]}
+brew cask install ${casks[*]}
 #HOMEBREW_NO_AUTO_UPDATE=1 brew install ${extras[*]}
+
+softwareupdate --install-rosetta

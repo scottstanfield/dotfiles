@@ -76,3 +76,6 @@
     required = true
 [init]
 	defaultBranch = main
+[user]
+	name = Scott Stanfield
+	email = scottstanfield@gmail.com
