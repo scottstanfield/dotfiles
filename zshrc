@@ -114,6 +114,8 @@ path=(
     /bin
     /sbin
 
+    # Remove this line if you're on WSL2 for Windows
+    # This is where the host paths get pulled in
     $path[@]
 
     .
