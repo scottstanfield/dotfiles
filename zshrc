@@ -198,7 +198,6 @@ function http      { command http --pretty=all --verbose $@ | less -R; }
 function fixzsh    { compaudit | xargs chmod go-w }
 function ff()      { find . -iname "$1*" -print }
 #function ht()      { (head $1 && echo "---" && tail $1) | less }
-function monitor() { watch --no-title "clear; cat $1" }
 function take()    { mkdir -p $1 && cd $1 }
 function cols()    { head -1 $1 | tr , \\n | cat -n | column }		# show CSV header
 function zcolors() { for code in {000..255}; do print -P -- "$code: %F{$code}Test%f"; done | column}
