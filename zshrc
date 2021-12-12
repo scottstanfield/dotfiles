@@ -302,13 +302,13 @@ zinit snippet OMZP::ssh-agent
 
 # This is a weird way of loading 4 git-related repos/scripts; consider removing
 zinit light-mode for \
-    zinit-zsh/z-a-bin-gem-node \
-    zinit-zsh/z-a-patch-dl \
-    zinit-zsh/z-a-rust \
-    zinit-zsh/z-a-meta-plugins
+    zdharma-continuum/z-a-bin-gem-node \
+    zdharma-continuum/z-a-patch-dl \
+    zdharma-continuum/z-a-rust \
+    zdharma-continuum/z-a-meta-plugins
 
 zinit ice cargo'!lsd'
-zinit light zdharma/null
+zinit light zdharma-continuum/null
 
 # For git command extensions
 zinit as"null" wait"1" lucid for \
@@ -318,19 +318,18 @@ zinit as"null" wait"1" lucid for \
 # cargo install exa git-delta
 
 # zinit only installs x86 binaries
-zinit wait"1" lucid from"gh-r" as"null" for \
-    sbin"**/fd"                 @sharkdp/fd      \
-    sbin"**/bat"                @sharkdp/bat     \
-    sbin"*/delta"               dandavison/delta \
-    sbin"exa* -> exa"           ogham/exa        \
-    sbin"glow" bpick"*.tar.gz"  charmbracelet/glow
+# zinit wait"1" lucid from"gh-r" as"null" for \
+#     sbin"**/fd"                 @sharkdp/fd      \
+#     sbin"**/bat"                @sharkdp/bat     \
+#     sbin"exa* -> exa"           ogham/exa        \
+#     sbin"glow" bpick"*.tar.gz"  charmbracelet/glow
 
-zinit pack"binary+keys" for fzf
+#zinit pack"binary+keys" for fzf
 zinit pack for ls_colors
 
 
 # | syntax highlighting | <-- needs to be last zinit #
-zinit light zdharma/fast-syntax-highlighting
+zinit light zdharma-continuum/fast-syntax-highlighting
 fast-theme -q default
 FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}path]='fg=cyan'
 FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}path-to-dir]='fg=cyan,underline'
