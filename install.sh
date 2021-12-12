@@ -24,7 +24,10 @@ require nvim
 require git
 
 # Change directories to where this script is located
-cd "$(dirname "$(realpath "${BASH_SOURCE[0]}")")"
+#cd "$(dirname "$(realpath "${BASH_SOURCE[0]}")")"
+canonical=$(cd -P -- "$(dirname -- "$0")" && printf '%s\n' "$(pwd -P)")
+cd $canonical
+
 
 
 ##
@@ -38,7 +41,7 @@ println "Backing up important files to $B"
 link() {
   if [[ -e $1 ]]; then
 	println "linking $1 -> $2 with backup to $B"
-	cp -pL "$PWD/$1" "$B"						# (p)reserve attributes and deference symbolic links
+	cp -pL "$2" "$B" 2>/dev/null || true						# (p)reserve attributes and deference symbolic links
 	ln -sf "$PWD/$1" "$2"
   fi
 }
@@ -52,8 +55,8 @@ link zshrc                "$HOME"/.zshrc
 link zlogin               "$HOME"/.zlogin
 link vimrc                "$HOME"/.vimrc						# minimal vimrc for VIM v8
 link tmux.conf            "$HOME"/.tmux.conf
-# link bashrc               "$HOME"/.bashrc
-# link bash_profile         "$HOME"/.bash_profile
+link bashrc               "$HOME"/.bashrc
+link bash_profile         "$HOME"/.bash_profile
 link inputrc              "$HOME"/.inputrc
 link alacritty.yml        "$HOME"/.alacritty.yml
 link p10k.zsh             "$HOME"/.p10k.zsh
@@ -68,7 +71,7 @@ link init.lua "$HOME"/.hammerspoon
 touch "$HOME"/.gitconfig.local			# put your [user] settings here
 
 # fixing potential insecure group writable folders
-# compaudit | xargs chmod g-w
+compaudit | xargs chmod g-w
 
 # Setup termcap for tmux
 # Italics + true color + iTerm + tmux + vim
@@ -78,9 +81,9 @@ touch "$HOME"/.gitconfig.local			# put your [user] settings here
 # tic -x termcap/tmux-256color.terminfo || true
 # tic -x termcap/xterm-256color-italic.terminfo || true
 
-# empty .ssh folder
+# Setup empty .ssh folder in case one doesn't exist
 umask 077 
-mkdir $HOME/.ssh 2&>/dev/null || true
+mkdir -p $HOME/.ssh
 
 # Install neovim plugins
 # println "Installing vim plugins..."
@@ -88,6 +91,9 @@ mkdir $HOME/.ssh 2&>/dev/null || true
 
 # # now change shells
 # println 'and: sudo chsh -s $(which zsh) $(whoami)'
+
+println "Backed up existing files to $B"
+ls $B
 
 exit 0
 
