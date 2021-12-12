@@ -61,7 +61,13 @@
     lineNumber = true
 
 [color]
-    ui = true
+	diff = auto
+	status = auto
+	branch = auto
+	interactive = auto
+	ui = true
+	pager = true
+	ui = true
 
 [color "branch"]
 	current = yellow bold
