@@ -2,8 +2,8 @@ export CLICOLOR=1
 export LANG="en_US.UTF-8"
 export PATH=$PATH:.
 
-alias ls="ls --color --group-directories-first -F"
-alias ll="ls --color --group-directories-first -F -l"
+alias ls="ls --color -F"
+alias ll="ls --color -F -l"
 alias ,="cd .."
 alias m="less"
 alias hg="history | grep -i"
