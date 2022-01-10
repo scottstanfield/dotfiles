@@ -38,8 +38,8 @@ SAVEHIST=10000
 
 setopt append_history inc_append_history  share_history
 setopt histfcntllock  histignorealldups   histreduceblanks histsavenodups
-setopt autopushd           chaselinks       pushdignoredups pushdsilent
-setopt NO_caseglob    extendedglob        globdots         globstarshort   nullglob numericglobsort
+setopt autopushd      chaselinks          pushdignoredups  pushdsilent
+setopt NO_caseglob    extendedglob        globdots         globstarshort nullglob numericglobsort
 setopt NO_flowcontrol interactivecomments rcquotes
 setopt autocd                   # cd to a folder just by typing it's name
 setopt interactive_comments     # allow # comments in shell; good for copy/paste
@@ -88,8 +88,8 @@ path=(
     /opt/homebrew/Cellar/gnu-tar/**/gnubin
     /opt/homebrew/Cellar/grep/**/gnubin
 
-    $HOME/Library/Python/3.9/bin
 
+    $HOME/.pyenv/shims
     $HOME/bin
     $HOME/.poetry/bin
     $HOME/.cargo/bin
@@ -193,6 +193,7 @@ alias ssh="TERM=xterm-256color ssh"
 alias t='tmux -2 new-session -A -s "moab"'
 alias dkrr='docker run --rm -it -u1000:1000 -v$(pwd):/work -w /work -e DISPLAY=$DISPLAY'
 
+function witch()   { file $(which "$*") }
 function gg()      { git commit -m "$*" }
 function http      { command http --pretty=all --verbose $@ | less -R; }
 function fixzsh    { compaudit | xargs chmod go-w }
@@ -209,7 +210,7 @@ function h() {
 # Automatically ls after you cd
 function chpwd() {
     emulate -L zsh
-    ls
+    ls -F
 }
 
 # Simple default prompt
@@ -258,6 +259,12 @@ export HOMEBREW_NO_AUTO_UPDATE=1
 ## zinit plugin installer
 ##
 
+case "$OSTYPE" in
+  linux*) bpick='*((#s)|/)*(linux|musl)*((#e)|/)*' ;;
+  darwin*) bpick='*(macos|darwin)*' ;;
+  *) echo 'WARN: unsupported system -- some cli programs might not work' ;;
+esac
+
 # ZINIT installer {{{
 [[ ! -f ~/.zinit/bin/zinit.zsh ]] && {
     print -P "%F{33}▓▒░ %F{220}Installing zsh %F{33}zinit%F{220} plugin manager (%F{33}zdharma-continuum/zinit%F{220})…%f"
@@ -272,7 +279,7 @@ autoload -Uz _zinit
 # }}}
 
 export NVM_LAZY_LOAD=true
-#zinit light lukechilds/zsh-nvm
+zinit light lukechilds/zsh-nvm
 
 # | completions | # {{{
 zinit ice wait silent blockf; 
@@ -285,10 +292,8 @@ setopt auto_menu                # show completion menu on succesive tab presses
 
 # }}}
 
+zinit load zdharma-continuum/history-search-multi-word
 zinit ice depth=1; zinit light romkatv/powerlevel10k
-
-zinit ice as"program" cp"httpstat.sh -> httpstat" pick"httpstat" 
-zinit light b4b4r07/httpstat
 
 zinit fpath -f /opt/homebrew/share/zsh/site-functions
 # autoload compinit
@@ -302,12 +307,13 @@ zinit snippet OMZP::ssh-agent
 
 # This is a weird way of loading 4 git-related repos/scripts; consider removing
 zinit light-mode for \
-    zdharma-continuum/z-a-bin-gem-node \
-    zdharma-continuum/z-a-patch-dl \
-    zdharma-continuum/z-a-rust \
-    zdharma-continuum/z-a-meta-plugins
+    zdharma-continuum/zinit-annex-readurl \
+    zdharma-continuum/zinit-annex-bin-gem-node \
+    zdharma-continuum/zinit-annex-patch-dl \
+    zdharma-continuum/zinit-annex-submods \
+    zdharma-continuum/zinit-annex-rust
 
-zinit ice cargo'!lsd'
+#zinit ice cargo'!lsd'
 zinit light zdharma-continuum/null
 
 # For git command extensions
@@ -323,8 +329,14 @@ zinit as"null" wait"1" lucid for \
 #     sbin"**/bat"                @sharkdp/bat     \
 #     sbin"exa* -> exa"           ogham/exa        \
 #     sbin"glow" bpick"*.tar.gz"  charmbracelet/glow
+#
+zi wait'0b' lucid from"gh-r" as"program" for @junegunn/fzf
+zi ice wait'0a' lucid; zi snippet https://github.com/junegunn/fzf/blob/master/shell/key-bindings.zsh
+zi ice wait'1a' lucid; zi snippet https://github.com/junegunn/fzf/blob/master/shell/completion.zsh
+zi wait'0c' lucid pick"fzf-finder.plugin.zsh" light-mode for  @leophys/zsh-plugin-fzf-finder
 
-#zinit pack"binary+keys" for fzf
+# zinit pack"binary+keys" for fzf
+# zinit pack"bgn" for fzf
 zinit pack for ls_colors
 
 

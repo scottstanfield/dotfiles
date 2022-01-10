@@ -22,6 +22,10 @@ languages=(
 	rust
 )
 
+# suggestions from pyenv for macOS 
+# https://wilsonmar.github.io/pyenv/
+brew install openssl readline sqlite3 xz zlib
+
 bottles=(
     autoconf 
     automake
@@ -40,13 +44,10 @@ universal=(
     hammerspoon
     fzf
 )
-<<<<<<< HEAD
 brew install ${universal[*]}
 
 brew tap homebrew/cask-fonts
 brew install font-meslo-lg-nerd-font
-=======
->>>>>>> 7c8bf87 (Install fonts)
 
 # minimal
 # bash zsh git
@@ -104,5 +105,8 @@ brew install ${gnu[*]}
 brew install ${core[*]}
 brew cask install ${casks[*]}
 #HOMEBREW_NO_AUTO_UPDATE=1 brew install ${extras[*]}
+
+pip3 install --user alacritty-colorscheme
+git clone https://github.com/aaron-williamson/base16-alacritty $HOME/.config/base16
 
 softwareupdate --install-rosetta

@@ -26,6 +26,7 @@ call plug#begin('~/.config/nvim/plugged')
     " Essential
     Plug 'sheerun/vim-polyglot'             " all the best language / syntax packs
     Plug 'ryanoasis/vim-devicons'
+    Plug 'tmux-plugins/vim-tmux'
 
     Plug 'mileszs/ack.vim'
 
@@ -394,6 +395,8 @@ set splitright                  " and to the right
 
 " MAPS {{{
 
+" 'space' pages down like LESS does
+nnoremap <space> <c-j>
 " Make ctrl-6 the same as ctrl-^
 nnoremap <c-6> <c-^>
 " Flip back to previous file

@@ -1,9 +1,9 @@
 live_config_reload: true
 
 font:
-  size: 18.0
+  size: 14.0
   normal:
-    family: Menlo #MesloLGMDZ Nerd Font
+    family: Menlo #MesloLGS NF
     style: Regular
 
 # Colors
