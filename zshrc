@@ -330,7 +330,7 @@ zinit as"null" wait"1" lucid for \
 #     sbin"exa* -> exa"           ogham/exa        \
 #     sbin"glow" bpick"*.tar.gz"  charmbracelet/glow
 #
-zi wait'0b' lucid from"gh-r" as"program" for @junegunn/fzf
+#zi wait'0b' lucid from"gh-r" as"program" for @junegunn/fzf
 zi ice wait'0a' lucid; zi snippet https://github.com/junegunn/fzf/blob/master/shell/key-bindings.zsh
 zi ice wait'1a' lucid; zi snippet https://github.com/junegunn/fzf/blob/master/shell/completion.zsh
 zi wait'0c' lucid pick"fzf-finder.plugin.zsh" light-mode for  @leophys/zsh-plugin-fzf-finder
