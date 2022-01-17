@@ -58,11 +58,12 @@ link tmux.conf            "$HOME"/.tmux.conf
 link bashrc               "$HOME"/.bashrc
 link bash_profile         "$HOME"/.bash_profile
 link inputrc              "$HOME"/.inputrc
-link alacritty.yml        "$HOME"/.alacritty.yml
 link p10k.zsh             "$HOME"/.p10k.zsh
 link gitconfig            "$HOME"/.gitconfig
 link gitignore            "$HOME"/.gitignore
 link vimrc_background     "$HOME"/.vimrc_background
+
+cp -pL alacritty.yml        "$HOME"/.alacritty.yml
 
 # This is the stupidest name for an app yet. And it should be in .config/.hammerspoon
 mkdir -p "$HOME"/.hammerspoon
@@ -71,7 +72,7 @@ link init.lua "$HOME"/.hammerspoon
 touch "$HOME"/.gitconfig.local			# put your [user] settings here
 
 # fixing potential insecure group writable folders
-compaudit | xargs chmod g-w
+#compaudit | xargs chmod g-w
 
 # Setup termcap for tmux
 # Italics + true color + iTerm + tmux + vim
