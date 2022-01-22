@@ -16,94 +16,115 @@ let g:plug_shallow=1
 " PLUGINS {{{
 
 " https://github.com/junegunn/vim-plug
-if empty(glob('~/.config/nvim/autoload/plug.vim'))
-  silent !curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
+if empty(glob(data_dir . '/autoload/plug.vim'))
+  silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
 call plug#begin('~/.config/nvim/plugged')
 
-    " Essential
-    Plug 'sheerun/vim-polyglot'             " all the best language / syntax packs
-    Plug 'ryanoasis/vim-devicons'
-    Plug 'tmux-plugins/vim-tmux'
+" Essential
+Plug 'sheerun/vim-polyglot'             " all the best language / syntax packs
+Plug 'ryanoasis/vim-devicons'
+Plug 'tmux-plugins/vim-tmux'
+Plug 'dracula/vim', {'as': 'dracula'}
 
-    Plug 'mileszs/ack.vim'
+" from vim boilerplate generator
+Plug 'dense-analysis/ale'           " code linting
+Plug 'Yggdroot/indentLine'
 
-    Plug 'atelierbram/vim-colors_atelier-schemes'
+"" HTML Bundle
+Plug 'hail2u/vim-css3-syntax'
+Plug 'tpope/vim-haml'
+Plug 'mattn/emmet-vim'
+Plug 'jelera/vim-javascript-syntax'
 
-    Plug 'csexton/trailertrash.vim'         "
-    Plug 'editorconfig/editorconfig-vim'
-    Plug 'lifepillar/vim-colortemplate'
-    Plug 'tpope/vim-fugitive'
-    Plug 'chriskempson/base16-vim'
+Plug 'mileszs/ack.vim'
+Plug 'Raimondi/delimitMate'         " auto closing quotes
 
-    " Highlight a code block in visual mode and :Silicon to generate a nice PNG
-    Plug 'segeljakt/vim-silicon'
+Plug 'atelierbram/vim-colors_atelier-schemes'
 
-    " Slideshows with remarkjs
-    Plug 'idbrii/vim-remarkjs'
-    Plug 'idbrii/vim-gogo'
-    Plug 'tyru/open-browser.vim'
+Plug 'csexton/trailertrash.vim'         "
+Plug 'editorconfig/editorconfig-vim'
+Plug 'lifepillar/vim-colortemplate'
+Plug 'chriskempson/base16-vim'
 
-    Plug 'sotte/presenting.vim'
+" Highlight a code block in visual mode and :Silicon to generate a nice PNG
+Plug 'segeljakt/vim-silicon'
 
-    Plug 'powerman/vim-plugin-AnsiEsc'
+" Slideshows with remarkjs
+Plug 'idbrii/vim-remarkjs'
+Plug 'idbrii/vim-gogo'
+Plug 'tyru/open-browser.vim'
 
-    " Plug 'scottstanfield/vimcmdline'
+Plug 'sotte/presenting.vim'
 
-    " colorschemes
-    Plug 'lifepillar/vim-solarized8'
-    "Plug 'NLKNguyen/papercolor-theme'
-    Plug 'dracula/vim'
-    Plug 'junegunn/seoul256.vim'
+Plug 'powerman/vim-plugin-AnsiEsc'
 
-    Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
-    Plug 'ryanoasis/vim-devicons'
+" Plug 'scottstanfield/vimcmdline'
 
-    Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-    Plug 'junegunn/fzf.vim'
-    Plug 'junegunn/limelight.vim'
-    Plug 'junegunn/rainbow_parentheses.vim'
-    Plug 'junegunn/vim-peekaboo'
+" colorschemes
+Plug 'lifepillar/vim-solarized8'
+"Plug 'NLKNguyen/papercolor-theme'
+Plug 'dracula/vim'
+Plug 'junegunn/seoul256.vim'
 
-    Plug 'junegunn/goyo.vim', { 'for': 'markdown' }
-    let g:goyo_width = 80
-    nmap <leader>to :silent Goyo<CR>
+Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+Plug 'jistr/vim-nerdtree-tabs'
 
-    Plug 'junegunn/vim-easy-align',     { 'on': ['<Plug>(EasyAlign)', 'EasyAlign'] }
-    xmap ga <Plug>(EasyAlign)
-    nmap ga <Plug>(EasyAlign)
-    let g:easy_align_delimiters = { ';': {'pattern': ':'}, '>': {'pattern': '>'}, 'a': {'pattern': '<-'}, '<': {'pattern': '<-'}, ':': {'pattern': ':='}}
-    au FileType markdown vmap <Leader><Bslash> :EasyAlign*<Bar><Enter>
+Plug 'ryanoasis/vim-devicons'
+
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+Plug 'junegunn/limelight.vim'
+Plug 'junegunn/rainbow_parentheses.vim'
+Plug 'junegunn/vim-peekaboo'
+
+Plug 'junegunn/goyo.vim', { 'for': 'markdown' }
+let g:goyo_width = 80
+nmap <leader>to :silent Goyo<CR>
+
+Plug 'junegunn/vim-easy-align',     { 'on': ['<Plug>(EasyAlign)', 'EasyAlign'] }
+xmap ga <Plug>(EasyAlign)
+nmap ga <Plug>(EasyAlign)
+let g:easy_align_delimiters = { ';': {'pattern': ':'}, '>': {'pattern': '>'}, 'a': {'pattern': '<-'}, '<': {'pattern': '<-'}, ':': {'pattern': ':='}}
+au FileType markdown vmap <Leader><Bslash> :EasyAlign*<Bar><Enter>
 
 
-    " vim as a markdown editor: https://secluded.site/vim-as-a-markdown-editor
-    Plug 'godlygeek/tabular'
+" vim as a markdown editor: https://secluded.site/vim-as-a-markdown-editor
+Plug 'godlygeek/tabular'
 
-    Plug 'plasticboy/vim-markdown'
-    Plug 'itchyny/lightline.vim'
-    let g:lightline = {'colorscheme': 'solarized'}
+Plug 'plasticboy/vim-markdown'
+Plug 'itchyny/lightline.vim'
+let g:lightline = {'colorscheme': 'solarized'}
 
-    Plug 'edkolev/tmuxline.vim', {'on': ['Tmuxline', 'TmuxlineSimple', 'TmuxlineSnapshot'] }
+Plug 'edkolev/tmuxline.vim', {'on': ['Tmuxline', 'TmuxlineSimple', 'TmuxlineSnapshot'] }
 
-    Plug 'kassio/neoterm'
+Plug 'kassio/neoterm'
 
-    Plug 'jalvesaq/colorout', { 'for': 'r' }
-    Plug 'jalvesaq/Nvim-r', {'branch': 'stable' }
-    Plug 'kshenoy/vim-signature'                    " show marks in margin
+Plug 'jalvesaq/colorout', { 'for': 'r' }
+Plug 'jalvesaq/Nvim-r', {'branch': 'stable' }
+Plug 'kshenoy/vim-signature'                    " show marks in margin
 
-    Plug 'tpope/vim-surround'
-    Plug 'tpope/vim-repeat'
-    Plug 'tpope/vim-commentary'                     " smarter commenting with gc
-    Plug 'tpope/vim-vinegar'                        " smarter commenting with gc
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-commentary'                     " smarter commenting with gc
+Plug 'tpope/vim-vinegar'                        " smarter commenting with gc
 
-    Plug 'airblade/vim-gitgutter'                   " shows git diff marks in the gutter
+Plug 'airblade/vim-gitgutter'                   " shows git diff marks in the gutter
 
 call plug#end()
 " }}}
 
 " Plugin Configurations {{{
+
+let g:indentLine_enabled = 1
+let g:indentLine_concealcursor = 0
+let g:indentLine_char = '┆'
+let g:indentLine_faster = 1
+
 
 function! ColorSolarizedDark()
     let g:airline_theme='solarized'
@@ -112,7 +133,8 @@ function! ColorSolarizedDark()
 endfunction
 
 function! ColorDracula()
-    color dracula
+    let g:airline_theme='silver'
+    colorscheme dracula
     let g:lightline = {'colorscheme': 'ayu_light'}
     call lightline#colorscheme()
 endfunction
@@ -191,7 +213,7 @@ au FileType fzf tnoremap <nowait><buffer> <esc> <c-g>
 " Nerdtree {{{
 let g:NERDTreeShowHidden=1
 let g:NERDTreeMinimalUI=1
-let g:NERDTreeIgnore=['\.git$[[dir]]']
+let g:NERDTreeIgnore=['\.git$[[dir]]', 'node_modules','\.rbc$', '\~$', '\.pyc$', '\.db$', '\.sqlite$', '__pycache__']
 
 augroup nerd_loader
     autocmd!
@@ -204,6 +226,8 @@ augroup nerd_loader
 augroup END
 nnoremap <leader>n :NERDTreeToggle<cr>
 nnoremap <c-t> :NERDTreeToggle<cr>
+nnoremap <silent> <F2> :NERDTreeFind<CR>
+nnoremap <silent> <F3> :NERDTreeToggle<CR>
 " }}}
 " scottstanfield/vimcmdline {{{
 " let cmdline_map_start          = '<LocalLeader>s'
@@ -309,31 +333,6 @@ ab [blank] ␣
 
 " }}}
 
-" COLORS {{{
-" Hide the Magenta with ,/
-nnoremap <silent> <leader>/ :set hlsearch! hlsearch?<CR>
-
-if has('termguicolors')
-    set termguicolors
-endif
-hi Cursor guifg=green guibg=green
-hi Cursor2 guifg=red guibg=red
-
-" TODO: fix cursor for insert mode 
-"set guicursor=n-v-c:block-Cursor/lCursor-blinkon0,i-ci-ve:ver25-Cursor2/lCursor2,r-cr:hor20,o:hor50
-
-set guicursor=n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50
-		  \,a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor
-		  \,sm:block-blinkwait175-blinkoff150-blinkon175
-
- " highlight Cursor guifg=white guibg=black
- " highlight iCursor guifg=white guibg=steelblue
- " set guicursor=n-v-c:block-Cursor
- " set guicursor+=i:ver100-iCursor
- " set guicursor+=n-v-c:blinkon0
- " set guicursor+=i:blinkwait10
-
-" }}}
 
 " SETS {{{
 
@@ -373,7 +372,7 @@ set wildmode=list:longest       " Complete files like a shell.
 set modeline
 set noerrorbells                " No beeping!
 set novisualbell                " No flashing either.
-set wildignore+=*.jpg,*.gif,*.png,*.git,*.gem,*.zip,*.tar.gz,node_modules
+set wildignore+=*.jpg,*.gif,*.png,*.git,*.gem,*.zip,*.tar.gz,node_modules,*.pyc
 
 """""""""""
 " UI CONFIG
@@ -468,7 +467,8 @@ nnoremap k gk
 "}}}
 
 " TOGGLES {{{
-" toggle line wrapping modes
+
+" toggle line wrap
 nnoremap <silent> <leader>tw :set invwrap<CR>:set wrap?<CR>
 
 " Toggle invisible whiteSpace ¬ ¶
@@ -523,6 +523,8 @@ noremap <silent> <leader>vs :<C-u>let @z=&so<CR>:set so=0 noscb<CR>:bo vs<CR>Ljz
 
 " NEOVIM terminal commands {{{
 
+if has('nvim')
+
 function! OpenTerminal()
   split term://zsh
   resize 10
@@ -553,6 +555,8 @@ nnoremap <M-t> :split term://zsh
 
 au TermOpen * setlocal nonumber norelativenumber
 au BufEnter * if &buftype == 'terminal' | :startinsert | endif
+endif
+
 "}}}
 
 " Folding {{{
@@ -766,7 +770,33 @@ noremap <leader>tc :call ToggleColors()<CR>
 " catch
 " endtry
 
-highlight Comment cterm=italic
+" COLORS {{{
+" Hide the Magenta with ,/
+nnoremap <silent> <leader>/ :set hlsearch! hlsearch?<CR>
+
+if has('termguicolors')
+    set termguicolors
+endif
+hi Cursor guifg=green guibg=green
+hi Cursor2 guifg=red guibg=red
+
+" TODO: fix cursor for insert mode 
+"set guicursor=n-v-c:block-Cursor/lCursor-blinkon0,i-ci-ve:ver25-Cursor2/lCursor2,r-cr:hor20,o:hor50
+
+set guicursor=n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50
+          \,a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor
+          \,sm:block-blinkwait175-blinkoff150-blinkon175
+
+ " highlight Cursor guifg=white guibg=black
+ " highlight iCursor guifg=white guibg=steelblue
+ " set guicursor=n-v-c:block-Cursor
+ " set guicursor+=i:ver100-iCursor
+ " set guicursor+=n-v-c:blinkon0
+ " set guicursor+=i:blinkwait10
+
+" }}}
+
+highlight Comment cterm=italic gui=italic
 set t_ZH=[3m
 set t_ZR=[23m
 
