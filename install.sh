@@ -58,7 +58,7 @@ link tmux.conf            "$HOME"/.tmux.conf
 link bashrc               "$HOME"/.bashrc
 link bash_profile         "$HOME"/.bash_profile
 link inputrc              "$HOME"/.inputrc
-link alacritty.yml        "$HOME"/.alacritty.yml
+link config/alacritty/alacritty.yml        "$HOME"/.config/alacritty/alacritty.yml
 link p10k.zsh             "$HOME"/.p10k.zsh
 link gitconfig            "$HOME"/.gitconfig
 link gitignore            "$HOME"/.gitignore
@@ -71,7 +71,7 @@ link init.lua "$HOME"/.hammerspoon
 touch "$HOME"/.gitconfig.local			# put your [user] settings here
 
 # fixing potential insecure group writable folders
-compaudit | xargs chmod g-w
+# compaudit | xargs chmod g-w
 
 # Setup termcap for tmux
 # Italics + true color + iTerm + tmux + vim
@@ -97,3 +97,5 @@ ls $B
 
 exit 0
 
+# npx -i g alacritty-themes
+# npx alacritty-themes Dracula
