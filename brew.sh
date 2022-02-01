@@ -26,10 +26,8 @@ dev=(
 
 gnu=(
     bash
-    less
-    make
-    coreutils
     binutils
+    coreutils
     diffutils
     findutils
     gawk
@@ -39,50 +37,50 @@ gnu=(
     gnutls
     grep
     gzip
+    less
+    make
     watch
     wdiff
     wget
 )
 
 core=(
+    fd-find
+    fzf
     git
+    git-delta
     neovim
     openssh
+    ripgrep
     rsync
+    tmux
+    tree
     unzip
     vim
     zsh
-    tmux
-    ripgrep
-    tree
 )
 
 # rust programs
 extras=(
-    fzf
-    git-delta
-    scrubcsv 
-    hyperfine 
-    du-dust
-    xsv
-    fd-find
-    tokei
-    lsd
-    hammerspoon
     bat
+    du-dust
     hexyl
-    shellharden
-)
-
-neovim=(
+    hyperfine 
+    scrubcsv 
     silicon
+    tokei
+    xsv
 )
 
 casks=(
     rectangle
-    karabiner-elements
+    hammerspoon
     alacritty
+    vanilla
 )
+
+# Install Hand Mirror from here
+# https://handmirror.app/
 
 brew tap homebrew/cask-fonts
 brew install font-jetbrains-mono-nerd-font
