@@ -48,6 +48,7 @@ core=(
 
 # rust programs
 extras=(
+    git-delta
     scrubcsv 
     hyperfine 
     du-dust
