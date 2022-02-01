@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 # vim:ft=sh ts=4 sw=4 et
 
+##
+## No longer used
+## Use brew.sh instead
+##
+
 set -euo pipefail
 println() { local IFS=" "; printf '%s\n' "$*"; }
 require() { hash "$@" || exit 127; }
@@ -106,6 +111,7 @@ brew install ${core[*]}
 brew cask install ${casks[*]}
 #HOMEBREW_NO_AUTO_UPDATE=1 brew install ${extras[*]}
 
+# might need to rel
 pip3 install --user alacritty-colorscheme
 git clone https://github.com/aaron-williamson/base16-alacritty $HOME/.config/base16
 

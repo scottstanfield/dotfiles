@@ -97,7 +97,7 @@ Plug 'godlygeek/tabular'
 
 Plug 'plasticboy/vim-markdown'
 Plug 'itchyny/lightline.vim'
-let g:lightline = {'colorscheme': 'solarized'}
+let g:lightline = {'colorscheme': 'dracula'}
 
 Plug 'edkolev/tmuxline.vim', {'on': ['Tmuxline', 'TmuxlineSimple', 'TmuxlineSnapshot'] }
 

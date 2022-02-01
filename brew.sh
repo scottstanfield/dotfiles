@@ -13,6 +13,17 @@ require brew
 
 export HOMEBREW_NO_INSTALL_CLEANUP
 
+dev=(
+    openssl
+    readline
+    sqlite3
+    xz
+    zlib
+    autoconf 
+    automake
+    cmake
+)
+
 gnu=(
     bash
     less
@@ -48,6 +59,7 @@ core=(
 
 # rust programs
 extras=(
+    fzf
     git-delta
     scrubcsv 
     hyperfine 
@@ -69,15 +81,25 @@ neovim=(
 casks=(
     rectangle
     karabiner-elements
-    docker
     alacritty
-    miniconda
 )
 
+brew tap homebrew/cask-fonts
+brew install font-jetbrains-mono-nerd-font
+
+brew install ${dev[*]}
 brew install ${gnu[*]}
 brew install ${core[*]}
 brew cask install ${casks[*]}
 HOMEBREW_NO_AUTO_UPDATE=1 brew install ${extras[*]}
+
+npx alacritty-themes Dracula
+
+# might need to rel
+# pip3 install --user alacritty-colorscheme
+# git clone https://github.com/aaron-williamson/base16-alacritty $HOME/.config/base16
+
+softwareupdate --install-rosetta
 
 hash
 

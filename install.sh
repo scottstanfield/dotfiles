@@ -50,6 +50,8 @@ link() {
 
 # Setup neovim
 mkdir -p "$HOME"/.config/nvim
+mkdir -p "$HOME"/.config/alacritty
+
 link config/nvim/init.vim "$HOME"/.config/nvim/init.vim
 link zshrc                "$HOME"/.zshrc
 link zlogin               "$HOME"/.zlogin
@@ -68,7 +70,8 @@ link vimrc_background     "$HOME"/.vimrc_background
 mkdir -p "$HOME"/.hammerspoon
 link init.lua "$HOME"/.hammerspoon
 
-touch "$HOME"/.gitconfig.local			# put your [user] settings here
+# put your [user] settings here
+touch "$HOME"/.gitconfig.local			
 
 # fixing potential insecure group writable folders
 # compaudit | xargs chmod g-w
@@ -97,5 +100,5 @@ ls $B
 
 exit 0
 
-# npx -i g alacritty-themes
+# Do this for alacritty
 # npx alacritty-themes Dracula

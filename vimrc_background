@@ -1,3 +1,4 @@
 if !exists('g:colors_name') || g:colors_name != 'base16-atelier-sulphurpool'
-  colorscheme base16-atelier-sulphurpool
+  "colorscheme base16-atelier-sulphurpool
+  colorscheme dracula
 endif
