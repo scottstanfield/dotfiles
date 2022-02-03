@@ -360,10 +360,11 @@ alias dc="docker-compose"
 alias p=python3
 alias d=docker
 
-exaflags="--classify --color-scale --bytes --group-directories-first --git"
+exaflags="--classify --color-scale --bytes --group-directories-first"
 
 alias ls="exa ${exaflags} "$*""
 alias ll="exa ${exaflags} --long "
+alias lll="exa ${exaflags} --long --git"
 alias lld="exa ${exaflags} --all --long --sort date"
 alias lle="exa ${exaflags} --all --long --sort extension"
 alias lls="exa ${exaflags} --all --long --sort size"
