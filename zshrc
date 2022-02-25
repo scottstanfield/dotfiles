@@ -187,7 +187,7 @@ alias lx="ls ${lsflags} -Xl"
 alias m="less"
 alias path='echo $PATH | tr : "\n" | cat -n'
 alias pd='pushd'  # symmetry with cd
-alias rg='rg --pretty --smart-case'
+alias rg='rg --pretty --smart-case --fixed-strings'
 alias rgc='rg --no-line-number --color never '
 alias ssh="TERM=xterm-256color ssh"
 alias t='tmux -2 new-session -A -s "moab"'
