@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+set -o errexit
+set -o pipefail
+
+# BSSID (run as sudo to see this)
+# CHANNEL
+# SSID
+# CtlRSSI
+
+cmd="/System/Library/PrivateFrameworks/Apple*.framework/Versions/Current/Resources/airport -I"
+
+printf 'RSI\tAP MAC\t\t\tSSID\n'
+while true; do
+	$cmd | sed 's/:/|/' | grep -e 'BSSID' -e 'SSID' -e 'CtlRSSI' | cut -f2 -d '|' | paste -s
+  sleep 0.5
+done
+
