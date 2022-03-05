@@ -70,6 +70,7 @@ extras=(
     silicon
     tokei
     xsv
+    jless
 )
 
 casks=(
