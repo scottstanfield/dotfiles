@@ -27,7 +27,7 @@ bv=${BASH_VERSINFO[0]}${BASH_VERSINFO[0]}
 # https://stackoverflow.com/questions/4774054/reliable-way-for-a-bash-script-to-get-the-full-path-to-itself
 readonly _D="$(dirname "$(readlink -f "$0")")" && cd "$_D"
 println "Location of script:" "$_D"
-ls -
+ls
 
 # backup a file by appending bash
 # cp filename{,.bak}
