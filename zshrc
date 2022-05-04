@@ -269,7 +269,7 @@ esac
 [[ ! -f ~/.zinit/bin/zinit.zsh ]] && {
     print -P "%F{33}▓▒░ %F{220}Installing zsh %F{33}zinit%F{220} plugin manager (%F{33}zdharma-continuum/zinit%F{220})…%f"
     command mkdir -p "$HOME/.zinit" && command chmod g-rwX "$HOME/.zinit"
-    command git clone --depth=1 git://github.com/zdharma-continuum/zinit.git "$HOME/.zinit/bin" && \
+    command git clone --depth=1 https://github.com/zdharma-continuum/zinit.git "$HOME/.zinit/bin" && \
         print -P "%F{33}▓▒░ %F{34}Installation successful.%f%b" || \
         print -P "%F{160}▓▒░ Install failed.%f%b"
 }
