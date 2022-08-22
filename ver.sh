@@ -32,7 +32,8 @@ ls
 # backup a file by appending bash
 # cp filename{,.bak}
 
-# DEBUG=99 sudo -Eu root bash -c 'echo $DEBUG'
-println "Hello from ver.sh"
+# Test passing env strings in, like VERSION=4.0 and fail if unset
+# For sudoer doing the same as root: VERSION=99 sudo -Eu root bash -c 'echo $VERSION'
+if [ -z ${VERSION+x} ]; then echo "var is missing"; else echo "version is: $VERSION"; fi
 
 exit 0
