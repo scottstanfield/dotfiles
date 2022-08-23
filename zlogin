@@ -9,12 +9,15 @@
   fi
 } &!
 
+in_path()  { command "$1" >/dev/null 2>/dev/null }
+
 # Execute code only if STDERR is bound to a TTY.
 if [[ -o INTERACTIVE && -t 2 ]]; then
 
     if [[ -z "$TMUX" ]]; then
-        hash splash &>/dev/null && splash
+        in_path "splash" && splash
     fi
+    true
 
 fi >&2
 
