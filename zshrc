@@ -19,7 +19,8 @@
 typeset -g POWERLEVEL9K_INSTANT_PROMPT=off
 
 is_linux() { [[ $SHELL_PLATFORM == 'linux' || $SHELL_PLATFORM == 'bsd' ]]; }
-is_osx() { [[ $SHELL_PLATFORM == 'osx' ]]; }
+is_osx()   { [[ $SHELL_PLATFORM == 'osx' ]]; }
+in_path()  { command "$1" >/dev/null 2>/dev/null }
 
 export ZSH=$HOME/dmz
 export BLOCK_SIZE="'1"          # Add commas to file sizes
@@ -160,13 +161,13 @@ fi
 
 ## Aliases
 alias ,="cd .."
-alias ,="cd .."
 alias @="printenv | sort | grep -i"
 alias @="printenv | sort | grep -i"
 alias cp="cp -a"
 alias dc="docker-compose"
 alias dc='docker-compose'
 alias df='df -h'  # human readable
+alias dkrr='docker run --rm -it -u1000:1000 -v$(pwd):/work -w /work -e DISPLAY=$DISPLAY'
 alias dust='dust -r'
 alias gd="git diff"
 alias grep="grep --color=auto"
@@ -185,19 +186,27 @@ alias ls="ls ${lsflags}"
 alias lt="ls ${lsflags} -l --sort=time --reverse --time-style=long-iso"
 alias lx="ls ${lsflags} -Xl"
 alias m="less"
+alias p=python3
 alias path='echo $PATH | tr : "\n" | cat -n'
 alias pd='pushd'  # symmetry with cd
+alias r='R --no-save --no-restore-data --quiet'
 alias rg='rg --pretty --smart-case --fixed-strings'
 alias rgc='rg --no-line-number --color never '
 alias ssh="TERM=xterm-256color ssh"
 alias t='tmux -2 new-session -A -s "moab"'
-alias dkrr='docker run --rm -it -u1000:1000 -v$(pwd):/work -w /work -e DISPLAY=$DISPLAY'
+
+export R_LIBS="~/R"
+
+function fif() {
+  if [ ! "$#" -gt 0 ]; then echo "Need a string to search for!"; return 1; fi
+  rg --files-with-matches --no-messages "$1" | fzf --preview "highlight -O ansi -l {} 2> /dev/null | rg --colors 'match:bg:yellow' --ignore-case --pretty --context 10 '$1' || rg --ignore-case --pretty --context 10 '$1' {}"
+}
 
 function witch()   { file $(which "$*") }
 function gg()      { git commit -m "$*" }
 function http      { command http --pretty=all --verbose $@ | less -R; }
 function fixzsh    { compaudit | xargs chmod go-w }
-function ff()      { find . -iname "$1*" -print }
+#function ff()      { find . -iname "$1*" -print }      # replaced by fzf and ctrl-T
 #function ht()      { (head $1 && echo "---" && tail $1) | less }
 function take()    { mkdir -p $1 && cd $1 }
 function cols()    { head -1 $1 | tr , \\n | cat -n | column }		# show CSV header
@@ -269,7 +278,7 @@ esac
 [[ ! -f ~/.zinit/bin/zinit.zsh ]] && {
     print -P "%F{33}▓▒░ %F{220}Installing zsh %F{33}zinit%F{220} plugin manager (%F{33}zdharma-continuum/zinit%F{220})…%f"
     command mkdir -p "$HOME/.zinit" && command chmod g-rwX "$HOME/.zinit"
-    command git clone --depth=1 git://github.com/zdharma-continuum/zinit.git "$HOME/.zinit/bin" && \
+    command git clone --depth=1 https://github.com/zdharma-continuum/zinit.git "$HOME/.zinit/bin" && \
         print -P "%F{33}▓▒░ %F{34}Installation successful.%f%b" || \
         print -P "%F{160}▓▒░ Install failed.%f%b"
 }
@@ -335,6 +344,8 @@ zi ice wait'0a' lucid; zi snippet https://github.com/junegunn/fzf/blob/master/sh
 zi ice wait'1a' lucid; zi snippet https://github.com/junegunn/fzf/blob/master/shell/completion.zsh
 zi wait'0c' lucid pick"fzf-finder.plugin.zsh" light-mode for  @leophys/zsh-plugin-fzf-finder
 
+export FZF_DEFAULT_COMMAND="rg --files --hidden --follow --glob '!.git'"
+
 # zinit pack"binary+keys" for fzf
 # zinit pack"bgn" for fzf
 zinit pack for ls_colors
@@ -353,22 +364,17 @@ FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}comment]='fg=gray'
 # Put "cargo installed" apps first in the path, to accomodate Silicon M1 overrides
 path=($HOME/.cargo/bin $path)
 
-
-# Moab specific
-alias logs="docker logs control -f"
-alias dc="docker-compose"
-alias p=python3
-alias d=docker
-
 exaflags="--classify --color-scale --bytes --group-directories-first"
 
-alias ls="exa ${exaflags} "$*""
-alias ll="exa ${exaflags} --long "
-alias lll="exa ${exaflags} --long --git"
-alias lld="exa ${exaflags} --all --long --sort date"
-alias lle="exa ${exaflags} --all --long --sort extension"
-alias lls="exa ${exaflags} --all --long --sort size"
-alias lla="exa ${exaflags} --all --long --sort size"
+if in_path "exa" ; then
+    alias ls="exa ${exaflags} "$*" "
+    alias ll="exa ${exaflags} --long "
+    alias lll="exa ${exaflags} --long --git"
+    alias lld="exa ${exaflags} --all --long --sort date"
+    alias lle="exa ${exaflags} --all --long --sort extension"
+    alias lls="exa ${exaflags} --all --long --sort size"
+    alias lla="exa ${exaflags} --all --long --sort size"
+fi
 
 light_color='base16-atelier-sulphurpool-light.yml'
 dark_color='base16-atelier-sulphurpool.yml'
@@ -383,4 +389,16 @@ alias toggle="alacritty-colorscheme ${colorflags} -V toggle $light_color $dark_c
 function idot()    { dot -Tsvg -Gsize=${1:-9},${2:-16}\! | rsvg-convert | ~/bin/imgcat }
 function iplot()   { awk -f ~/bin/plot.awk | rsvg-convert -z ${1:-1} | ~/bin/imgcat }
 
-#export PATH="$HOME/.poetry/bin:$PATH"
+export PATH="$HOME/.poetry/bin:$PATH"
+
+ __conda_setup="$('/opt/homebrew/Caskroom/miniforge/base/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+ if [ $? -eq 0 ]; then
+     eval "$__conda_setup"
+ else
+     if [ -f "/opt/homebrew/Caskroom/miniforge/base/etc/profile.d/conda.sh" ]; then
+         . "/opt/homebrew/Caskroom/miniforge/base/etc/profile.d/conda.sh"
+     else
+         export PATH="/opt/homebrew/Caskroom/miniforge/base/bin:$PATH"
+     fi
+ fi
+ unset __conda_setup
