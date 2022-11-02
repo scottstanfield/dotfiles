@@ -103,8 +103,10 @@ Plug 'edkolev/tmuxline.vim', {'on': ['Tmuxline', 'TmuxlineSimple', 'TmuxlineSnap
 
 Plug 'kassio/neoterm'
 
+" rlang
 Plug 'jalvesaq/colorout', { 'for': 'r' }
-Plug 'jalvesaq/Nvim-r', {'branch': 'stable' }
+Plug 'jalvesaq/Nvim-r', {'branch': 'master' }
+
 Plug 'kshenoy/vim-signature'                    " show marks in margin
 
 Plug 'tpope/vim-fugitive'
@@ -121,7 +123,7 @@ call plug#end()
 " Plugin Configurations {{{
 
 let g:indentLine_enabled = 1
-let g:indentLine_concealcursor = 0
+"let g:indentLine_concealcursor = 0
 let g:indentLine_char = '┆'
 let g:indentLine_faster = 1
 
@@ -160,18 +162,36 @@ let g:goyo_width = 70
 nmap <leader>tm :silent Goyo<CR>
 " }}}
 " jalvesaq/Nvim-r {{{
+" rlang
     let R_assign = 0
     let R_args = ['--no-save', '--quiet']
-    let R_tmpdir = '~scott/R/tmp'               " TODO: consider removing this
+    let R_tmpdir = '~$USER/R/tmp'               " TODO: consider removing this
     let R_source_args = 'print.eval=F'
+    let R_nvimpager = 'no'
+    let R_auto_start = 1
     " " I needed to run `brew link --force readline` in order to get gcc5
     " to compile nvimcom (which updates automatically when you invoke nvim-r)
-    " map <silent> <Space> :call SendLineToR("stay")<CR><Esc><Home><Down>
-    " vmap <silent> <Space> <Plug>RSendSelection<Esc><Esc>
+    noremap <silent> <Space> :call SendLineToR("stay")<CR><Esc><Home><Down>
+    "vnoremap <silent> <Space> <Plug>RSendSelection<Esc><Esc>
+    vnoremap <silent> <Space> :call SendSelectionToR("silent", "stay")<cr>
+    " inoremap <s-cr> <Esc>:call SendLineToR("stay")<cr><down><home>i
+
+    " handle <s-cr> and <c-cr>
+    " https://stackoverflow.com/questions/16359878/how-to-map-shift-enter
+
+    "nmap <Space> <Plug>RSendLine
+
+    " vmap <Space> <Plug>RSendSelection
+    " nmap <Space> <Plug>RSendLine
+
     " nmap <silent> ✠       :call SendLineToR("stay")<CR><Esc><Home><Down>
     " imap <silent> ✠       <Esc>:call SendLineToR("stay")<CR><Esc>A
     " vmap ✠                  <Plug>RSendSelection<Esc><Esc>
 "}}}
+
+"autocmd VimLeave * if exists("g:SendCmdToR") && string(g:SendCmdToR) != "function('SendCmdToR_fake')" | call RQuit("nosave") | endif
+
+
 " edkolev/tmuxline.vim {{{
 let g:tmuxline_preset               = 'minimal'
 let g:tmuxline_theme                = 'lightline'
@@ -276,10 +296,6 @@ ino <C-D> <Del>
 ino <C-U> <Esc>d0xi
 ino <C-Y> <Esc>Pa
 ino <C-X><C-S> <Esc>:w<CR>a
-
-" Ctrl-s to save current file (in normal and insert mode)
-imap <c-s> <Esc>:w<CR>a
-nmap <c-s> :w<CR>
 
 inoremap <expr> <C-d> ShowDigraphs()
 function! ShowDigraphs()
@@ -395,7 +411,7 @@ set splitright                  " and to the right
 " MAPS {{{
 
 " 'space' pages down like LESS does
-nnoremap <space> <c-j>
+" nnoremap <space> <c-j>
 " Make ctrl-6 the same as ctrl-^
 nnoremap <c-6> <c-^>
 " Flip back to previous file
@@ -421,8 +437,6 @@ vnoremap > >gv
 vnoremap < <gv
 vnoremap <Tab> >gv
 vnoremap <S-Tab> <gv
-" Make Control-T uppercase the current word
-inoremap <C-t> <ESC>bgUWea
 
 " Add the . command to visual mode
 vnoremap . :norm.<CR>
@@ -536,22 +550,22 @@ cnoremap Qa qa
 
 " Easily get out of neovim Terminal mode
 tnoremap <Esc> <C-\><C-n>
-tnoremap <Esc><Esc> <C-\><C-n><C-w>k
+"tnoremap <Esc><Esc> <C-\><C-n><C-w>k
 
-" Meta key ⌥  mappings
-tnoremap <M-h> <C-\><C-N><C-w>h
-tnoremap <M-j> <C-\><C-N><C-w>j
-tnoremap <M-k> <C-\><C-N><C-w>k
-tnoremap <M-l> <C-\><C-N><C-w>l
-inoremap <M-h> <C-\><C-N><C-w>h
-inoremap <M-j> <C-\><C-N><C-w>j
-inoremap <M-k> <C-\><C-N><C-w>k
-inoremap <M-l> <C-\><C-N><C-w>l
-nnoremap <M-h> <C-w>h
-nnoremap <M-j> <C-w>j
-nnoremap <M-k> <C-w>k
-nnoremap <M-l> <C-w>l
-nnoremap <M-t> :split term://zsh
+" " Meta key ⌥  mappings
+" tnoremap <M-h> <C-\><C-N><C-w>h
+" tnoremap <M-j> <C-\><C-N><C-w>j
+" tnoremap <M-k> <C-\><C-N><C-w>k
+" tnoremap <M-l> <C-\><C-N><C-w>l
+" inoremap <M-h> <C-\><C-N><C-w>h
+" inoremap <M-j> <C-\><C-N><C-w>j
+" inoremap <M-k> <C-\><C-N><C-w>k
+" inoremap <M-l> <C-\><C-N><C-w>l
+" nnoremap <M-h> <C-w>h
+" nnoremap <M-j> <C-w>j
+" nnoremap <M-k> <C-w>k
+" nnoremap <M-l> <C-w>l
+" nnoremap <M-t> :split term://zsh
 
 au TermOpen * setlocal nonumber norelativenumber
 au BufEnter * if &buftype == 'terminal' | :startinsert | endif
@@ -561,10 +575,13 @@ endif
 
 " Folding {{{
 
+" default to all folds open
+set foldlevel=99
 highlight folded ctermbg=7 ctermfg=4
 set foldmethod=marker
-nnoremap <silent> <space> @=(foldlevel('.')?'za':"\<Space>")<CR>
-vnoremap <space> zf
+" rlang
+" nnoremap <silent> <space> @=(foldlevel('.')?'za':"\<Space>")<CR>
+" vnoremap <space> zf
 "}}}
 
 " AUTOGROUPS {{{
