@@ -207,7 +207,7 @@ function gg()      { git commit -m "$*" }
 function http      { command http --pretty=all --verbose $@ | less -R; }
 function fixzsh    { compaudit | xargs chmod go-w }
 #function ff()      { find . -iname "$1*" -print }      # replaced by fzf and ctrl-T
-#function ht()      { (head $1 && echo "---" && tail $1) | less }
+function ht()      { (head $1 && echo "---" && tail $1) | less }
 function take()    { mkdir -p $1 && cd $1 }
 function cols()    { head -1 $1 | tr , \\n | cat -n | column }		# show CSV header
 function zcolors() { for code in {000..255}; do print -P -- "$code: %F{$code}Test%f"; done | column}
@@ -391,6 +391,7 @@ function iplot()   { awk -f ~/bin/plot.awk | rsvg-convert -z ${1:-1} | ~/bin/img
 
 export PATH="$HOME/.poetry/bin:$PATH"
 
+function condastartup {
  __conda_setup="$('/opt/homebrew/Caskroom/miniforge/base/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
  if [ $? -eq 0 ]; then
      eval "$__conda_setup"
@@ -402,3 +403,5 @@ export PATH="$HOME/.poetry/bin:$PATH"
      fi
  fi
  unset __conda_setup
+}
+export BAT_THEME="gruvbox-dark"
