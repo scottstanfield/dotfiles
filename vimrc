@@ -73,3 +73,17 @@ nnoremap <S-Tab> :tabn<CR>
 nnoremap <Tab> <C-w><C-w>
 
 nnoremap <silent> q <space>
+
+call plug#begin()
+Plug 'junegunn/vim-easy-align'
+Plug 'jalvesaq/Nvim-R'
+call plug#end()
+
+
+let R_assign = 0
+let R_args = ['--no-save', '--quiet']
+let R_tmpdir = '~$USER/R/tmp'               " TODO: consider removing this
+let R_source_args = 'print.eval=F'
+
+map <silent> <Space> :call SendLineToR("stay")<CR><Esc><Home><Down>
+vmap <silent> <Space> <Plug>RSendSelection<Esc><Esc>
