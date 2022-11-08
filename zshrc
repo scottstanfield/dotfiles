@@ -96,6 +96,7 @@ path=(
     $HOME/.cargo/bin
     $HOME/.local/bin
     $HOME/.go/bin
+    $HOME/Library/Python/**/bin
 
     $HOME/moab/bin
     /usr/local/go/bin
@@ -169,7 +170,6 @@ alias dc='docker-compose'
 alias df='df -h'  # human readable
 alias dkrr='docker run --rm -it -u1000:1000 -v$(pwd):/work -w /work -e DISPLAY=$DISPLAY'
 alias dust='dust -r'
-alias gd="git diff"
 alias grep="grep --color=auto"
 alias gs="git status 2>/dev/null"
 alias h="history 1"
@@ -202,6 +202,7 @@ function fif() {
   rg --files-with-matches --no-messages "$1" | fzf --preview "highlight -O ansi -l {} 2> /dev/null | rg --colors 'match:bg:yellow' --ignore-case --pretty --context 10 '$1' || rg --ignore-case --pretty --context 10 '$1' {}"
 }
 
+function gd()      { git diff --color=always "$*" | less }
 function witch()   { file $(which "$*") }
 function gg()      { git commit -m "$*" }
 function http      { command http --pretty=all --verbose $@ | less -R; }
@@ -381,7 +382,7 @@ dark_color='base16-atelier-sulphurpool.yml'
 
 # pip3 install --user alacritty-colorscheme
 # git clone https://github.com/aaron-williamson/base16-alacritty $HOME/.config
-colorflags="-c ~/.alacritty.yml -C ~/.config/base16/colors"
+colorflags="-c ~/.config/alacritty/alacritty.yml -C ~/.config/base16-alacritty/colors"
 alias day="alacritty-colorscheme ${colorflags} -V apply $light_color"
 alias night="alacritty-colorscheme ${colorflags} -V apply $dark_color"
 alias toggle="alacritty-colorscheme ${colorflags} -V toggle $light_color $dark_color"
@@ -405,3 +406,4 @@ function condastartup {
  unset __conda_setup
 }
 export BAT_THEME="gruvbox-dark"
+export AWS_DEFAULT_PROFILE=dev-additive
