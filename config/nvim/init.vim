@@ -41,7 +41,7 @@ Plug 'mattn/emmet-vim'
 Plug 'jelera/vim-javascript-syntax'
 
 Plug 'mileszs/ack.vim'
-Plug 'Raimondi/delimitMate'         " auto closing quotes
+"Plug 'Raimondi/delimitMate'         " auto closing quotes
 
 Plug 'atelierbram/vim-colors_atelier-schemes'
 
@@ -106,6 +106,14 @@ Plug 'kassio/neoterm'
 " rlang
 Plug 'jalvesaq/colorout', { 'for': 'r' }
 Plug 'jalvesaq/Nvim-r', {'branch': 'master' }
+Plug 'jalvesaq/vimcmdline'
+" for 'jalvesaq/vimcmdline'
+let cmdline_app = {}
+let cmdline_app['sh'] = '/opt/homebrew/bin/bash'
+
+command Z w | qa
+cabbrev wqa Z
+
 
 Plug 'kshenoy/vim-signature'                    " show marks in margin
 
@@ -161,6 +169,8 @@ nmap <leader>tl :Limelight!! 0.7<CR>
 let g:goyo_width = 70
 nmap <leader>tm :silent Goyo<CR>
 " }}}
+
+
 " jalvesaq/Nvim-r {{{
 " rlang
     let R_assign = 0
