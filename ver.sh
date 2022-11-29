@@ -27,13 +27,17 @@ bv=${BASH_VERSINFO[0]}${BASH_VERSINFO[0]}
 # https://stackoverflow.com/questions/4774054/reliable-way-for-a-bash-script-to-get-the-full-path-to-itself
 readonly _D="$(dirname "$(readlink -f "$0")")" && cd "$_D"
 println "Location of script:" "$_D"
-ls
+
+echo "bash_source ${BASH_SOURCE[0]}"
+# From https://stackoverflow.com/questions/59895/how-do-i-get-the-directory-where-a-bash-script-is-located-from-within-the-script
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+println "script_dir: $SCRIPT_DIR"
+println "something is stopping us before we get here"
+
 
 # backup a file by appending bash
 # cp filename{,.bak}
 
 # Test passing env strings in, like VERSION=4.0 and fail if unset
 # For sudoer doing the same as root: VERSION=99 sudo -Eu root bash -c 'echo $VERSION'
-if [ -z ${VERSION+x} ]; then echo "var is missing"; else echo "version is: $VERSION"; fi
-
-exit 0
+# if [ -z ${VERSION+x} ]; then echo "var is missing"; else echo "version is: $VERSION"; fi

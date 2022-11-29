@@ -4,7 +4,14 @@
 # Italics + true color + iTerm + tmux + vim
 # https://medium.com/@dubistkomisch/how-to-actually-get-italics-and-true-colour-to-work-in-iterm-tmux-vim-9ebe55ebc2be
 
-cd "$(dirname "$(realpath "${BASH_SOURCE[0]}")")"
+# For macOS: https://github.com/Homebrew/homebrew-core/issues/102748#issuecomment-1145378599
+# Also https://gpanders.com/blog/the-definitive-guide-to-using-tmux-256color-on-macos/
 
-tic -x tmux-256color.terminfo
+/*/*/Cellar/ncurses/6.3/bin/infocmp -x tmux-256color > tmux-256color.src
+sudo tic -x tmux-256color.src
+
+
+#cd "$(dirname "$(realpath "${BASH_SOURCE[0]}")")"
+#tic -x tmux-256color.terminfo
+
 tic -x xterm-256color-italic.terminfo

@@ -19,7 +19,7 @@ end)
 
 -- numpad --> pcalc
 
-hs.hotkey.bind({}, 'padclear', function()
+hs.hotkey.bind({}, 'F12', function()
   local app = hs.application.get('pcalc')
   if (app ~= nil and app:isFrontmost()) then
     app:hide()
@@ -27,3 +27,4 @@ hs.hotkey.bind({}, 'padclear', function()
     hs.application.launchOrFocus("/Applications/PCalc.app")
   end
 end)
+

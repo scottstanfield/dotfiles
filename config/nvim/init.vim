@@ -178,7 +178,7 @@ nmap <leader>tm :silent Goyo<CR>
     let R_tmpdir = '~$USER/R/tmp'               " TODO: consider removing this
     let R_source_args = 'print.eval=F'
     let R_nvimpager = 'no'
-    let R_auto_start = 1
+    "let R_auto_start = 1
     " " I needed to run `brew link --force readline` in order to get gcc5
     " to compile nvimcom (which updates automatically when you invoke nvim-r)
     noremap <silent> <Space> :call SendLineToR("stay")<CR><Esc><Home><Down>

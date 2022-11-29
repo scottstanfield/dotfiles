@@ -15,6 +15,8 @@
 
 # Profile startup times by adding this to you .zshrc: zmodload zsh/zprof
 # Start a new zsh. Then run and inspect: zprof > startup.txt
+# zmodload zsh/zprof
+
 
 typeset -g POWERLEVEL9K_INSTANT_PROMPT=off
 
@@ -29,9 +31,14 @@ export DOCKER_BUILDKIT=1
 export EDITOR=vim
 export VISUAL=vim
 export GOPATH=$HOME/.go
-export HOMEBREW_NO_AUTO_UPDATE=1
 export LANG="en_US.UTF-8"
 export PAGER=less
+
+# brew shellinfo >> ~/.zshrc
+export HOMEBREW_NO_AUTO_UPDATE=1
+export HOMEBREW_PREFIX="/opt/homebrew";
+export HOMEBREW_CELLAR="/opt/homebrew/Cellar";
+export HOMEBREW_REPOSITORY="/opt/homebrew";
 
 HISTFILE=${ZDOTDIR:-$HOME}/.zsh_history
 HISTSIZE=10000
@@ -82,11 +89,13 @@ bindkey '' edit-command-line
 # Keep duplicates (Unique) out of these paths
 typeset -gU path fpath manpath
 
+# remove gnu stuff or **
+# remove .poetry
 path=(
     /opt/homebrew/bin
     /opt/homebrew/Cellar/coreutils/**/gnubin
     /opt/homebrew/Cellar/gnu-sed/**/gnubin
-    /opt/homebrew/Cellar/gnu-tar/**/gnubin
+    /opt/homebrew/Cellar/gnu-tar/**/libexec/gnubin
     /opt/homebrew/Cellar/grep/**/gnubin
 
 
@@ -218,10 +227,10 @@ function h() {
 }
 
 # Automatically ls after you cd
-function chpwd() {
-    emulate -L zsh
-    ls -F
-}
+# function chpwd() {
+#     emulate -L zsh
+#     ls -F
+# }
 
 # Simple default prompt
 PROMPT='%n@%m %3~%(!.#.$)%(?.. [%?]) '
@@ -289,7 +298,7 @@ autoload -Uz _zinit
 # }}}
 
 export NVM_LAZY_LOAD=true
-zinit light lukechilds/zsh-nvm
+# zinit light lukechilds/zsh-nvm
 
 # | completions | # {{{
 zinit ice wait silent blockf; 
@@ -327,8 +336,7 @@ zinit light-mode for \
 zinit light zdharma-continuum/null
 
 # For git command extensions
-zinit as"null" wait"1" lucid for \
-    sbin                davidosomething/git-my
+# zinit as"null" wait"1" lucid for sbin                davidosomething/git-my
 
 # brew install fd bat exa glow fzf
 # cargo install exa git-delta
@@ -362,6 +370,11 @@ FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}comment]='fg=gray'
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
+# 
+function prompt_my_host_icon() {
+    p10k segment -i '' -f blue
+}
+
 # Put "cargo installed" apps first in the path, to accomodate Silicon M1 overrides
 path=($HOME/.cargo/bin $path)
 
@@ -392,18 +405,20 @@ function iplot()   { awk -f ~/bin/plot.awk | rsvg-convert -z ${1:-1} | ~/bin/img
 
 export PATH="$HOME/.poetry/bin:$PATH"
 
-function condastartup {
- __conda_setup="$('/opt/homebrew/Caskroom/miniforge/base/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
- if [ $? -eq 0 ]; then
-     eval "$__conda_setup"
- else
-     if [ -f "/opt/homebrew/Caskroom/miniforge/base/etc/profile.d/conda.sh" ]; then
-         . "/opt/homebrew/Caskroom/miniforge/base/etc/profile.d/conda.sh"
-     else
-         export PATH="/opt/homebrew/Caskroom/miniforge/base/bin:$PATH"
-     fi
- fi
- unset __conda_setup
-}
+# function condastartup {
+#  __conda_setup="$('/opt/homebrew/Caskroom/miniforge/base/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+#  if [ $? -eq 0 ]; then
+#      eval "$__conda_setup"
+#  else
+#      if [ -f "/opt/homebrew/Caskroom/miniforge/base/etc/profile.d/conda.sh" ]; then
+#          . "/opt/homebrew/Caskroom/miniforge/base/etc/profile.d/conda.sh"
+#      else
+#          export PATH="/opt/homebrew/Caskroom/miniforge/base/bin:$PATH"
+#      fi
+#  fi
+#  unset __conda_setup
+# }
 export BAT_THEME="gruvbox-dark"
 export AWS_DEFAULT_PROFILE=dev-additive
+
+eval "$(zoxide init zsh)"
