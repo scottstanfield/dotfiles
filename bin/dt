@@ -1,0 +1,55 @@
+#!/usr/bin/env Rscript
+# vim:filetype=r:
+
+default=NA
+safe.set.width <- function(default = NA)
+{
+  ret <- NA
+  tryCatch(ret <- system2('tput', args='cols', stdout=T, stderr=T), error=function(err) NA)
+  if (is.na(ret))
+  {
+    # # Fall back to COLUMNS environment variable
+    # width = as.integer(Sys.getenv('COLUMNS'))
+    # if (!is.na(width)) default <- width
+    if (!is.na(default)) ret <- default
+  }
+
+  if (is.character(ret)) ret <- as.integer(ret)
+  if (!is.na(ret)) options(width = ret)
+
+  return(ret)
+}
+
+ret <- system('tput cols', intern=T)
+options(width = as.integer(ret))
+
+library(colorout)
+setOutputColors256(normal=16, negnum=166, zero=142, number=35,
+                   date=97, string=62, const=29,
+                   false=161, true=35, infinite=33,
+                   stderr=27, verbose = F)
+
+
+#options(width = system("tput cols", intern=TRUE))
+
+suppressMessages(library(data.table))
+args <- commandArgs(trailingOnly = TRUE)
+
+opts <- list(a=F, stdin=T, file='')
+for (a in args)
+{
+  switch(a,
+       '-a' = {opts$a = T},
+       '-'  = {opts$stdin = T},
+              {opts$file = a; opts$stdin= F }
+       )
+}
+
+# -a : show all rows
+# -  : read from stdin
+
+if (opts$a)            options(datatable.print.nrows = 1e7)
+if (opts$stdin)        dt <- fread('cat /dev/stdin')
+if (opts$file != '')   dt <- fread(opts$file)
+
+print(dt)

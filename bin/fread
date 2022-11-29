@@ -1,0 +1,29 @@
+#!/usr/bin/env Rscript
+# vim:filetype=r:
+
+suppressMessages(library(data.table))
+args <- commandArgs(trailingOnly = TRUE)
+
+opts <- list(a=F, stdin=T, file='')
+for (a in args)
+{
+  switch(a,
+       '-a' = {opts$a = T},
+       '-3' = {opts$digits = 3},
+       '-'  = {opts$stdin = T},
+              {opts$file = a; opts$stdin= F }
+       )
+}
+
+# -a : show all rows
+# -  : read from stdin
+
+if (opts$a)            options(datatable.print.nrows = 1e7)
+
+if (opts$stdin)        dt <- fread('cat /dev/stdin')
+if (opts$file != '')   dt <- fread(opts$file)
+
+options(digits=3)
+fwrite(dt, sep=",", na="", file="/dev/stdout")
+
+
