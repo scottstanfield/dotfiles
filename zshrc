@@ -205,6 +205,9 @@ alias rgc='rg --no-line-number --color never '
 alias ssh="TERM=xterm-256color ssh"
 alias t='tmux -2 new-session -A -s "moab"'
 
+alias d='dirs -v'
+for index ({1..9}) alias "$index"="cd +${index}"; unset index
+
 export R_LIBS="~/R"
 
 function fif() {
