@@ -195,6 +195,7 @@ alias ls="ls ${lsflags}"
 alias lt="ls ${lsflags} -l --sort=time --reverse --time-style=long-iso"
 alias lx="ls ${lsflags} -Xl"
 alias m="less"
+alias b="bat --plain"
 alias p=python3
 alias path='echo $PATH | tr : "\n" | cat -n'
 alias pd='pushd'  # symmetry with cd
