@@ -417,7 +417,6 @@ function lazyload_conda {
 
             # Follow softlink, then up two folders for typical location of anaconda
             _conda_prefix=dirname $(dirname $(readlink -f $(whence -p conda)))
-            echo "prefix: $_conda_prefix"
             
             ## >>> conda initialize >>>
             # !! Contents within this block are managed by 'conda init' !!
