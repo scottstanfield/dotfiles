@@ -92,15 +92,15 @@ typeset -gU path fpath manpath
 # remove gnu stuff or **
 # remove .poetry
 path=(
+    $HOME/bin
+
     /opt/homebrew/bin
     /opt/homebrew/Cellar/coreutils/**/gnubin
     /opt/homebrew/Cellar/gnu-sed/**/gnubin
     /opt/homebrew/Cellar/gnu-tar/**/libexec/gnubin
     /opt/homebrew/Cellar/grep/**/gnubin
 
-
     $HOME/.pyenv/shims
-    $HOME/bin
     $HOME/.poetry/bin
     $HOME/.cargo/bin
     $HOME/.local/bin
