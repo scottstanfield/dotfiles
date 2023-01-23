@@ -215,7 +215,7 @@ function fif() {
   rg --files-with-matches --no-messages "$1" | fzf --preview "highlight -O ansi -l {} 2> /dev/null | rg --colors 'match:bg:yellow' --ignore-case --pretty --context 10 '$1' || rg --ignore-case --pretty --context 10 '$1' {}"
 }
 
-function gd()      { git diff --color=always "$*" | less }
+function gd()      { git diff --color=always $* | less }
 function witch()   { file $(which "$*") }
 function gg()      { git commit -m "$*" }
 function http      { command http --pretty=all --verbose $@ | less -R; }
