@@ -827,17 +827,9 @@ highlight Comment cterm=italic gui=italic
 set t_ZH=[3m
 set t_ZR=[23m
 
-" set background=dark
-" colorscheme solarized8_high
-
-
-if filereadable(expand("~/.vimrc_background"))
-  let base16colorspace=256
-  set background=dark
-  source ~/.vimrc_background
-endif
-
-
+set background=dark
+" hi colorcolumn ctermbg=darkgrey
+colorscheme dracula
 
 " CAPSLOCK {{{
   " Insert and command-line mode Caps Lock.
