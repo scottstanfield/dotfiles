@@ -371,16 +371,10 @@ FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}path]='fg=cyan'
 FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}path-to-dir]='fg=cyan,underline'
 FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}comment]='fg=gray'
 
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
 # 
 function prompt_my_host_icon() {
     p10k segment -i '' -f blue
 }
-
-# Put "cargo installed" apps first in the path, to accomodate Silicon M1 overrides
-path=($HOME/.cargo/bin $path)
 
 exaflags="--classify --color-scale --bytes --group-directories-first"
 
@@ -394,35 +388,54 @@ if in_path "exa" ; then
     alias lla="exa ${exaflags} --all --long --sort size"
 fi
 
-light_color='base16-atelier-sulphurpool-light.yml'
-dark_color='base16-atelier-sulphurpool.yml'
-
-# pip3 install --user alacritty-colorscheme
-# git clone https://github.com/aaron-williamson/base16-alacritty $HOME/.config
-colorflags="-c ~/.config/alacritty/alacritty.yml -C ~/.config/base16-alacritty/colors"
-alias day="alacritty-colorscheme ${colorflags} -V apply $light_color"
-alias night="alacritty-colorscheme ${colorflags} -V apply $dark_color"
-alias toggle="alacritty-colorscheme ${colorflags} -V toggle $light_color $dark_color"
-
-function idot()    { dot -Tsvg -Gsize=${1:-9},${2:-16}\! | rsvg-convert | ~/bin/imgcat }
-function iplot()   { awk -f ~/bin/plot.awk | rsvg-convert -z ${1:-1} | ~/bin/imgcat }
-
-export PATH="$HOME/.poetry/bin:$PATH"
-
-# function condastartup {
-#  __conda_setup="$('/opt/homebrew/Caskroom/miniforge/base/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-#  if [ $? -eq 0 ]; then
-#      eval "$__conda_setup"
-#  else
-#      if [ -f "/opt/homebrew/Caskroom/miniforge/base/etc/profile.d/conda.sh" ]; then
-#          . "/opt/homebrew/Caskroom/miniforge/base/etc/profile.d/conda.sh"
-#      else
-#          export PATH="/opt/homebrew/Caskroom/miniforge/base/bin:$PATH"
-#      fi
-#  fi
-#  unset __conda_setup
-# }
 export BAT_THEME="gruvbox-dark"
 export AWS_DEFAULT_PROFILE=dev-additive
+#
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-eval "$(zoxide init zsh)"
+
+# True if $1 is an executable in $PATH Works in both {ba,z}sh
+function is_bin_in_path {
+  if [[ -n $ZSH_VERSION ]]; then
+    builtin whence -p "$1" &> /dev/null
+  else  # bash:
+    builtin type -P "$1" &> /dev/null
+  fi
+}
+
+##
+## Lazy load Anaconda to save startup time
+## 
+
+function lazyload_conda {
+    if whence -p conda; then
+        # Placeholder 'conda' shell function
+        conda() {
+            # Remove this function, subsequent calls will execute 'conda' directly
+            unfunction "$0"
+
+            # Follow softlink, then up two folders for typical location of anaconda
+            _conda_prefix=dirname $(dirname $(readlink -f $(whence -p conda)))
+            echo "prefix: $_conda_prefix"
+            
+            ## >>> conda initialize >>>
+            # !! Contents within this block are managed by 'conda init' !!
+            __conda_setup="$("$_conda_prefix/bin/conda" 'shell.zsh' 'hook' 2> /dev/null)"
+            if [ $? -eq 0 ]; then
+                eval "$__conda_setup"
+            else
+                if [ -f "$_conda_prefix/etc/profile.d/conda.sh" ]; then
+                    . "$_conda_prefix/etc/profile.d/conda.sh"
+                else
+                    export PATH="$_conda_prefix/base/bin:$PATH"
+                fi
+            fi
+            unset __conda_setup
+            # <<< conda initialize <<<
+
+            $0 "$@"
+        }
+    fi
+}
+lazyload_conda
