@@ -409,7 +409,7 @@ function is_bin_in_path {
 ## 
 
 function lazyload_conda {
-    if whence -p conda; then
+    if whence -p conda &> /dev/null; then
         # Placeholder 'conda' shell function
         conda() {
             # Remove this function, subsequent calls will execute 'conda' directly
@@ -438,3 +438,10 @@ function lazyload_conda {
     fi
 }
 lazyload_conda
+
+# bun completions
+[ -s "/Users/sstanfield/.bun/_bun" ] && source "/Users/sstanfield/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
