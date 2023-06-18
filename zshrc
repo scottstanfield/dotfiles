@@ -411,7 +411,7 @@ function is_bin_in_path {
 ## 
 
 function lazyload_conda {
-    if whence -p conda; then
+    if whence -p conda &> /dev/null; then
         # Placeholder 'conda' shell function
         conda() {
             # Remove this function, subsequent calls will execute 'conda' directly
@@ -419,7 +419,6 @@ function lazyload_conda {
 
             # Follow softlink, then up two folders for typical location of anaconda
             _conda_prefix=dirname $(dirname $(readlink -f $(whence -p conda)))
-            echo "prefix: $_conda_prefix"
             
             ## >>> conda initialize >>>
             # !! Contents within this block are managed by 'conda init' !!
@@ -442,3 +441,10 @@ function lazyload_conda {
 }
 lazyload_conda
 
+=======
+# bun completions
+[ -s "/Users/sstanfield/.bun/_bun" ] && source "/Users/sstanfield/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
