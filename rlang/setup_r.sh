@@ -19,6 +19,6 @@ mkdir -p $HOME/.R/tmp
 
 # The line below is for clang/llvm, which is Mac specific
 # Skip for now until cross platform soution
-#cp --no-clobber Makevars $HOME/.R/Makevars
+cp --no-clobber Makevars $HOME/.R/Makevars
 
 cp --no-clobber Rprofile $HOME/.Rprofile

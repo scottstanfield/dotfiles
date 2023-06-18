@@ -48,6 +48,7 @@ setopt append_history inc_append_history  share_history
 setopt histfcntllock  histignorealldups   histreduceblanks histsavenodups
 setopt autopushd      chaselinks          pushdignoredups  pushdsilent
 setopt NO_caseglob    extendedglob        globdots         globstarshort nullglob numericglobsort
+setopt NO_nullglob
 setopt NO_flowcontrol interactivecomments rcquotes
 setopt autocd                   # cd to a folder just by typing it's name
 setopt interactive_comments     # allow # comments in shell; good for copy/paste
@@ -91,6 +92,7 @@ typeset -gU path fpath manpath
 
 # remove gnu stuff or **
 # remove .poetry
+setopt nullglob
 path=(
     $HOME/bin
 
@@ -150,6 +152,7 @@ manpath=(
     $manpath[@]
 )
 manpath=($^manpath(N))
+setopt NO_nullglob
 
 
 ## LS and colors
@@ -309,7 +312,6 @@ zinit ice wait silent blockf;
 zinit snippet PZT::modules/completion/init.zsh
 unsetopt correct
 unsetopt correct_all
-setopt extended_glob
 setopt complete_in_word         # cd /ho/sco/tm<TAB> expands to /home/scott/tmp
 setopt auto_menu                # show completion menu on succesive tab presses
 
@@ -439,3 +441,4 @@ function lazyload_conda {
     fi
 }
 lazyload_conda
+
