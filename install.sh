@@ -61,6 +61,7 @@ link bashrc               "$HOME"/.bashrc
 link bash_profile         "$HOME"/.bash_profile
 link inputrc              "$HOME"/.inputrc
 link config/alacritty/alacritty.yml        "$HOME"/.config/alacritty/alacritty.yml
+link config/alacritty/dracula.yml      "$HOME"/.config/alacritty/dracula.yml
 link p10k.zsh             "$HOME"/.p10k.zsh
 link gitconfig            "$HOME"/.gitconfig
 link gitignore            "$HOME"/.gitignore
