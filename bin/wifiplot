@@ -10,9 +10,8 @@ set -o pipefail
 
 cmd="/System/Library/PrivateFrameworks/Apple*.framework/Versions/Current/Resources/airport -I"
 
-printf 'RSI\tAP MAC\t\t\tSSID\n'
 while true; do
-	sudo $cmd | sed 's/:/|/' | grep -e 'BSSID' -e 'SSID' -e 'CtlRSSI' | cut -f2 -d '|' | paste -s
+	sudo $cmd | sed 's/:/|/' | grep -e 'CtlRSSI' | cut -f2 -d '|' | tr -d '-' | paste -s
   sleep 0.5
 done
 

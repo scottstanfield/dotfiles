@@ -302,7 +302,7 @@ autoload -Uz _zinit
 # }}}
 
 export NVM_LAZY_LOAD=true
-# zinit light lukechilds/zsh-nvm
+zinit light lukechilds/zsh-nvm
 
 # | completions | # {{{
 zinit ice wait silent blockf; 
@@ -361,7 +361,7 @@ export FZF_DEFAULT_COMMAND="rg --files --hidden --follow --glob '!.git'"
 
 # zinit pack"binary+keys" for fzf
 # zinit pack"bgn" for fzf
-zinit pack for ls_colors
+# zinit pack for ls_colors
 
 
 # | syntax highlighting | <-- needs to be last zinit #
@@ -370,11 +370,6 @@ fast-theme -q default
 FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}path]='fg=cyan'
 FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}path-to-dir]='fg=cyan,underline'
 FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}comment]='fg=gray'
-
-# 
-function prompt_my_host_icon() {
-    p10k segment -i '' -f blue
-}
 
 exaflags="--classify --color-scale --bytes --group-directories-first"
 
@@ -390,7 +385,16 @@ fi
 
 export BAT_THEME="gruvbox-dark"
 export AWS_DEFAULT_PROFILE=dev-additive
-#
+
+# 
+# 
+# 
+# 
+# 
+function prompt_my_host_icon() {
+    p10k segment -i '' -f green
+}
+
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
@@ -445,3 +449,8 @@ lazyload_conda
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+
+# my C flags
+#export CFLAGS='-Wall -O3 -include stdio.h --std=c17'
+alias goc="cc -xc - $CFLAGS"
+

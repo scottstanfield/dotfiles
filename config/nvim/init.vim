@@ -232,7 +232,7 @@ au FileType fzf tnoremap <nowait><buffer> <esc> <c-g>
     let g:vim_markdown_folding_disabled = 1
     let g:vim_markdown_frontmatter = 1
     let g:vim_markdown_strikethrough = 1
-    let g:vim_markdown_conceal = 2
+    let g:vim_markdown_conceal = 0
     let g:vim_markdown_conceal_code_blocks = 0
     let g:vim_markdown_edit_url_in = 'tab'
     let g:vim_markdown_follow_anchor = 1
@@ -702,22 +702,15 @@ function! Formd(option)
     :let flag = a:option
     :if flag == "-r"
         :%! formd -r
-    :elseif flag == "-i"
-        :%! formd -i
     :else
-        :%! formd -f
+        :%! formd -i
     :endif
     :call winrestview(save_view)
 endfunction
 
 " Toggle hyperlinks in Markdown on/off
-nnoremap <leader>th :call Formd("-f")<CR>
-" nmap <leader>fi :call Formd("-i")<CR>
-" nmap <leader>f :call Formd("-f")<CR>
-"
-
-
-
+nnoremap <leader>fi :call Formd("-i")<CR>
+nnoremap <leader>fr :call Formd("-r")<CR>
 
 noremap <silent> <leader>om :call OpenMarkdownPreview()<cr>
 
