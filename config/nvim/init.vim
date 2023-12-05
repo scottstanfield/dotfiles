@@ -62,7 +62,7 @@ Plug 'sotte/presenting.vim'
 
 Plug 'powerman/vim-plugin-AnsiEsc'
 
-" Plug 'scottstanfield/vimcmdline'
+Plug 'scottstanfield/vimcmdline'
 
 " colorschemes
 Plug 'lifepillar/vim-solarized8'
@@ -73,15 +73,14 @@ Plug 'junegunn/seoul256.vim'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'jistr/vim-nerdtree-tabs'
 
-Plug 'ryanoasis/vim-devicons'
-
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/limelight.vim'
 Plug 'junegunn/rainbow_parentheses.vim'
 Plug 'junegunn/vim-peekaboo'
 
-Plug 'junegunn/goyo.vim', { 'for': 'markdown' }
+" Plug 'junegunn/goyo.vim', { 'for': 'markdown' }
+Plug 'junegunn/goyo.vim'
 let g:goyo_width = 80
 nmap <leader>to :silent Goyo<CR>
 
@@ -94,8 +93,20 @@ au FileType markdown vmap <Leader><Bslash> :EasyAlign*<Bar><Enter>
 
 " vim as a markdown editor: https://secluded.site/vim-as-a-markdown-editor
 Plug 'godlygeek/tabular'
-
 Plug 'plasticboy/vim-markdown'
+" plasticboy/vim-markdown 
+let g:vim_markdown_folding_disabled = 1
+let g:vim_markdown_frontmatter = 1
+let g:vim_markdown_strikethrough = 1
+let g:vim_markdown_conceal = 2
+let g:vim_markdown_conceal_code_blocks = 0
+let g:vim_markdown_edit_url_in = 'tab'
+let g:vim_markdown_follow_anchor = 1
+let g:vim_markdown_frontmatter = 1
+let g:vim_markdown_strikethrough = 1
+let g:vim_markdown_toml_frontmatter = 1
+    
+
 Plug 'itchyny/lightline.vim'
 let g:lightline = {'colorscheme': 'dracula'}
 
@@ -104,12 +115,12 @@ Plug 'edkolev/tmuxline.vim', {'on': ['Tmuxline', 'TmuxlineSimple', 'TmuxlineSnap
 Plug 'kassio/neoterm'
 
 " rlang
+" Plug 'jalvesaq/colorout', { 'for': 'r' }
+" Plug 'jalvesaq/Nvim-r', {'branch': 'master', 'for':'r' }
 Plug 'jalvesaq/colorout', { 'for': 'r' }
-Plug 'jalvesaq/Nvim-r', {'branch': 'master' }
-Plug 'jalvesaq/vimcmdline'
-" for 'jalvesaq/vimcmdline'
-let cmdline_app = {}
-let cmdline_app['sh'] = '/opt/homebrew/bin/bash'
+Plug 'jalvesaq/Nvim-r', {'branch': 'master'}
+" let cmdline_app = {}
+" let cmdline_app['sh'] = '/opt/homebrew/bin/bash'
 
 command Z w | qa
 cabbrev wqa Z
@@ -118,12 +129,13 @@ cabbrev wqa Z
 Plug 'kshenoy/vim-signature'                    " show marks in margin
 
 Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-commentary'                     " smarter commenting with gc
 Plug 'tpope/vim-vinegar'                        " smarter commenting with gc
+Plug 'tpope/vim-surround'
 
 Plug 'airblade/vim-gitgutter'                   " shows git diff marks in the gutter
+Plug 'github/copilot.vim'
 
 call plug#end()
 " }}}
@@ -161,7 +173,7 @@ nmap <leader>e3 :call ColorSeoul256()<cr>
 
 
 " junegunn/rainbow_parenthesis
-let g:rainbow#pairs = [['(', ')'], ['[', ']']]
+" let g:rainbow#pairs = [['(', ')'], ['[', ']']]
 
 nmap <leader>tl :Limelight!! 0.7<CR>
 
@@ -173,11 +185,11 @@ nmap <leader>tm :silent Goyo<CR>
 
 " jalvesaq/Nvim-r {{{
 " rlang
-    let R_assign = 0
     let R_args = ['--no-save', '--quiet']
-    let R_tmpdir = '~$USER/R/tmp'               " TODO: consider removing this
-    let R_source_args = 'print.eval=F'
-    let R_nvimpager = 'no'
+    " let R_assign = 0
+    " let R_tmpdir = '~$USER/R/tmp'               " TODO: consider removing this
+    " let R_source_args = 'print.eval=F'
+    " let R_nvimpager = 'no'
     "let R_auto_start = 1
     " " I needed to run `brew link --force readline` in order to get gcc5
     " to compile nvimcom (which updates automatically when you invoke nvim-r)
@@ -228,18 +240,7 @@ nmap <leader>fc     :Commits<CR>
 "let g:fzf_layout = { 'window': 'left' }
 au FileType fzf tnoremap <nowait><buffer> <esc> <c-g>
 " }}}
-" plasticboy/vim-markdown {{{
-    let g:vim_markdown_folding_disabled = 1
-    let g:vim_markdown_frontmatter = 1
-    let g:vim_markdown_strikethrough = 1
-    let g:vim_markdown_conceal = 0
-    let g:vim_markdown_conceal_code_blocks = 0
-    let g:vim_markdown_edit_url_in = 'tab'
-    let g:vim_markdown_follow_anchor = 1
-    let g:vim_markdown_frontmatter = 1
-    let g:vim_markdown_strikethrough = 1
-    let g:vim_markdown_toml_frontmatter = 1
-"}}}
+
 " Nerdtree {{{
 let g:NERDTreeShowHidden=1
 let g:NERDTreeMinimalUI=1
@@ -380,8 +381,8 @@ set breakindentopt=sbr
 """""""""""""""""
 " TABS AND SPACES
 """""""""""""""""
-"set nosmartindent       " explicitly turn off. C-style doesn't work with R comments #
-set smartindent       " explicitly turn off. C-style doesn't work with R comments #
+set nosmartindent       " explicitly turn off. C-style doesn't work with R comments #
+"set smartindent       " explicitly turn off. C-style doesn't work with R comments #
 set nowrap              " do not wrap lines please
 set tabstop=4
 set softtabstop=4
@@ -596,6 +597,48 @@ set foldmethod=marker
 
 " AUTOGROUPS {{{
 
+" https://asciinema.org/a/kE1398clJWRPPhk3lWbtvbanF
+
+" Presentation mode
+" use <left> and <right> to navigate the slides
+" https://github.com/plasticboy/vim-markdown Makes folds by sections (among many other things)
+" https://github.com/junegunn/goyo.vim Distraction-free writing (and reading) in Vim
+
+function! s:enter_presentation()
+    " increase conceal level
+    set conceallevel=3
+    " open first fold
+    normal ggzo
+    " add navigation
+    " C-n next slide
+        " zc - close current fold
+        " zj - move to the next
+        " zo - and open it
+        " [z - move to the start of the current fold
+        " j  - move the cursor out of the way
+    nnoremap <buffer> <right> zczjzo[z<esc>j
+    " C-p previous slide
+        " zc - close current fold
+        " zk - move to the previous
+        " zo - and open it
+        " [z - move to the start of the current fold
+        " j  - move the cursor out of the way
+    nnoremap <buffer> <left> zczkzo[zj
+endfunction
+
+function! s:exit_presentation()
+    " reset conceal level
+    set conceallevel=0
+    nunmap <buffer> <left>
+    nunmap <buffer> <right>
+endfunction
+
+autocmd! User GoyoEnter nested call <SID>enter_presentation()
+autocmd! User GoyoLeave nested call <SID>exit_presentation()
+
+nnoremap <buffer> <Right> :n<cr>
+nnoremap <buffer> <Left> :N<cr>
+
 " Check spelling: [s ]s z= zg
 augroup markdown
     autocmd!
@@ -654,12 +697,14 @@ augroup my_au
     " au BufEnter * if &buftype == 'terminal' | :startinsert | endif
 augroup END
 
-augroup rainbow_paren
-    autocmd!
-    autocmd FileType r RainbowParentheses
-    autocmd FileType python RainbowParentheses
-    autocmd FileType bash RainbowParentheses
-augroup END
+" augroup rainbow_paren
+"     autocmd!
+"     autocmd FileType r RainbowParentheses
+"     autocmd FileType python RainbowParentheses
+"     autocmd FileType bash RainbowParentheses
+"     autocmd FileType vim RainbowParentheses
+"     autocmd FileType zsh RainbowParentheses
+" augroup END
 
 " Remember the cursor position for every file
 " function! PositionCursorFromViminfo()
@@ -681,21 +726,20 @@ autocmd BufReadPost *
 " Markdown and Word processing mode {{{
 " Go into WordProcessorMode when typing Markdown paragraphs: <leader>0
 " http://www.drbunsen.org/writing-in-vim/
+" Install formd: npm install -g @seth-brown/formd
+
+nnoremap <leader>t0 :silent call WordProcessorMode()
 func! WordProcessorMode()
     setlocal tw=80
     setlocal formatoptions=1t
     setlocal noexpandtab
-    "setlocal spell spelllang=en_us
+    setlocal spell spelllang=en_us
     set complete+=s
     setlocal wrap
     setlocal linebreak
 endfu
 
-nnoremap <leader>t0 :silent call WordProcessorMode()
-" Run "formd" command on buffer to fix Markdown hyperlinks
-" This script assumes formd is in your path at:
-" ~/bin/formd/formd
-" http://drbunsen.github.com/formd/
+nnoremap <silent><leader>vv :Goyo<cr>:set linebreak<cr>:set wrap<cr>
 
 function! Formd(option)
     :let save_view = winsaveview()
@@ -711,6 +755,7 @@ endfunction
 " Toggle hyperlinks in Markdown on/off
 nnoremap <leader>fi :call Formd("-i")<CR>
 nnoremap <leader>fr :call Formd("-r")<CR>
+nnoremap <leader>th :call Formd("-f")<CR>
 
 noremap <silent> <leader>om :call OpenMarkdownPreview()<cr>
 
@@ -846,4 +891,9 @@ endtry
 
   
 " }}}
+
+let g:ale_cpp_cc_options="-std=c2x -Wall -I/Users/sstanfield/lib/boost"
+
+let g:ale_linters = {'c': ['clang'], 'cpp': ['clang', 'g++']}
+
 

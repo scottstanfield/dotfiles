@@ -1,3 +1,10 @@
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
 # Scott Stanfield
 # http://git.io/dmz/
 
@@ -102,13 +109,13 @@ path=(
     /opt/homebrew/Cellar/gnu-tar/**/libexec/gnubin
     /opt/homebrew/Cellar/grep/**/gnubin
 
+    $HOME/.bun/bin
     $HOME/.pyenv/shims
     $HOME/.poetry/bin
     $HOME/.cargo/bin
     $HOME/.local/bin
     $HOME/.go/bin
     $HOME/Library/Python/**/bin
-
     $HOME/moab/bin
     /usr/local/go/bin
 
@@ -194,9 +201,9 @@ alias lln="ls ${lsflags} -l"
 alias lls="ls ${lsflags} -l --sort=size --reverse"
 alias llt="ls ${lsflags} -l --sort=time --reverse --time-style=long-iso"
 alias logs="docker logs control -f"
-alias ls="ls ${lsflags}"
-alias lt="ls ${lsflags} -l --sort=time --reverse --time-style=long-iso"
-alias lx="ls ${lsflags} -Xl"
+# alias ls="ls ${lsflags}"
+# alias lt="ls ${lsflags} -l --sort=time --reverse --time-style=long-iso"
+# alias lx="ls ${lsflags} -Xl"
 alias m="less"
 alias b="bat --plain"
 alias p=python3
@@ -218,6 +225,7 @@ function fif() {
   rg --files-with-matches --no-messages "$1" | fzf --preview "highlight -O ansi -l {} 2> /dev/null | rg --colors 'match:bg:yellow' --ignore-case --pretty --context 10 '$1' || rg --ignore-case --pretty --context 10 '$1' {}"
 }
 
+function jl()      { < $1 jq -C . | less }
 function gd()      { git diff --color=always $* | less }
 function witch()   { file $(which "$*") }
 function gg()      { git commit -m "$*" }
@@ -234,10 +242,10 @@ function h() {
 }
 
 # Automatically ls after you cd
-# function chpwd() {
-#     emulate -L zsh
-#     ls -F
-# }
+function chpwd() {
+    emulate -L zsh
+    ls -F
+}
 
 # Simple default prompt
 PROMPT='%n@%m %3~%(!.#.$)%(?.. [%?]) '
@@ -280,6 +288,7 @@ fi
 export DOCKER_BUILDKIT=1
 export HOMEBREW_NO_AUTO_UPDATE=1
 
+zstyle ':completion:*' list-suffixes zstyle ':completion:*' expand prefix suffix 
 
 ##
 ## zinit plugin installer
@@ -375,8 +384,10 @@ FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}comment]='fg=gray'
 
 exaflags="--classify --color-scale --bytes --group-directories-first"
 
+function ls() { exa --classify --color-scale --bytes --group-directories-first $@ }
+
 if in_path "exa" ; then
-    alias ls="exa ${exaflags} "$*" "
+    #alias ls="exa ${exaflags} $@ "
     alias ll="exa ${exaflags} --long "
     alias lll="exa ${exaflags} --long --git"
     alias lld="exa ${exaflags} --all --long --sort date"
@@ -414,46 +425,56 @@ function is_bin_in_path {
 ## Lazy load Anaconda to save startup time
 ## 
 
-function lazyload_conda {
-    if whence -p conda &> /dev/null; then
-        # Placeholder 'conda' shell function
-        conda() {
-            # Remove this function, subsequent calls will execute 'conda' directly
-            unfunction "$0"
-
-            # Follow softlink, then up two folders for typical location of anaconda
-            _conda_prefix=dirname $(dirname $(readlink -f $(whence -p conda)))
-            
-            ## >>> conda initialize >>>
-            # !! Contents within this block are managed by 'conda init' !!
-            __conda_setup="$("$_conda_prefix/bin/conda" 'shell.zsh' 'hook' 2> /dev/null)"
-            if [ $? -eq 0 ]; then
-                eval "$__conda_setup"
-            else
-                if [ -f "$_conda_prefix/etc/profile.d/conda.sh" ]; then
-                    . "$_conda_prefix/etc/profile.d/conda.sh"
-                else
-                    export PATH="$_conda_prefix/base/bin:$PATH"
-                fi
-            fi
-            unset __conda_setup
-            # <<< conda initialize <<<
-
-            $0 "$@"
-        }
-    fi
-}
-lazyload_conda
-
 # bun completions
 [ -s "/Users/sstanfield/.bun/_bun" ] && source "/Users/sstanfield/.bun/_bun"
 
 # bun
 export BUN_INSTALL="$HOME/.bun"
+<<<<<<< HEAD
 export PATH="$BUN_INSTALL/bin:$PATH"
 
 # my C flags
 #export CFLAGS='-Wall -O3 -include stdio.h --std=c17'
 alias goc="cc -xc - $CFLAGS"
 
+=======
+>>>>>>> 8b9266e (Batch of changes on RS laptop)
 export DISPLAY=:0
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+# __conda_setup="$('/opt/homebrew/Caskroom/miniforge/base/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+# if [ $? -eq 0 ]; then
+#     eval "$__conda_setup"
+# else
+#     if [ -f "/opt/homebrew/Caskroom/miniforge/base/etc/profile.d/conda.sh" ]; then
+#         . "/opt/homebrew/Caskroom/miniforge/base/etc/profile.d/conda.sh"
+#     else
+#         export PATH="/opt/homebrew/Caskroom/miniforge/base/bin:$PATH"
+#     fi
+# fi
+# unset __conda_setup
+# # <<< conda initialize <<<
+
+
+export LDFLAGS="-L/Users/sstanfield/lib/boost -L/opt/quanser/hil_sdk/lib"
+export CPPFLAGS="-I/Users/sstanfield/include/boost/stage/lib -I/opt/quanser/hil_sdk/include"
+
+# export CPPFLAGS += "-I /opt/quanser/hil_sdk/include"
+# export LDFLAGS += "-L /opt/quanser/hil_sdk/lib"
+
+if command -v pyenv 1>/dev/null 2>&1; then
+  eval "$(pyenv init -)"
+fi
+
+# >>> juliaup initialize >>>
+
+# !! Contents within this block are managed by juliaup !!
+
+path=('/Users/sstanfield/.juliaup/bin' $path)
+export PATH
+
+# <<< juliaup initialize <<<
+
+# Don't let brew autoupdate
+export HOMEBREW_NO_AUTO_UPDATE=1

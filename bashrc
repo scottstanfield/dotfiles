@@ -33,3 +33,18 @@ export PS1="${GRN}\h ${CYN}\w ${RED}\`nonzero_return\`${END}${GRN}\$ ${END}"
 
 # Non-essential aliases
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
+
+# >>> juliaup initialize >>>
+
+# !! Contents within this block are managed by juliaup !!
+
+case ":$PATH:" in
+    *:/Users/sstanfield/.juliaup/bin:*)
+        ;;
+
+    *)
+        export PATH=/Users/sstanfield/.juliaup/bin${PATH:+:${PATH}}
+        ;;
+esac
+
+# <<< juliaup initialize <<<

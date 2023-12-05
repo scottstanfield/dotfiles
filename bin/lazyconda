@@ -1,0 +1,30 @@
+function lazyload_conda {
+    if whence -p conda &> /dev/null; then
+        # Placeholder 'conda' shell function
+        conda() {
+            # Remove this function, subsequent calls will execute 'conda' directly
+            unfunction "$0"
+
+            # Follow softlink, then up two folders for typical location of anaconda
+            _conda_prefix=$(dirname $(dirname $(readlink -f $(whence -p conda))))
+            
+            ## >>> conda initialize >>>
+            # !! Contents within this block are managed by 'conda init' !!
+            __conda_setup="$("$_conda_prefix/bin/conda" 'shell.zsh' 'hook' 2> /dev/null)"
+            if [ $? -eq 0 ]; then
+                eval "$__conda_setup"
+            else
+                if [ -f "$_conda_prefix/etc/profile.d/conda.sh" ]; then
+                    . "$_conda_prefix/etc/profile.d/conda.sh"
+                else
+                    export PATH="$_conda_prefix/base/bin:$PATH"
+                fi
+            fi
+            unset __conda_setup
+            # <<< conda initialize <<<
+
+            $0 "$@"
+        }
+    fi
+}
+lazyload_conda

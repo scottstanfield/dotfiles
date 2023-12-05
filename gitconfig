@@ -84,4 +84,7 @@
 	defaultBranch = main
 [user]
 	name = Scott Stanfield
-	email = sstanfield@relativityspace.com
+	email = scottstanfield@gmail.com
+
+[credential]
+    helper=cache
