@@ -456,3 +456,4 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 #export CFLAGS='-Wall -O3 -include stdio.h --std=c17'
 alias goc="cc -xc - $CFLAGS"
 
+export DISPLAY=:0
