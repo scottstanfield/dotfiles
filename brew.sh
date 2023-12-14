@@ -22,6 +22,7 @@ dev=(
     autoconf 
     automake
     cmake
+    nvim
 )
 
 gnu=(
