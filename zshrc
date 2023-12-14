@@ -430,15 +430,11 @@ function is_bin_in_path {
 
 # bun
 export BUN_INSTALL="$HOME/.bun"
-<<<<<<< HEAD
 export PATH="$BUN_INSTALL/bin:$PATH"
 
 # my C flags
 #export CFLAGS='-Wall -O3 -include stdio.h --std=c17'
 alias goc="cc -xc - $CFLAGS"
-
-=======
->>>>>>> 8b9266e (Batch of changes on RS laptop)
 export DISPLAY=:0
 
 # >>> conda initialize >>>
