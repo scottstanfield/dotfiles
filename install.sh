@@ -20,7 +20,6 @@ die()     { ret=$?; printf "%s\n" "$@" >&2; exit "$ret"; }
 
 
 require curl
-require nvim
 require git
 
 # Change directories to where this script is located
