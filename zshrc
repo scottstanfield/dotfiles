@@ -218,7 +218,7 @@ alias t='tmux -2 new-session -A -s "moab"'
 alias d='dirs -v'
 for index ({1..9}) alias "$index"="cd +${index}"; unset index
 
-export R_LIBS="~/R"
+export R_LIBS="~/.rlibs"
 
 function fif() {
   if [ ! "$#" -gt 0 ]; then echo "Need a string to search for!"; return 1; fi
@@ -353,8 +353,8 @@ zinit light zdharma-continuum/null
 # For git command extensions
 # zinit as"null" wait"1" lucid for sbin                davidosomething/git-my
 
-# brew install fd bat exa glow fzf
-# cargo install exa git-delta
+# brew install fd bat eza glow fzf
+# cargo install eza git-delta
 
 # zinit only installs x86 binaries
 # zinit wait"1" lucid from"gh-r" as"null" for \
@@ -382,18 +382,26 @@ FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}path]='fg=cyan'
 FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}path-to-dir]='fg=cyan,underline'
 FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}comment]='fg=gray'
 
+
+
+# 
+function prompt_my_host_icon() {
+    p10k segment -i '' -f blue
+}
+
+exaflags="--color=always --classify --color-scale --bytes --group-directories-first"
 exaflags="--classify --color-scale --bytes --group-directories-first"
 
-function ls() { exa --classify --color-scale --bytes --group-directories-first $@ }
-
-if in_path "exa" ; then
-    #alias ls="exa ${exaflags} $@ "
-    alias ll="exa ${exaflags} --long "
-    alias lll="exa ${exaflags} --long --git"
-    alias lld="exa ${exaflags} --all --long --sort date"
-    alias lle="exa ${exaflags} --all --long --sort extension"
-    alias lls="exa ${exaflags} --all --long --sort size"
-    alias lla="exa ${exaflags} --all --long --sort size"
+# the `ls` replacement exa no longer maintained: it's now "eza"
+if in_path "eza" ; then
+    function ls() { eza --classify --color-scale --bytes --group-directories-first $@ }
+    #alias ls="eza ${exaflags} "$*" "
+    alias ll="eza ${exaflags} --long "
+    alias lll="eza ${exaflags} --long --git"
+    alias lld="eza ${exaflags} --all --long --sort date"
+    alias lle="eza ${exaflags} --all --long --sort extension"
+    alias lls="eza ${exaflags} --all --long --sort size"
+    alias lla="eza ${exaflags} --all --long --sort size"
 fi
 
 export BAT_THEME="gruvbox-dark"
@@ -409,7 +417,11 @@ function prompt_my_host_icon() {
 }
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+
+
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+typeset -g POWERLEVEL9K_PROMPT_CHAR_{OK,ERROR}_VIINS_CONTENT_EXPANSION='»'
 
 
 # True if $1 is an executable in $PATH Works in both {ba,z}sh
@@ -424,6 +436,37 @@ function is_bin_in_path {
 ##
 ## Lazy load Anaconda to save startup time
 ## 
+
+function lazyload_conda {
+    if whence -p conda &> /dev/null; then
+        # Placeholder 'conda' shell function
+        conda() {
+            # Remove this function, subsequent calls will execute 'conda' directly
+            unfunction "$0"
+
+            # Follow softlink, then up two folders for typical location of anaconda
+            _conda_prefix=dirname $(dirname $(readlink -f $(whence -p conda)))
+            
+            ## >>> conda initialize >>>
+            # !! Contents within this block are managed by 'conda init' !!
+            __conda_setup="$("$_conda_prefix/bin/conda" 'shell.zsh' 'hook' 2> /dev/null)"
+            if [ $? -eq 0 ]; then
+                eval "$__conda_setup"
+            else
+                if [ -f "$_conda_prefix/etc/profile.d/conda.sh" ]; then
+                    . "$_conda_prefix/etc/profile.d/conda.sh"
+                else
+                    export PATH="$_conda_prefix/base/bin:$PATH"
+                fi
+            fi
+            unset __conda_setup
+            # <<< conda initialize <<<
+
+            $0 "$@"
+        }
+    fi
+}
+lazyload_conda
 
 # bun completions
 [ -s "/Users/sstanfield/.bun/_bun" ] && source "/Users/sstanfield/.bun/_bun"
@@ -474,3 +517,26 @@ export PATH
 
 # Don't let brew autoupdate
 export HOMEBREW_NO_AUTO_UPDATE=1
+
+#### ------------------------------
+
+#### exa - Color Scheme Definitions
+
+#### ------------------------------
+
+export EXA_COLORS="\
+uu=36:\
+gu=37:\
+sn=32:\
+sb=32:\
+da=34:\
+ur=34:\
+uw=35:\
+ux=36:\
+ue=36:\
+gr=34:\
+gw=35:\
+gx=36:\
+tr=34:\
+tw=35:\
+tx=36:"

@@ -94,6 +94,7 @@ au FileType markdown vmap <Leader><Bslash> :EasyAlign*<Bar><Enter>
 " vim as a markdown editor: https://secluded.site/vim-as-a-markdown-editor
 Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
+
 " plasticboy/vim-markdown 
 let g:vim_markdown_folding_disabled = 1
 let g:vim_markdown_frontmatter = 1
@@ -106,7 +107,6 @@ let g:vim_markdown_frontmatter = 1
 let g:vim_markdown_strikethrough = 1
 let g:vim_markdown_toml_frontmatter = 1
     
-
 Plug 'itchyny/lightline.vim'
 let g:lightline = {'colorscheme': 'dracula'}
 
