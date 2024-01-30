@@ -36,9 +36,20 @@ gnu=(
 )
 
 extras=(
-    bat         dust      fd  glow  hammerspoon hexyl
-    htop        hyperfine lsd procs scrubcsv
-    shellharden tokei     xsv
+    bat
+    dust      
+    fd  
+    glow  
+    hammerspoon 
+    hexyl
+    htop        
+    hyperfine 
+    lsd 
+    procs 
+    scrubcsv
+    shellharden 
+    tokei     
+    xsv
 )
 
 brew install font-meslo-lg-nerd-font
