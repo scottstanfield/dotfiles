@@ -57,6 +57,7 @@ gnu=(
 
 # dust fd glow
 extras=(
+    eza
     bat
     dust
     fd
