@@ -42,8 +42,8 @@ extras=(
 )
 
 brew install font-meslo-lg-nerd-font
-brew install "${gnu[*]}"
-brew install "${extras[*]}"
-brew install "${core[*]}"
+brew install "${gnu[@]}"
+brew install "${extras[@]}"
+brew install "${core[@]}"
 
 softwareupdate --install-rosetta
