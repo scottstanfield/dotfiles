@@ -23,6 +23,8 @@ dev=(
     automake
     cmake
     nvim
+    jq
+    fzf
 )
 
 gnu=(

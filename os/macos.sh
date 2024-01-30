@@ -1,6 +1,4 @@
 #!/usr/bin/env bash
-<<<<<<< HEAD
-=======
 
 # Close any open System Preferences panes, to prevent them from overriding
 # settings we’re about to change
@@ -48,10 +46,8 @@ defaults write com.apple.dock autohide-delay -float 0
 defaults write com.apple.dock autohide-time-modifier -int 0
 killall Dock
 
-=======
 defaults write com.apple.screencapture type jpg
 
->>>>>>> refs/remotes/origin/main
 defaults write com.apple.Dock showhidden -bool TRUE
 
 # dock: fast hide and instant show

@@ -108,6 +108,7 @@ path=(
     /opt/homebrew/Cellar/gnu-sed/**/gnubin
     /opt/homebrew/Cellar/gnu-tar/**/libexec/gnubin
     /opt/homebrew/Cellar/grep/**/gnubin
+    /opt/homebrew/opt/llvm/bin
 
     $HOME/.bun/bin
     $HOME/.pyenv/shims
@@ -181,8 +182,13 @@ fi
 
 ## Aliases
 alias ,="cd .."
-alias @="printenv | sort | grep -i"
-alias @="printenv | sort | grep -i"
+function @() {
+  if [ ! "$#" -gt 0 ]; then
+    printenv | sort | less
+  else
+    printenv | sort | grep -i "$1"
+  fi
+}
 alias cp="cp -a"
 alias dc="docker-compose"
 alias dc='docker-compose'
@@ -411,9 +417,11 @@ export AWS_DEFAULT_PROFILE=dev-additive
 # 
 # 
 # 
+# \uf427
 # 
+#  
 function prompt_my_host_icon() {
-    p10k segment -i '' -f green
+    p10k segment -i '' -f green
 }
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
@@ -496,11 +504,17 @@ export DISPLAY=:0
 # # <<< conda initialize <<<
 
 
-export LDFLAGS="-L/Users/sstanfield/lib/boost -L/opt/quanser/hil_sdk/lib"
-export CPPFLAGS="-I/Users/sstanfield/include/boost/stage/lib -I/opt/quanser/hil_sdk/include"
-
+# Specific for Quanser Qube stuff. Migrate out.
+# export LDFLAGS="-L/Users/sstanfield/lib/boost -L/opt/quanser/hil_sdk/lib"
+# export CPPFLAGS="-I/Users/sstanfield/include/boost/stage/lib -I/opt/quanser/hil_sdk/include"
 # export CPPFLAGS += "-I /opt/quanser/hil_sdk/include"
 # export LDFLAGS += "-L /opt/quanser/hil_sdk/lib"
+#
+
+# LLVM=$(brew --prefix llvm)
+# export LDFLAGS="-L$LLVM/lib"
+# export CPPFLAGS="-I$LLVM/include"
+# export CFLAGS="-I$LLVM/include"
 
 if command -v pyenv 1>/dev/null 2>&1; then
   eval "$(pyenv init -)"
