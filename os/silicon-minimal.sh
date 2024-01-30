@@ -47,7 +47,6 @@ extras=(
     hyperfine 
     lsd 
     procs 
-    scrubcsv
     shellharden 
     tokei     
     xsv
