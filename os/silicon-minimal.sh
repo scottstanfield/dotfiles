@@ -25,30 +25,50 @@ brew install font-meslo-lg-nerd-font
 brew install alacritty
 
 core=(
-    git  neovim openssh ripgrep rsync bash
-    tmux tree   unzip   vim     zsh
+    bash
+    git
+    neovim
+    openssh
+    ripgrep
+    rsync
+    tmux
+    tree
+    unzip
+    vim
+    zsh
 )
 
 gnu=(
-    binutils coreutils diffutils findutils
-    gawk     gnu-tar   gnu-which gnutls
-    grep     gzip      less      make watch wdiff wget
+    binutils
+    coreutils
+    diffutils
+    findutils
+    gawk
+    gnu-tar
+    gnu-which gnutls
+    grep
+    gzip
+    less
+    make
+    watch
+    wdiff
+    wget
 )
 
 # dust fd glow
 extras=(
     bat
-    dust      
-    fd  
-    glow  
-    hammerspoon 
+    dust
+    fd
+    glow
+    hammerspoon
     hexyl
-    htop        
-    hyperfine 
-    lsd 
-    procs 
-    shellharden 
-    tokei     
+    htop
+    hyperfine
+    lsd
+    procs
+    shellharden
+    tokei
     xsv
 )
 
