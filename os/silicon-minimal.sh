@@ -35,6 +35,7 @@ gnu=(
     grep     gzip      less      make watch wdiff wget
 )
 
+# dust fd glow
 extras=(
     bat
     dust      
@@ -52,9 +53,13 @@ extras=(
     xsv
 )
 
-brew install font-meslo-lg-nerd-font
-brew install "${gnu[@]}"
-brew install "${extras[@]}"
-brew install "${core[@]}"
+for p in "${extras[@]}"; do
+    echo installing "$p"
+    brew install "$p"
+done
 
-softwareupdate --install-rosetta
+# brew install font-meslo-lg-nerd-font
+# brew install "${gnu[@]}"
+# brew install "${core[@]}"
+
+# softwareupdate --install-rosetta
