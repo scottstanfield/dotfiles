@@ -52,13 +52,11 @@ extras=(
     xsv
 )
 
-for p in "${extras[@]}"; do
+for p in "${extras[@]}" "${gnu[@]}" "${core[@]}"; do
     echo installing "$p"
     brew install "$p"
 done
 
-# brew install font-meslo-lg-nerd-font
-# brew install "${gnu[@]}"
-# brew install "${core[@]}"
+brew install font-meslo-lg-nerd-font
 
 # softwareupdate --install-rosetta
