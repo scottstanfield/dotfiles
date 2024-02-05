@@ -1,10 +1,3 @@
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
-
 # Scott Stanfield
 # http://git.io/dmz/
 
@@ -23,6 +16,13 @@ fi
 # Profile startup times by adding this to you .zshrc: zmodload zsh/zprof
 # Start a new zsh. Then run and inspect: zprof > startup.txt
 # zmodload zsh/zprof
+
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
 
 
 typeset -g POWERLEVEL9K_INSTANT_PROMPT=off
@@ -43,9 +43,6 @@ export PAGER=less
 
 # brew shellinfo >> ~/.zshrc
 export HOMEBREW_NO_AUTO_UPDATE=1
-export HOMEBREW_PREFIX="/opt/homebrew";
-export HOMEBREW_CELLAR="/opt/homebrew/Cellar";
-export HOMEBREW_REPOSITORY="/opt/homebrew";
 
 HISTFILE=${ZDOTDIR:-$HOME}/.zsh_history
 HISTSIZE=10000
@@ -75,6 +72,9 @@ autoload -Uz edit-command-line
 zle -N edit-command-line
 bindkey '' edit-command-line
 
+# mass mv: zmv -n '(*).(jpg|jpeg)' 'epcot-$1.$2'
+autoload zmv
+
 
 ##
 ## PATH
@@ -99,37 +99,25 @@ typeset -gU path fpath manpath
 
 # remove gnu stuff or **
 # remove .poetry
+
+# Multiple Homebrews on Apple Silicon
+if [[ "$(arch)" == "arm64" ]]; then
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+    #export PATH="/opt/homebrew/opt/python@3.8/bin:$PATH"
+    # export LDFLAGS="-L/opt/homebrew/opt/python@3.8/lib" # For compilers to find python@3.8
+else
+    eval "$(/usr/local/bin/brew shellenv)"
+    #export PATH="/usr/local/opt/python@3.7/bin:$PATH"
+    #export PATH="/usr/local/opt/python@3.9/bin:$PATH"
+    # export LDFLAGS="-L/usr/local/opt/python@3.7/lib" # For compilers to find python@3.7
+fi
+
 setopt nullglob
 path=(
     $HOME/bin
 
-    /opt/homebrew/bin
-    /opt/homebrew/Cellar/coreutils/**/gnubin
-    /opt/homebrew/Cellar/gnu-sed/**/gnubin
-    /opt/homebrew/Cellar/gnu-tar/**/libexec/gnubin
-    /opt/homebrew/Cellar/grep/**/gnubin
-    /opt/homebrew/opt/llvm/bin
-
-    $HOME/.bun/bin
-    $HOME/.pyenv/shims
-    $HOME/.poetry/bin
     $HOME/.cargo/bin
-    $HOME/.local/bin
-    $HOME/.go/bin
-    $HOME/Library/Python/**/bin
-    $HOME/moab/bin
-    /usr/local/go/bin
 
-    /usr/local/opt/grep/libexec/gnubin
-    /usr/local/opt/make/libexec/gnubin
-    /usr/local/opt/findutils/libexec/gnubin
-    /usr/local/opt/gawk/libexec/gnubin
-    /usr/local/opt/gnu-sed/libexec/gnubin
-    /usr/local/opt/gnu-tar/libexec/gnubin
-    /usr/local/opt/coreutils/libexec/gnubin
-
-    /usr/local/bin
-    /usr/local/sbin
     /usr/bin
     /usr/sbin
     /bin
@@ -167,7 +155,7 @@ setopt NO_nullglob
 ## Tips: https://gist.github.com/syui/11322769c45f42fad962
 
 # GNU and BSD (macOS) ls flags aren't compatible
-ls --version &>/dev/null
+gls --version &>/dev/null
 if [ $? -eq 0 ]; then
     lsflags="--color --group-directories-first -F"
 
@@ -178,6 +166,41 @@ else
     lsflags="-GF"
     export CLICOLOR=1
 fi
+
+exaflags="--color=always --classify --color-scale --bytes --group-directories-first"
+exaflags="--classify --color-scale --bytes --group-directories-first"
+
+# the `ls` replacement exa no longer maintained: it's now "eza"
+if in_path "eza" ; then
+    function ls() { eza --classify --color-scale --bytes --group-directories-first $@ }
+    #alias ls="eza ${exaflags} "$*" "
+    alias ll="eza ${exaflags} --long "
+    alias lll="eza ${exaflags} --long --git"
+    alias lld="eza ${exaflags} --all --long --sort date"
+    alias lle="eza ${exaflags} --all --long --sort extension"
+    alias lls="eza ${exaflags} --all --long --sort size"
+    alias lla="eza ${exaflags} --all --long --sort size"
+fi
+
+#### exa - Color Scheme Definitions
+
+export EXA_COLORS="\
+uu=36:\
+gu=37:\
+sn=32:\
+sb=32:\
+da=34:\
+ur=34:\
+uw=35:\
+ux=36:\
+ue=36:\
+gr=34:\
+gw=35:\
+gx=36:\
+tr=34:\
+tw=35:\
+tx=36:"
+
 
 
 ## Aliases
@@ -200,7 +223,7 @@ alias gs="git status 2>/dev/null"
 alias h="history 1"
 alias hg="history 1 | grep -i"
 alias la="ls ${lsflags} -la"
-alias ll="ls ${lsflags} -l --sort=extension"
+alias ll="gls ${lsflags} -l --sort=extension"
 alias lla="ls ${lsflags} -la"
 alias lld="ls ${lsflags} -l --sort=time --reverse --time-style=long-iso"
 alias lln="ls ${lsflags} -l"
@@ -219,7 +242,6 @@ alias r='R --no-save --no-restore-data --quiet'
 alias rg='rg --pretty --smart-case --fixed-strings'
 alias rgc='rg --no-line-number --color never '
 alias ssh="TERM=xterm-256color ssh"
-alias t='tmux -2 new-session -A -s "moab"'
 
 alias d='dirs -v'
 for index ({1..9}) alias "$index"="cd +${index}"; unset index
@@ -389,40 +411,30 @@ FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}path-to-dir]='fg=cyan,underline'
 FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}comment]='fg=gray'
 
 
-
-# 
-function prompt_my_host_icon() {
-    p10k segment -i '' -f blue
-}
-
-exaflags="--color=always --classify --color-scale --bytes --group-directories-first"
-exaflags="--classify --color-scale --bytes --group-directories-first"
-
-# the `ls` replacement exa no longer maintained: it's now "eza"
-if in_path "eza" ; then
-    function ls() { eza --classify --color-scale --bytes --group-directories-first $@ }
-    #alias ls="eza ${exaflags} "$*" "
-    alias ll="eza ${exaflags} --long "
-    alias lll="eza ${exaflags} --long --git"
-    alias lld="eza ${exaflags} --all --long --sort date"
-    alias lle="eza ${exaflags} --all --long --sort extension"
-    alias lls="eza ${exaflags} --all --long --sort size"
-    alias lla="eza ${exaflags} --all --long --sort size"
+if [[ "$(arch)" == "arm64" ]]; then
+	ICON=''
+	alias t='tmux -2 new-session -A -s "arm64"'
+else
+	ICON=''
+	alias t='tmux -2 new-session -A -s "x86"'
 fi
 
-export BAT_THEME="gruvbox-dark"
-export AWS_DEFAULT_PROFILE=dev-additive
 
-# 
+## 
 # 
-# 
+#  alien
 # 
 # \uf427
 # 
 #  
+# 
 function prompt_my_host_icon() {
-    p10k segment -i '' -f green
+	p10k segment -i $ICON -f blue
 }
+
+
+export BAT_THEME="gruvbox-dark"
+export AWS_DEFAULT_PROFILE=dev-additive
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 
@@ -532,25 +544,6 @@ export PATH
 # Don't let brew autoupdate
 export HOMEBREW_NO_AUTO_UPDATE=1
 
-#### ------------------------------
 
-#### exa - Color Scheme Definitions
+alias brow='arch --x86_64 /usr/local/Homebrew/bin/brew'
 
-#### ------------------------------
-
-export EXA_COLORS="\
-uu=36:\
-gu=37:\
-sn=32:\
-sb=32:\
-da=34:\
-ur=34:\
-uw=35:\
-ux=36:\
-ue=36:\
-gr=34:\
-gw=35:\
-gx=36:\
-tr=34:\
-tw=35:\
-tx=36:"
