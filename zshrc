@@ -1,4 +1,4 @@
-# Scott Stanfield
+#/ Scott Stanfield
 # http://git.io/dmz/
 
 # Timing startup
@@ -44,12 +44,23 @@ export PAGER=less
 # brew shellinfo >> ~/.zshrc
 export HOMEBREW_NO_AUTO_UPDATE=1
 
-HISTFILE=${ZDOTDIR:-$HOME}/.zsh_history
-HISTSIZE=10000
-SAVEHIST=10000
+#########
+# HISTORY
+#########
 
-setopt append_history inc_append_history  share_history
-setopt histfcntllock  histignorealldups   histreduceblanks histsavenodups
+HISTFILE=${ZDOTDIR:-$HOME}/.zsh_history
+HISTSIZE=50000
+SAVEHIST=50000
+setopt EXTENDED_HISTORY         # Record timestamp in history
+setopt HIST_EXPIRE_DUPS_FIRST   # Expire duplicate entries first when trimming history
+setopt HIST_FIND_NO_DUPS        # Do not display a line previously found
+setopt HIST_IGNORE_ALL_DUPS     # Delete old recorded entry if new entry is a duplicate
+setopt HIST_IGNORE_DUPS         # Dont record an entry that was just recorded again
+setopt HIST_IGNORE_SPACE        # Dont record an entry starting with a space
+setopt HIST_SAVE_NO_DUPS        # Dont write duplicate entries in the history file
+setopt INC_APPEND_HISTORY       # Immediately append to history file
+setopt SHARE_HISTORY            # Share history between all sessions:
+
 setopt autopushd      chaselinks          pushdignoredups  pushdsilent
 setopt NO_caseglob    extendedglob        globdots         globstarshort nullglob numericglobsort
 setopt NO_nullglob
@@ -98,7 +109,6 @@ autoload zmv
 typeset -gU path fpath manpath
 
 # remove gnu stuff or **
-# remove .poetry
 
 # Multiple Homebrews on Apple Silicon
 if [[ "$(arch)" == "arm64" ]]; then
@@ -116,6 +126,13 @@ setopt nullglob
 path=(
     $HOME/bin
 
+    /opt/homebrew/bin
+    /opt/homebrew/Cellar/coreutils/**/gnubin
+    /opt/homebrew/Cellar/gnu-sed/**/gnubin
+    /opt/homebrew/Cellar/gnu-tar/**/libexec/gnubin
+    /opt/homebrew/Cellar/grep/**/gnubin
+
+    $HOME/.pyenv/shims
     $HOME/.cargo/bin
 
     # $(brew --prefix llvm)/bin
@@ -243,7 +260,8 @@ alias pd='pushd'  # symmetry with cd
 alias r='R --no-save --no-restore-data --quiet'
 alias rg='rg --pretty --smart-case --fixed-strings'
 alias rgc='rg --no-line-number --color never '
-alias ssh="TERM=xterm-256color ssh"
+alias ssh="TERM=xterm-256color ssh -Y"
+alias t='tmux -2 new-session -A -s "moab"'
 
 alias d='dirs -v'
 for index ({1..9}) alias "$index"="cd +${index}"; unset index
@@ -548,4 +566,17 @@ export HOMEBREW_NO_AUTO_UPDATE=1
 
 
 alias brow='arch --x86_64 /usr/local/Homebrew/bin/brew'
+
+light_color='base16-atelier-sulphurpool-light.yml'
+dark_color='base16-atelier-sulphurpool.yml'
+
+# pip3 install --user alacritty-colorscheme
+# git clone https://github.com/aaron-williamson/base16-alacritty $HOME/.config
+colorflags="-c ~/.alacritty.yml -C ~/.config/base16/colors"
+alias day="alacritty-colorscheme ${colorflags} -V apply $light_color"
+alias night="alacritty-colorscheme ${colorflags} -V apply $dark_color"
+alias toggle="alacritty-colorscheme ${colorflags} -V toggle $light_color $dark_color"
+
+function idot()    { dot -Tsvg -Gsize=${1:-9},${2:-16}\! | rsvg-convert | ~/bin/imgcat }
+function iplot()   { awk -f ~/bin/plot.awk | rsvg-convert -z ${1:-1} | ~/bin/imgcat }
 
