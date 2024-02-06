@@ -118,6 +118,8 @@ path=(
 
     $HOME/.cargo/bin
 
+    # $(brew --prefix llvm)/bin
+
     /usr/bin
     /usr/sbin
     /bin
