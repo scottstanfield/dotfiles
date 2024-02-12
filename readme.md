@@ -2,22 +2,17 @@
 
 [Dotfile Creedo](https://en.wikipedia.org/wiki/Rifleman%27s_Creed)
 
+Fork this to your github repo, then clone down to your machine:
 
 ```
 cd ~
-
 git clone https://github.com/scottstanfield/dmz dotfiles
-```
-If you want everything:
-
-```
-cd dotfiles
-./install.sh
+dotfiles/install.sh
 ```
 
-Otherwise cherry-pick a few like:
+Then if you want my changes:
+
 ```
-cp dotfiles/minimal/zshrc ~/.zshrc
+git fetch upstream && git merge upstream/main && git push
 ```
 
-Requires `curl`, `neovim`, `zsh` and `git`
