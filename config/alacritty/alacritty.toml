@@ -1,4 +1,4 @@
-import = ["dracula.yml"]
+import = ["~/.config/alacritty/dracula.toml"]
 live_config_reload = true
 
 [env]

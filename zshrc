@@ -20,29 +20,29 @@
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
+typeset -g POWERLEVEL9K_INSTANT_PROMPT=off
+
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
+in_path()  { builtin whence -p "$1" &> /dev/null }
 
-typeset -g POWERLEVEL9K_INSTANT_PROMPT=off
-
-is_linux() { [[ $SHELL_PLATFORM == 'linux' || $SHELL_PLATFORM == 'bsd' ]]; }
-is_osx()   { [[ $SHELL_PLATFORM == 'osx' ]]; }
-in_path()  { command "$1" >/dev/null 2>/dev/null }
-
-export ZSH=$HOME/dmz
 export BLOCK_SIZE="'1"          # Add commas to file sizes
 export CLICOLOR=1
-export DOCKER_BUILDKIT=1
 export EDITOR=vim
 export VISUAL=vim
-export GOPATH=$HOME/.go
 export LANG="en_US.UTF-8"
 export PAGER=less
+UNAME=$(uname)
 
-# brew shellinfo >> ~/.zshrc
-export HOMEBREW_NO_AUTO_UPDATE=1
+if [[ $UNAME == "Darwin" ]]; then
+    export HOMEBREW_NO_AUTO_UPDATE=1
+fi
+
+if [[ $UNAME  == "Linux" ]]; then
+    echo "linux"
+fi
 
 #########
 # HISTORY
@@ -61,12 +61,22 @@ setopt HIST_SAVE_NO_DUPS        # Dont write duplicate entries in the history fi
 setopt INC_APPEND_HISTORY       # Immediately append to history file
 setopt SHARE_HISTORY            # Share history between all sessions:
 
-setopt autopushd      chaselinks          pushdignoredups  pushdsilent
-setopt NO_caseglob    extendedglob        globdots         globstarshort nullglob numericglobsort
+setopt NO_caseglob    
+setopt NO_flowcontrol 
 setopt NO_nullglob
-setopt NO_flowcontrol interactivecomments rcquotes
 setopt autocd                   # cd to a folder just by typing it's name
+setopt autopushd      
+setopt chaselinks          
+setopt extendedglob        
+setopt globdots         
+setopt globstarshort 
 setopt interactive_comments     # allow # comments in shell; good for copy/paste
+setopt interactivecomments 
+setopt nullglob 
+setopt numericglobsort
+setopt pushdignoredups  
+setopt pushdsilent
+setopt rcquotes
 
 ZLE_REMOVE_SUFFIX_CHARS=$' \t\n;&' # These "eat" the auto prior space after a tab complete
 
@@ -86,7 +96,6 @@ bindkey '' edit-command-line
 # mass mv: zmv -n '(*).(jpg|jpeg)' 'epcot-$1.$2'
 autoload zmv
 
-
 ##
 ## PATH
 ## macOS assumes GNU core utils installed: 
@@ -94,11 +103,13 @@ autoload zmv
 ##
 ## To insert GNU binaries before macOS BSD versions, run this to import matching folders:
 ## :r! find /usr/local/opt -type d -follow -name gnubin -print
+## :r! find /opt/homebrew/opt -type d -follow -name gnubin -print
+#
 ## It's slow: just add them all, and remove ones that don't match at end
 ## Same with gnuman
 ## :r! find /usr/local/opt -type d -follow -name gnuman -print
+## :r! find /opt/homebrew/opt -type d -follow -name gnuman -print
 ##
-## For zsh (N-/) ==> https://stackoverflow.com/a/9352979
 ## Note: I had /Library/Apple/usr/bin because of /etc/path.d/100-rvictl (REMOVED)
 ##
 ## Dangerous to put /usr/local/bin in front of /usr/bin, but yolo 
@@ -108,32 +119,28 @@ autoload zmv
 # Keep duplicates (Unique) out of these paths
 typeset -gU path fpath manpath
 
-# remove gnu stuff or **
-
 # Multiple Homebrews on Apple Silicon
 if [[ "$(arch)" == "arm64" ]]; then
     eval "$(/opt/homebrew/bin/brew shellenv)"
-    #export PATH="/opt/homebrew/opt/python@3.8/bin:$PATH"
-    # export LDFLAGS="-L/opt/homebrew/opt/python@3.8/lib" # For compilers to find python@3.8
 else
     eval "$(/usr/local/bin/brew shellenv)"
-    #export PATH="/usr/local/opt/python@3.7/bin:$PATH"
-    #export PATH="/usr/local/opt/python@3.9/bin:$PATH"
-    # export LDFLAGS="-L/usr/local/opt/python@3.7/lib" # For compilers to find python@3.7
 fi
 
 setopt nullglob
+
 path=(
     $HOME/bin
 
     /opt/homebrew/bin
-    /opt/homebrew/Cellar/coreutils/**/gnubin
-    /opt/homebrew/Cellar/gnu-sed/**/gnubin
-    /opt/homebrew/Cellar/gnu-tar/**/libexec/gnubin
-    /opt/homebrew/Cellar/grep/**/gnubin
 
-    $HOME/.pyenv/shims
-    $HOME/.cargo/bin
+    /opt/homebrew/opt/libtool/libexec/gnubin
+    /opt/homebrew/opt/coreutils/libexec/gnubin
+    /opt/homebrew/opt/gnu-tar/libexec/gnubin
+    /opt/homebrew/opt/grep/libexec/gnubin
+    /opt/homebrew/opt/gawk/libexec/gnubin
+    /opt/homebrew/opt/make/libexec/gnubin
+    /opt/homebrew/opt/findutils/libexec/gnubin
+    /opt/homebrew/opt/gnu-which/libexec/gnubin
 
     # $(brew --prefix llvm)/bin
 
@@ -142,24 +149,26 @@ path=(
     /bin
     /sbin
 
-    # Remove this line if you're on WSL2 for Windows
-    # This is where the host paths get pulled in
     $path[@]
-
     .
+
+    $HOME/.bun/bin
+    $HOME/.cargo/bin
 )
 
-# Now, remove paths that don't exist...
+# Now, remove paths that don't exist https://stackoverflow.com/a/9352979
 path=($^path(N))
 
+## :r! find /opt/homebrew/opt -type d -follow -name gnuman -print
 manpath=(
-    /usr/local/opt/findutils/libexec/gnuman
-    /usr/local/opt/gnu-sed/libexec/gnuman
-    /usr/local/opt/make/libexec/gnuman
-    /usr/local/opt/gawk/libexec/gnuman
-    /usr/local/opt/grep/libexec/gnuman
-    /usr/local/opt/gnu-tar/libexec/gnuman
-    /usr/local/opt/coreutils/libexec/gnuman
+    /opt/homebrew/opt/libtool/libexec/gnuman
+    /opt/homebrew/opt/coreutils/libexec/gnuman
+    /opt/homebrew/opt/gnu-tar/libexec/gnuman
+    /opt/homebrew/opt/grep/libexec/gnuman
+    /opt/homebrew/opt/gawk/libexec/gnuman
+    /opt/homebrew/opt/make/libexec/gnuman
+    /opt/homebrew/opt/findutils/libexec/gnuman
+    /opt/homebrew/opt/gnu-which/libexec/gnuman
 
     /usr/local/share/man
     /usr/share/man
@@ -186,22 +195,27 @@ else
     export CLICOLOR=1
 fi
 
-exaflags="--color=always --classify --color-scale --bytes --group-directories-first"
-exaflags="--classify --color-scale --bytes --group-directories-first"
+alias la="ls ${lsflags} -la"
+alias ll="gls ${lsflags} -l --sort=extension"
+alias lla="ls ${lsflags} -la"
+alias lld="ls ${lsflags} -l --sort=time --reverse --time-style=long-iso"
+alias lln="ls ${lsflags} -l"
+alias lls="ls ${lsflags} -l --sort=size --reverse"
+alias llt="ls ${lsflags} -l --sort=time --reverse --time-style=long-iso"
+
+ezaflags="--color=always --classify --color-scale --bytes --group-directories-first"
+ezaflags="--classify --color-scale --bytes --group-directories-first"
 
 # the `ls` replacement exa no longer maintained: it's now "eza"
 if in_path "eza" ; then
-    function ls() { eza --classify --color-scale --bytes --group-directories-first $@ }
-    #alias ls="eza ${exaflags} "$*" "
-    alias ll="eza ${exaflags} --long "
-    alias lll="eza ${exaflags} --long --git"
-    alias lld="eza ${exaflags} --all --long --sort date"
-    alias lle="eza ${exaflags} --all --long --sort extension"
-    alias lls="eza ${exaflags} --all --long --sort size"
-    alias lla="eza ${exaflags} --all --long --sort size"
+    function els() { eza --classify --color-scale --bytes --group-directories-first $@ }
+    alias ls="eza ${ezaflags} "$*" "
+    alias ell="eza ${ezaflags} --long --git"
+    alias eld="eza ${ezaflags} --all --long --sort date"
+    alias elt="eza ${ezaflags} --all --long --sort date"
+    alias ele="eza ${ezaflags} --all --long --sort extension"
+    alias elss="eza ${ezaflags} --all --long --sort size"
 fi
-
-#### exa - Color Scheme Definitions
 
 export EXA_COLORS="\
 uu=36:\
@@ -241,13 +255,6 @@ alias grep="grep --color=auto"
 alias gs="git status 2>/dev/null"
 alias h="history 1"
 alias hg="history 1 | grep -i"
-alias la="ls ${lsflags} -la"
-alias ll="gls ${lsflags} -l --sort=extension"
-alias lla="ls ${lsflags} -la"
-alias lld="ls ${lsflags} -l --sort=time --reverse --time-style=long-iso"
-alias lln="ls ${lsflags} -l"
-alias lls="ls ${lsflags} -l --sort=size --reverse"
-alias llt="ls ${lsflags} -l --sort=time --reverse --time-style=long-iso"
 alias logs="docker logs control -f"
 # alias ls="ls ${lsflags}"
 # alias lt="ls ${lsflags} -l --sort=time --reverse --time-style=long-iso"
@@ -285,18 +292,11 @@ function take()    { mkdir -p $1 && cd $1 }
 function cols()    { head -1 $1 | tr , \\n | cat -n | column }		# show CSV header
 function zcolors() { for code in {000..255}; do print -P -- "$code: %F{$code}Test%f"; done | column}
 
-function h() {
-  print -z $( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) | fzf +s --tac --height "50%" | sed -E 's/ *[0-9]*\*? *//' | sed -E 's/\\/\\\\/g')
-}
-
 # Automatically ls after you cd
 function chpwd() {
     emulate -L zsh
     ls -F
 }
-
-# Simple default prompt
-PROMPT='%n@%m %3~%(!.#.$)%(?.. [%?]) '
 
 ###################################################
 
@@ -331,10 +331,6 @@ fi
 
 # Put your machine-specific settings here
 [[ -f $HOME/.machine ]] && source $HOME/.machine
-
-
-export DOCKER_BUILDKIT=1
-export HOMEBREW_NO_AUTO_UPDATE=1
 
 zstyle ':completion:*' list-suffixes zstyle ':completion:*' expand prefix suffix 
 
@@ -464,15 +460,6 @@ export AWS_DEFAULT_PROFILE=dev-additive
 typeset -g POWERLEVEL9K_PROMPT_CHAR_{OK,ERROR}_VIINS_CONTENT_EXPANSION='»'
 
 
-# True if $1 is an executable in $PATH Works in both {ba,z}sh
-function is_bin_in_path {
-  if [[ -n $ZSH_VERSION ]]; then
-    builtin whence -p "$1" &> /dev/null
-  else  # bash:
-    builtin type -P "$1" &> /dev/null
-  fi
-}
-
 ##
 ## Lazy load Anaconda to save startup time
 ## 
@@ -513,7 +500,6 @@ lazyload_conda
 
 # bun
 export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
 
 # my C flags
 #export CFLAGS='-Wall -O3 -include stdio.h --std=c17'
@@ -535,35 +521,10 @@ export DISPLAY=:0
 # unset __conda_setup
 # # <<< conda initialize <<<
 
-
-# Specific for Quanser Qube stuff. Migrate out.
-# export LDFLAGS="-L/Users/sstanfield/lib/boost -L/opt/quanser/hil_sdk/lib"
-# export CPPFLAGS="-I/Users/sstanfield/include/boost/stage/lib -I/opt/quanser/hil_sdk/include"
-# export CPPFLAGS += "-I /opt/quanser/hil_sdk/include"
-# export LDFLAGS += "-L /opt/quanser/hil_sdk/lib"
-#
-
 # LLVM=$(brew --prefix llvm)
 # export LDFLAGS="-L$LLVM/lib"
 # export CPPFLAGS="-I$LLVM/include"
 # export CFLAGS="-I$LLVM/include"
-
-if command -v pyenv 1>/dev/null 2>&1; then
-  eval "$(pyenv init -)"
-fi
-
-# >>> juliaup initialize >>>
-
-# !! Contents within this block are managed by juliaup !!
-
-path=('/Users/sstanfield/.juliaup/bin' $path)
-export PATH
-
-# <<< juliaup initialize <<<
-
-# Don't let brew autoupdate
-export HOMEBREW_NO_AUTO_UPDATE=1
-
 
 alias brow='arch --x86_64 /usr/local/Homebrew/bin/brew'
 

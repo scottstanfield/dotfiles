@@ -17,60 +17,60 @@ set -o pipefail # Catch the error in case mysqldump fails (but gzip succeeds) in
 require() { hash "$@" || exit 127; }
 println() { printf '%s\n' "$*"; }
 die()     { ret=$?; printf "%s\n" "$@" >&2; exit "$ret"; }
+msg()     { echo >&2 -e "${1-}"; }
 
-
-require curl
-require git
+require curl require git
 
 # Change directories to where this script is located
 #cd "$(dirname "$(realpath "${BASH_SOURCE[0]}")")"
-canonical=$(cd -P -- "$(dirname -- "$0")" && printf '%s\n' "$(pwd -P)")
+canonical=$(cd -P -- "$(dirname -- "$0")" && printf '%s\n' "$(pwd -P)") 
 cd $canonical
 
 
-
-##
-## Start here
-##
-
-# Create temp folder for important files to backup
+# Create temp folder for all the files being backed up
 B=$(mktemp -d /tmp/dotfiles.XXXX)
-println "Backing up important files to $B"
+println "Backing up your config files to $B"
 
 link() {
-  if [[ -e $1 ]]; then
-	println "linking $1 -> $2 with backup to $B"
-	cp -pL "$2" "$B" 2>/dev/null || true						# (p)reserve attributes and deference symbolic links
-	ln -sf "$PWD/$1" "$2"
-  fi
+    if [[ -e $1 ]]; then
+        println "$1 -> $2"
+        cp -pL "$2" "$B" 2>/dev/null || true		# (p)reserve attributes and deference symbolic links
+        mkdir -p $(dirname $2)                      # ensure target file directory exists
+        ln -sf "$PWD/$1" "$2"                       # link target
+    fi
 }
 
-# Setup zshrc
 
-# Setup neovim
-mkdir -p "$HOME"/.config/nvim
-mkdir -p "$HOME"/.config/alacritty
-
-link config/nvim/init.vim "$HOME"/.config/nvim/init.vim
-link zshrc                "$HOME"/.zshrc
-link zlogin               "$HOME"/.zlogin
-link vimrc                "$HOME"/.vimrc						# minimal vimrc for VIM v8
-link tmux.conf            "$HOME"/.tmux.conf
-link bashrc               "$HOME"/.bashrc
-link bash_profile         "$HOME"/.bash_profile
-link inputrc              "$HOME"/.inputrc
-link config/alacritty/alacritty.toml        "$HOME"/.config/alacritty/alacritty.toml
-link config/alacritty/dracula.toml      "$HOME"/.config/alacritty/dracula.toml
-link p10k.zsh             "$HOME"/.p10k.zsh
-link gitconfig            "$HOME"/.gitconfig
-link gitignore            "$HOME"/.gitignore
+link zshrc                           ~/.zshrc
+link zlogin                          ~/.zlogin
+link vimrc                           ~/.vimrc						# minimal vimrc for VIM v8
+link tmux.conf                       ~/.tmux.conf
+link bashrc                          ~/.bashrc
+link bash_profile                    ~/.bash_profile
+link inputrc                         ~/.inputrc
+link p10k.zsh                        ~/.p10k.zsh
+link gitconfig                       ~/.gitconfig
+link gitignore                       ~/.gitignore
+link config/nvim/init.vim            ~/.config/nvim/init.vim
+link config/alacritty/alacritty.toml ~/.config/alacritty/alacritty.toml
+link config/alacritty/dracula.toml   ~/.config/alacritty/dracula.toml
 
 # This is the stupidest name for an app yet. And it should be in .config/.hammerspoon
-mkdir -p "$HOME"/.hammerspoon
-link init.lua "$HOME"/.hammerspoon
+if [[ $(uname) == "Darwin" ]]; then
+    link init.lua                    ~/.hammerspoon/init.lua
+fi
 
 # put your [user] settings here
-touch "$HOME"/.gitconfig.local			
+if [[ ! -e ~/.gitconfig.local ]]; then
+    cat > ~/.gitconfig.local << EOF
+; vim: ft=gitconfig
+[user]
+    email=scottstanfield@gmail.com
+    name=Scott Stanfield
+EOF
+    echo "Modify your ~/.gitconfig.local to fit your username and email for git"
+    cat ~/.gitconfig.local
+fi
 
 # fixing potential insecure group writable folders
 # compaudit | xargs chmod g-w
@@ -83,10 +83,6 @@ touch "$HOME"/.gitconfig.local
 # tic -x termcap/tmux-256color.terminfo || true
 # tic -x termcap/xterm-256color-italic.terminfo || true
 
-# Setup empty .ssh folder in case one doesn't exist
-umask 077 
-mkdir -p $HOME/.ssh
-
 # Install neovim plugins
 # println "Installing vim plugins..."
 # nvim +PlugInstall +qall
@@ -98,6 +94,3 @@ println "Backed up existing files to $B"
 ls $B
 
 exit 0
-
-# Do this for alacritty
-# npx alacritty-themes Dracula
