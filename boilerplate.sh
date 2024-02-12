@@ -1,17 +1,19 @@
 #!/usr/bin/env bash
 # vim:filetype=sh:
 
-##
-## Boilerplate
-## 
+# idempotent bash: https://arslan.io/2019/07/03/how-to-write-idempotent-bash-scripts/
+# https://github.com/anordal/shellharden/blob/master/how_to_do_things_safely_in_bash.md
+set -o errexit  # Exit on error. Append "|| true" if you expect an error.
+set -o errtrace # Exit on error inside any functions or subshells.
+set -o nounset  # Do not allow use of undefined vars. Use ${VAR:-} to use an undefined VAR
+set -o pipefail # Catch the error in case mysqldump fails (but gzip succeeds) in `mysqldump |gzip`
 
-set -Eeuo pipefail
 shopt -s extdebug
 trap cleanup SIGINT SIGTERM ERR EXIT
 
 println() { local IFS=" "; printf '%s\n' "$*"; }
 require() { hash "$@" 2>&- || exit 127; }
-my_die()     { local ret=$?; printf "%s\n" "$@" >&2; exit "$ret"; }
+my_die()  { local ret=$?; printf "%s\n" "$@" >&2; exit "$ret"; }
 msg()     { echo >&2 -e "${1-}"; }
 
 die() {
