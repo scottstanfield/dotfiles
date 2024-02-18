@@ -267,7 +267,7 @@ alias pd='pushd'  # symmetry with cd
 alias r='R --no-save --no-restore-data --quiet'
 alias rg='rg --pretty --smart-case --fixed-strings'
 alias rgc='rg --no-line-number --color never '
-alias ssh="TERM=xterm-256color ssh -Y"
+alias ssh="TERM=xterm-256color ssh"
 alias t='tmux -2 new-session -A -s "moab"'
 
 alias d='dirs -v'
