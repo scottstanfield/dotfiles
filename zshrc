@@ -129,18 +129,8 @@ fi
 setopt nullglob
 
 path=(
+    .
     $HOME/bin
-
-    /opt/homebrew/bin
-
-    /opt/homebrew/opt/libtool/libexec/gnubin
-    /opt/homebrew/opt/coreutils/libexec/gnubin
-    /opt/homebrew/opt/gnu-tar/libexec/gnubin
-    /opt/homebrew/opt/grep/libexec/gnubin
-    /opt/homebrew/opt/gawk/libexec/gnubin
-    /opt/homebrew/opt/make/libexec/gnubin
-    /opt/homebrew/opt/findutils/libexec/gnubin
-    /opt/homebrew/opt/gnu-which/libexec/gnubin
 
     # $(brew --prefix llvm)/bin
 
@@ -150,7 +140,6 @@ path=(
     /sbin
 
     $path[@]
-    .
 
     $HOME/.bun/bin
     $HOME/.cargo/bin
@@ -234,8 +223,6 @@ tr=34:\
 tw=35:\
 tx=36:"
 
-
-
 ## Aliases
 alias ,="cd .."
 function @() {
@@ -256,9 +243,6 @@ alias gs="git status 2>/dev/null"
 alias h="history 1"
 alias hg="history 1 | grep -i"
 alias logs="docker logs control -f"
-# alias ls="ls ${lsflags}"
-# alias lt="ls ${lsflags} -l --sort=time --reverse --time-style=long-iso"
-# alias lx="ls ${lsflags} -Xl"
 alias m="less"
 alias b="bat --plain"
 alias p=python3
@@ -267,7 +251,7 @@ alias pd='pushd'  # symmetry with cd
 alias r='R --no-save --no-restore-data --quiet'
 alias rg='rg --pretty --smart-case --fixed-strings'
 alias rgc='rg --no-line-number --color never '
-alias ssh="TERM=xterm-256color ssh -Y"
+alias ssh="TERM=xterm-256color ssh"
 alias t='tmux -2 new-session -A -s "moab"'
 
 alias d='dirs -v'
@@ -357,6 +341,7 @@ autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 # }}}
 
+export NVM_AUTO_USE=false
 export NVM_LAZY_LOAD=true
 zinit light lukechilds/zsh-nvm
 
@@ -464,37 +449,6 @@ typeset -g POWERLEVEL9K_PROMPT_CHAR_{OK,ERROR}_VIINS_CONTENT_EXPANSION='»'
 ## Lazy load Anaconda to save startup time
 ## 
 
-function lazyload_conda {
-    if whence -p conda &> /dev/null; then
-        # Placeholder 'conda' shell function
-        conda() {
-            # Remove this function, subsequent calls will execute 'conda' directly
-            unfunction "$0"
-
-            # Follow softlink, then up two folders for typical location of anaconda
-            _conda_prefix=dirname $(dirname $(readlink -f $(whence -p conda)))
-            
-            ## >>> conda initialize >>>
-            # !! Contents within this block are managed by 'conda init' !!
-            __conda_setup="$("$_conda_prefix/bin/conda" 'shell.zsh' 'hook' 2> /dev/null)"
-            if [ $? -eq 0 ]; then
-                eval "$__conda_setup"
-            else
-                if [ -f "$_conda_prefix/etc/profile.d/conda.sh" ]; then
-                    . "$_conda_prefix/etc/profile.d/conda.sh"
-                else
-                    export PATH="$_conda_prefix/base/bin:$PATH"
-                fi
-            fi
-            unset __conda_setup
-            # <<< conda initialize <<<
-
-            $0 "$@"
-        }
-    fi
-}
-lazyload_conda
-
 # bun completions
 [ -s "/Users/sstanfield/.bun/_bun" ] && source "/Users/sstanfield/.bun/_bun"
 
@@ -506,20 +460,6 @@ export BUN_INSTALL="$HOME/.bun"
 alias goc="cc -xc - $CFLAGS"
 export DISPLAY=:0
 
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-# __conda_setup="$('/opt/homebrew/Caskroom/miniforge/base/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-# if [ $? -eq 0 ]; then
-#     eval "$__conda_setup"
-# else
-#     if [ -f "/opt/homebrew/Caskroom/miniforge/base/etc/profile.d/conda.sh" ]; then
-#         . "/opt/homebrew/Caskroom/miniforge/base/etc/profile.d/conda.sh"
-#     else
-#         export PATH="/opt/homebrew/Caskroom/miniforge/base/bin:$PATH"
-#     fi
-# fi
-# unset __conda_setup
-# # <<< conda initialize <<<
 
 # LLVM=$(brew --prefix llvm)
 # export LDFLAGS="-L$LLVM/lib"
