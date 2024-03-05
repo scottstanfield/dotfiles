@@ -19,7 +19,7 @@ end)
 
 -- numpad --> pcalc
 
-hs.hotkey.bind({}, 'F12', function()
+hs.hotkey.bind({}, 'F16', function()
   local app = hs.application.get('pcalc')
   if (app ~= nil and app:isFrontmost()) then
     app:hide()
