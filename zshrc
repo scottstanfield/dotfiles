@@ -12,10 +12,18 @@
 # Benchmark iMacPro 2019
 #   Time (mean ± σ):      92.9 ms ±   0.9 ms    [User: 51.0 ms, System: 38.4 ms]
 #   Range (min … max):    91.7 ms …  95.5 ms    31 runs
+#
+# Benchmark relativity macbook M2 air
+#   Benchmark 1: zsh -i  -c "exit"
+#  Time (mean ± σ):     340.2 ms ± 214.2 ms    [User: 97.0 ms, System: 77.0 ms]
+#  Range (min … max):   211.2 ms … 761.1 ms    12 runs
+
 
 # Profile .zshrc startup times by uncommenting this line:
 # zmodload zsh/zprof
 # Then start a new zsh. Then run and inspect: zprof > startup.txt
+# Profile startup times by adding this to you .zshrc: zmodload zsh/zprof
+# Start a new zsh. Then run and inspect: zprof > startup.txt
 
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
@@ -131,12 +139,13 @@ setopt nullglob
 path=(
     $HOME/bin
 
+    # $(brew --prefix llvm)/bin
+    $path[@]
+
     /usr/bin
     /usr/sbin
     /bin
     /sbin
-
-    $path[@]
 
     .
 
@@ -197,6 +206,7 @@ ezaflags="--classify --color-scale --bytes --group-directories-first"
 if in_path "eza" ; then
     function els() { eza --classify --color-scale --bytes --group-directories-first $@ }
     alias ls="eza ${ezaflags} "$*" "
+    alias ll="eza ${ezaflags} -l "$*" "
     alias ell="eza ${ezaflags} --long --git"
     alias eld="eza ${ezaflags} --all --long --sort date"
     alias elt="eza ${ezaflags} --all --long --sort date"
@@ -334,9 +344,9 @@ autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 # }}}
 
-export NVM_AUTO_USE=false
-export NVM_LAZY_LOAD=true
-zinit light lukechilds/zsh-nvm
+# export NVM_AUTO_USE=false
+# export NVM_LAZY_LOAD=true
+# zinit light lukechilds/zsh-nvm
 
 # | completions | # {{{
 zinit ice wait silent blockf; 

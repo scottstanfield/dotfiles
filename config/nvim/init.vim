@@ -186,7 +186,7 @@ nmap <leader>tm :silent Goyo<CR>
 " jalvesaq/Nvim-r {{{
 " rlang
     let R_args = ['--no-save', '--quiet']
-    " let R_assign = 0
+    let R_assign = 0
     " let R_tmpdir = '~$USER/R/tmp'               " TODO: consider removing this
     " let R_source_args = 'print.eval=F'
     " let R_nvimpager = 'no'
@@ -348,6 +348,9 @@ ab [bar] ―
 ab [left] ←
 ab [right] →
 ab [pi] π
+ab [PI] Π
+ab [Pi] Π
+ab [rho] ρ
 ab [shrug]  ¯\_(ツ)_/¯
 ab [yhat] ŷ
 ab [space] ␢
@@ -356,6 +359,10 @@ ab [deg] °
 ab [mu] µ
 ab [ss] §
 ab [sd] σ
+ab [sigma] σ
+ab [Sigma] Σ
+ab [rho] ρ
+ab [pi] Π
 ab [blank] ␣
 
 " }}}
@@ -697,14 +704,14 @@ augroup my_au
     " au BufEnter * if &buftype == 'terminal' | :startinsert | endif
 augroup END
 
-" augroup rainbow_paren
-"     autocmd!
-"     autocmd FileType r RainbowParentheses
-"     autocmd FileType python RainbowParentheses
-"     autocmd FileType bash RainbowParentheses
-"     autocmd FileType vim RainbowParentheses
-"     autocmd FileType zsh RainbowParentheses
-" augroup END
+augroup rainbow_paren
+    autocmd!
+    autocmd FileType r RainbowParentheses
+    autocmd FileType python RainbowParentheses
+    autocmd FileType bash RainbowParentheses
+    autocmd FileType vim RainbowParentheses
+    autocmd FileType zsh RainbowParentheses
+augroup END
 
 " Remember the cursor position for every file
 " function! PositionCursorFromViminfo()
