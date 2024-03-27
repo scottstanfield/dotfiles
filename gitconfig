@@ -55,6 +55,7 @@
     default  = simple
 
 [diff] 
+    tool = difftastic
     mnemonicprefix = true
     rename = copy
 

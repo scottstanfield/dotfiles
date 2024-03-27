@@ -13,15 +13,14 @@
 #   Time (mean ± σ):      92.9 ms ±   0.9 ms    [User: 51.0 ms, System: 38.4 ms]
 #   Range (min … max):    91.7 ms …  95.5 ms    31 runs
 
-# Profile startup times by adding this to you .zshrc: zmodload zsh/zprof
-# Start a new zsh. Then run and inspect: zprof > startup.txt
+# Profile .zshrc startup times by uncommenting this line:
 # zmodload zsh/zprof
+# Then start a new zsh. Then run and inspect: zprof > startup.txt
 
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
 typeset -g POWERLEVEL9K_INSTANT_PROMPT=off
-
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
@@ -87,6 +86,7 @@ bindkey '^p'    history-search-backward
 bindkey '^n'    history-search-forward
 bindkey ' '     magic-space
 
+
 # Press "ESC" to edit command line in vim
 export KEYTIMEOUT=1
 autoload -Uz edit-command-line
@@ -129,10 +129,7 @@ fi
 setopt nullglob
 
 path=(
-    .
     $HOME/bin
-
-    # $(brew --prefix llvm)/bin
 
     /usr/bin
     /usr/sbin
@@ -141,7 +138,8 @@ path=(
 
     $path[@]
 
-    $HOME/.bun/bin
+    .
+
     $HOME/.cargo/bin
 )
 
@@ -233,9 +231,7 @@ function @() {
   fi
 }
 alias cp="cp -a"
-alias dc="docker-compose"
-alias dc='docker-compose'
-alias df='df -h'  # human readable
+alias df='df --human-readable'
 alias dkrr='docker run --rm -it -u1000:1000 -v$(pwd):/work -w /work -e DISPLAY=$DISPLAY'
 alias dust='dust -r'
 alias grep="grep --color=auto"
@@ -245,7 +241,6 @@ alias hg="history 1 | grep -i"
 alias logs="docker logs control -f"
 alias m="less"
 alias b="bat --plain"
-alias p=python3
 alias path='echo $PATH | tr : "\n" | cat -n'
 alias pd='pushd'  # symmetry with cd
 alias r='R --no-save --no-restore-data --quiet'
@@ -256,8 +251,6 @@ alias t='tmux -2 new-session -A -s "moab"'
 
 alias d='dirs -v'
 for index ({1..9}) alias "$index"="cd +${index}"; unset index
-
-export R_LIBS="~/.rlibs"
 
 function fif() {
   if [ ! "$#" -gt 0 ]; then echo "Need a string to search for!"; return 1; fi
@@ -433,51 +426,27 @@ function prompt_my_host_icon() {
 	p10k segment -i $ICON -f blue
 }
 
-
 export BAT_THEME="gruvbox-dark"
 export AWS_DEFAULT_PROFILE=dev-additive
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-
-
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
 typeset -g POWERLEVEL9K_PROMPT_CHAR_{OK,ERROR}_VIINS_CONTENT_EXPANSION='»'
-
-
-##
-## Lazy load Anaconda to save startup time
-## 
-
-# bun completions
-[ -s "/Users/sstanfield/.bun/_bun" ] && source "/Users/sstanfield/.bun/_bun"
-
-# bun
-export BUN_INSTALL="$HOME/.bun"
 
 # my C flags
 #export CFLAGS='-Wall -O3 -include stdio.h --std=c17'
-alias goc="cc -xc - $CFLAGS"
 export DISPLAY=:0
 
+# OpenMP support on macOS Silicon for multi-core RLang
+# brew install libomp  llvm@12
+export R_LIBS="~/.rlibs"
 
-# LLVM=$(brew --prefix llvm)
-# export LDFLAGS="-L$LLVM/lib"
-# export CPPFLAGS="-I$LLVM/include"
-# export CFLAGS="-I$LLVM/include"
+if [[ $UNAME == "Darwin" ]]; then
+    export CPPFLAGS="-I/opt/homebrew/opt/llvm@12/include -I/opt/homebrew/opt/libomp/include"
+    export LDFLAGS="-L/opt/homebrew/opt/llvm@12/lib -L/opt/homebrew/opt/libomp/lib"
+    export LLVM_SYS_120_PREFIX=/opt/homebrew/opt/llvm@12
+    export OpenMP_ROOT=$(brew --prefix)/opt/libomp
+    export PATH="/opt/homebrew/opt/llvm@12/bin:$PATH"
+fi
 
-alias brow='arch --x86_64 /usr/local/Homebrew/bin/brew'
-
-light_color='base16-atelier-sulphurpool-light.yml'
-dark_color='base16-atelier-sulphurpool.yml'
-
-# pip3 install --user alacritty-colorscheme
-# git clone https://github.com/aaron-williamson/base16-alacritty $HOME/.config
-colorflags="-c ~/.alacritty.yml -C ~/.config/base16/colors"
-alias day="alacritty-colorscheme ${colorflags} -V apply $light_color"
-alias night="alacritty-colorscheme ${colorflags} -V apply $dark_color"
-alias toggle="alacritty-colorscheme ${colorflags} -V toggle $light_color $dark_color"
-
-function idot()    { dot -Tsvg -Gsize=${1:-9},${2:-16}\! | rsvg-convert | ~/bin/imgcat }
-function iplot()   { awk -f ~/bin/plot.awk | rsvg-convert -z ${1:-1} | ~/bin/imgcat }
 
