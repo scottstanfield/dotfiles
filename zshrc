@@ -278,6 +278,7 @@ function ht()      { (head $1 && echo "---" && tail $1) | less }
 function take()    { mkdir -p $1 && cd $1 }
 function cols()    { head -1 $1 | tr , \\n | cat -n | column }		# show CSV header
 function zcolors() { for code in {000..255}; do print -P -- "$code: %F{$code}Test%f"; done | column}
+function git3()    { git fetch upstream && git merge upstream/main && git push }
 
 # Automatically ls after you cd
 function chpwd() {
