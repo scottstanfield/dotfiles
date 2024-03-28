@@ -253,7 +253,7 @@ alias m="less"
 alias b="bat --plain"
 alias path='echo $PATH | tr : "\n" | cat -n'
 alias pd='pushd'  # symmetry with cd
-alias r='R --no-save --no-restore-data --quiet'
+alias r="R --no-save --no-restore-data --quiet"
 alias rg='rg --pretty --smart-case --fixed-strings'
 alias rgc='rg --no-line-number --color never '
 alias ssh="TERM=xterm-256color ssh"
@@ -448,8 +448,8 @@ typeset -g POWERLEVEL9K_PROMPT_CHAR_{OK,ERROR}_VIINS_CONTENT_EXPANSION='»'
 export DISPLAY=:0
 
 # OpenMP support on macOS Silicon for multi-core RLang
-# brew install libomp  llvm@12
-export R_LIBS="~/.rlibs"
+# brew install libomp llvm@12
+export R_LIBS="~/.rlang"
 
 if [[ $UNAME == "Darwin" ]]; then
     export CPPFLAGS="-I/opt/homebrew/opt/llvm@12/include -I/opt/homebrew/opt/libomp/include"

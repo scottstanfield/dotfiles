@@ -11,14 +11,11 @@ shopt -s nullglob globstar
 ## Start here
 ##
 
-brew install pkg-config
+brew install libomp llvm@12
+brew install pkg-config xquartz r
 
 # Setup R
-mkdir -p $HOME/.R/lib
-mkdir -p $HOME/.R/tmp
+mkdir -p $HOME/.rlang/lib
+mkdir -p $HOME/.rlang/tmp
 
-# The line below is for clang/llvm, which is Mac specific
-# Skip for now until cross platform soution
-cp --no-clobber Makevars $HOME/.R/Makevars
-
-cp --no-clobber Rprofile $HOME/.Rprofile
+cp Rprofile $HOME/.Rprofile
