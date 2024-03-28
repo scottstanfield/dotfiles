@@ -447,16 +447,4 @@ typeset -g POWERLEVEL9K_PROMPT_CHAR_{OK,ERROR}_VIINS_CONTENT_EXPANSION='»'
 #export CFLAGS='-Wall -O3 -include stdio.h --std=c17'
 export DISPLAY=:0
 
-# OpenMP support on macOS Silicon for multi-core RLang
-# brew install libomp llvm@12
-export R_LIBS="~/.rlang"
-
-if [[ $UNAME == "Darwin" ]]; then
-    export CPPFLAGS="-I/opt/homebrew/opt/llvm@12/include -I/opt/homebrew/opt/libomp/include"
-    export LDFLAGS="-L/opt/homebrew/opt/llvm@12/lib -L/opt/homebrew/opt/libomp/lib"
-    export LLVM_SYS_120_PREFIX=/opt/homebrew/opt/llvm@12
-    export OpenMP_ROOT=$(brew --prefix)/opt/libomp
-    export PATH="/opt/homebrew/opt/llvm@12/bin:$PATH"
-fi
-
-
+export R_LIBS="~/.rlibs"

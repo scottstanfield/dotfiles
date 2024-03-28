@@ -12,10 +12,12 @@ shopt -s nullglob globstar
 ##
 
 brew install libomp llvm@12
-brew install pkg-config xquartz r
+brew install pkg-config xquartz
+brew install r
 
 # Setup R
-mkdir -p $HOME/.rlang/lib
-mkdir -p $HOME/.rlang/tmp
+mkdir -p $HOME/.R
 
 cp Rprofile $HOME/.Rprofile
+mkdir -p $HOME/.rlibs
+cp Makevars ~/.R
