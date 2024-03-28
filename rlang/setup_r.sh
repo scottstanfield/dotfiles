@@ -13,7 +13,7 @@ shopt -s nullglob globstar
 
 brew install libomp llvm@12
 brew install pkg-config xquartz
-brew install r
+brew install ccache r
 
 # Setup R
 mkdir -p $HOME/.R
