@@ -1,6 +1,6 @@
 #!/usr/bin/env Rscript
 
-install.packages('data.table')
+#install.packages('data.table')
 install.packages('magrittr')
 install.packages('remotes')
 remotes::install_github('jalvesaq/colorout')

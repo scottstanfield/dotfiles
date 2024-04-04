@@ -9,7 +9,7 @@
 
 let g:solar_state=1
 
-let mapleader = ","             " Our free key to prefix custom commands
+let mapleader = ","				" Our free key to prefix custom commands
 let localleader = "\\"
 let g:plug_shallow=1
 
@@ -25,13 +25,13 @@ endif
 call plug#begin('~/.config/nvim/plugged')
 
 " Essential
-Plug 'sheerun/vim-polyglot'             " all the best language / syntax packs
+Plug 'sheerun/vim-polyglot'				" all the best language / syntax packs
 Plug 'ryanoasis/vim-devicons'
 Plug 'tmux-plugins/vim-tmux'
 Plug 'dracula/vim', {'as': 'dracula'}
 
 " from vim boilerplate generator
-Plug 'dense-analysis/ale'           " code linting
+Plug 'dense-analysis/ale'			" code linting
 Plug 'CharlesGueunet/VimFilify'
 Plug 'Yggdroot/indentLine'
 
@@ -42,11 +42,11 @@ Plug 'mattn/emmet-vim'
 Plug 'jelera/vim-javascript-syntax'
 
 Plug 'mileszs/ack.vim'
-"Plug 'Raimondi/delimitMate'         " auto closing quotes
+"Plug 'Raimondi/delimitMate'		 " auto closing quotes
 
 Plug 'atelierbram/vim-colors_atelier-schemes'
 
-Plug 'csexton/trailertrash.vim'         "
+Plug 'csexton/trailertrash.vim'			"
 Plug 'editorconfig/editorconfig-vim'
 Plug 'lifepillar/vim-colortemplate'
 Plug 'chriskempson/base16-vim'
@@ -84,7 +84,7 @@ Plug 'junegunn/goyo.vim'
 let g:goyo_width = 80
 nmap <leader>to :silent Goyo<CR>
 
-Plug 'junegunn/vim-easy-align',     { 'on': ['<Plug>(EasyAlign)', 'EasyAlign'] }
+Plug 'junegunn/vim-easy-align',		{ 'on': ['<Plug>(EasyAlign)', 'EasyAlign'] }
 xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
 let g:easy_align_delimiters = { ';': {'pattern': ':'}, '>': {'pattern': '>'}, 'a': {'pattern': '<-'}, '<': {'pattern': '<-'}, ':': {'pattern': ':='}}
@@ -106,7 +106,7 @@ let g:vim_markdown_follow_anchor = 1
 let g:vim_markdown_frontmatter = 1
 let g:vim_markdown_strikethrough = 1
 let g:vim_markdown_toml_frontmatter = 1
-    
+	
 Plug 'itchyny/lightline.vim'
 let g:lightline = {'colorscheme': 'dracula'}
 
@@ -126,15 +126,15 @@ command Z w | qa
 cabbrev wqa Z
 
 
-Plug 'kshenoy/vim-signature'                    " show marks in margin
+Plug 'kshenoy/vim-signature'					" show marks in margin
 
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-repeat'
-Plug 'tpope/vim-commentary'                     " smarter commenting with gc
-Plug 'tpope/vim-vinegar'                        " smarter commenting with gc
+Plug 'tpope/vim-commentary'						" smarter commenting with gc
+Plug 'tpope/vim-vinegar'						" smarter commenting with gc
 Plug 'tpope/vim-surround'
 
-Plug 'airblade/vim-gitgutter'                   " shows git diff marks in the gutter
+Plug 'airblade/vim-gitgutter'					" shows git diff marks in the gutter
 Plug 'github/copilot.vim'
 
 call plug#end()
@@ -149,22 +149,22 @@ let g:indentLine_faster = 1
 
 
 function! ColorSolarizedDark()
-    let g:airline_theme='solarized'
-    colorscheme solarized8_high
-    call lightline#colorscheme()
+	let g:airline_theme='solarized'
+	colorscheme solarized8_high
+	call lightline#colorscheme()
 endfunction
 
 function! ColorDracula()
-    let g:airline_theme='silver'
-    colorscheme dracula
-    let g:lightline = {'colorscheme': 'ayu_light'}
-    call lightline#colorscheme()
+	let g:airline_theme='silver'
+	colorscheme dracula
+	let g:lightline = {'colorscheme': 'ayu_light'}
+	call lightline#colorscheme()
 endfunction
 
 function! ColorSeoul256()
-    color seoul256
-    let g:airline_theme='silver'
-    call lightline#colorscheme()
+	color seoul256
+	let g:airline_theme='silver'
+	call lightline#colorscheme()
 endfunction
 
 nmap <leader>e1 :call ColorSolarizedDark()<cr>
@@ -182,50 +182,49 @@ let g:goyo_width = 70
 nmap <leader>tm :silent Goyo<CR>
 " }}}
 
-
 " jalvesaq/Nvim-r {{{
 " rlang
-    let R_args = ['--no-save', '--quiet']
-    let R_assign = 0
-    " let R_tmpdir = '~$USER/R/tmp'               " TODO: consider removing this
-    " let R_source_args = 'print.eval=F'
-    " let R_nvimpager = 'no'
-    "let R_auto_start = 1
-    " " I needed to run `brew link --force readline` in order to get gcc5
-    " to compile nvimcom (which updates automatically when you invoke nvim-r)
-    noremap <silent> <Space> :call SendLineToR("stay")<CR><Esc><Home><Down>
-    "vnoremap <silent> <Space> <Plug>RSendSelection<Esc><Esc>
-    vnoremap <silent> <Space> :call SendSelectionToR("silent", "stay")<cr>
-    " inoremap <s-cr> <Esc>:call SendLineToR("stay")<cr><down><home>i
+	let R_args = ['--no-save', '--quiet']
+	let R_assign = 0
+	" let R_tmpdir = '~$USER/R/tmp'				  " TODO: consider removing this
+	" let R_source_args = 'print.eval=F'
+	" let R_nvimpager = 'no'
+	"let R_auto_start = 1
+	" " I needed to run `brew link --force readline` in order to get gcc5
+	" to compile nvimcom (which updates automatically when you invoke nvim-r)
+	noremap <silent> <Space> :call SendLineToR("stay")<CR><Esc><Home><Down>
+	"vnoremap <silent> <Space> <Plug>RSendSelection<Esc><Esc>
+	vnoremap <silent> <Space> :call SendSelectionToR("silent", "stay")<cr>
+	" inoremap <s-cr> <Esc>:call SendLineToR("stay")<cr><down><home>i
 
-    " handle <s-cr> and <c-cr>
-    " https://stackoverflow.com/questions/16359878/how-to-map-shift-enter
+	" handle <s-cr> and <c-cr>
+	" https://stackoverflow.com/questions/16359878/how-to-map-shift-enter
 
-    "nmap <Space> <Plug>RSendLine
+	"nmap <Space> <Plug>RSendLine
 
-    " vmap <Space> <Plug>RSendSelection
-    " nmap <Space> <Plug>RSendLine
+	" vmap <Space> <Plug>RSendSelection
+	" nmap <Space> <Plug>RSendLine
 
-    " nmap <silent> ✠       :call SendLineToR("stay")<CR><Esc><Home><Down>
-    " imap <silent> ✠       <Esc>:call SendLineToR("stay")<CR><Esc>A
-    " vmap ✠                  <Plug>RSendSelection<Esc><Esc>
+	" nmap <silent> ✠		:call SendLineToR("stay")<CR><Esc><Home><Down>
+	" imap <silent> ✠		<Esc>:call SendLineToR("stay")<CR><Esc>A
+	" vmap ✠				  <Plug>RSendSelection<Esc><Esc>
 "}}}
 
 "autocmd VimLeave * if exists("g:SendCmdToR") && string(g:SendCmdToR) != "function('SendCmdToR_fake')" | call RQuit("nosave") | endif
 
 
 " edkolev/tmuxline.vim {{{
-let g:tmuxline_preset               = 'minimal'
-let g:tmuxline_theme                = 'lightline'
+let g:tmuxline_preset				= 'minimal'
+let g:tmuxline_theme				= 'lightline'
 let g:tmuxline_powerline_separators = 0
-let g:tmuxline_status_justify       = 'left'
+let g:tmuxline_status_justify		= 'left'
 " Special prompt variables come from stftime and https://github.com/edkolev/tmuxline.vim
 let g:tmuxline_preset = {
-    \'a'    : '#S',
-    \'cwin' : '#I #W',
-    \'win'  : '#I #W',
-    \'y'    : '%a %b %e',
-    \'z'    : '%-l:%M %p'}
+	\'a'	: '#S',
+	\'cwin' : '#I #W',
+	\'win'	: '#I #W',
+	\'y'	: '%a %b %e',
+	\'z'	: '%-l:%M %p'}
 "nmap <leader>tm :Tmuxline<CR>
 
 " Test tmux settings from vim (weird, I know) by typing ,tm
@@ -236,7 +235,7 @@ let g:tmuxline_preset = {
 nnoremap <silent> <c-p> :FZF<CR>
 nnoremap <silent> <leader>ff :FZF<CR>
 nnoremap <silent> <leader>ft :Files<CR>
-nmap <leader>fc     :Commits<CR>
+nmap <leader>fc		:Commits<CR>
 "let g:fzf_layout = { 'window': 'left' }
 au FileType fzf tnoremap <nowait><buffer> <esc> <c-g>
 " }}}
@@ -247,13 +246,13 @@ let g:NERDTreeMinimalUI=1
 let g:NERDTreeIgnore=['\.git$[[dir]]', 'node_modules','\.rbc$', '\~$', '\.pyc$', '\.db$', '\.sqlite$', '__pycache__']
 
 augroup nerd_loader
-    autocmd!
-    autocmd VimEnter * silent! autocmd! FileExplorer
-    autocmd BufEnter,BufNew *
-        \  if isdirectory(expand('<amatch>'))
-        \|   call plug#load('nerdtree')
-        \|   execute 'autocmd! nerd_loader'
-        \| endif
+	autocmd!
+	autocmd VimEnter * silent! autocmd! FileExplorer
+	autocmd BufEnter,BufNew *
+		\  if isdirectory(expand('<amatch>'))
+		\|	 call plug#load('nerdtree')
+		\|	 execute 'autocmd! nerd_loader'
+		\| endif
 augroup END
 nnoremap <leader>n :NERDTreeToggle<cr>
 nnoremap <c-t> :NERDTreeToggle<cr>
@@ -261,25 +260,25 @@ nnoremap <silent> <F2> :NERDTreeFind<CR>
 nnoremap <silent> <F3> :NERDTreeToggle<CR>
 " }}}
 " scottstanfield/vimcmdline {{{
-" let cmdline_map_start          = '<LocalLeader>s'
-" let cmdline_map_send           = '<Space>'
+" let cmdline_map_start			 = '<LocalLeader>s'
+" let cmdline_map_send			 = '<Space>'
 " let cmdline_map_send_and_stay  = '<LocalLeader><Space>'
-" let cmdline_map_source_fun     = '<LocalLeader>f'
+" let cmdline_map_source_fun	 = '<LocalLeader>f'
 " let cmdline_map_send_paragraph = '<LocalLeader>p'
-" let cmdline_map_send_block     = '<LocalLeader>b'
-" let cmdline_map_quit           = '<LocalLeader>q'
-" let cmdline_vsplit      = 0      " Split the window vertically
-" let cmdline_esc_term    = 1      " Remap <Esc> to :stopinsert in Neovim's terminal
-" let cmdline_in_buffer   = 1      " Start the interpreter in a Neovim's terminal
-" let cmdline_term_height = 15     " Initial height of interpreter window or pane
-" let cmdline_term_width  = 80     " Initial width of interpreter window or pane
-" let cmdline_tmp_dir     = '/tmp' " Temporary directory to save files
-" let cmdline_outhl       = 1      " Syntax highlight the output
-" let cmdline_auto_scroll = 1      " Keep the cursor at the end of terminal (nvim)
+" let cmdline_map_send_block	 = '<LocalLeader>b'
+" let cmdline_map_quit			 = '<LocalLeader>q'
+" let cmdline_vsplit	  = 0	   " Split the window vertically
+" let cmdline_esc_term	  = 1	   " Remap <Esc> to :stopinsert in Neovim's terminal
+" let cmdline_in_buffer   = 1	   " Start the interpreter in a Neovim's terminal
+" let cmdline_term_height = 15	   " Initial height of interpreter window or pane
+" let cmdline_term_width  = 80	   " Initial width of interpreter window or pane
+" let cmdline_tmp_dir	  = '/tmp' " Temporary directory to save files
+" let cmdline_outhl		  = 1	   " Syntax highlight the output
+" let cmdline_auto_scroll = 1	   " Keep the cursor at the end of terminal (nvim)
 " let cmdline_app = {}
 " let cmdline_app['python'] = 'ipython'
-" let cmdline_app['sh']     = 'bash'
-" let cmdline_app['julia']  = 'julia'
+" let cmdline_app['sh']		= 'bash'
+" let cmdline_app['julia']	= 'julia'
 " let cmdline_app['javascript']  = 'node'
 " }}}
 " TrailerTrash {{{
@@ -289,8 +288,8 @@ let g:show_trailertrash = 1
 "autocmd FileType c,python,r,javascript BufWritePre :call TrailerTrim()
 " }}}
 " airblade/vim-gutter {{{
-    nmap <silent> <leader>tg :GitGutterToggle<CR>
-    let g:gitgutter_enabled = 0                     " off by default
+	nmap <silent> <leader>tg :GitGutterToggle<CR>
+	let g:gitgutter_enabled = 0						" off by default
 " }}}
 
 " }}} Plugin configuration
@@ -310,9 +309,9 @@ ino <C-X><C-S> <Esc>:w<CR>a
 
 inoremap <expr> <C-d> ShowDigraphs()
 function! ShowDigraphs()
-    digraphs
-    call getchar()
-    return "\<C-K>"
+	digraphs
+	call getchar()
+	return "\<C-K>"
 endfunction
 
 " }}}
@@ -351,7 +350,7 @@ ab [pi] π
 ab [PI] Π
 ab [Pi] Π
 ab [rho] ρ
-ab [shrug]  ¯\_(ツ)_/¯
+ab [shrug]	¯\_(ツ)_/¯
 ab [yhat] ŷ
 ab [space] ␢
 ab [degree] ° 
@@ -370,14 +369,14 @@ ab [blank] ␣
 
 " SETS {{{
 
-set clipboard+=unnamedplus      " Use system clipboard
+set clipboard+=unnamedplus		" Use system clipboard
 
 " Vertical Split lighten color of vertical split and remove | bar
 " https://stackoverflow.com/questions/9001337/vim-split-bar-styling
 "highlight VertSplit ctermfg=bg
 set fillchars+=vert:\
 
-set hidden                      " switch buffers w/o saving
+set hidden						" switch buffers w/o saving
 set undofile
 
 " Long lines get wrapped with this cool symbol
@@ -388,42 +387,42 @@ set breakindentopt=sbr
 """""""""""""""""
 " TABS AND SPACES
 """""""""""""""""
-set nosmartindent       " explicitly turn off. C-style doesn't work with R comments #
-"set smartindent       " explicitly turn off. C-style doesn't work with R comments #
-set nowrap              " do not wrap lines please
+set nosmartindent		" explicitly turn off. C-style doesn't work with R comments #
+"set smartindent	   " explicitly turn off. C-style doesn't work with R comments #
+set nowrap				" do not wrap lines please
 set tabstop=4
 set softtabstop=4
 set expandtab
-set shiftwidth=4        " no clue what this does
-set shiftround          " if spaces, TAB maps to right spot
+set shiftwidth=4		" no clue what this does
+set shiftround			" if spaces, TAB maps to right spot
 
 " General
-set nobackup                    " don't let vim backup files
+set nobackup					" don't let vim backup files
 set noswapfile
-set nowritebackup               " And again.
-set autochdir                   " always switch to current dir
-set wildmode=list:longest       " Complete files like a shell.
+set nowritebackup				" And again.
+set autochdir					" always switch to current dir
+set wildmode=list:longest		" Complete files like a shell.
 set modeline
-set noerrorbells                " No beeping!
-set novisualbell                " No flashing either.
+set noerrorbells				" No beeping!
+set novisualbell				" No flashing either.
 set wildignore+=*.jpg,*.gif,*.png,*.git,*.gem,*.zip,*.tar.gz,node_modules,*.pyc
 
 """""""""""
 " UI CONFIG
 """""""""""
-let loaded_matchparen=1         " Just use % instead of auto paren matching
-set colorcolumn=80              " vertical line at 80 cols
-set nostartofline               " Searches leave cursor on same column
-set ignorecase                  " Case-insensitive searching.
-set lazyredraw                  " No redraw during macro execution
-set number                      " Show line numbers.
-set shortmess=atIF              " stifle the long interrupt prompts
-set showmode                    " Display the mode you're in.
-set smartcase                   " But case-sensitive if has caps
-set scrolloff=3                 " Show 3 lines around cursor (more context)
-set noshowmode                  " hide the default mode text (e.g. -- INSERT --)
-set splitbelow                  " more natural to open new splits below
-set splitright                  " and to the right
+let loaded_matchparen=1			" Just use % instead of auto paren matching
+set colorcolumn=80				" vertical line at 80 cols
+set nostartofline				" Searches leave cursor on same column
+set ignorecase					" Case-insensitive searching.
+set lazyredraw					" No redraw during macro execution
+set number						" Show line numbers.
+set shortmess=atIF				" stifle the long interrupt prompts
+set showmode					" Display the mode you're in.
+set smartcase					" But case-sensitive if has caps
+set scrolloff=3					" Show 3 lines around cursor (more context)
+set noshowmode					" hide the default mode text (e.g. -- INSERT --)
+set splitbelow					" more natural to open new splits below
+set splitright					" and to the right
 "}}}
 
 " MAPS {{{
@@ -514,13 +513,13 @@ nmap <silent> <leader>tn :set invnumber<CR>
 " Toggle the visibility of the bar by changing the color (for screenshots)
 let g:toggle_split = 0
 function! ToggleSplit()
-    if g:toggle_split
-        highlight VertSplit ctermfg=grey
-        let g:toggle_split=0
-    else
-        highlight VertSplit ctermfg=white
-        let g:toggle_split=1
-    endif
+	if g:toggle_split
+		highlight VertSplit ctermfg=grey
+		let g:toggle_split=0
+	else
+		highlight VertSplit ctermfg=white
+		let g:toggle_split=1
+	endif
 endfunction
 noremap <leader>ts :call ToggleSplit()<CR>
 
@@ -529,11 +528,11 @@ nnoremap <leader>c :set cursorcolumn!<CR>
 nnoremap <leader>l :set cursorline!<CR>
 
 function! ToggleFolds()
-    if &foldlevel > 0
-        set foldlevel=0
-    else
-        set foldlevel=3
-    endif
+	if &foldlevel > 0
+		set foldlevel=0
+	else
+		set foldlevel=3
+	endif
 endfunction
 nnoremap zz :call ToggleFolds()<cr>
 
@@ -541,9 +540,9 @@ nnoremap zz :call ToggleFolds()<cr>
 
 " OBSOLETE; kept for historical reasons{{{
 "nnoremap <silent> q <space>
-"nnoremap vv ^vg_|       " Select current line, excluding indents (great for copying to clipboard)
-"noremap K <Esc>|        " Disable K from looking stuff up
-"noremap H ^|           " Use capital H/L for first/last non-whitespace character on line
+"nnoremap vv ^vg_|		 " Select current line, excluding indents (great for copying to clipboard)
+"noremap K <Esc>|		 " Disable K from looking stuff up
+"noremap H ^|			" Use capital H/L for first/last non-whitespace character on line
 "noremap L g_
 
 " split window vertically into two linked columns--very cool
@@ -570,7 +569,7 @@ cnoremap Qa qa
 tnoremap <Esc> <C-\><C-n>
 "tnoremap <Esc><Esc> <C-\><C-n><C-w>k
 
-" " Meta key ⌥  mappings
+" " Meta key ⌥	mappings
 " tnoremap <M-h> <C-\><C-N><C-w>h
 " tnoremap <M-j> <C-\><C-N><C-w>j
 " tnoremap <M-k> <C-\><C-N><C-w>k
@@ -612,32 +611,32 @@ set foldmethod=marker
 " https://github.com/junegunn/goyo.vim Distraction-free writing (and reading) in Vim
 
 function! s:enter_presentation()
-    " increase conceal level
-    set conceallevel=3
-    " open first fold
-    normal ggzo
-    " add navigation
-    " C-n next slide
-        " zc - close current fold
-        " zj - move to the next
-        " zo - and open it
-        " [z - move to the start of the current fold
-        " j  - move the cursor out of the way
-    nnoremap <buffer> <right> zczjzo[z<esc>j
-    " C-p previous slide
-        " zc - close current fold
-        " zk - move to the previous
-        " zo - and open it
-        " [z - move to the start of the current fold
-        " j  - move the cursor out of the way
-    nnoremap <buffer> <left> zczkzo[zj
+	" increase conceal level
+	set conceallevel=3
+	" open first fold
+	normal ggzo
+	" add navigation
+	" C-n next slide
+		" zc - close current fold
+		" zj - move to the next
+		" zo - and open it
+		" [z - move to the start of the current fold
+		" j  - move the cursor out of the way
+	nnoremap <buffer> <right> zczjzo[z<esc>j
+	" C-p previous slide
+		" zc - close current fold
+		" zk - move to the previous
+		" zo - and open it
+		" [z - move to the start of the current fold
+		" j  - move the cursor out of the way
+	nnoremap <buffer> <left> zczkzo[zj
 endfunction
 
 function! s:exit_presentation()
-    " reset conceal level
-    set conceallevel=0
-    nunmap <buffer> <left>
-    nunmap <buffer> <right>
+	" reset conceal level
+	set conceallevel=0
+	nunmap <buffer> <left>
+	nunmap <buffer> <right>
 endfunction
 
 autocmd! User GoyoEnter nested call <SID>enter_presentation()
@@ -648,10 +647,10 @@ nnoremap <buffer> <Left> :N<cr>
 
 " Check spelling: [s ]s z= zg
 augroup markdown
-    autocmd!
-    "autocmd Filetype markdown setlocal spell spelllang=en_us
-    autocmd filetype markdown set conceallevel=2
-    autocmd filetype markdown set cursorline
+	autocmd!
+	"autocmd Filetype markdown setlocal spell spelllang=en_us
+	autocmd filetype markdown set conceallevel=2
+	autocmd filetype markdown set cursorline
 augroup END
 
 " buffers
@@ -659,72 +658,72 @@ augroup END
 
 let g:iron_map_defaults=0
 augroup ironmapping
-    autocmd!
-    autocmd Filetype python nmap <buffer> <leader>t <Plug>(iron-send-motion)
-    autocmd Filetype python vmap <buffer> <leader>t <Plug>(iron-send-motion)
-    autocmd Filetype python nmap <buffer> <leader>. <Plug>(iron-repeat-cmd)
+	autocmd!
+	autocmd Filetype python nmap <buffer> <leader>t <Plug>(iron-send-motion)
+	autocmd Filetype python vmap <buffer> <leader>t <Plug>(iron-send-motion)
+	autocmd Filetype python nmap <buffer> <leader>. <Plug>(iron-repeat-cmd)
 augroup END
 
 augroup yaml_syntax
-    autocmd!
-    autocmd BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml
-    autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
+	autocmd!
+	autocmd BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml
+	autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
 augroup END
 
 augroup templates
-    autocmd!
-    autocmd BufNewFile *.html    0r ~/.config/nvim/templates/template.html
+	autocmd!
+	autocmd BufNewFile *.html	 0r ~/.config/nvim/templates/template.html
 augroup END
 
 
 " Wrapping autocmd in a group per http://bit.ly/15wKRrM
 augroup my_au
-    autocmd!
-    "    au FileType python setlocal expandtab ts=2 sw=2 sts=2
-    au FileType make setlocal noexpandtab
+	autocmd!
+	"	 au FileType python setlocal expandtab ts=2 sw=2 sts=2
+	au FileType make setlocal noexpandtab
 
-    " place this after plugins have loaded
-    " Set textwidth like a boss http://blog.ezyang.com/2010/03/vim-textwidth/
-    au FileType text,markdown setlocal textwidth=72 colorcolumn=80
-    au FileType stylus,jade set tabstop=2|set softtabstop=2|set shiftwidth=2|set expandtab
-    "au FileType javascript set tabstop=4|set shiftwidth=4|set expandtab
-    au FileType javascript set tabstop=2|set shiftwidth=2|set expandtab
-    au FileType r set ts=2 softtabstop=2 shiftwidth=2 expandtab
-    au FileType zsh set tabstop=4|set shiftwidth=4|set expandtab
+	" place this after plugins have loaded
+	" Set textwidth like a boss http://blog.ezyang.com/2010/03/vim-textwidth/
+	au FileType text,markdown setlocal textwidth=72 colorcolumn=80
+	au FileType stylus,jade set tabstop=2|set softtabstop=2|set shiftwidth=2|set expandtab
+	"au FileType javascript set tabstop=4|set shiftwidth=4|set expandtab
+	au FileType javascript set tabstop=2|set shiftwidth=2|set expandtab
+	au FileType r set ts=2 softtabstop=2 shiftwidth=2 expandtab
+	au FileType zsh set tabstop=4|set shiftwidth=4|set expandtab
 
-    au BufEnter *.tsv set tabstop=14 softtabstop=14 shiftwidth=14 noexpandtab
+	au BufEnter *.tsv set tabstop=14 softtabstop=14 shiftwidth=14 noexpandtab
 
-    " PEP8 has defined the proper indentation for Python
-    au BufNewFile,BufRead *.py set tabstop=4 softtabstop=4 shiftwidth=4 textwidth=90 expandtab fileformat=unix
+	" PEP8 has defined the proper indentation for Python
+	au BufNewFile,BufRead *.py set tabstop=4 softtabstop=4 shiftwidth=4 textwidth=90 expandtab fileformat=unix
 
-    " Turn off line wrapping when working on HTML files
-    au BufNewFile,BufRead *.html setlocal nowrap
+	" Turn off line wrapping when working on HTML files
+	au BufNewFile,BufRead *.html setlocal nowrap
 
-    " Go into insert mode when entering terminal
-    " au BufEnter * if &buftype == 'terminal' | :startinsert | endif
+	" Go into insert mode when entering terminal
+	" au BufEnter * if &buftype == 'terminal' | :startinsert | endif
 augroup END
 
 augroup rainbow_paren
-    autocmd!
-    autocmd FileType r RainbowParentheses
-    autocmd FileType python RainbowParentheses
-    autocmd FileType bash RainbowParentheses
-    autocmd FileType vim RainbowParentheses
-    autocmd FileType zsh RainbowParentheses
+	autocmd!
+	autocmd FileType r RainbowParentheses
+	autocmd FileType python RainbowParentheses
+	autocmd FileType bash RainbowParentheses
+	autocmd FileType vim RainbowParentheses
+	autocmd FileType zsh RainbowParentheses
 augroup END
 
 " Remember the cursor position for every file
 " function! PositionCursorFromViminfo()
-"     if !(bufname("%") =~ '\(COMMIT_EDITMSG\)') && line("'\"") > 1 && line("'\"") <= line("$")
-"         exe "normal! g`\""
-"     endif
+"	  if !(bufname("%") =~ '\(COMMIT_EDITMSG\)') && line("'\"") > 1 && line("'\"") <= line("$")
+"		  exe "normal! g`\""
+"	  endif
 " endfunction
 " autocmd BufReadPost * call PositionCursorFromViminfo()
 
 " see :help restore-cursor
 autocmd BufReadPost *
   \ if line("'\"") >= 1 && line("'\"") <= line("$") && &ft !~# 'commit'
-  \ |   exe "normal! g`\""
+  \ |	exe "normal! g`\""
   \ | endif
 
 
@@ -737,26 +736,26 @@ autocmd BufReadPost *
 
 nnoremap <leader>t0 :silent call WordProcessorMode()
 func! WordProcessorMode()
-    setlocal tw=80
-    setlocal formatoptions=1t
-    setlocal noexpandtab
-    setlocal spell spelllang=en_us
-    set complete+=s
-    setlocal wrap
-    setlocal linebreak
+	setlocal tw=80
+	setlocal formatoptions=1t
+	setlocal noexpandtab
+	setlocal spell spelllang=en_us
+	set complete+=s
+	setlocal wrap
+	setlocal linebreak
 endfu
 
 nnoremap <silent><leader>vv :Goyo<cr>:set linebreak<cr>:set wrap<cr>
 
 function! Formd(option)
-    :let save_view = winsaveview()
-    :let flag = a:option
-    :if flag == "-r"
-        :%! formd -r
-    :else
-        :%! formd -i
-    :endif
-    :call winrestview(save_view)
+	:let save_view = winsaveview()
+	:let flag = a:option
+	:if flag == "-r"
+		:%! formd -r
+	:else
+		:%! formd -i
+	:endif
+	:call winrestview(save_view)
 endfunction
 
 " Toggle hyperlinks in Markdown on/off
@@ -768,8 +767,8 @@ noremap <silent> <leader>om :call OpenMarkdownPreview()<cr>
 
 function! OpenMarkdownPreview() abort
   if exists('s:markdown_job_id') && s:markdown_job_id > 0
-    call jobstop(s:markdown_job_id)
-    unlet s:markdown_job_id
+	call jobstop(s:markdown_job_id)
+	unlet s:markdown_job_id
   endif
   let s:markdown_job_id = jobstart('grip ' . shellescape(expand('%:p')))
   if s:markdown_job_id <= 0 | return | endif
@@ -808,37 +807,37 @@ nnoremap <silent> ]q :cnext<CR>
 " iterm profile the session was launched with.
 "
 let g:solar_state=1
-function! SetDefaultSolar()          " ,x toggles dark/light
-    elseif g:solar_state == 0
-        call SolarDark()
-    elseif g:solar_state == 1
-        call SolarLight()
-    endif
-    call lightline#colorscheme()
+function! SetDefaultSolar()			 " ,x toggles dark/light
+	elseif g:solar_state == 0
+		call SolarDark()
+	elseif g:solar_state == 1
+		call SolarLight()
+	endif
+	call lightline#colorscheme()
 endfunction
 
 function! SolarDark()
-    let g:solar_state=0
-    set background=dark
-    colorscheme solarized8_high
-    " hi colorcolumn ctermbg=darkgrey
+	let g:solar_state=0
+	set background=dark
+	colorscheme solarized8_high
+	" hi colorcolumn ctermbg=darkgrey
 endfunction
 
 function! SolarLight()
-    let g:solar_state=1
-    set background=light
-    colorscheme solarized8_high
-    hi colorcolumn ctermbg=lightgrey
+	let g:solar_state=1
+	set background=light
+	colorscheme solarized8_high
+	hi colorcolumn ctermbg=lightgrey
 endfunction
 
 function! ToggleColors()
-    if g:solar_state == 0 | call SolarLight() | else | call SolarDark() | endif
+	if g:solar_state == 0 | call SolarLight() | else | call SolarDark() | endif
 endfunction
 noremap <leader>tc :call ToggleColors()<CR>
 
 " set background=dark
 " try
-"   colorscheme solarized8_high
+"	colorscheme solarized8_high
 " catch
 " endtry
 
@@ -847,7 +846,7 @@ noremap <leader>tc :call ToggleColors()<CR>
 nnoremap <silent> <leader>/ :set hlsearch! hlsearch?<CR>
 
 if has('termguicolors')
-    set termguicolors
+	set termguicolors
 endif
 hi Cursor guifg=green guibg=green
 hi Cursor2 guifg=red guibg=red
@@ -856,8 +855,8 @@ hi Cursor2 guifg=red guibg=red
 "set guicursor=n-v-c:block-Cursor/lCursor-blinkon0,i-ci-ve:ver25-Cursor2/lCursor2,r-cr:hor20,o:hor50
 
 set guicursor=n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50
-          \,a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor
-          \,sm:block-blinkwait175-blinkoff150-blinkon175
+		  \,a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor
+		  \,sm:block-blinkwait175-blinkoff150-blinkon175
 
  " highlight Cursor guifg=white guibg=black
  " highlight iCursor guifg=white guibg=steelblue
@@ -883,13 +882,13 @@ colorscheme dracula
   " Load the keymap that acts like capslock.
 
 try
-    set keymap=insert-only_capslock
-    " Turn it off by default.
-    set iminsert=0
-    " kill capslock when leaving insert mode
-    autocmd InsertLeave * set iminsert=0
-    let b:keymap_name="CAPS"
-    set statusline^=%k
+	set keymap=insert-only_capslock
+	" Turn it off by default.
+	set iminsert=0
+	" kill capslock when leaving insert mode
+	autocmd InsertLeave * set iminsert=0
+	let b:keymap_name="CAPS"
+	set statusline^=%k
 catch
 endtry
 
@@ -900,10 +899,10 @@ endtry
 " }}}
 
 function! UpdateCFlags()
-    let l:pkg_config_files = system("pkg-config --cflags libczmq libprotobuf-c")
-    let g:ale_c_clang_options = l:pkg_config_files
-    let g:ale_c_gcc_options = l:pkg_config_files
-    let g:ale_cpp_cc_options = l:pkg_config_files
+	let l:pkg_config_files = system("pkg-config --cflags libczmq libprotobuf-c")
+	let g:ale_c_clang_options = l:pkg_config_files
+	let g:ale_c_gcc_options = l:pkg_config_files
+	let g:ale_cpp_cc_options = l:pkg_config_files
 endfunction
 
 autocmd FileType c call UpdateCFlags()
