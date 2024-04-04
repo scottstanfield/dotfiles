@@ -41,7 +41,8 @@ export EDITOR=vim
 export VISUAL=vim
 export LANG="en_US.UTF-8"
 export PAGER=less
-UNAME=$(uname)
+UNAME=$(uname)      # Darin, Linux
+ARCH=$(arch)        # arm64, i386, x86_64
 
 if [[ $UNAME == "Darwin" ]]; then
     export HOMEBREW_NO_AUTO_UPDATE=1
@@ -130,7 +131,8 @@ typeset -gU path fpath manpath
 # Multiple Homebrews on Apple Silicon
 if [[ "$(arch)" == "arm64" ]]; then
     eval "$(/opt/homebrew/bin/brew shellenv)"
-else
+fi
+if [[ "$(arch)" == "i386" ]]; then
     eval "$(/usr/local/bin/brew shellenv)"
 fi
 
@@ -421,7 +423,7 @@ FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}comment]='fg=gray'
 export prompticons=(󰯉 󰊠         ▼         󰆚 󰀘 󱍢 󰦥)
 
 function prompt_my_host_icon() {
-	p10k segment -i $prompticons[2] -f 074
+	p10k segment -i $prompticons[7] -f 074
 }
 
 export BAT_THEME="gruvbox-dark"
