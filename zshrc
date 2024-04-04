@@ -416,25 +416,10 @@ FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}path-to-dir]='fg=cyan,underline'
 FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}comment]='fg=gray'
 
 
-if [[ "$(arch)" == "arm64" ]]; then
-	ICON=''
-	alias t='tmux -2 new-session -A -s "arm64"'
-else
-	ICON=''
-	alias t='tmux -2 new-session -A -s "x86"'
-fi
+export prompticons=(󰯉 󰊠         ▼         󰆚 󰀘 󱍢 󰦥)
 
-
-## 
-# 
-#  alien
-# 
-# \uf427
-# 
-#  
-# 
 function prompt_my_host_icon() {
-	p10k segment -i $ICON -f blue
+	p10k segment -i $prompticons[2] -f 074
 }
 
 export BAT_THEME="gruvbox-dark"
