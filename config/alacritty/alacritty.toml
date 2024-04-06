@@ -1,4 +1,8 @@
-import = ["~/.config/alacritty/dracula.toml"]
+# Alacritty syntax: https://alacritty.org/config-alacritty.html
+import = [ 
+    "~/.config/alacritty/dracula.toml",
+    "~/.alacritty.local.toml"]
+
 live_config_reload = true
 
 [env]
@@ -9,20 +13,36 @@ TERM = "xterm-256color"
     #   - (Linux/BSD) monospace
     #   - (Windows) Consolas
 
-# brew install --cask font-monaspice-mono-nerd-font font-jetbrains-mono-nerd-font
+## FONTS
+#
+# 1. Run this to install Mona and Jetbrains typefaces
+#    brew install --cask font-monaspice-mono-nerd-font font-jetbrains-mono-nerd-font
+#
+# 2. Copy one of the three prebuilt [font] section into a new file ~/.alacritty.local.toml
 
-[font]
-size = 20
+## Mona https://github.com/mona-sans
+# [font]
+# size = 20
 # normal = { family = "MonaspiceNe Nerd Font Mono", style = "Regular" }
 # bold = { family = "MonaspiceNe Nerd Font Mono", style = "Bold" }
-# italic = { family = "MonaspiceRn Nerd Font Mono", style = "Italic" }
-# bold_italic = { family = "MonaspiceRn Nerd Font Mono", style = "Regular" }
+# italic = { family = "MonaspiceRn Nerd Font Mono", style = "Regular" }
+# bold_italic = { family = "MonaspiceRn Nerd Font Mono", style = "Bold" }
 
-normal = { family = "Menlo", style = "Regular" }
-bold = { family = "Menlo", style = "Bold" }
-italic = { family = "Menlo", style = "Italic" }
-bold_italic = { family = "Menlo", style = "Regular" }
+## Jetbrains: https://www.jetbrains.com/lp/mono/
+# [font]
+# size = 20
+# normal = { family = "JetbrainsMono Nerd Font Mono", style = "Regular" }
+# bold = { family = "JetbrainsMono Nerd Font Mono", style = "Bold" }
+# italic = { family = "JetbrainsMono Nerd Font Mono", style = "Italic" }
+# bold_italic = { family = "JetbrainsMono Nerd Font Mono", style = "Regular" }
 
+## Menlo (default installed on Mac)
+# [font]
+# size = 20
+# normal = { family = "Menlo", style = "Regular" }
+# bold = { family = "Menlo", style = "Bold" }
+# italic = { family = "Menlo", style = "Italic" }
+# bold_italic = { family = "Menlo", style = "Regular" }
 
 [[keyboard.bindings]]
 action = "ToggleSimpleFullscreen"
