@@ -6,6 +6,8 @@ local({
   #options(repos = getOption('repos', 'http://cran.cnr.berkeley.edu'))
   # options(repos = getOption('repos', 'http://cran.microsoft.com'))
   options(repos = getOption('repos', 'https://ftp.osuosl.org/pub/cran/'))
+  options(help_type = 'html')
+  options(digits.secs = 5)
 })
 
 .First <- function()
@@ -45,6 +47,3 @@ printf <- function(...) { cat(sprintf(...)) }
 oneup  <- function() { par(mfrow=c(1,1)) }
 twoup  <- function() { par(mfrow=c(2,2)) }
 cls    <- function() { cat('') }
-
-
-

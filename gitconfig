@@ -12,7 +12,7 @@
 ;   insteadOf = https://github.com
 
 [core]
-    editor = vim
+    editor = nvim
     status = auto
     branch = auto
     interactive = auto
@@ -54,6 +54,7 @@
     default  = simple
 
 [diff] 
+    tool = difftastic
     mnemonicprefix = true
     rename = copy
 

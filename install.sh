@@ -19,13 +19,14 @@ println() { printf '%s\n' "$*"; }
 die()     { ret=$?; printf "%s\n" "$@" >&2; exit "$ret"; }
 msg()     { echo >&2 -e "${1-}"; }
 
-require curl require git
+require curl 
+require git 
+require tmux
 
 # Change directories to where this script is located
 #cd "$(dirname "$(realpath "${BASH_SOURCE[0]}")")"
 canonical=$(cd -P -- "$(dirname -- "$0")" && printf '%s\n' "$(pwd -P)") 
-cd $canonical
-
+cd "$canonical"
 
 # Create temp folder for all the files being backed up
 B=$(mktemp -d /tmp/dotfiles.XXXX)

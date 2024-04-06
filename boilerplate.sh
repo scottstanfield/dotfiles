@@ -8,12 +8,13 @@ set -o errtrace # Exit on error inside any functions or subshells.
 set -o nounset  # Do not allow use of undefined vars. Use ${VAR:-} to use an undefined VAR
 set -o pipefail # Catch the error in case mysqldump fails (but gzip succeeds) in `mysqldump |gzip`
 
+# set -x print every line as script executes; or: % bash -x script.sh
+
 shopt -s extdebug
 trap cleanup SIGINT SIGTERM ERR EXIT
 
 println() { local IFS=" "; printf '%s\n' "$*"; }
 require() { hash "$@" 2>&- || exit 127; }
-my_die()  { local ret=$?; printf "%s\n" "$@" >&2; exit "$ret"; }
 msg()     { echo >&2 -e "${1-}"; }
 
 die() {

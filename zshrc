@@ -12,16 +12,23 @@
 # Benchmark iMacPro 2019
 #   Time (mean ± σ):      92.9 ms ±   0.9 ms    [User: 51.0 ms, System: 38.4 ms]
 #   Range (min … max):    91.7 ms …  95.5 ms    31 runs
+#
+# Benchmark relativity macbook M2 air
+#   Benchmark 1: zsh -i  -c "exit"
+#  Time (mean ± σ):     340.2 ms ± 214.2 ms    [User: 97.0 ms, System: 77.0 ms]
+#  Range (min … max):   211.2 ms … 761.1 ms    12 runs
 
+
+# Profile .zshrc startup times by uncommenting this line:
+# zmodload zsh/zprof
+# Then start a new zsh. Then run and inspect: zprof > startup.txt
 # Profile startup times by adding this to you .zshrc: zmodload zsh/zprof
 # Start a new zsh. Then run and inspect: zprof > startup.txt
-# zmodload zsh/zprof
 
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
 typeset -g POWERLEVEL9K_INSTANT_PROMPT=off
-
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
@@ -34,7 +41,8 @@ export EDITOR=vim
 export VISUAL=vim
 export LANG="en_US.UTF-8"
 export PAGER=less
-UNAME=$(uname)
+UNAME=$(uname)      # Darin, Linux
+ARCH=$(arch)        # arm64, i386, x86_64
 
 if [[ $UNAME == "Darwin" ]]; then
     export HOMEBREW_NO_AUTO_UPDATE=1
@@ -87,6 +95,7 @@ bindkey '^p'    history-search-backward
 bindkey '^n'    history-search-forward
 bindkey ' '     magic-space
 
+
 # Press "ESC" to edit command line in vim
 export KEYTIMEOUT=1
 autoload -Uz edit-command-line
@@ -122,7 +131,8 @@ typeset -gU path fpath manpath
 # Multiple Homebrews on Apple Silicon
 if [[ "$(arch)" == "arm64" ]]; then
     eval "$(/opt/homebrew/bin/brew shellenv)"
-else
+fi
+if [[ "$(arch)" == "i386" ]]; then
     eval "$(/usr/local/bin/brew shellenv)"
 fi
 
@@ -131,28 +141,18 @@ setopt nullglob
 path=(
     $HOME/bin
 
-    /opt/homebrew/bin
-
-    /opt/homebrew/opt/libtool/libexec/gnubin
-    /opt/homebrew/opt/coreutils/libexec/gnubin
-    /opt/homebrew/opt/gnu-tar/libexec/gnubin
-    /opt/homebrew/opt/grep/libexec/gnubin
-    /opt/homebrew/opt/gawk/libexec/gnubin
-    /opt/homebrew/opt/make/libexec/gnubin
-    /opt/homebrew/opt/findutils/libexec/gnubin
-    /opt/homebrew/opt/gnu-which/libexec/gnubin
-
     # $(brew --prefix llvm)/bin
+    $path[@]
 
     /usr/bin
     /usr/sbin
     /bin
     /sbin
 
-    $path[@]
+    ~/code/rs/rtfd/bin
+
     .
 
-    $HOME/.bun/bin
     $HOME/.cargo/bin
 )
 
@@ -210,6 +210,7 @@ ezaflags="--classify --color-scale --bytes --group-directories-first"
 if in_path "eza" ; then
     function els() { eza --classify --color-scale --bytes --group-directories-first $@ }
     alias ls="eza ${ezaflags} "$*" "
+    alias ll="eza ${ezaflags} -l "$*" "
     alias ell="eza ${ezaflags} --long --git"
     alias eld="eza ${ezaflags} --all --long --sort date"
     alias elt="eza ${ezaflags} --all --long --sort date"
@@ -234,8 +235,6 @@ tr=34:\
 tw=35:\
 tx=36:"
 
-
-
 ## Aliases
 alias ,="cd .."
 function @() {
@@ -246,9 +245,7 @@ function @() {
   fi
 }
 alias cp="cp -a"
-alias dc="docker-compose"
-alias dc='docker-compose'
-alias df='df -h'  # human readable
+alias df='df --human-readable'
 alias dkrr='docker run --rm -it -u1000:1000 -v$(pwd):/work -w /work -e DISPLAY=$DISPLAY'
 alias dust='dust -r'
 alias grep="grep --color=auto"
@@ -256,24 +253,18 @@ alias gs="git status 2>/dev/null"
 alias h="history 1"
 alias hg="history 1 | grep -i"
 alias logs="docker logs control -f"
-# alias ls="ls ${lsflags}"
-# alias lt="ls ${lsflags} -l --sort=time --reverse --time-style=long-iso"
-# alias lx="ls ${lsflags} -Xl"
 alias m="less"
 alias b="bat --plain"
-alias p=python3
 alias path='echo $PATH | tr : "\n" | cat -n'
 alias pd='pushd'  # symmetry with cd
-alias r='R --no-save --no-restore-data --quiet'
+alias r="R --no-save --no-restore-data --quiet"
 alias rg='rg --pretty --smart-case --fixed-strings'
 alias rgc='rg --no-line-number --color never '
-alias ssh="TERM=xterm-256color ssh -Y"
+alias ssh="TERM=xterm-256color ssh"
 alias t='tmux -2 new-session -A -s "moab"'
 
 alias d='dirs -v'
 for index ({1..9}) alias "$index"="cd +${index}"; unset index
-
-export R_LIBS="~/.rlibs"
 
 function fif() {
   if [ ! "$#" -gt 0 ]; then echo "Need a string to search for!"; return 1; fi
@@ -291,6 +282,7 @@ function ht()      { (head $1 && echo "---" && tail $1) | less }
 function take()    { mkdir -p $1 && cd $1 }
 function cols()    { head -1 $1 | tr , \\n | cat -n | column }		# show CSV header
 function zcolors() { for code in {000..255}; do print -P -- "$code: %F{$code}Test%f"; done | column}
+function git3()    { git fetch upstream && git merge upstream/main && git push }
 
 # Automatically ls after you cd
 function chpwd() {
@@ -357,8 +349,9 @@ autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 # }}}
 
-export NVM_LAZY_LOAD=true
-zinit light lukechilds/zsh-nvm
+# export NVM_AUTO_USE=false
+# export NVM_LAZY_LOAD=true
+# zinit light lukechilds/zsh-nvm
 
 # | completions | # {{{
 zinit ice wait silent blockf; 
@@ -427,117 +420,37 @@ FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}path-to-dir]='fg=cyan,underline'
 FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}comment]='fg=gray'
 
 
-if [[ "$(arch)" == "arm64" ]]; then
-	ICON=''
-	alias t='tmux -2 new-session -A -s "arm64"'
-else
-	ICON=''
-	alias t='tmux -2 new-session -A -s "x86"'
-fi
+export prompticons=(󰯉 󰊠         ▼         󰆚 󰀘 󱍢 󰦥)
 
-
-## 
-# 
-#  alien
-# 
-# \uf427
-# 
-#  
-# 
 function prompt_my_host_icon() {
-	p10k segment -i $ICON -f blue
+	p10k segment -i $prompticons[7] -f 074
 }
-
 
 export BAT_THEME="gruvbox-dark"
 export AWS_DEFAULT_PROFILE=dev-additive
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-
-
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
 typeset -g POWERLEVEL9K_PROMPT_CHAR_{OK,ERROR}_VIINS_CONTENT_EXPANSION='»'
-
-
-##
-## Lazy load Anaconda to save startup time
-## 
-
-function lazyload_conda {
-    if whence -p conda &> /dev/null; then
-        # Placeholder 'conda' shell function
-        conda() {
-            # Remove this function, subsequent calls will execute 'conda' directly
-            unfunction "$0"
-
-            # Follow softlink, then up two folders for typical location of anaconda
-            _conda_prefix=dirname $(dirname $(readlink -f $(whence -p conda)))
-            
-            ## >>> conda initialize >>>
-            # !! Contents within this block are managed by 'conda init' !!
-            __conda_setup="$("$_conda_prefix/bin/conda" 'shell.zsh' 'hook' 2> /dev/null)"
-            if [ $? -eq 0 ]; then
-                eval "$__conda_setup"
-            else
-                if [ -f "$_conda_prefix/etc/profile.d/conda.sh" ]; then
-                    . "$_conda_prefix/etc/profile.d/conda.sh"
-                else
-                    export PATH="$_conda_prefix/base/bin:$PATH"
-                fi
-            fi
-            unset __conda_setup
-            # <<< conda initialize <<<
-
-            $0 "$@"
-        }
-    fi
-}
-lazyload_conda
-
-# bun completions
-[ -s "/Users/sstanfield/.bun/_bun" ] && source "/Users/sstanfield/.bun/_bun"
-
-# bun
-export BUN_INSTALL="$HOME/.bun"
 
 # my C flags
 #export CFLAGS='-Wall -O3 -include stdio.h --std=c17'
-alias goc="cc -xc - $CFLAGS"
 export DISPLAY=:0
+
+export R_LIBS="~/.rlibs"
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-# __conda_setup="$('/opt/homebrew/Caskroom/miniforge/base/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-# if [ $? -eq 0 ]; then
-#     eval "$__conda_setup"
-# else
-#     if [ -f "/opt/homebrew/Caskroom/miniforge/base/etc/profile.d/conda.sh" ]; then
-#         . "/opt/homebrew/Caskroom/miniforge/base/etc/profile.d/conda.sh"
-#     else
-#         export PATH="/opt/homebrew/Caskroom/miniforge/base/bin:$PATH"
-#     fi
-# fi
-# unset __conda_setup
-# # <<< conda initialize <<<
-
-# LLVM=$(brew --prefix llvm)
-# export LDFLAGS="-L$LLVM/lib"
-# export CPPFLAGS="-I$LLVM/include"
-# export CFLAGS="-I$LLVM/include"
-
-alias brow='arch --x86_64 /usr/local/Homebrew/bin/brew'
-
-light_color='base16-atelier-sulphurpool-light.yml'
-dark_color='base16-atelier-sulphurpool.yml'
-
-# pip3 install --user alacritty-colorscheme
-# git clone https://github.com/aaron-williamson/base16-alacritty $HOME/.config
-colorflags="-c ~/.alacritty.yml -C ~/.config/base16/colors"
-alias day="alacritty-colorscheme ${colorflags} -V apply $light_color"
-alias night="alacritty-colorscheme ${colorflags} -V apply $dark_color"
-alias toggle="alacritty-colorscheme ${colorflags} -V toggle $light_color $dark_color"
-
-function idot()    { dot -Tsvg -Gsize=${1:-9},${2:-16}\! | rsvg-convert | ~/bin/imgcat }
-function iplot()   { awk -f ~/bin/plot.awk | rsvg-convert -z ${1:-1} | ~/bin/imgcat }
+__conda_setup="$('/opt/homebrew/Caskroom/miniconda/base/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/opt/homebrew/Caskroom/miniconda/base/etc/profile.d/conda.sh" ]; then
+        . "/opt/homebrew/Caskroom/miniconda/base/etc/profile.d/conda.sh"
+    else
+        export PATH="/opt/homebrew/Caskroom/miniconda/base/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
 
