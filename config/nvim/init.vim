@@ -7,8 +7,6 @@
 " zR • open all folds
 " zM • close all folds
 
-let g:solar_state=1
-
 let mapleader = ","             " Our free key to prefix custom commands
 let localleader = "\\"
 let g:plug_shallow=1
@@ -28,12 +26,19 @@ call plug#begin('~/.config/nvim/plugged')
 Plug 'sheerun/vim-polyglot'             " all the best language / syntax packs
 Plug 'ryanoasis/vim-devicons'
 Plug 'tmux-plugins/vim-tmux'
+
+" Colors
 Plug 'dracula/vim', {'as': 'dracula'}
+Plug 'p00f/alabaster.nvim'
 
 " from vim boilerplate generator
 Plug 'dense-analysis/ale'           " code linting
-Plug 'CharlesGueunet/VimFilify'
-Plug 'Yggdroot/indentLine'
+
+Plug 'Yggdroot/indentLine'          " | in the white space
+let g:indentLine_enabled = 0
+let g:indentLine_char_list = ['|', '¦', '┆', '┊']
+let g:indentLine_faster = 1
+
 
 "" HTML Bundle
 Plug 'hail2u/vim-css3-syntax'
@@ -45,8 +50,7 @@ Plug 'mileszs/ack.vim'
 "Plug 'Raimondi/delimitMate'         " auto closing quotes
 
 Plug 'atelierbram/vim-colors_atelier-schemes'
-
-Plug 'csexton/trailertrash.vim'         "
+Plug 'csexton/trailertrash.vim'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'lifepillar/vim-colortemplate'
 Plug 'chriskempson/base16-vim'
@@ -65,7 +69,6 @@ Plug 'powerman/vim-plugin-AnsiEsc'
 Plug 'scottstanfield/vimcmdline'
 
 " colorschemes
-Plug 'lifepillar/vim-solarized8'
 "Plug 'NLKNguyen/papercolor-theme'
 Plug 'dracula/vim'
 Plug 'junegunn/seoul256.vim'
@@ -76,6 +79,8 @@ Plug 'jistr/vim-nerdtree-tabs'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/limelight.vim'
+nmap <leader>tl :Limelight!! 0.7<CR>
+
 Plug 'junegunn/rainbow_parentheses.vim'
 Plug 'junegunn/vim-peekaboo'
 
@@ -114,17 +119,11 @@ Plug 'edkolev/tmuxline.vim', {'on': ['Tmuxline', 'TmuxlineSimple', 'TmuxlineSnap
 
 Plug 'kassio/neoterm'
 
-" rlang
-" Plug 'jalvesaq/colorout', { 'for': 'r' }
-" Plug 'jalvesaq/Nvim-r', {'branch': 'master', 'for':'r' }
 Plug 'jalvesaq/colorout', { 'for': 'r' }
-Plug 'jalvesaq/Nvim-r', {'branch': 'master'}
-" let cmdline_app = {}
-" let cmdline_app['sh'] = '/opt/homebrew/bin/bash'
+Plug 'jalvesaq/Nvim-r', { 'for': 'r', 'branch': 'master'}
 
 command Z w | qa
 cabbrev wqa Z
-
 
 Plug 'kshenoy/vim-signature'                    " show marks in margin
 
@@ -137,45 +136,20 @@ Plug 'tpope/vim-surround'
 Plug 'airblade/vim-gitgutter'                   " shows git diff marks in the gutter
 Plug 'github/copilot.vim'
 
+Plug 'junegunn/rainbow_parentheses.vim'
+let g:rainbow#pairs = [['(', ')'], ['[', ']']]
+augroup rainbow
+  autocmd!
+  autocmd FileType c,bash,javascript RainbowParentheses
+augroup END
+
 call plug#end()
 " }}}
 
 " Plugin Configurations {{{
 
-let g:indentLine_enabled = 1
-"let g:indentLine_concealcursor = 0
-let g:indentLine_char = '┆'
-let g:indentLine_faster = 1
 
 
-function! ColorSolarizedDark()
-    let g:airline_theme='solarized'
-    colorscheme solarized8_high
-    call lightline#colorscheme()
-endfunction
-
-function! ColorDracula()
-    let g:airline_theme='silver'
-    colorscheme dracula
-    let g:lightline = {'colorscheme': 'ayu_light'}
-    call lightline#colorscheme()
-endfunction
-
-function! ColorSeoul256()
-    color seoul256
-    let g:airline_theme='silver'
-    call lightline#colorscheme()
-endfunction
-
-nmap <leader>e1 :call ColorSolarizedDark()<cr>
-nmap <leader>e2 :call ColorDracula()<cr>
-nmap <leader>e3 :call ColorSeoul256()<cr>
-
-
-" junegunn/rainbow_parenthesis
-" let g:rainbow#pairs = [['(', ')'], ['[', ']']]
-
-nmap <leader>tl :Limelight!! 0.7<CR>
 
 " junegunn/goyo.vim {{{
 let g:goyo_width = 70
@@ -794,55 +768,57 @@ cnoreabbrev Ack Ack!
 nnoremap <silent> [q :cprevious<CR>
 nnoremap <silent> ]q :cnext<CR>
 
+" COLORS {{{
+
 " colorscheme stuff has to go afer plug
 " https://github.com/junegunn/vim-plug/wiki/faq#im-getting-cannot-find-color-scheme--does-vim-plug-support-color-schemes
 
 " Set solarized to dark or light depending on what
 " iterm profile the session was launched with.
-"
-let g:solar_state=1
+
+let g:background_light=0
 function! SetDefaultSolar()          " ,x toggles dark/light
-    elseif g:solar_state == 0
+    if g:background_light == 0
         call SolarDark()
-    elseif g:solar_state == 1
+    elseif g:background_light == 1
         call SolarLight()
     endif
     call lightline#colorscheme()
 endfunction
 
-function! SolarDark()
-    let g:solar_state=0
+function! SetBackgroundDark()
+    let g:background_light=0
+    colorscheme dracula
     set background=dark
-    colorscheme solarized8_high
-    " hi colorcolumn ctermbg=darkgrey
+    hi colorcolumn ctermbg=darkgrey
+    call lightline#colorscheme()
 endfunction
 
-function! SolarLight()
-    let g:solar_state=1
+function! SetBackgroundLight()
+    let g:background_light=1
     set background=light
-    colorscheme solarized8_high
+    colorscheme alabaster
     hi colorcolumn ctermbg=lightgrey
+    call lightline#colorscheme()
 endfunction
 
-function! ToggleColors()
-    if g:solar_state == 0 | call SolarLight() | else | call SolarDark() | endif
+function! ToggleBackground()
+    if g:background_light == 0 | call SetBackgroundLight() | else | call SetBackgroundDark() | endif
 endfunction
-noremap <leader>tc :call ToggleColors()<CR>
-
-" set background=dark
-" try
-"   colorscheme solarized8_high
-" catch
-" endtry
-
-" COLORS {{{
-" Hide the Magenta with ,/
-nnoremap <silent> <leader>/ :set hlsearch! hlsearch?<CR>
+noremap <leader>tc :call ToggleBackground()<CR>
 
 if has('termguicolors')
     set termguicolors
 endif
-hi Cursor guifg=green guibg=green
+
+set background=dark
+colorscheme dracula
+" hi colorcolumn ctermbg=darkgrey
+
+" Hide the Magenta with ,/
+nnoremap <silent> <leader>/ :set hlsearch! hlsearch?<CR>
+
+hi Cursor guifg=green guibg=magenta
 hi Cursor2 guifg=red guibg=red
 
 " TODO: fix cursor for insert mode 
@@ -852,22 +828,11 @@ set guicursor=n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50
           \,a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor
           \,sm:block-blinkwait175-blinkoff150-blinkon175
 
- " highlight Cursor guifg=white guibg=black
- " highlight iCursor guifg=white guibg=steelblue
- " set guicursor=n-v-c:block-Cursor
- " set guicursor+=i:ver100-iCursor
- " set guicursor+=n-v-c:blinkon0
- " set guicursor+=i:blinkwait10
-
 " }}}
 
 highlight Comment cterm=italic gui=italic
 set t_ZH=[3m
 set t_ZR=[23m
-
-set background=dark
-" hi colorcolumn ctermbg=darkgrey
-colorscheme dracula
 
 " CAPSLOCK {{{
   " Insert and command-line mode Caps Lock.
@@ -886,10 +851,6 @@ try
 catch
 endtry
 
-" highlight Cursor guifg=NONE guibg=Green
-" highlight lCursor guifg=NONE guibg=Cyan
-
-  
 " }}}
 
 function! UpdateCFlags()
@@ -903,17 +864,10 @@ autocmd FileType c call UpdateCFlags()
 
 let g:ale_fixers = { 'javascript': ['eslint'] }
 let g:ale_fix_on_save = 1
-
-let g:ale_fix_on_save = 1
 let g:ale_sign_error = '>>'
 let g:ale_sign_warning = '--'
 let g:ale_echo_msg_error_str = 'E'
 let g:ale_echo_msg_warning_str = 'W'
 let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
 let g:ale_python_flake8_options = '--max-line-length 88 --extend-ignore=E203'
-"let g:ale_cpp_cc_options="-std=c2x -Wall -I/Users/sstanfield/lib/boost"
-"let g:ale_cpp_cc_options=substitute(system("pkg-config --cflags libzmq libczmq"))
-
 let g:ale_linters = {'c': ['clang'], 'cpp': ['clang', 'g++'], 'javascript': ['eslint'] }
-
-

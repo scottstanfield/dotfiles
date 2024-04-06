@@ -177,7 +177,7 @@ manpath=(
 )
 manpath=($^manpath(N))
 setopt NO_nullglob
-
+export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 
 ## LS and colors
 ## Tips: https://gist.github.com/syui/11322769c45f42fad962
@@ -267,8 +267,10 @@ alias pd='pushd'  # symmetry with cd
 alias r='R --no-save --no-restore-data --quiet'
 alias rg='rg --pretty --smart-case --fixed-strings'
 alias rgc='rg --no-line-number --color never '
-alias ssh="TERM=xterm-256color ssh -Y"
+alias ssh="TERM=xterm-256color ssh "
 alias t='tmux -2 new-session -A -s "moab"'
+
+function anybar { echo -n $1 | nc -4u -w0 localhost ${2:-1738}; }
 
 alias d='dirs -v'
 for index ({1..9}) alias "$index"="cd +${index}"; unset index
@@ -313,12 +315,12 @@ less_options=(
 export LESS="${less_options[*]}";
 
 # vi alias points to nvim or vim
-which "nvim" &> /dev/null && _vic="nvim" || _vic="vim"
-export EDITOR=${_vic}
-alias vi="${_vic} -o"
+which "nvim" &> /dev/null && _vi="nvim" || _vi="vim"
+export EDITOR=${_vi}
+alias vi="${_vi} -o"
 
 # zshrc and vimrc aliases to edit these two files
-alias zshrc="${_vic} ~/.zshrc"
+alias zshrc="${_vi} ~/.zshrc"
 if [[ $EDITOR  == "nvim" ]]; then
     alias vimrc="nvim ~/.config/nvim/init.vim"
 else
@@ -435,17 +437,17 @@ else
 	alias t='tmux -2 new-session -A -s "x86"'
 fi
 
-
 ## 
 # 
 #  alien
-# 
+# 
 # \uf427
 # 
 #  
 # 
+ICON=''
 function prompt_my_host_icon() {
-	p10k segment -i $ICON -f blue
+	p10k segment -i $ICON -f green
 }
 
 
@@ -493,7 +495,7 @@ function lazyload_conda {
         }
     fi
 }
-lazyload_conda
+# lazyload_conda
 
 # bun completions
 [ -s "/Users/sstanfield/.bun/_bun" ] && source "/Users/sstanfield/.bun/_bun"
@@ -504,7 +506,6 @@ export BUN_INSTALL="$HOME/.bun"
 # my C flags
 #export CFLAGS='-Wall -O3 -include stdio.h --std=c17'
 alias goc="cc -xc - $CFLAGS"
-export DISPLAY=:0
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
@@ -540,4 +541,6 @@ alias toggle="alacritty-colorscheme ${colorflags} -V toggle $light_color $dark_c
 
 function idot()    { dot -Tsvg -Gsize=${1:-9},${2:-16}\! | rsvg-convert | ~/bin/imgcat }
 function iplot()   { awk -f ~/bin/plot.awk | rsvg-convert -z ${1:-1} | ~/bin/imgcat }
+
+eval "$(zoxide init zsh)"
 
