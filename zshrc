@@ -1,4 +1,4 @@
-#/ Scott Stanfield
+# Scott Stanfield
 # http://git.io/dmz/
 
 # Timing startup
@@ -177,7 +177,7 @@ manpath=(
 )
 manpath=($^manpath(N))
 setopt NO_nullglob
-
+export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 
 ## LS and colors
 ## Tips: https://gist.github.com/syui/11322769c45f42fad962
@@ -263,6 +263,8 @@ alias rgc='rg --no-line-number --color never '
 alias ssh="TERM=xterm-256color ssh"
 alias t='tmux -2 new-session -A -s "moab"'
 
+function anybar { echo -n $1 | nc -4u -w0 localhost ${2:-1738}; }
+
 alias d='dirs -v'
 for index ({1..9}) alias "$index"="cd +${index}"; unset index
 
@@ -305,12 +307,12 @@ less_options=(
 export LESS="${less_options[*]}";
 
 # vi alias points to nvim or vim
-which "nvim" &> /dev/null && _vic="nvim" || _vic="vim"
-export EDITOR=${_vic}
-alias vi="${_vic} -o"
+which "nvim" &> /dev/null && _vi="nvim" || _vi="vim"
+export EDITOR=${_vi}
+alias vi="${_vi} -o"
 
 # zshrc and vimrc aliases to edit these two files
-alias zshrc="${_vic} ~/.zshrc"
+alias zshrc="${_vi} ~/.zshrc"
 if [[ $EDITOR  == "nvim" ]]; then
     alias vimrc="nvim ~/.config/nvim/init.vim"
 else
@@ -433,24 +435,62 @@ export AWS_DEFAULT_PROFILE=dev-additive
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 typeset -g POWERLEVEL9K_PROMPT_CHAR_{OK,ERROR}_VIINS_CONTENT_EXPANSION='»'
 
+
+##
+## Lazy load Anaconda to save startup time
+## 
+
+function lazyload_conda {
+    if whence -p conda &> /dev/null; then
+        # Placeholder 'conda' shell function
+        conda() {
+            # Remove this function, subsequent calls will execute 'conda' directly
+            unfunction "$0"
+
+            # Follow softlink, then up two folders for typical location of anaconda
+            _conda_prefix=dirname $(dirname $(readlink -f $(whence -p conda)))
+            
+            ## >>> conda initialize >>>
+            # !! Contents within this block are managed by 'conda init' !!
+            __conda_setup="$("$_conda_prefix/bin/conda" 'shell.zsh' 'hook' 2> /dev/null)"
+            if [ $? -eq 0 ]; then
+                eval "$__conda_setup"
+            else
+                if [ -f "$_conda_prefix/etc/profile.d/conda.sh" ]; then
+                    . "$_conda_prefix/etc/profile.d/conda.sh"
+                else
+                    export PATH="$_conda_prefix/base/bin:$PATH"
+                fi
+            fi
+            unset __conda_setup
+            # <<< conda initialize <<<
+
+            $0 "$@"
+        }
+    fi
+}
+# lazyload_conda
+
 # my C flags
-#export CFLAGS='-Wall -O3 -include stdio.h --std=c17'
-export DISPLAY=:0
+# export CFLAGS='-Wall -O3 -include stdio.h --std=c17'
+# alias goc="cc -xc - $CFLAGS"
 
 export R_LIBS="~/.rlibs"
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/opt/homebrew/Caskroom/miniconda/base/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/opt/homebrew/Caskroom/miniconda/base/etc/profile.d/conda.sh" ]; then
-        . "/opt/homebrew/Caskroom/miniconda/base/etc/profile.d/conda.sh"
-    else
-        export PATH="/opt/homebrew/Caskroom/miniconda/base/bin:$PATH"
-    fi
-fi
-unset __conda_setup
+# __conda_setup="$('/opt/homebrew/Caskroom/miniconda/base/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+# if [ $? -eq 0 ]; then
+#     eval "$__conda_setup"
+# else
+#     if [ -f "/opt/homebrew/Caskroom/miniconda/base/etc/profile.d/conda.sh" ]; then
+#         . "/opt/homebrew/Caskroom/miniconda/base/etc/profile.d/conda.sh"
+#     else
+#         export PATH="/opt/homebrew/Caskroom/miniconda/base/bin:$PATH"
+#     fi
+# fi
+# unset __conda_setup
 # <<< conda initialize <<<
+
+eval "$(zoxide init zsh)"
 

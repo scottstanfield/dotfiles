@@ -4,24 +4,31 @@ live_config_reload = true
 [env]
 TERM = "xterm-256color"
 
+# Default:
+    #   - (macOS) Menlo
+    #   - (Linux/BSD) monospace
+    #   - (Windows) Consolas
+
 [font]
 size = 22
 
-[font.bold]
-family = "JetBrainsMono Nerd Font"
-style = "Bold"
-
-[font.bold_italic]
-family = "JetBrainsMono Nerd Font"
-style = "Bold Italic"
-
-[font.italic]
-family = "JetBrainsMono Nerd Font"
-style = "Italic"
+#  brew install --cask font-monaspice-mono-nerd-font
 
 [font.normal]
-family = "JetBrainsMono Nerd Font"
+family = "MonaspiceNe Nerd Font Mono"
 style = "Regular"
+
+[font.bold]
+family = "MonaspiceNe Nerd Font Mono"
+style = "Bold"
+
+[font.italic]
+family = "MonaspiceRn Nerd Font Mono"
+style = "Regular"
+
+[font.bold_italic]
+family = "MonaspiceRn Nerd Font Mono"
+style = "Bold"
 
 [[keyboard.bindings]]
 action = "ToggleSimpleFullscreen"
