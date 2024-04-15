@@ -1,13 +1,19 @@
 [font]
 size = 18
 
+# Menlo: default for macOS
+normal = { family = "Menlo", style = "Regular" }
+bold = { family = "Menlo", style = "Bold" }
+italic = { family = "Menlo", style = "Italic" }
+bold_italic = { family = "Menlo", style = "Regular" }
+
 # 1. Github Mona: https://github.com/mona-sans
-# brew install --cask monaspice-nerd-font-mono
+# brew install --cask font-monaspace-nerd-font
 #
-normal = { family = "MonaspiceNe Nerd Font Mono", style = "Regular" }
-bold = { family = "MonaspiceNe Nerd Font Mono", style = "Bold" }
-italic = { family = "MonaspiceRn Nerd Font Mono", style = "Regular" }
-bold_italic = { family = "MonaspiceRn Nerd Font Mono", style = "Bold" }
+# normal = { family = "MonaspiceNe Nerd Font Mono", style = "Regular" }
+# bold = { family = "MonaspiceNe Nerd Font Mono", style = "Bold" }
+# italic = { family = "MonaspiceRn Nerd Font Mono", style = "Regular" }
+# bold_italic = { family = "MonaspiceRn Nerd Font Mono", style = "Bold" }
 
 # 2. Microsoft Cascadia: https://github.com/microsoft/cascadia-code 
 # brew install --cask caskaydia-cove-nerd-font-mono
