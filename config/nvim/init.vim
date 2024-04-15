@@ -141,7 +141,12 @@ Plug 'junegunn/rainbow_parentheses.vim'
 let g:rainbow#pairs = [['(', ')'], ['[', ']']]
 augroup rainbow
   autocmd!
-  autocmd FileType c,bash,javascript RainbowParentheses
+    autocmd FileType julia RainbowParentheses
+    autocmd FileType r RainbowParentheses
+    autocmd FileType python RainbowParentheses
+    autocmd FileType bash RainbowParentheses
+    autocmd FileType vim RainbowParentheses
+    autocmd FileType zsh RainbowParentheses
 augroup END
 
 call plug#end()
@@ -661,14 +666,6 @@ augroup my_au
 	" au BufEnter * if &buftype == 'terminal' | :startinsert | endif
 augroup END
 
-augroup rainbow_paren
-    autocmd!
-    autocmd FileType r RainbowParentheses
-    autocmd FileType python RainbowParentheses
-    autocmd FileType bash RainbowParentheses
-    autocmd FileType vim RainbowParentheses
-    autocmd FileType zsh RainbowParentheses
-augroup END
 
 " Remember the cursor position for every file
 " function! PositionCursorFromViminfo()
