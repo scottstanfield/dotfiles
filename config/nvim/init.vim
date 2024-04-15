@@ -26,6 +26,7 @@ call plug#begin('~/.config/nvim/plugged')
 Plug 'sheerun/vim-polyglot'				" all the best language / syntax packs
 Plug 'ryanoasis/vim-devicons'
 Plug 'tmux-plugins/vim-tmux'
+"Plug 'JuliaEditorSupport/julia-vim'
 
 " Colors
 Plug 'dracula/vim', {'as': 'dracula'}
@@ -155,18 +156,22 @@ nmap <leader>tm :silent Goyo<CR>
 " }}}
 
 " jalvesaq/Nvim-r {{{
-" rlang
+augroup nvimr
+    autocmd!
 	let R_args = ['--no-save', '--quiet']
 	let R_assign = 0
+	au FileType r noremap <silent> <Space> :call SendLineToR("stay")<CR><Esc><Home><Down>
+	au FileType r vnoremap <silent> <Space> :call SendSelectionToR("silent", "stay")<cr>
+augroup END
+
+" rlang
 	" let R_tmpdir = '~$USER/R/tmp'				  " TODO: consider removing this
 	" let R_source_args = 'print.eval=F'
 	" let R_nvimpager = 'no'
 	"let R_auto_start = 1
 	" " I needed to run `brew link --force readline` in order to get gcc5
 	" to compile nvimcom (which updates automatically when you invoke nvim-r)
-	noremap <silent> <Space> :call SendLineToR("stay")<CR><Esc><Home><Down>
 	"vnoremap <silent> <Space> <Plug>RSendSelection<Esc><Esc>
-	vnoremap <silent> <Space> :call SendSelectionToR("silent", "stay")<cr>
 	" inoremap <s-cr> <Esc>:call SendLineToR("stay")<cr><down><home>i
 
 	" handle <s-cr> and <c-cr>
@@ -185,24 +190,6 @@ nmap <leader>tm :silent Goyo<CR>
 "autocmd VimLeave * if exists("g:SendCmdToR") && string(g:SendCmdToR) != "function('SendCmdToR_fake')" | call RQuit("nosave") | endif
 
 
-" edkolev/tmuxline.vim {{{
-let g:tmuxline_preset				= 'minimal'
-let g:tmuxline_theme				= 'lightline'
-let g:tmuxline_powerline_separators = 0
-let g:tmuxline_status_justify		= 'left'
-" Special prompt variables come from stftime and https://github.com/edkolev/tmuxline.vim
-let g:tmuxline_preset = {
-	\'a'	: '#S',
-	\'cwin' : '#I #W',
-	\'win'	: '#I #W',
-	\'y'	: '%a %b %e',
-	\'z'	: '%-l:%M %p'}
-"nmap <leader>tm :Tmuxline<CR>
-
-" Test tmux settings from vim (weird, I know) by typing ,tm
-" If good, run :TmuxlineSnapshot ~/.tmux.snapshot
-" Then merge that into the bottom of your .tmux.conf
-" }}}
 " fuzzyfinder {{{
 nnoremap <silent> <c-p> :FZF<CR>
 nnoremap <silent> <leader>ff :FZF<CR>
@@ -232,26 +219,26 @@ nnoremap <silent> <F2> :NERDTreeFind<CR>
 nnoremap <silent> <F3> :NERDTreeToggle<CR>
 " }}}
 " scottstanfield/vimcmdline {{{
-" let cmdline_map_start			 = '<LocalLeader>s'
-" let cmdline_map_send			 = '<Space>'
-" let cmdline_map_send_and_stay  = '<LocalLeader><Space>'
-" let cmdline_map_source_fun	 = '<LocalLeader>f'
-" let cmdline_map_send_paragraph = '<LocalLeader>p'
-" let cmdline_map_send_block	 = '<LocalLeader>b'
-" let cmdline_map_quit			 = '<LocalLeader>q'
-" let cmdline_vsplit	  = 0	   " Split the window vertically
-" let cmdline_esc_term	  = 1	   " Remap <Esc> to :stopinsert in Neovim's terminal
-" let cmdline_in_buffer   = 1	   " Start the interpreter in a Neovim's terminal
-" let cmdline_term_height = 15	   " Initial height of interpreter window or pane
-" let cmdline_term_width  = 80	   " Initial width of interpreter window or pane
-" let cmdline_tmp_dir	  = '/tmp' " Temporary directory to save files
-" let cmdline_outhl		  = 1	   " Syntax highlight the output
-" let cmdline_auto_scroll = 1	   " Keep the cursor at the end of terminal (nvim)
-" let cmdline_app = {}
-" let cmdline_app['python'] = 'ipython'
-" let cmdline_app['sh']		= 'bash'
-" let cmdline_app['julia']	= 'julia'
-" let cmdline_app['javascript']  = 'node'
+let cmdline_map_start			 = '<LocalLeader>r'
+let cmdline_map_send			 = '<Space>'
+let cmdline_map_send_and_stay  = '<LocalLeader><Space>'
+let cmdline_map_source_fun	 = '<LocalLeader>f'
+let cmdline_map_send_paragraph = '<LocalLeader>p'
+let cmdline_map_send_block	 = '<LocalLeader>b'
+let cmdline_map_quit			 = '<LocalLeader>q'
+let cmdline_vsplit	  = 0	   " Split the window vertically
+let cmdline_esc_term	  = 1	   " Remap <Esc> to :stopinsert in Neovim's terminal
+let cmdline_in_buffer   = 1	   " Start the interpreter in a Neovim's terminal
+let cmdline_term_height = 15	   " Initial height of interpreter window or pane
+let cmdline_term_width  = 80	   " Initial width of interpreter window or pane
+let cmdline_tmp_dir	  = '/tmp' " Temporary directory to save files
+let cmdline_outhl		  = 1	   " Syntax highlight the output
+let cmdline_auto_scroll = 1	   " Keep the cursor at the end of terminal (nvim)
+let cmdline_app = {}
+let cmdline_app['python'] = 'ipython'
+let cmdline_app['sh']		= 'bash'
+let cmdline_app['julia']	= 'julia'
+let cmdline_app['javascript']  = 'node'
 " }}}
 " TrailerTrash {{{
 nmap <silent> <leader>$ :TrailerTrim<cr>
@@ -331,6 +318,7 @@ ab [Sigma] Σ
 ab [rho] ρ
 ab [pi] Π
 ab [blank] ␣
+
 
 " }}}
 
