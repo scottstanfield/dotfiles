@@ -189,7 +189,7 @@ if [ $? -eq 0 ]; then
 
 	# Hide stupid $HOME folders created by macOS from command line
 	# chflags hidden Movies Music Pictures Public Applications Library
-	lsflags+=" --hide Music --hide Movies --hide Pictures --hide Public --hide Library --hide Applications --hide OneDrive"
+    lsflags+='--ignore-glob "Music|Movies|Pictures|Public|Applications|Creative Cloud Files'
 else
     lsflags="-GF"
     export CLICOLOR=1
@@ -206,7 +206,7 @@ alias llt="ls ${lsflags} -l --sort=time --reverse --time-style=long-iso"
 ezaflags="--color=always --classify --color-scale --bytes --group-directories-first"
 ezaflags="--classify --color-scale --bytes --group-directories-first"
 
-# the `ls` replacement exa no longer maintained: it's now "eza"
+# the `ls` replacement "eza"
 if in_path "eza" ; then
     function els() { eza --classify --color-scale --bytes --group-directories-first $@ }
     alias ls="eza ${ezaflags} "$*" "
@@ -218,7 +218,7 @@ if in_path "eza" ; then
     alias elss="eza ${ezaflags} --all --long --sort size"
 fi
 
-export EXA_COLORS="\
+export EZA_COLORS="\
 uu=36:\
 gu=37:\
 sn=32:\
@@ -403,7 +403,6 @@ zinit light zdharma-continuum/null
 # zinit wait"1" lucid from"gh-r" as"null" for \
 #     sbin"**/fd"                 @sharkdp/fd      \
 #     sbin"**/bat"                @sharkdp/bat     \
-#     sbin"exa* -> exa"           ogham/exa        \
 #     sbin"glow" bpick"*.tar.gz"  charmbracelet/glow
 #
 #zi wait'0b' lucid from"gh-r" as"program" for @junegunn/fzf
@@ -495,6 +494,4 @@ else
 fi
 unset __conda_setup
 # <<< conda initialize <<<
-
-eval "$(zoxide init zsh)"
 
