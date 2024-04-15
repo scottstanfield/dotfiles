@@ -173,6 +173,8 @@ augroup END
 	" to compile nvimcom (which updates automatically when you invoke nvim-r)
 	"vnoremap <silent> <Space> <Plug>RSendSelection<Esc><Esc>
 	" inoremap <s-cr> <Esc>:call SendLineToR("stay")<cr><down><home>i
+    let R_args = ['--no-save', '--quiet']
+    let R_assign = 0
 
 	" handle <s-cr> and <c-cr>
 	" https://stackoverflow.com/questions/16359878/how-to-map-shift-enter
@@ -660,12 +662,12 @@ augroup my_au
 augroup END
 
 augroup rainbow_paren
-	autocmd!
-	autocmd FileType r RainbowParentheses
-	autocmd FileType python RainbowParentheses
-	autocmd FileType bash RainbowParentheses
-	autocmd FileType vim RainbowParentheses
-	autocmd FileType zsh RainbowParentheses
+    autocmd!
+    autocmd FileType r RainbowParentheses
+    autocmd FileType python RainbowParentheses
+    autocmd FileType bash RainbowParentheses
+    autocmd FileType vim RainbowParentheses
+    autocmd FileType zsh RainbowParentheses
 augroup END
 
 " Remember the cursor position for every file
