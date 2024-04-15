@@ -13,10 +13,16 @@
 #   Time (mean ± σ):      92.9 ms ±   0.9 ms    [User: 51.0 ms, System: 38.4 ms]
 #   Range (min … max):    91.7 ms …  95.5 ms    31 runs
 #
-# Benchmark relativity macbook M2 air
+# Relativity macbook M2 air
 #   Benchmark 1: zsh -i  -c "exit"
 #  Time (mean ± σ):     340.2 ms ± 214.2 ms    [User: 97.0 ms, System: 77.0 ms]
 #  Range (min … max):   211.2 ms … 761.1 ms    12 runs
+
+# Relativity with no wifi, and after 30+ minute warmup. note large SD
+# Benchmark 1: zsh -i  -c "exit"
+#   Time (mean ± σ):     464.2 ms ± 321.2 ms    [User: 89.1 ms, System: 67.4 ms]
+#   Range (min … max):   163.4 ms … 841.2 ms    10 runs
+ 
 
 
 # Profile .zshrc startup times by uncommenting this line:
@@ -183,28 +189,29 @@ export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 ## Tips: https://gist.github.com/syui/11322769c45f42fad962
 
 # GNU and BSD (macOS) ls flags aren't compatible
-gls --version &>/dev/null
+ls --version &>/dev/null
+ignorefiles=' --ignore-glob "Music|Movies|Pictures|Public|Applications|Creative Cloud Files" '
 if [ $? -eq 0 ]; then
-    lsflags="--color --group-directories-first -F"
+    lsflags="--color --group-directories-first -F "
 
 	# Hide stupid $HOME folders created by macOS from command line
 	# chflags hidden Movies Music Pictures Public Applications Library
-    lsflags+='--ignore-glob "Music|Movies|Pictures|Public|Applications|Creative Cloud Files'
+    lsflags+=${ignorefiles}
 else
     lsflags="-GF"
     export CLICOLOR=1
 fi
 
 alias la="ls ${lsflags} -la"
-alias ll="gls ${lsflags} -l --sort=extension"
+alias ll="ls ${lsflags} -l --sort=extension"
 alias lla="ls ${lsflags} -la"
 alias lld="ls ${lsflags} -l --sort=time --reverse --time-style=long-iso"
 alias lln="ls ${lsflags} -l"
 alias lls="ls ${lsflags} -l --sort=size --reverse"
 alias llt="ls ${lsflags} -l --sort=time --reverse --time-style=long-iso"
 
-ezaflags="--color=always --classify --color-scale --bytes --group-directories-first"
 ezaflags="--classify --color-scale --bytes --group-directories-first"
+ezaflags+=${ignorefiles}
 
 # the `ls` replacement "eza"
 if in_path "eza" ; then
@@ -443,55 +450,34 @@ typeset -g POWERLEVEL9K_PROMPT_CHAR_{OK,ERROR}_VIINS_CONTENT_EXPANSION='»'
 ## Lazy load Anaconda to save startup time
 ## 
 
-# function lazyload_conda {
-#     if whence -p conda &> /dev/null; then
-#         # Placeholder 'conda' shell function
-#         conda() {
-#             # Remove this function, subsequent calls will execute 'conda' directly
-#             unfunction "$0"
+function lazyload_conda {
+    if whence -p conda &> /dev/null; then
+        conda() {
+            # Remove this function, subsequent calls will execute 'conda' directly
+            unfunction "$0"
 
-#             # Follow softlink, then up two folders for typical location of anaconda
-#             _conda_prefix=dirname $(dirname $(readlink -f $(whence -p conda)))
-            
-#             ## >>> conda initialize >>>
-#             # !! Contents within this block are managed by 'conda init' !!
-#             __conda_setup="$("$_conda_prefix/bin/conda" 'shell.zsh' 'hook' 2> /dev/null)"
-#             if [ $? -eq 0 ]; then
-#                 eval "$__conda_setup"
-#             else
-#                 if [ -f "$_conda_prefix/etc/profile.d/conda.sh" ]; then
-# # . "$_conda_prefix/etc/profile.d/conda.sh"  # commented out by conda initialize
-#                 else
-# # export PATH="$_conda_prefix/base/bin:$PATH"  # commented out by conda initialize
-#                 fi
-#             fi
-#             unset __conda_setup
-#             # <<< conda initialize <<<
+            # Follow softlink, then up two folders for typical location of anaconda
+            _conda_prefix=$(dirname $(dirname $(readlink -f $(whence -p conda))))
+            __conda_setup="$("$_conda_prefix/bin/conda" 'shell.zsh' 'hook' 2> /dev/null)"
+            if [ $? -eq 0 ]; then
+                eval "$__conda_setup"
+            else
+                if [ -f "$_conda_prefix/etc/profile.d/conda.sh" ]; then
+                    . "$_conda_prefix/etc/profile.d/conda.sh"  # commented out by conda initialize
+                else
+                    export PATH="$_conda_prefix/base/bin:$PATH"  # commented out by conda initialize
+                fi
+            fi
+            unset __conda_setup
 
-#             $0 "$@"
-#         }
-#     fi
-# }
-# lazyload_conda
+            $0 "$@"
+        }
+    fi
+}
+lazyload_conda
 
 # my C flags
 # export CFLAGS='-Wall -O3 -include stdio.h --std=c17'
 # alias goc="cc -xc - $CFLAGS"
 
 export R_LIBS="~/.rlibs"
-
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/opt/homebrew/Caskroom/miniconda/base/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/opt/homebrew/Caskroom/miniconda/base/etc/profile.d/conda.sh" ]; then
-        . "/opt/homebrew/Caskroom/miniconda/base/etc/profile.d/conda.sh"
-    else
-        export PATH="/opt/homebrew/Caskroom/miniconda/base/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-# <<< conda initialize <<<
-
