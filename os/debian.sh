@@ -14,6 +14,8 @@ ls -
 
 [[ $EUID -eq 0 ]] || die "$0 needs to run as root. Try sudo $0"
 
-println "Hello from debian.sh"
+
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+cargo install eza
 
 exit 0
