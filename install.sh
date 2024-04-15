@@ -46,6 +46,7 @@ link zshrc                           ~/.zshrc
 link zlogin                          ~/.zlogin
 link vimrc                           ~/.vimrc						# minimal vimrc for VIM v8
 link tmux.conf                       ~/.tmux.conf
+link tmux.reset.conf                 ~/.tmux.reset.conf
 link bashrc                          ~/.bashrc
 link bash_profile                    ~/.bash_profile
 link inputrc                         ~/.inputrc
