@@ -190,7 +190,7 @@ export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 
 # GNU and BSD (macOS) ls flags aren't compatible
 ls --version &>/dev/null
-ignorefiles=' --ignore-glob "Music|Movies|Pictures|Public|Applications|Creative Cloud Files" '
+ignorefiles=' --ignore-glob "Library|Music|Movies|Pictures|Public|Applications|Creative Cloud Files" '
 if [ $? -eq 0 ]; then
     lsflags="--color --group-directories-first -F "
 
