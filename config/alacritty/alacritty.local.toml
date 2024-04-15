@@ -1,0 +1,34 @@
+[font]
+size = 18
+
+# 1. Github Mona: https://github.com/mona-sans
+# brew install --cask monaspice-nerd-font-mono
+#
+normal = { family = "MonaspiceNe Nerd Font Mono", style = "Regular" }
+bold = { family = "MonaspiceNe Nerd Font Mono", style = "Bold" }
+italic = { family = "MonaspiceRn Nerd Font Mono", style = "Regular" }
+bold_italic = { family = "MonaspiceRn Nerd Font Mono", style = "Bold" }
+
+# 2. Microsoft Cascadia: https://github.com/microsoft/cascadia-code 
+# brew install --cask caskaydia-cove-nerd-font-mono
+#
+# normal = { family = "CaskaydiaCove Nerd Font Mono", style = "Regular" }
+# bold = { family = "CaskaydiaCove Nerd Font Mono", style = "Bold" }
+# italic = { family = "CaskaydiaCove Nerd Font Mono", style = "Italic" }
+# bold_italic = { family = "CaskaydiaCove Nerd Font Mono", style = "Bold Italic" }
+
+# 3. Jetbrains: https://www.jetbrains.com/lp/mono/
+# brew install --cask font-jetbrains-nerd-font
+#
+# normal = { family = "JetbrainsMono Nerd Font Mono", style = "Regular" }
+# bold = { family = "JetbrainsMono Nerd Font Mono", style = "Bold" }
+# italic = { family = "JetbrainsMono Nerd Font Mono", style = "Italic" }
+# bold_italic = { family = "JetbrainsMono Nerd Font Mono", style = "Regular" }
+
+# 4. FiraCode: https://github.com/tonsky/FiraCode
+# brew install --cask font-fira-code-nerd-font
+#
+# normal = { family = "FiraCode Nerd Font Mono", style = "Regular" }
+# bold = { family = "FiraCode Nerd Font Mono", style = "Bold" }
+# italic = { family = "FiraCode Nerd Font Mono", style = "Italic" }
+# bold_italic = { family = "FiraCode Nerd Font Mono", style = "Regular" }

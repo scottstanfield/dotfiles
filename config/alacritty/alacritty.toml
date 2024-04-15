@@ -9,14 +9,15 @@ live_config_reload = true
 TERM = "xterm-256color"
 
 # Default:
-    #   - (macOS) Menlo
-    #   - (Linux/BSD) monospace
-    #   - (Windows) Consolas
+#   - (macOS) Menlo
+#   - (Linux/BSD) monospace
+#   - (Windows) Consolas
 
 ## FONTS
 #
 # 1. Run this to install Mona and Jetbrains typefaces
-#    brew install --cask font-monaspice-mono-nerd-font font-jetbrains-mono-nerd-font
+#
+#    brew install --cask font-monaspace-nerd-font font-jetbrains-mono-nerd-font
 #
 # 2. Copy one of the three prebuilt [font] section into a new file ~/.alacritty.local.toml
 
@@ -27,14 +28,6 @@ TERM = "xterm-256color"
 # bold = { family = "MonaspiceNe Nerd Font Mono", style = "Bold" }
 # italic = { family = "MonaspiceRn Nerd Font Mono", style = "Regular" }
 # bold_italic = { family = "MonaspiceRn Nerd Font Mono", style = "Bold" }
-
-## Jetbrains: https://www.jetbrains.com/lp/mono/
-# [font]
-# size = 20
-# normal = { family = "JetbrainsMono Nerd Font Mono", style = "Regular" }
-# bold = { family = "JetbrainsMono Nerd Font Mono", style = "Bold" }
-# italic = { family = "JetbrainsMono Nerd Font Mono", style = "Italic" }
-# bold_italic = { family = "JetbrainsMono Nerd Font Mono", style = "Regular" }
 
 ## Menlo (default installed on Mac)
 # [font]
