@@ -57,9 +57,8 @@ link config/nvim/init.vim            ~/.config/nvim/init.vim
 
 link config/alacritty/alacritty.toml       ~/.config/alacritty/alacritty.toml
 link config/alacritty/dracula.toml         ~/.config/alacritty/dracula.toml
-
 if [[ ! -e ~/.alacritty.local.toml ]]; then
-   link config/alacritty/alacritty.local.toml ~/.alacritty.local.toml
+   cp config/alacritty/alacritty.local.toml ~/.alacritty.local.toml
 fi
 
 # This is the stupidest name for an app yet. And it should be in .config/.hammerspoon

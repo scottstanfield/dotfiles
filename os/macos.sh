@@ -1,67 +1,104 @@
 #!/usr/bin/env bash
+# vim:ft=sh ts=4 sw=4 et
 
-# Close any open System Preferences panes, to prevent them from overriding
-# settings we’re about to change
-osascript -e 'tell application "System Preferences" to quit'
+set -euo pipefail
+require() { hash "$@" || exit 127; }
 
-# Disable Automatically rearrange Spaces based on most recent use
-defaults write com.apple.dock mru-spaces -bool false 
+_D="$(dirname "$(readlink -f "$0")")"
+cd "$_D"
 
-#####################
-# KEYBOARD & SPELLING
-#####################
+require brew
 
-# Disable correct spelling automatically
-defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool false 
+export HOMEBREW_NO_INSTALL_CLEANUP
+export HOMEBREW_NO_AUTO_UPDATE=1
 
-# Disable automatic capitalization
-defaults write NSGlobalDomain NSAutomaticCapitalizationEnabled -bool false 
+dotfiles=(
+    bat
+    fzf
+    git
+    less
+    neovim
+    ripgrep
+    tmux
+    zsh
+)
 
-# Disable automatic quote substitution
-defaults write NSGlobalDomain NSAutomaticQuoteSubstitutionEnabled -bool false 
+dev=(
+    autoconf 
+    automake
+    cmake
+    openssl
+    readline
+    sqlite3
+    xz
+    zlib
+    htop
+)
 
-# Disable automatic dash substitution
-defaults write NSGlobalDomain NSAutomaticDashSubstitutionEnabled -bool false 
+gnu=(
+    bash
+    binutils
+    coreutils
+    diffutils
+    findutils
+    gawk
+    gnu-sed
+    gnu-tar
+    gnu-which
+    gnutls
+    grep
+    gzip
+    make
+    watch
+    wdiff
+    wget
+)
 
-# Disable automatic period insertion on double-space
-defaults write -g NSAutomaticPeriodSubstitutionEnabled -bool false
+extras=(
+    du-dust
+    fd-find
+    git-delta
+    hexyl
+    hyperfine 
+    jless
+    jq
+    openssh
+    rsync
+    scrubcsv 
+    silicon
+    tokei
+    tree
+    unzip
+    vim
+    xsv
+    miniconda
+)
 
-######
-# DOCK
-######
+casks=(
+    rectangle
+    hammerspoon
+    alacritty
+    # handmirror
+)
 
-# Automatically hide and show the Dock
-defaults write com.apple.dock autohide -bool true 
+fonts=(
+    font-meslo-lg-nerd-font
+    font-jetbrains-mono-nerd-font
+    font-monaspace-nerd-font
+)
 
-# Change minimize/maximize window effect to scale from Genini
-defaults write com.apple.dock mineffect -string "scale"
+brew install "${dotfiles[*]}"
+brew install "${dev[*]}"
+brew install "${gnu[*]}"
+brew install ${extras[*]}
+brew cask install "${casks[*]}"
 
-# Minimize windows into their application’s icon
-defaults write com.apple.dock minimize-to-application -bool true
+brew tap homebrew/cask-fonts
+brew install --cask "${fonts[*]}"
 
-# Don’t show recent applications in Dock
-defaults write com.apple.dock show-recents -bool false
+# not sure if needed
+# softwareupdate --install-rosetta
 
-defaults write com.apple.dock autohide-delay -float 0
-defaults write com.apple.dock autohide-time-modifier -int 0
-killall Dock
+hash
 
-defaults write com.apple.screencapture type jpg
-
-defaults write com.apple.Dock showhidden -bool TRUE
-
-# dock: fast hide and instant show
-defaults write com.apple.dock autohide-delay -int 0; defaults write com.apple.dock autohide-time-modifier -int 0; killall Dock
-
-# dock: add a half-height spacer
-defaults write com.apple.dock persistent-apps -array-add '{"tile-type"="small-spacer-tile";}'
-
-# screenshots: go in folder on Desktop
-mkdir -p ${HOME}/Desktop/Screenshots
-defaults write com.apple.screencapture type -string "png"
-defaults write com.apple.screencapture location -string "${HOME}/Desktop/Screenshots"
-
-# defaults write com.apple.sound.beep.volume 0
-# defaults write com.apple.sound.uiaudio.enabled 0
-
-killall SystemUIServer
+exit 0

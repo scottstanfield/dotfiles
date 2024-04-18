@@ -113,8 +113,10 @@ autoload zmv
 
 ##
 ## PATH
-## macOS assumes GNU core utils installed: 
-## brew install coreutils findutils gawk gnu-sed gnu-tar grep makeZZ
+##
+## These dotfiles assume the GNU core utils are installed. Superior over
+## the Mac BSD utilities of the same name. This puts gnu utils first in path.
+## Run os/macos.sh to install.
 ##
 ## To insert GNU binaries before macOS BSD versions, run this to import matching folders:
 ## :r! find /usr/local/opt -type d -follow -name gnubin -print
@@ -271,12 +273,12 @@ alias ssh="TERM=xterm-256color ssh"
 alias t='tmux -2 new-session -A -s "moab"'
 alias td='tmux detach'
 alias ts='tmux source ~/.tmux.conf'
-alias rs="rsync -avzh --progress --stats"
 alias p="python"
+alias d='dirs -v'
 
+function rsp { rsync -avzh --progress --stats $0 }
 function anybar { echo -n $1 | nc -4u -w0 localhost ${2:-1738}; }
 
-alias d='dirs -v'
 for index ({1..9}) alias "$index"="cd +${index}"; unset index
 
 function fif() {
@@ -290,7 +292,6 @@ function witch()   { file $(which "$*") }
 function gg()      { git commit -m "$*" }
 function http      { command http --pretty=all --verbose $@ | less -R; }
 function fixzsh    { compaudit | xargs chmod go-w }
-#function ff()      { find . -iname "$1*" -print }      # replaced by fzf and ctrl-T
 function ht()      { (head $1 && echo "---" && tail $1) | less }
 function take()    { mkdir -p $1 && cd $1 }
 function cols()    { head -1 $1 | tr , \\n | cat -n | column }		# show CSV header
@@ -298,12 +299,12 @@ function zcolors() { for code in {000..255}; do print -P -- "$code: %F{$code}Tes
 function git3()    { git fetch upstream && git merge upstream/main && git push }
 
 # Automatically ls after you cd
-function chpwd() {
-    emulate -L zsh
-    ls -F
-}
+# function chpwd() {
+#     emulate -L zsh
+#     ls -F
+# }
 
-###################################################
+## less / more / bat
 
 less_options=(
     --quit-if-one-screen     # -F If the entire text fits on one screen, just show it and quit. (like cat)
@@ -316,6 +317,8 @@ less_options=(
     --LONG-PROMPT            # -M most verbose prompt
 );
 export LESS="${less_options[*]}";
+
+## vi / vim / neovim (nvim)
 
 # vi alias points to nvim or vim
 which "nvim" &> /dev/null && _vi="nvim" || _vi="vim"

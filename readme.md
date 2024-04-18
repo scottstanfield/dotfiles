@@ -6,8 +6,9 @@ Fork this to your github repo, then clone down to your machine:
 
 ```
 cd ~
-git clone https://github.com/scottstanfield/dmz dotfiles
-dotfiles/install.sh
+git clone https://github.com/scottstanfield/dotfiles
+dotfiles/os/macos.sh # or os/debian.sh or os/raspbian.sh
+dotfiles/link.sh
 ```
 
 Then if you want my changes:
