@@ -55,6 +55,7 @@ gnu=(
 )
 
 extras=(
+    httpstat
     du-dust
     fd-find
     git-delta
