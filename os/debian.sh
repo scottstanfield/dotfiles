@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -Eeuo pipefile
+set -Eeuo pipefail
 
 # https://unix.stackexchange.com/questions/65803/why-is-printf-better-than-echo
 println() { local IFS=" "; printf '%s\n' "$*"; }
@@ -14,6 +14,7 @@ export DEBIAN_FRONTEND=noninteractive
 
 [[ $EUID -eq 0 ]] || die "$0 needs to run as root. Try sudo $0"
 
+apt update -y
 
 packages=(
     fd-find
@@ -25,12 +26,20 @@ packages=(
     ripgrep
     wget
     zsh
-    miniconda
 )
 
+# install core packages
 apt-get install --no-install-recommends -y ${packages[*]}
 
+# install miniconda
+mkdir -p /tmp/miniconda3
+wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O /tmp/miniconda.sh
+bash /tmp/miniconda.sh -b -u -p ~/miniconda3
+rm -rf /tmp/miniconda
+
+# install the Rust language (mostly to get the Eza replacement for ls)
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+source ~/.cargo/env
 cargo install eza
 
 exit 0
