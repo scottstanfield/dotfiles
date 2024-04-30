@@ -95,7 +95,7 @@ brew install ${extras[*]}
 brew cask install ${casks[*]}
 
 brew tap homebrew/cask-fonts
-brew install --cask "${fonts[*]}"
+brew install --cask ${fonts[*]}
 
 # not sure if needed
 # softwareupdate --install-rosetta
