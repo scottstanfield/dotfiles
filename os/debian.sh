@@ -18,7 +18,6 @@ apt update -y
 
 packages=(
     fd-find
-    fzf
     git
     httpie
     jq
@@ -36,6 +35,10 @@ mkdir -p /tmp/miniconda3
 wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O /tmp/miniconda.sh
 bash /tmp/miniconda.sh -b -u -p ~/miniconda3
 rm -rf /tmp/miniconda
+
+# install github.com/junegunn/fzf (Fuzzy Finder) from source
+git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+~/.fzf/install
 
 # install the Rust language (mostly to get the Eza replacement for ls)
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
