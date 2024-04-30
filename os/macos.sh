@@ -88,11 +88,11 @@ fonts=(
     font-monaspace-nerd-font
 )
 
-brew install "${dotfiles[*]}"
-brew install "${dev[*]}"
-brew install "${gnu[*]}"
+brew install ${dotfiles[*]}
+brew install ${dev[*]}
+brew install ${gnu[*]}
 brew install ${extras[*]}
-brew cask install "${casks[*]}"
+brew cask install ${casks[*]}
 
 brew tap homebrew/cask-fonts
 brew install --cask "${fonts[*]}"
