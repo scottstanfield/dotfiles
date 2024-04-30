@@ -61,6 +61,11 @@ if [[ ! -e ~/.alacritty.local.toml ]]; then
    cp config/alacritty/alacritty.local.toml ~/.alacritty.local.toml
 fi
 
+if [[ ! -e ~/.machine ]]; then
+   cp machine ~/.machine
+fi
+
+
 # This is the stupidest name for an app yet. And it should be in .config/.hammerspoon
 if [[ $(uname) == "Darwin" ]]; then
     link init.lua                    ~/.hammerspoon/init.lua

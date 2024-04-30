@@ -437,11 +437,10 @@ FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}path]='fg=cyan'
 FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}path-to-dir]='fg=cyan,underline'
 FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}comment]='fg=gray'
 
-
-export prompticons=(󰯉 󰊠         ▼         󰆚 󰀘 󱍢 󰦥)
+export prompticons=( 󰯉 󰊠         ▼         󰆚 󰀘 󱍢 󰦥)
 
 function prompt_my_host_icon() {
-	p10k segment -i $prompticons[7] -f 074
+	p10k segment -i $prompticons[${PROMPT_ICON_INDEX:-1}] -f 074
 }
 
 export BAT_THEME="gruvbox-dark"
