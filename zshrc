@@ -187,6 +187,9 @@ manpath=($^manpath(N))
 setopt NO_nullglob
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 
+## Setup fzf FuzzyFinder path
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
 ## LS and colors
 ## Tips: https://gist.github.com/syui/11322769c45f42fad962
 
@@ -484,3 +487,4 @@ lazyload_conda
 # alias goc="cc -xc - $CFLAGS"
 
 export R_LIBS="~/.rlibs"
+
