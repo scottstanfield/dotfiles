@@ -302,10 +302,10 @@ function zcolors() { for code in {000..255}; do print -P -- "$code: %F{$code}Tes
 function git3()    { git fetch upstream && git merge upstream/main && git push }
 
 # Automatically ls after you cd
-# function chpwd() {
-#     emulate -L zsh
-#     ls -F
-# }
+function chpwd() {
+    emulate -L zsh
+    ls -F
+}
 
 ## less / more / bat
 
