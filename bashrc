@@ -10,6 +10,7 @@ alias hg="history | grep -i"
 alias t="tmux -2 new-session -A -s hello"
 alias pd='pushd'
 alias gs="git status"
+alias cp="cp -a"
 
 
 shopt -s histappend							# append rather than overwrite history
