@@ -276,9 +276,10 @@ alias ssh="TERM=xterm-256color ssh"
 alias t='tmux -2 new-session -A -s "moab"'
 alias td='tmux detach'
 alias ts='tmux source ~/.tmux.conf'
-alias p="python"
 alias d='dirs -v'
 alias scp='scp -p'
+alias ip='ipython --no-confirm-exit'
+alias p="python"
 
 function rsp { rsync -avzh --progress --stats $0 }
 function anybar { echo -n $1 | nc -4u -w0 localhost ${2:-1738}; }
