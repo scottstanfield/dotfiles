@@ -278,6 +278,7 @@ alias td='tmux detach'
 alias ts='tmux source ~/.tmux.conf'
 alias p="python"
 alias d='dirs -v'
+alias scp='scp -p'
 
 function rsp { rsync -avzh --progress --stats $0 }
 function anybar { echo -n $1 | nc -4u -w0 localhost ${2:-1738}; }
