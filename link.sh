@@ -65,22 +65,15 @@ if [[ ! -e ~/.machine ]]; then
    cp machine ~/.machine
 fi
 
+if [[ ! -e ~/.gitconfig.local ]]; then
+   cp gitconfig.local ~/.gitconfig.local
+   echo "Edit your ~/.gitconfig.local to fit your username and email for git"
+fi
+
 
 # This is the stupidest name for an app yet. And it should be in .config/.hammerspoon
 if [[ $(uname) == "Darwin" ]]; then
     link init.lua                    ~/.hammerspoon/init.lua
-fi
-
-# put your [user] settings here
-if [[ ! -e ~/.gitconfig.local ]]; then
-    cat > ~/.gitconfig.local << EOF
-; vim: ft=gitconfig
-[user]
-    email=scottstanfield@gmail.com
-    name=Scott Stanfield
-EOF
-    echo "Modify your ~/.gitconfig.local to fit your username and email for git"
-    cat ~/.gitconfig.local
 fi
 
 # fixing potential insecure group writable folders
