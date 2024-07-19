@@ -5,7 +5,7 @@
 local({
   #options(repos = getOption('repos', 'http://cran.cnr.berkeley.edu'))
   # options(repos = getOption('repos', 'http://cran.microsoft.com'))
-  options(repos = getOption('repos', 'https://ftp.osuosl.org/pub/cran/'))
+  # options(repos = getOption('repos', 'https://ftp.osuosl.org/pub/cran/'))
   options(help_type = 'html')
   options(digits.secs = 5)
 })

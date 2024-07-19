@@ -371,8 +371,8 @@ autoload -Uz _zinit
 # }}}
 
 # export NVM_AUTO_USE=false
-# export NVM_LAZY_LOAD=true
-# zinit light lukechilds/zsh-nvm
+ export NVM_LAZY_LOAD=true
+ zinit light lukechilds/zsh-nvm
 
 # | completions | # {{{
 zinit ice wait silent blockf; 
@@ -487,5 +487,5 @@ lazyload_conda
 # export CFLAGS='-Wall -O3 -include stdio.h --std=c17'
 # alias goc="cc -xc - $CFLAGS"
 
-export R_LIBS="~/.rlibs"
+export R_LIBS="~/.R/libs"
 

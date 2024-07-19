@@ -16,8 +16,7 @@ brew install pkg-config xquartz
 brew install ccache r
 
 # Setup R
-mkdir -p $HOME/.R
+mkdir -pf $HOME/.R/libs
 
-cp Rprofile $HOME/.Rprofile
-mkdir -p $HOME/.rlibs
+cp Rprofile ~/.Rprofile
 cp Makevars ~/.R
