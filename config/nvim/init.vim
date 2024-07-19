@@ -28,6 +28,8 @@ Plug 'ryanoasis/vim-devicons'
 Plug 'tmux-plugins/vim-tmux'
 "Plug 'JuliaEditorSupport/julia-vim'
 
+Plug 'nicwest/vim-camelsnek'
+
 " Colors
 Plug 'dracula/vim', {'as': 'dracula'}
 Plug 'p00f/alabaster.nvim'
@@ -96,7 +98,7 @@ au FileType markdown vmap <Leader><Bslash> :EasyAlign*<Bar><Enter>
 
 
 " vim as a markdown editor: https://secluded.site/vim-as-a-markdown-editor
-Plug 'godlygeek/tabular'
+" Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
 
 " plasticboy/vim-markdown 
@@ -136,6 +138,7 @@ nmap <silent> <leader>tg :GitGutterToggle<CR>
 let g:gitgutter_enabled = 1						" off by default
 
 Plug 'github/copilot.vim'
+Plug 'mechatroner/rainbow_csv'
 
 Plug 'junegunn/rainbow_parentheses.vim'
 let g:rainbow#pairs = [['(', ')'], ['[', ']']]
@@ -325,6 +328,8 @@ ab [Sigma] Σ
 ab [rho] ρ
 ab [pi] Π
 ab [blank] ␣
+ab [Delta] Δ
+ab [delta] δ
 
 
 " }}}
@@ -386,6 +391,7 @@ set scrolloff=3					" Show 3 lines around cursor (more context)
 set noshowmode					" hide the default mode text (e.g. -- INSERT --)
 set splitbelow					" more natural to open new splits below
 set splitright					" and to the right
+set autowrite                   " autosave before :make
 "}}}
 
 " MAPS {{{
@@ -858,3 +864,5 @@ let g:ale_echo_msg_warning_str = 'W'
 let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
 let g:ale_python_flake8_options = '--max-line-length 88 --extend-ignore=E203'
 let g:ale_linters = {'c': ['clang'], 'cpp': ['clang', 'g++'], 'javascript': ['eslint'] }
+
+let g:csv_default_delim=','
