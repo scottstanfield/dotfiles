@@ -1,0 +1,24 @@
+# Step 1. install miniconda if you don't have it:
+#   curl -L -O "https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-$(uname)-$(uname -m).sh"
+#   bash Miniforge3-$(uname)-$(uname -m).sh
+
+# Step 2. To create the environment:
+#   conda env create -f e.yml
+#   conda activate jc
+
+# Step 3. To update the environment:
+# Modify this file, then run this command
+#   conda env update -f e.yaml
+
+name: jc
+channels:
+  - defaults
+  - conda-forge
+dependencies:
+  - python=3.11
+  - matplotlib
+  - jupyterlab
+  - ipython
+  - pip
+  - pip:
+    click
