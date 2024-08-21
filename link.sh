@@ -88,11 +88,11 @@ fi
 # tic -x termcap/xterm-256color-italic.terminfo || true
 
 # Install neovim plugins
-# println "Installing vim plugins..."
-# nvim +PlugInstall +qall
+println "Installing vim plugins..."
+nvim +PlugInstall +qall
 
 # # now change shells
-# println 'and: sudo chsh -s $(which zsh) $(whoami)'
+println 'and: sudo chsh -s $(which zsh) $(whoami)'
 
 println "Backed up existing files to $B"
 ls $B
