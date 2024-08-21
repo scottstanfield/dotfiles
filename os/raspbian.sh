@@ -13,4 +13,4 @@ pause 'Press SPACE to continue or CTRL-C to quit'
 
 sudo apt-get install -y neovim zsh
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-cargo install exa                       # takes 5 minutes on RPi 4!
+cargo install eza                       # takes 5 minutes on RPi 4!
