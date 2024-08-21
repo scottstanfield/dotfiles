@@ -68,7 +68,8 @@ Plug 'segeljakt/vim-silicon'
 
 Plug 'powerman/vim-plugin-AnsiEsc'
 
-Plug 'scottstanfield/vimcmdline'
+" Plug 'scottstanfield/vimcmdline'
+Plug 'jalvesaq/vimcmdline'
 
 " colorschemes
 "Plug 'NLKNguyen/papercolor-theme'
@@ -460,6 +461,9 @@ nmap > <C-w>5>
 vnoremap Q gq
 nnoremap Q gqap
 nnoremap <C-q> :q<cr>
+
+" Noop remap q for macro recording: I never use it
+nnoremap q :x<cr>
 
 " Sane navigation for wrapped lines
 nnoremap j gj
