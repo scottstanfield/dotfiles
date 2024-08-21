@@ -55,7 +55,7 @@ if [[ $UNAME == "Darwin" ]]; then
 fi
 
 if [[ $UNAME  == "Linux" ]]; then
-    echo "linux"
+    # echo "linux"
 fi
 
 #########
@@ -487,5 +487,5 @@ lazyload_conda
 # export CFLAGS='-Wall -O3 -include stdio.h --std=c17'
 # alias goc="cc -xc - $CFLAGS"
 
-export R_LIBS="~/.R/libs"
-
+#export R_LIBS="~/.R/libs"
+export R_LIBS="~/.Rlibs"
