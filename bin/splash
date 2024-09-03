@@ -51,7 +51,6 @@ kernel="$(uname -srm)"
 os="$(source /etc/os-release; echo $NAME $VERSION)"
 uptime="$(uptime -p | sed 's/up //')"
 load=$(cat /proc/loadavg | cut -d ' ' -f 1,2,3)
-gpu_t="$(vcgencmd measure_temp | cut -d '=' -f 2)"
 cpu_t1k=$(cat /sys/class/thermal/thermal_zone0/temp)
 cpu_t=$(printf %.1f "$((10**3 * $cpu_t1k / 1000))e-3")
 temps="$cpu_t° C"
