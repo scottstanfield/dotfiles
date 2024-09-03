@@ -91,6 +91,9 @@ fi
 println "Installing vim plugins..."
 nvim +PlugInstall +qall
 
+# create ~/.ssh folder so zsh-agent doesn't complain
+mkdir ~/.ssh
+
 # # now change shells
 println 'and: sudo chsh -s $(which zsh) $(whoami)'
 
