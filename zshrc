@@ -192,11 +192,14 @@ manpath=(
 )
 manpath=($^manpath(N))
 setopt NO_nullglob
-export MANPAGER="sh -c 'col -bx | batcat -l man -p'"
 
-if [[ $UNAME  == "Linux" ]]; then
+if in_path "bat" ; then
+    export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+fi
+
+if in_path "batcat" ; then
     alias bat='batcat'
-    export MANPAGER="sh -c 'col -bx | batcat -l man -p'"
+    export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 fi
 
 ## Setup fzf FuzzyFinder path
