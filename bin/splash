@@ -56,7 +56,7 @@ cpu_t1k=$(cat /sys/class/thermal/thermal_zone0/temp)
 cpu_t=$(printf %.1f "$((10**3 * $cpu_t1k / 1000))e-3")
 temps="$cpu_t° C"
 hostname="$(hostname)"
-model="$(cat /proc/cpuinfo | grep -i model | cut -f2 -d:)"
+model="$(cat /proc/cpuinfo | grep -i model | head -2 | cut -f2 -d: | tail -1)"
 model="$(trim $model)"
 uptime="$(uptime --pretty)"
 
