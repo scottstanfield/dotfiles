@@ -41,6 +41,14 @@ fi
 
 in_path()  { builtin whence -p "$1" &> /dev/null }
 
+function is_mac() {
+  if test "$(uname -s)" = "Darwin"; then
+    return 0
+  else
+    return 1
+  fi
+}
+
 export BLOCK_SIZE="'1"          # Add commas to file sizes
 export CLICOLOR=1
 export EDITOR=vim
@@ -214,9 +222,11 @@ fi
 alias la="ls ${lsflags} -la"
 alias ll="ls ${lsflags} -l --sort=extension"
 alias lla="ls ${lsflags} -la"
-alias lld="ls ${lsflags} -l --sort=time --reverse --time-style=long-iso"
+alias llD="ls ${lsflags} -l --sort=time --reverse --time-style=long-iso"
+alias lld="ls ${lsflags} -l --sort=time --time-style=long-iso"
 alias lln="ls ${lsflags} -l"
-alias lls="ls ${lsflags} -l --sort=size --reverse"
+alias llS="ls ${lsflags} -l --sort=size --reverse"
+alias lls="ls ${lsflags} -l --sort=size "
 alias llt="ls ${lsflags} -l --sort=time --reverse --time-style=long-iso"
 
 ezaflags="--classify --color-scale --bytes --group-directories-first"
@@ -285,7 +295,7 @@ alias scp='scp -p'
 alias p="python"
 alias sudosu="sudo -Es"
 
-function rsp { rsync -avzh --progress --stats $0 }
+alias rsp="rsync -avlhW --info=progress2,stats "
 function anybar { echo -n $1 | nc -4u -w0 localhost ${2:-1738}; }
 
 for index ({1..9}) alias "$index"="cd +${index}"; unset index
