@@ -18,14 +18,14 @@
     interactive = auto
     diff = auto
     autocrlf = input   # set to input on Mac/Linux, true on Windows
-	excludesfile = ~/.gitignore
-	whitespace = fix,-indent-with-non-tab,trailing-space,cr-at-eol
-	pager = delta
+    excludesfile = ~/.gitignore
+    whitespace = fix,-indent-with-non-tab,trailing-space,cr-at-eol
+    pager = delta
 
 
 [delta]
-	#features = side-by-side line-numbers decorations
-	features = line-numbers decorations
+    #features = side-by-side line-numbers decorations
+    features = line-numbers decorations
     whitespace-error-style = 22 reverse
     hunk-header-style = omit
 
