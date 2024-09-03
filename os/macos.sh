@@ -55,30 +55,31 @@ gnu=(
 )
 
 extras=(
-    httpstat
     dust
     fd
     git-delta
     hexyl
+    httpstat
     hyperfine 
     jless
     jq
+    miniconda
     openssh
     rsync
     silicon
+    tldr
     tokei
     tree
     unzip
     vim
     xsv
-    miniconda
 )
 
 apps=(
-    rectangle
-    hammerspoon
     alacritty
+    hammerspoon
     handmirror
+    rectangle
 )
 
 fonts=(
