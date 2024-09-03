@@ -55,7 +55,6 @@ if [[ $UNAME == "Darwin" ]]; then
 fi
 
 if [[ $UNAME  == "Linux" ]]; then
-    # echo "linux"
 fi
 
 #########
@@ -157,7 +156,7 @@ path=(
     /bin
     /sbin
 
-    ~/code/rs/rtfd/bin
+    ~/dotfile/bin
 
     .
 
@@ -185,7 +184,12 @@ manpath=(
 )
 manpath=($^manpath(N))
 setopt NO_nullglob
-export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+export MANPAGER="sh -c 'col -bx | batcat -l man -p'"
+
+if [[ $UNAME  == "Linux" ]]; then
+    alias bat='batcat'
+    export MANPAGER="sh -c 'col -bx | batcat -l man -p'"
+fi
 
 ## Setup fzf FuzzyFinder path
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
@@ -278,8 +282,8 @@ alias td='tmux detach'
 alias ts='tmux source ~/.tmux.conf'
 alias d='dirs -v'
 alias scp='scp -p'
-alias ip='ipython --no-confirm-exit'
 alias p="python"
+alias sudosu="sudo -Es"
 
 function rsp { rsync -avzh --progress --stats $0 }
 function anybar { echo -n $1 | nc -4u -w0 localhost ${2:-1738}; }
@@ -442,7 +446,14 @@ FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}comment]='fg=gray'
 export prompticons=( 󰯉 󰊠         ▼         󰆚 󰀘 󱍢 󰦥)
 
 function prompt_my_host_icon() {
-	p10k segment -i $prompticons[${PROMPT_ICON_INDEX:-1}] -f 074
+    # if prompt_icon_index is set, use that
+    # if host_icon is set, use that instead
+
+    pi1=$prompticons[${PROMPT_ICON_INDEX:-1}]
+    pi1=${HOST_ICON:-$pi1}
+	# p10k segment -i $prompticons[${PROMPT_ICON_INDEX:-1}] -f 074
+	p10k segment -i $pi1 -f 074
+    unset p
 }
 
 export BAT_THEME="gruvbox-dark"

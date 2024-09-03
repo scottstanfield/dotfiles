@@ -1,1 +1,2 @@
-export PROMPT_ICON_INDEX=1
+#  󰯉 󰊠         ▼         󰆚 󰀘 󱍢 󰦥
+export HOST_ICON="󰊠"
