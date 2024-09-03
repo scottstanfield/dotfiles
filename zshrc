@@ -412,6 +412,7 @@ zinit fpath -f /opt/homebrew/share/zsh/site-functions
 # zinit ice blockf atpull'zinit creinstall -q .'
 # zinit light zsh-users/zsh-completions
 
+zstyle -t :omz:plugins:ssh-agent quiet
 zinit snippet OMZP::ssh-agent
 
 # This is a weird way of loading 4 git-related repos/scripts; consider removing
