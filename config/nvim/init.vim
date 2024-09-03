@@ -27,6 +27,9 @@ Plug 'sheerun/vim-polyglot'				" all the best language / syntax packs
 Plug 'ryanoasis/vim-devicons'
 Plug 'tmux-plugins/vim-tmux'
 "Plug 'JuliaEditorSupport/julia-vim'
+Plug 'nvim-telescope/telescope.nvim'
+Plug 'tpope/vim-unimpaired'              " ]p paste below; [p paste above
+
 
 Plug 'nicwest/vim-camelsnek'
 
@@ -114,8 +117,8 @@ let g:vim_markdown_frontmatter = 1
 let g:vim_markdown_strikethrough = 1
 let g:vim_markdown_toml_frontmatter = 1
 	
-Plug 'itchyny/lightline.vim'
-let g:lightline = {'colorscheme': 'dracula'}
+" Plug 'itchyny/lightline.vim'
+" let g:lightline = {'colorscheme': 'dracula'}
 
 Plug 'edkolev/tmuxline.vim', {'on': ['Tmuxline', 'TmuxlineSimple', 'TmuxlineSnapshot'] }
 
@@ -158,7 +161,6 @@ call plug#end()
 
 " Plugin Configurations {{{
 
-
 " junegunn/goyo.vim {{{
 let g:goyo_width = 70
 nmap <leader>tm :silent Goyo<CR>
@@ -180,8 +182,8 @@ augroup END
 	"let R_auto_start = 1
 	" " I needed to run `brew link --force readline` in order to get gcc5
 	" to compile nvimcom (which updates automatically when you invoke nvim-r)
-	"vnoremap <silent> <Space> <Plug>RSendSelection<Esc><Esc>
-	" inoremap <s-cr> <Esc>:call SendLineToR("stay")<cr><down><home>i
+	" vnoremap <silent> <Space> <Plug>RSendSelection<Esc><Esc>
+	"  inoremap <s-cr> <Esc>:call SendLineToR("stay")<cr><down><home>i
     let R_args = ['--no-save', '--quiet']
     let R_assign = 0
 
@@ -230,6 +232,7 @@ nnoremap <silent> <F2> :NERDTreeFind<CR>
 nnoremap <silent> <F3> :NERDTreeToggle<CR>
 " }}}
 " scottstanfield/vimcmdline {{{
+
 let cmdline_map_start			 = '<LocalLeader>r'
 let cmdline_map_send			 = '<Space>'
 let cmdline_map_send_and_stay  = '<LocalLeader><Space>'
@@ -250,6 +253,8 @@ let cmdline_app['python'] = 'ipython --no-confirm-exit'
 let cmdline_app['sh']		= 'bash'
 let cmdline_app['julia']	= 'julia'
 let cmdline_app['javascript']  = 'node'
+
+
 " }}}
 " TrailerTrash {{{
 nmap <silent> <leader>$ :TrailerTrim<cr>
@@ -283,6 +288,7 @@ endfunction
 " }}}
 
 " Abbreviations {{{
+" digraph list: https://devhints.io/vim-digraphs
 " Abbreviations From http://vimcasts.org/episodes/show-invisibles/
 " https://www.typography.com/blog/house-of-flying-reference-marks
 " *, †, ‡, §, ||, #, **, ††, ‡‡, §§, ||||, ###, ***, †††, ‡‡‡
@@ -324,6 +330,8 @@ ab [deg] °
 ab [mu] µ
 ab [ss] §
 ab [sd] σ
+ab [theta] θ
+ab [Theta] Θ
 ab [sigma] σ
 ab [Sigma] Σ
 ab [rho] ρ
@@ -331,6 +339,9 @@ ab [pi] Π
 ab [blank] ␣
 ab [Delta] Δ
 ab [delta] δ
+ab [root] √
+ab [square] ²
+ab [cube] ³
 
 
 " }}}
