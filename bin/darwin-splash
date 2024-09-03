@@ -49,28 +49,22 @@ p1="$reset"
 ip="$(ifconfig -l | xargs -n1 ipconfig getifaddr)"
 #ip="$(ip route get 1.1.1.1 | head -1 | cut -d' ' -f7)"
 kernel="$(uname -srm)"
-uptime="$(uptime -p | sed 's/up //')"
-load=$(cat /proc/loadavg | cut -d ' ' -f 1,2,3)
-gpu_t="$(vcgencmd measure_temp | cut -d '=' -f 2)"
-cpu_t1k=$(cat /sys/class/thermal/thermal_zone0/temp)
-cpu_t=$(printf %.1f "$((10**3 * $cpu_t1k / 1000))e-3")
-temps="$cpu_t° C"
+uptime="$(uptime)"
 hostname="$(hostname)"
-model="$(cat /proc/cpuinfo | grep -i model | cut -f2 -d:)"
-model="$(trim $model)"
-uptime="$(uptime --pretty)"
+load="$(uptime | cut -f4 -d, | cut -f2 -d:)"
+load="$(trim $load)"
+uptime="$(uptime | cut -f1 -d,)"
+os="$(sw_vers -productVersion)"
 
 # ☉
 
 cat <<EOF
 
-${h2} · Hostname   ${h2}${hostname}
 ${h2} · IP         ${r}${ip}
 ${h2} · Kernel     ${r}${kernel}
-${h2} · OS         ${r}${os}
+${h2} · OS         ${r}MacOS ${os}
 ${h2} · Load       ${r}${load}
-${h2} · CPU        ${r}${temps}
 ${h2} · Uptime     ${r}${uptime}
-${h1} ○ Model      ${h3}${model}${r}
+${h1} ○ Hostname   ${h3}${hostname}${r}
 
 EOF
