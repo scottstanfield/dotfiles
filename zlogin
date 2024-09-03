@@ -17,6 +17,8 @@ if [[ -o INTERACTIVE && -t 2 ]]; then
     if [[ -z "$TMUX" ]]; then
         if test "$(uname -s)" = "Linux"; then
             in_path "splash" && splash
+        else
+            in_path "darwin-splash" && darwin-splash
         fi
     fi
     true
