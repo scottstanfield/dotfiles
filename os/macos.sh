@@ -56,8 +56,8 @@ gnu=(
 
 extras=(
     httpstat
-    du-dust
-    fd-find
+    dust
+    fd
     git-delta
     hexyl
     hyperfine 
@@ -65,7 +65,6 @@ extras=(
     jq
     openssh
     rsync
-    scrubcsv 
     silicon
     tokei
     tree
@@ -75,11 +74,11 @@ extras=(
     miniconda
 )
 
-casks=(
+apps=(
     rectangle
     hammerspoon
     alacritty
-    # handmirror
+    handmirror
 )
 
 fonts=(
@@ -88,14 +87,12 @@ fonts=(
     font-monaspace-nerd-font
 )
 
-brew install ${dotfiles[*]}
-brew install ${dev[*]}
-brew install ${gnu[*]}
+# brew install ${dotfiles[*]}
+# brew install ${dev[*]}
+# brew install ${gnu[*]}
 brew install ${extras[*]}
-brew cask install ${casks[*]}
-
-brew tap homebrew/cask-fonts
-brew install --cask ${fonts[*]}
+#brew install ${apps[*]}
+#brew install ${fonts[*]}
 
 # not sure if needed
 # softwareupdate --install-rosetta
