@@ -15,7 +15,9 @@ in_path()  { command "$1" >/dev/null 2>/dev/null }
 if [[ -o INTERACTIVE && -t 2 ]]; then
 
     if [[ -z "$TMUX" ]]; then
-        in_path "splash" && splash
+        if test "$(uname -s)" = "Linux"; then
+            in_path "splash" && splash
+        fi
     fi
     true
 
