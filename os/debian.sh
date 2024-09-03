@@ -12,9 +12,7 @@ cd "$_D"
 # Tell apt-get we can't give feedback
 export DEBIAN_FRONTEND=noninteractive
 
-[[ $EUID -eq 0 ]] || die "$0 needs to run as root. Try sudo $0"
-
-apt update -y
+# [[ $EUID -eq 0 ]] || die "$0 needs to run as root. Try sudo $0"
 
 packages=(
     fd-find
@@ -28,7 +26,7 @@ packages=(
 )
 
 # install core packages
-apt-get install --no-install-recommends -y ${packages[*]}
+sudo apt-get install --no-install-recommends -y ${packages[*]}
 
 # install miniconda
 mkdir -p /tmp/miniconda3
