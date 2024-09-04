@@ -165,6 +165,7 @@ path=(
     /sbin
 
     ~/dotfile/bin
+    ~/miniconda3/bin
 
     .
 
