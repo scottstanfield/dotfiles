@@ -30,17 +30,19 @@ cd "$canonical"
 
 # Create temp folder for all the files being backed up
 B=$(mktemp -d /tmp/dotfiles.XXXX)
-println "Backing up your config files to $B"
 
 link() {
     if [[ -e $1 ]]; then
-        println "$1 -> $2"
+        # println "$1 -> $2"
         cp -pL "$2" "$B" 2>/dev/null || true		# (p)reserve attributes and deference symbolic links
         mkdir -p $(dirname $2)                      # ensure target file directory exists
         ln -sf "$PWD/$1" "$2"                       # link target
     fi
 }
 
+cpn() { 
+    cp -n "$1" "$2" || true 
+}
 
 link zshrc                           ~/.zshrc
 link zlogin                          ~/.zlogin
@@ -54,26 +56,16 @@ link p10k.zsh                        ~/.p10k.zsh
 link gitconfig                       ~/.gitconfig
 link gitignore                       ~/.gitignore
 link config/nvim/init.vim            ~/.config/nvim/init.vim
-
 link config/alacritty/alacritty.toml       ~/.config/alacritty/alacritty.toml
 link config/alacritty/dracula.toml         ~/.config/alacritty/dracula.toml
-if [[ ! -e ~/.alacritty.local.toml ]]; then
-   cp config/alacritty/alacritty.local.toml ~/.alacritty.local.toml
-fi
 
-if [[ ! -e ~/.machine ]]; then
-   cp machine ~/.machine
-fi
-
-if [[ ! -e ~/.gitconfig.local ]]; then
-   cp gitconfig.local ~/.gitconfig.local
-   echo "Edit your ~/.gitconfig.local to fit your username and email for git"
-fi
-
+cpn config/alacritty/alacritty.local.toml ~/.alacritty.local.toml
+cpn machine ~/.machine
+cpn gitconfig.local ~/.gitconfig.local
 
 # This is the stupidest name for an app yet. And it should be in .config/.hammerspoon
 if [[ $(uname) == "Darwin" ]]; then
-    link init.lua                    ~/.hammerspoon/init.lua
+    link init.lua  ~/.hammerspoon/init.lua
 fi
 
 # fixing potential insecure group writable folders
@@ -95,8 +87,6 @@ nvim +PlugInstall +qall
 mkdir -p ~/.ssh
 
 # # now change shells
-println 'and: sudo chsh -s $(which zsh) $(whoami)'
-
 println "Backed up existing files to $B"
 ls $B
 
