@@ -39,15 +39,7 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-in_path()  { builtin whence -p "$1" &> /dev/null }
-
-function is_mac() {
-  if test "$(uname -s)" = "Darwin"; then
-    return 0
-  else
-    return 1
-  fi
-}
+in_path()  { builtin whence -p "$1" &> /dev/null; return $? }
 
 export BLOCK_SIZE="'1"          # Add commas to file sizes
 export CLICOLOR=1
@@ -144,11 +136,12 @@ autoload zmv
 typeset -gU path fpath manpath
 
 # Multiple Homebrews on Apple Silicon
-if [[ "$(arch)" == "arm64" ]]; then
-    eval "$(/opt/homebrew/bin/brew shellenv)"
-fi
-if [[ "$(arch)" == "i386" ]]; then
-    eval "$(/usr/local/bin/brew shellenv)"
+if [[ $UNAME == "Darwin" ]]; then
+    if [[ $ARCH == "arm64" ]]; then
+        eval "$(/opt/homebrew/bin/brew shellenv)"
+    elif [[ $ARCH == "i386" ]]; then
+        eval "$(/usr/local/bin/brew shellenv)"
+    fi
 fi
 
 setopt nullglob
@@ -209,35 +202,48 @@ fi
 ## LS and colors
 ## Tips: https://gist.github.com/syui/11322769c45f42fad962
 
-# GNU and BSD (macOS) ls flags aren't compatible
-ls --version &>/dev/null
-ignorefiles=' --ignore-glob "Library|Music|Movies|Pictures|Public|Applications|Creative Cloud Files" '
-if [ $? -eq 0 ]; then
-    lsflags="--color --group-directories-first -F "
+# ensure basic /bin/ls has colors and aliases
 
-	# Hide stupid $HOME folders created by macOS from command line
-	# chflags hidden Movies Music Pictures Public Applications Library
-    lsflags+=${ignorefiles}
-else
-    lsflags="-GF"
-    export CLICOLOR=1
+export CLICOLOR=1
+alias ls="ls -GF "
+alias la="ls -GF -la"
+alias ll="ls -GF -l --sort=extension"
+alias lla="ls -GF -la"
+
+# GNU and BSD (macOS) ls flags aren't compatible
+# On macOS, installing GNU ls lands as "gls"
+# But on Linux, it's just "ls" and it responds to --version,
+# whereas BSD does not.
+
+if [[ $(whence -p "gls" &>/dev/null) -eq 0 ]]; then
+    lspath=$(whence -p "gls" &>/dev/null)
+fi
+if [[ $(ls --version &>/dev/null) ]]; then
+    lspath=$(ls --version &>/dev/null)
 fi
 
-alias la="ls ${lsflags} -la"
-alias ll="ls ${lsflags} -l --sort=extension"
-alias lla="ls ${lsflags} -la"
-alias llD="ls ${lsflags} -l --sort=time --reverse --time-style=long-iso"
-alias lld="ls ${lsflags} -l --sort=time --time-style=long-iso"
-alias lln="ls ${lsflags} -l"
-alias llS="ls ${lsflags} -l --sort=size --reverse"
-alias lls="ls ${lsflags} -l --sort=size "
-alias llt="ls ${lsflags} -l --sort=time --reverse --time-style=long-iso"
+echo "lspath:" $lspath
 
-ezaflags="--classify --color-scale --bytes --group-directories-first"
-ezaflags+=${ignorefiles}
+if [[ $(whence -p "gls" &>/dev/null) -eq 0 || $(ls --version &>/dev/null) ]]; then
+    lsflags="--color --group-directories-first -F "
+    alias ls="ls ${lsflags} "
+    alias la="ls ${lsflags} -la"
+    alias ll="ls ${lsflags} -l --sort=extension"
+    alias lla="ls ${lsflags} -la"
+    alias llD="ls ${lsflags} -l --sort=time --reverse --time-style=long-iso"
+    alias lld="ls ${lsflags} -l --sort=time --time-style=long-iso"
+    alias lln="ls ${lsflags} -l"
+    alias llS="ls ${lsflags} -l --sort=size --reverse"
+    alias lls="ls ${lsflags} -l --sort=size "
+    alias llt="ls ${lsflags} -l --sort=time --reverse --time-style=long-iso"
+fi
 
 # the `ls` replacement "eza"
-if in_path "eza" ; then
+if [[ $(whence -p "eza" &>/dev/null) -eq 0 ]]; then
+    ignorefiles=' --ignore-glob "Library|Music|Movies|Pictures|Public|Applications|Creative Cloud Files" '
+    ezaflags="--classify --color-scale --bytes --group-directories-first"
+    ezaflags+=${ignorefiles}
+
     function els() { eza --classify --color-scale --bytes --group-directories-first $@ }
     alias ls="eza ${ezaflags} "$*" "
     alias ll="eza ${ezaflags} -l "$*" "
@@ -246,24 +252,25 @@ if in_path "eza" ; then
     alias elt="eza ${ezaflags} --all --long --sort date"
     alias ele="eza ${ezaflags} --all --long --sort extension"
     alias elss="eza ${ezaflags} --all --long --sort size"
+
+    export EZA_COLORS="\
+    uu=36:\
+    gu=37:\
+    sn=32:\
+    sb=32:\
+    da=34:\
+    ur=34:\
+    uw=35:\
+    ux=36:\
+    ue=36:\
+    gr=34:\
+    gw=35:\
+    gx=36:\
+    tr=34:\
+    tw=35:\
+    tx=36:"
 fi
 
-export EZA_COLORS="\
-uu=36:\
-gu=37:\
-sn=32:\
-sb=32:\
-da=34:\
-ur=34:\
-uw=35:\
-ux=36:\
-ue=36:\
-gr=34:\
-gw=35:\
-gx=36:\
-tr=34:\
-tw=35:\
-tx=36:"
 
 ## Aliases
 alias ,="cd .."
@@ -467,7 +474,7 @@ function prompt_my_host_icon() {
     pi1=$prompticons[${PROMPT_ICON_INDEX:-1}]
     pi1=${HOST_ICON:-$pi1}
 	# p10k segment -i $prompticons[${PROMPT_ICON_INDEX:-1}] -f 074
-	p10k segment -i $pi1 -f 074
+	p10k segment -i $pi1 -f 070
     unset p
 }
 
