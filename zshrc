@@ -216,14 +216,13 @@ alias lla="ls -GF -la"
 # whereas BSD does not.
 
 if [[ $(whence -p "gls" &>/dev/null) -eq 0 ]]; then
-    lspath=$(whence -p "gls" &>/dev/null)
+    lspath=$(whence -p "gls")
 fi
 if [[ $(ls --version &>/dev/null) ]]; then
-    lspath=$(ls --version &>/dev/null)
+    lspath=$(whence -p ls)
 fi
 
-echo "lspath:" $lspath
-
+## GNU ls settings
 if [[ $(whence -p "gls" &>/dev/null) -eq 0 || $(ls --version &>/dev/null) ]]; then
     lsflags="--color --group-directories-first -F "
     alias ls="ls ${lsflags} "
@@ -238,7 +237,7 @@ if [[ $(whence -p "gls" &>/dev/null) -eq 0 || $(ls --version &>/dev/null) ]]; th
     alias llt="ls ${lsflags} -l --sort=time --reverse --time-style=long-iso"
 fi
 
-# the `ls` replacement "eza"
+## eza/exa settings for ls
 if [[ $(whence -p "eza" &>/dev/null) -eq 0 ]]; then
     ignorefiles=' --ignore-glob "Library|Music|Movies|Pictures|Public|Applications|Creative Cloud Files" '
     ezaflags="--classify --color-scale --bytes --group-directories-first"
@@ -295,6 +294,7 @@ alias b="bat --plain"
 alias path='echo $PATH | tr : "\n" | cat -n'
 alias pd='pushd'  # symmetry with cd
 alias r="R --no-save --no-restore-data --quiet"
+alias R="R --no-save --no-restore-data "
 alias rg='rg --pretty --smart-case --fixed-strings'
 alias rgc='rg --no-line-number --color never '
 alias ssh="TERM=xterm-256color ssh"
@@ -474,7 +474,8 @@ function prompt_my_host_icon() {
     pi1=$prompticons[${PROMPT_ICON_INDEX:-1}]
     pi1=${HOST_ICON:-$pi1}
 	# p10k segment -i $prompticons[${PROMPT_ICON_INDEX:-1}] -f 074
-	p10k segment -i $pi1 -f 070
+    p10k segment -i $pi1 -f ${HOST_ICON_COLOR:-4}
+
     unset p
 }
 
@@ -521,4 +522,10 @@ lazyload_conda
 # alias goc="cc -xc - $CFLAGS"
 
 #export R_LIBS="~/.R/libs"
-export R_LIBS="~/.Rlibs"
+export R_LIBS="~/.R/libs"
+
+# LDFLAGS="-L/opt/homebrew/opt/llvm@12/lib -Wl,-rpath,/opt/homebrew/opt/llvm@12/lib"
+
+export LDFLAGS="-L/opt/homebrew/opt/llvm@12/lib"
+export CPPFLAGS="-I/opt/homebrew/opt/llvm@12/include"
+export PATH="/opt/homebrew/opt/llvm@12/bin:$PATH"
