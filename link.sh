@@ -68,6 +68,10 @@ if [[ $(uname) == "Darwin" ]]; then
     link init.lua  ~/.hammerspoon/init.lua
 fi
 
+# copy bin files
+mkdir -p ~/bin
+cp bin/* ~/bin
+
 # fixing potential insecure group writable folders
 # compaudit | xargs chmod g-w
 
