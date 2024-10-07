@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # vim:filetype=bash:
 
 # Copyright (c) Microsoft Corporation.
@@ -46,7 +46,7 @@ h2="$reset$bold$yellow"
 h1="$reset$bold$green"
 p1="$reset"
 
-ip="$(ifconfig -l | xargs -n1 ipconfig getifaddr)"
+ip="$(ifconfig -l | xargs -n1 ipconfig getifaddr | paste -sd ' ' -)"
 #ip="$(ip route get 1.1.1.1 | head -1 | cut -d' ' -f7)"
 kernel="$(uname -srm)"
 uptime="$(uptime)"
