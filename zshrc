@@ -53,8 +53,15 @@ export BLOCK_SIZE="'1"          # Add commas to file sizes
 export CLICOLOR=1
 export EDITOR=vim
 export VISUAL=vim
-export LANG="en_US.UTF-8"
 export PAGER=less
+
+export LANG=en_US.UTF-8
+export LC_CTYPE=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
+#export LOCALE_ARCHIVE="$(readlink ~/.nix-profile/lib/locale)/locale-archive"
+export LOCALE_ARCHIVE=/usr/lib/locale/locale-archive
+
+
 UNAME=$(uname)      # Darin, Linux
 ARCH=$(arch)        # arm64, i386, x86_64
 
@@ -165,7 +172,6 @@ path=(
     /sbin
 
     ~/dotfile/bin
-    ~/miniconda3/bin
 
     .
 
@@ -515,3 +521,24 @@ lazyload_conda
 
 #export R_LIBS="~/.R/libs"
 export R_LIBS="~/.Rlibs"
+
+# export NVM_DIR="$HOME/.nvm"
+# [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+# [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+
+# direnv start
+#_direnv_hook() {
+#  trap -- '' SIGINT;
+#  eval "$("/usr/bin/direnv" export zsh)";
+#  trap - SIGINT;
+#}
+#typeset -ag precmd_functions;
+#if [[ -z "${precmd_functions[(r)_direnv_hook]+1}" ]]; then
+#  precmd_functions=( _direnv_hook ${precmd_functions[@]} )
+#fi
+#typeset -ag chpwd_functions;
+#if [[ -z "${chpwd_functions[(r)_direnv_hook]+1}" ]]; then
+#  chpwd_functions=( _direnv_hook ${chpwd_functions[@]} )
+#fi
+##direnv end

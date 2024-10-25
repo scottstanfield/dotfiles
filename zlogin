@@ -24,5 +24,3 @@ if [[ -o INTERACTIVE && -t 2 ]]; then
     true
 
 fi >&2
-
-
