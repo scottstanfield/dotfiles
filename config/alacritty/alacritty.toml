@@ -1,41 +1,13 @@
-# Alacritty syntax: https://alacritty.org/config-alacritty.html
-import = [ 
-    "~/.config/alacritty/dracula.toml",
-    "~/.alacritty.local.toml"]
-
+import = [
+    "/Users/sstanfield/.alacritty.local.toml",
+    "/Users/sstanfield/.config/alacritty/themes/themes/dracula.toml",
+]
 live_config_reload = true
+
+window.option_as_alt = "Both"
 
 [env]
 TERM = "xterm-256color"
-
-# Default:
-#   - (macOS) Menlo
-#   - (Linux/BSD) monospace
-#   - (Windows) Consolas
-
-## FONTS
-#
-# 1. Run this to install Mona and Jetbrains typefaces
-#
-#    brew install --cask font-monaspace-nerd-font font-jetbrains-mono-nerd-font
-#
-# 2. Copy one of the three prebuilt [font] section into a new file ~/.alacritty.local.toml
-
-## Mona https://github.com/mona-sans
-# [font]
-# size = 20
-# normal = { family = "MonaspiceNe Nerd Font Mono", style = "Regular" }
-# bold = { family = "MonaspiceNe Nerd Font Mono", style = "Bold" }
-# italic = { family = "MonaspiceRn Nerd Font Mono", style = "Regular" }
-# bold_italic = { family = "MonaspiceRn Nerd Font Mono", style = "Bold" }
-
-## Menlo (default installed on Mac)
-# [font]
-# size = 20
-# normal = { family = "Menlo", style = "Regular" }
-# bold = { family = "Menlo", style = "Bold" }
-# italic = { family = "Menlo", style = "Italic" }
-# bold_italic = { family = "Menlo", style = "Regular" }
 
 [[keyboard.bindings]]
 action = "ToggleSimpleFullscreen"
