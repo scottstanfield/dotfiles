@@ -33,6 +33,8 @@ dev=(
     xz
     zlib
     htop
+    uv
+    duckdb
 )
 
 gnu=(
@@ -89,9 +91,9 @@ fonts=(
     font-monaspace-nerd-font
 )
 
- brew install ${dotfiles[*]}
- brew install ${dev[*]}
- brew install ${gnu[*]}
+brew install ${dotfiles[*]}
+brew install ${dev[*]}
+brew install ${gnu[*]}
 brew install ${extras[*]}
 brew install ${apps[*]}
 brew install ${fonts[*]}
