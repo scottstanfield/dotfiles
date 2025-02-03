@@ -309,7 +309,11 @@ alias sudosu="sudo -Es"
 alias rsp="rsync -avlhW --info=progress2,stats "
 function anybar { echo -n $1 | nc -4u -w0 localhost ${2:-1738}; }
 
-for index ({1..9}) alias "$index"="cd +${index}"; unset index
+ats() {
+     alacritty-theme-switcher "$(ls -1 ~/.config/alacritty/themes/themes | sed -e 's/\..*$//' | fzf --layout=reverse)"
+}
+
+#for index ({1..9}) alias "$index"="cd +${index}"; unset index
 
 function fif() {
   if [ ! "$#" -gt 0 ]; then echo "Need a string to search for!"; return 1; fi
@@ -521,11 +525,14 @@ lazyload_conda
 # export CFLAGS='-Wall -O3 -include stdio.h --std=c17'
 # alias goc="cc -xc - $CFLAGS"
 
-#export R_LIBS="~/.R/libs"
 export R_LIBS="~/.R/libs"
+export R_OPENMP_ENABLED=1
+export PKG_CFLAGS="${PKG_CFLAGS} -fopenmp"
+export PKG_LIBS="${PKG_LIBS} -fopenmp"
 
 # LDFLAGS="-L/opt/homebrew/opt/llvm@12/lib -Wl,-rpath,/opt/homebrew/opt/llvm@12/lib"
 
-export LDFLAGS="-L/opt/homebrew/opt/llvm@12/lib"
-export CPPFLAGS="-I/opt/homebrew/opt/llvm@12/include"
-export PATH="/opt/homebrew/opt/llvm@12/bin:$PATH"
+export LDFLAGS="-L/opt/homebrew/opt/llvm/lib"
+export CPPFLAGS="-I/opt/homebrew/opt/llvm/include"
+export CFLAGS="-I/opt/homebrew/opt/llvm/include"
+export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
