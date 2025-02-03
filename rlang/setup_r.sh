@@ -11,7 +11,7 @@ shopt -s nullglob globstar
 ## Start here
 ##
 
-brew install libomp llvm@12
+brew install libomp llvm
 brew install pkg-config xquartz
 brew install ccache r
 
