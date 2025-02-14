@@ -1,10 +1,12 @@
-import = [
-    "/Users/sstanfield/.alacritty.local.toml",
-    "/Users/sstanfield/.config/alacritty/themes/themes/dracula.toml",
-]
 live_config_reload = true
 
 window.option_as_alt = "Both"
+
+import = [
+    "~/.alacritty.local.toml",
+    "~/.config/alacritty/dracula.toml",
+]
+
 
 [env]
 TERM = "xterm-256color"

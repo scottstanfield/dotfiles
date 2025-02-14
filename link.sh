@@ -56,10 +56,11 @@ link p10k.zsh                        ~/.p10k.zsh
 link gitconfig                       ~/.gitconfig
 link gitignore                       ~/.gitignore
 link config/nvim/init.vim            ~/.config/nvim/init.vim
-link config/alacritty/alacritty.toml       ~/.config/alacritty/alacritty.toml
-link config/alacritty/dracula.toml         ~/.config/alacritty/dracula.toml
 
-cpn config/alacritty/alacritty.local.toml ~/.alacritty.local.toml
+cpn config/alacritty/alacritty.toml       ~/.config/alacritty/alacritty.toml
+cpn config/alacritty/dracula.toml         ~/.config/alacritty/dracula.toml
+link alacritty.local.toml ~/.alacritty.local.toml
+
 cpn machine ~/.machine
 cpn gitconfig.local ~/.gitconfig.local
 
