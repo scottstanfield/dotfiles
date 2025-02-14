@@ -7,7 +7,10 @@ local({
   r["CRAN"] <- "https://packagemanager.posit.co/cran/latest/"
   options(repos = r)
   options(digits.secs = 5)
+  options(scipen = 999)
 })
+
+cc <- function(str) { Filter(nchar, unlist(strsplit(str, "[ \n]"))) }
 
 .First <- function()
 {
@@ -39,11 +42,9 @@ local({
   }
 }
 
-# must-have globals
-printf <- function(...) { cat(sprintf(...)) }
-oneup  <- function() { par(mfrow=c(1,1)) }
-twoup  <- function() { par(mfrow=c(2,2)) }
-cls    <- function() { cat('') }
-cc     <- function() { unlist(strsplit(str, ' '))
+# printf <- function(...) { cat(sprintf(...)) }
+# oneup  <- function() { par(mfrow=c(1,1)) }
+# twoup  <- function() { par(mfrow=c(2,2)) }
+# cls    <- function() { cat('') }
 
 

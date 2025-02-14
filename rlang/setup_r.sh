@@ -11,12 +11,10 @@ shopt -s nullglob globstar
 ## Start here
 ##
 
-brew install libomp llvm
-brew install pkg-config xquartz
-brew install ccache r
+brew install libomp llvm pkg-config xquartz ccache r
 
 # Setup R
-mkdir -pf $HOME/.R/libs
+mkdir -p $HOME/.R/libs
 
-cp Rprofile ~/.Rprofile
-cp Makevars ~/.R
+ln -fs $PWD/Rprofile $HOME/.Rprofile
+ln -fs $PWD/Makevars $HOME/.R/Makevars
