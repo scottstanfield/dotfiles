@@ -46,7 +46,7 @@ cpn() {
 
 link zshrc                           ~/.zshrc
 link zlogin                          ~/.zlogin
-link vimrc                           ~/.vimrc						# minimal vimrc for VIM v8
+link vimrc                           ~/.vimrc
 link tmux.conf                       ~/.tmux.conf
 link tmux.reset.conf                 ~/.tmux.reset.conf
 link bashrc                          ~/.bashrc
@@ -56,6 +56,7 @@ link p10k.zsh                        ~/.p10k.zsh
 link gitconfig                       ~/.gitconfig
 link gitignore                       ~/.gitignore
 link config/nvim/init.vim            ~/.config/nvim/init.vim
+link config/ghostty/config           ~/.config/ghostty/config
 
 cpn config/alacritty/alacritty.toml       ~/.config/alacritty/alacritty.toml
 cpn config/alacritty/dracula.toml         ~/.config/alacritty/dracula.toml

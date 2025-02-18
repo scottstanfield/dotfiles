@@ -76,6 +76,7 @@ extras=(
 )
 
 apps=(
+    ghostty
     alacritty
     hammerspoon
     handmirror
@@ -88,12 +89,12 @@ fonts=(
     font-monaspace-nerd-font
 )
 
-# brew install ${dotfiles[*]}
-# brew install ${dev[*]}
-# brew install ${gnu[*]}
+ brew install ${dotfiles[*]}
+ brew install ${dev[*]}
+ brew install ${gnu[*]}
 brew install ${extras[*]}
-#brew install ${apps[*]}
-#brew install ${fonts[*]}
+brew install ${apps[*]}
+brew install ${fonts[*]}
 
 # not sure if needed
 # softwareupdate --install-rosetta
