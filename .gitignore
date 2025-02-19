@@ -6,3 +6,4 @@ plugins/znvm
 *zcompdump*
 ._zinit
 .zinit_lastupd
+.o
