@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-sed -n "$1{p;q}" $2
+gsed -n "$1{p;q}" $2
