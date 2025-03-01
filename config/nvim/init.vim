@@ -20,6 +20,10 @@ if empty(glob(data_dir . '/autoload/plug.vim'))
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
+function! CheckForR()
+    return executable('R')
+endfunction 
+
 call plug#begin('~/.config/nvim/plugged')
 
 " Essential
@@ -73,6 +77,11 @@ Plug 'powerman/vim-plugin-AnsiEsc'
 
 " Plug 'scottstanfield/vimcmdline'
 Plug 'jalvesaq/vimcmdline'
+if CheckForR()
+    Plug 'jalvesaq/colorout', { 'for': 'r' }
+    Plug 'jalvesaq/Nvim-r', { 'for': ['r', 'rmd'] }
+endif
+
 
 " colorschemes
 "Plug 'NLKNguyen/papercolor-theme'
@@ -123,9 +132,6 @@ let g:vim_markdown_toml_frontmatter = 1
 Plug 'edkolev/tmuxline.vim', {'on': ['Tmuxline', 'TmuxlineSimple', 'TmuxlineSnapshot'] }
 
 Plug 'kassio/neoterm'
-
-Plug 'jalvesaq/colorout', { 'for': 'r' }
-Plug 'jalvesaq/Nvim-r', { 'for': 'r', 'branch': 'master'}
 
 command Z w | qa
 cabbrev wqa Z
@@ -233,7 +239,7 @@ nnoremap <silent> <F3> :NERDTreeToggle<CR>
 " }}}
 " scottstanfield/vimcmdline {{{
 
-let cmdline_map_start			 = '<LocalLeader>r'
+let cmdline_map_start			 = '<LocalLeader>s'
 let cmdline_map_send			 = '<Space>'
 let cmdline_map_send_and_stay  = '<LocalLeader><Space>'
 let cmdline_map_source_fun	 = '<LocalLeader>f'
@@ -253,6 +259,7 @@ let cmdline_app['python'] = 'ipython --no-confirm-exit'
 let cmdline_app['sh']		= 'bash'
 let cmdline_app['julia']	= 'julia'
 let cmdline_app['javascript']  = 'node'
+let cmdline_app['sql']  = 'duckdb'
 
 
 " }}}
@@ -657,6 +664,12 @@ augroup END
 augroup templates
 	autocmd!
 	autocmd BufNewFile *.html	 0r ~/.config/nvim/templates/template.html
+augroup END
+
+augroup asm
+    autocmd!
+	autocmd BufNewFile,BufReadPost *.s set filetype=asm
+	autocmd BufNewFile,BufReadPost *.s let g:rplugin_disabled = 1
 augroup END
 
 
