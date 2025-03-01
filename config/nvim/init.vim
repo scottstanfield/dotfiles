@@ -34,7 +34,6 @@ Plug 'tmux-plugins/vim-tmux'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'tpope/vim-unimpaired'              " ]p paste below; [p paste above
 
-
 Plug 'nicwest/vim-camelsnek'
 
 " Colors
@@ -82,6 +81,8 @@ if CheckForR()
     Plug 'jalvesaq/Nvim-r', { 'for': ['r', 'rmd'] }
 endif
 
+Plug 'scottstanfield/vimcmdline'
+" Plug 'jalvesaq/vimcmdline'
 
 " colorschemes
 "Plug 'NLKNguyen/papercolor-theme'
@@ -112,13 +113,13 @@ au FileType markdown vmap <Leader><Bslash> :EasyAlign*<Bar><Enter>
 
 " vim as a markdown editor: https://secluded.site/vim-as-a-markdown-editor
 " Plug 'godlygeek/tabular'
-Plug 'plasticboy/vim-markdown'
+" Plug 'plasticboy/vim-markdown'
 
 " plasticboy/vim-markdown 
 let g:vim_markdown_folding_disabled = 1
 let g:vim_markdown_frontmatter = 1
 let g:vim_markdown_strikethrough = 1
-let g:vim_markdown_conceal = 2
+let g:vim_markdown_conceal = 0
 let g:vim_markdown_conceal_code_blocks = 0
 let g:vim_markdown_edit_url_in = 'tab'
 let g:vim_markdown_follow_anchor = 1
@@ -132,6 +133,8 @@ let g:vim_markdown_toml_frontmatter = 1
 Plug 'edkolev/tmuxline.vim', {'on': ['Tmuxline', 'TmuxlineSimple', 'TmuxlineSnapshot'] }
 
 Plug 'kassio/neoterm'
+
+Plug 'jalvesaq/colorout', { 'for': 'r' }
 
 command Z w | qa
 cabbrev wqa Z
@@ -148,7 +151,7 @@ nmap <silent> <leader>tg :GitGutterToggle<CR>
 let g:gitgutter_enabled = 1						" off by default
 
 Plug 'github/copilot.vim'
-Plug 'mechatroner/rainbow_csv'
+"Plug 'mechatroner/rainbow_csv'
 
 Plug 'junegunn/rainbow_parentheses.vim'
 let g:rainbow#pairs = [['(', ')'], ['[', ']']]
@@ -173,12 +176,18 @@ nmap <leader>tm :silent Goyo<CR>
 " }}}
 
 " jalvesaq/Nvim-r {{{
+" rlang
+
+function! s:customRlangMappings()
+	noremap <silent> <Space> :call SendLineToR("stay")<CR><Esc><Home><Down>
+	vnoremap <silent> <Space> :call SendSelectionToR("silent", "stay")<cr>
+endfunction
 augroup nvimr
     autocmd!
 	let R_args = ['--no-save', '--quiet']
 	let R_assign = 0
-	au FileType r noremap <silent> <Space> :call SendLineToR("stay")<CR><Esc><Home><Down>
-	au FileType r vnoremap <silent> <Space> :call SendSelectionToR("silent", "stay")<cr>
+	" let R_auto_start = 1
+    autocmd filetype r call s:customRlangMappings()
 augroup END
 
 " rlang
@@ -190,8 +199,6 @@ augroup END
 	" to compile nvimcom (which updates automatically when you invoke nvim-r)
 	" vnoremap <silent> <Space> <Plug>RSendSelection<Esc><Esc>
 	"  inoremap <s-cr> <Esc>:call SendLineToR("stay")<cr><down><home>i
-    let R_args = ['--no-save', '--quiet']
-    let R_assign = 0
 
 	" handle <s-cr> and <c-cr>
 	" https://stackoverflow.com/questions/16359878/how-to-map-shift-enter
@@ -457,6 +464,8 @@ nnoremap <leader>m :silent !open -a "Marked 2.app" '%:p'<cr> :redraw!<cr>
 
 " Two quick jk exits insert mode (odd, I know)
 inoremap jk <Esc>l
+inoremap `` <c-\><c-o>:w<cr>
+noremap `` :w<cr>
 
 " Change tabs to spaces, or the other way around. Good for Python!
 nmap <leader>1 :set et<cr>:retab<cr>
@@ -474,6 +483,10 @@ nmap = <C-w>5+
 nmap - <C-w>5-
 nmap < <C-w>5<
 nmap > <C-w>5>
+nmap <M-,> <c-w>5<
+nmap <M-.> <c-w>5>
+nmap <M-w> <c-W>+
+nmap <M-s> <c-W>-
 
 " Q for formatting paragraph or selection
 vnoremap Q gq
@@ -750,7 +763,6 @@ endfunction
 " Toggle hyperlinks in Markdown on/off
 nnoremap <leader>fi :call Formd("-i")<CR>
 nnoremap <leader>fr :call Formd("-r")<CR>
-nnoremap <leader>th :call Formd("-f")<CR>
 
 noremap <silent> <leader>om :call OpenMarkdownPreview()<cr>
 

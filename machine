@@ -1,2 +1,4 @@
-#  󰯉 󰊠         ▼         󰆚 󰀘 󱍢 󰦥
-export HOST_ICON="󰊠"
+# selections from https://www.nerdfonts.com/cheat-sheet
+#  󰯉 󰊠      󰣧      ▼         󰆚 󰀘 󱍢 󰦥    󰯉      
+export HOST_ICON=""
+export HOST_ICON_COLOR="4"

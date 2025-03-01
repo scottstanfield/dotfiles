@@ -34,10 +34,10 @@ XH=/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk
 CCACHE=$(HB)/ccache
 
 # Make using all cores (set # to # of cores on your machine)
-MAKE=make -j4
+MAKE=make -j8
 
 # GNU version
-GNU_VER=13
+GNU_VER=14
 
 # LLVM (Clang) compiler options
 CC=$(CCACHE) $(HO)/llvm/bin/clang
@@ -48,7 +48,7 @@ CXX14=$(CC)++
 CXX17=$(CC)++
 
 # FORTRAN
-FC=$(CCACHE) $(HB)/gfortran-$(GNU_VER)
+FC=$(CCACHE) $(HB)/gfortran
 F77=$(FC)
 FLIBS=-L$(HL)/gcc/$(GNU_VER) -lgfortran -lquadmath -lm
 

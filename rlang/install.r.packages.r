@@ -1,12 +1,31 @@
 #!/usr/bin/env Rscript
 
-install.packages('data.table')
-install.packages('magrittr')
-install.packages('remotes')
-remotes::install_github('jalvesaq/colorout')
-remotes::install_github('cran/setwidth')
-install.packages('R.utils')
+cc <- function(str) { Filter(nchar, unlist(strsplit(str, "[ \n \t]"))) }
 
-install.packages('tidyverse')
-remotes::install_github('2005m/kit')
-remotes::install_github('fastverse/fastverse')
+p <- '
+	data.table
+	lattice
+	latticeExtra
+	magrittr
+	collapse
+	nanotime
+	descr
+	ggplot2
+	RColorBrewer
+	xts
+	zoo
+	anytime
+	MASS
+	glue
+	gsignal
+	purrr
+'
+
+if (!require("pak")) install.packages("pak")
+
+pak::pak('remotes')
+pak::pak('jalvesaq/colorout')
+pak::pak('cran/setwidth')
+print(cc(p))
+
+pak::pak(cc(p))

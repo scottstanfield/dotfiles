@@ -3,12 +3,14 @@
 # If using MRAN on Linux comment this out now as MRAN 3.5.x correctly sets this up
 # For Mac, there's no MRAN any more, so needing to set repo
 local({
-  #options(repos = getOption('repos', 'http://cran.cnr.berkeley.edu'))
-  # options(repos = getOption('repos', 'http://cran.microsoft.com'))
-  # options(repos = getOption('repos', 'https://ftp.osuosl.org/pub/cran/'))
-  options(help_type = 'html')
+  r <- getOption("repos")
+  r["CRAN"] <- "https://packagemanager.posit.co/cran/latest/"
+  options(repos = r)
   options(digits.secs = 5)
+  options(scipen = 999)
 })
+
+cc <- function(str) { Filter(nchar, unlist(strsplit(str, "[ \n]"))) }
 
 .First <- function()
 {
@@ -33,17 +35,16 @@ local({
 
     if ('data.table' %in% utils::installed.packages()[,1])
     {
-        suppressMessages({
           library(data.table, verbose=F)
           setDTthreads(percent=90)   # allocate all the available threads/CPUs
-        })
-        cat(sprintf(paste('data.table v', utils::packageDescription('data.table')$Version, '\n', sep='')))
+          cat(sprintf(paste('data.table v', utils::packageDescription('data.table')$Version, '\n', sep='')))
     }
   }
 }
 
-# must-have globals
-printf <- function(...) { cat(sprintf(...)) }
-oneup  <- function() { par(mfrow=c(1,1)) }
-twoup  <- function() { par(mfrow=c(2,2)) }
-cls    <- function() { cat('') }
+# printf <- function(...) { cat(sprintf(...)) }
+# oneup  <- function() { par(mfrow=c(1,1)) }
+# twoup  <- function() { par(mfrow=c(2,2)) }
+# cls    <- function() { cat('') }
+
+
