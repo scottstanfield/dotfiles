@@ -21,6 +21,7 @@ dotfiles=(
     ripgrep
     tmux
     zsh
+    eza
 )
 
 dev=(
