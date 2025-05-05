@@ -81,9 +81,6 @@ if CheckForR()
     Plug 'jalvesaq/Nvim-r', { 'for': ['r', 'rmd'] }
 endif
 
-Plug 'scottstanfield/vimcmdline'
-" Plug 'jalvesaq/vimcmdline'
-
 " colorschemes
 "Plug 'NLKNguyen/papercolor-theme'
 Plug 'dracula/vim'
@@ -184,34 +181,14 @@ function! s:customRlangMappings()
 endfunction
 augroup nvimr
     autocmd!
+    let R_tmpdir = '~$USER/R/tmp'               " TODO: consider removing this
+    let R_source_args = 'print.eval=F'
+    let R_nvimpager = 'no'
 	let R_args = ['--no-save', '--quiet']
 	let R_assign = 0
 	" let R_auto_start = 1
     autocmd filetype r call s:customRlangMappings()
 augroup END
-
-" rlang
-	" let R_tmpdir = '~$USER/R/tmp'				  " TODO: consider removing this
-	" let R_source_args = 'print.eval=F'
-	" let R_nvimpager = 'no'
-	"let R_auto_start = 1
-	" " I needed to run `brew link --force readline` in order to get gcc5
-	" to compile nvimcom (which updates automatically when you invoke nvim-r)
-	" vnoremap <silent> <Space> <Plug>RSendSelection<Esc><Esc>
-	"  inoremap <s-cr> <Esc>:call SendLineToR("stay")<cr><down><home>i
-
-	" handle <s-cr> and <c-cr>
-	" https://stackoverflow.com/questions/16359878/how-to-map-shift-enter
-
-	"nmap <Space> <Plug>RSendLine
-
-	" vmap <Space> <Plug>RSendSelection
-	" nmap <Space> <Plug>RSendLine
-
-	" nmap <silent> ✠		:call SendLineToR("stay")<CR><Esc><Home><Down>
-	" imap <silent> ✠		<Esc>:call SendLineToR("stay")<CR><Esc>A
-	" vmap ✠				  <Plug>RSendSelection<Esc><Esc>
-"}}}
 
 "autocmd VimLeave * if exists("g:SendCmdToR") && string(g:SendCmdToR) != "function('SendCmdToR_fake')" | call RQuit("nosave") | endif
 
