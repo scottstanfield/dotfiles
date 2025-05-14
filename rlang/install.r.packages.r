@@ -3,22 +3,27 @@
 cc <- function(str) { Filter(nchar, unlist(strsplit(str, "[ \n \t]"))) }
 
 p <- '
+	MASS
+	RColorBrewer
+	anytime
+	argparse
+	collapse
 	data.table
+	descr
+	duckdb
+	dygraphs
+	ggplot2
+	glue
+	gsignal
+	janitor
 	lattice
 	latticeExtra
 	magrittr
-	collapse
 	nanotime
-	descr
-	ggplot2
-	RColorBrewer
+	purrr
+	xts
 	xts
 	zoo
-	anytime
-	MASS
-	glue
-	gsignal
-	purrr
 '
 
 if (!require("pak")) install.packages("pak")

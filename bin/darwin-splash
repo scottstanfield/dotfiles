@@ -1,16 +1,68 @@
 #!/usr/bin/env bash
-# vim:filetype=bash:
-
-# Copyright (c) Microsoft Corporation.
-# Licensed under the MIT License.
+# vim: noai:ts=4:sw=4:expandtab
+# shellcheck source=/dev/null
+# shellcheck disable=2009
 
 readonly _D="$(dirname "$(readlink -f "$0")")" && cd $_D
 
+cache_uname() {
+    # Cache the output of uname so we don't
+    # have to spawn it multiple times.
+    IFS=" " read -ra uname <<< "$(uname -srm)"
+
+    kernel_name="${uname[0]}"
+    kernel_version="${uname[1]}"
+    kernel_machine="${uname[2]}"
+
+    if [[ "$kernel_name" == "Darwin" ]]; then
+        IFS=$'\n' read -d "" -ra sw_vers <<< "$(awk -F'<|>' '/key|string/ {print $3}' \
+                            "/System/Library/CoreServices/SystemVersion.plist")"
+        for ((i=0;i<${#sw_vers[@]};i+=2)) {
+            case ${sw_vers[i]} in
+                ProductName)          darwin_name=${sw_vers[i+1]} ;;
+                ProductVersion)       osx_version=${sw_vers[i+1]} ;;
+                ProductBuildVersion)  osx_build=${sw_vers[i+1]}   ;;
+            esac
+        }
+    fi
+}
+
+get_os() {
+    # $kernel_name is set in a function called cache_uname and is
+    # just the output of "uname -s".
+    case $kernel_name in
+        Darwin)   os=$darwin_name ;;
+        SunOS)    os=Solaris ;;
+        Haiku)    os=Haiku ;;
+        MINIX)    os=MINIX ;;
+        AIX)      os=AIX ;;
+        IRIX*)    os=IRIX ;;
+        FreeMiNT) os=FreeMiNT ;;
+
+        Linux|GNU*)
+            os=Linux
+        ;;
+
+        *BSD|DragonFly|Bitrig)
+            os=BSD
+        ;;
+
+        CYGWIN*|MSYS*|MINGW*)
+            os=Windows
+        ;;
+
+        *)
+            printf '%s\n' "Unknown OS detected: '$kernel_name', aborting..." >&2
+            printf '%s\n' "Open an issue on GitHub to add support for your OS." >&2
+            exit 1
+        ;;
+    esac
+}
+
+
 trim() {
     local var="$*"
-    # remove leading whitespace characters
     var="${var#"${var%%[![:space:]]*}"}"
-    # remove trailing whitespace characters
     var="${var%"${var##*[![:space:]]}"}"
     printf '%s' "$var"
 }
@@ -36,35 +88,36 @@ ansi_colors()
   r="$esc[0m"
 }
 
-ansi_colors
+main() {
 
-# 32, 33, 36
-# green, yellow, cyan
+    ansi_colors
 
-h3="$reset$bold$purple"
-h2="$reset$bold$yellow"
-h1="$reset$bold$green"
-p1="$reset"
+    h3="$reset$bold$purple"
+    h2="$reset$bold$yellow"
+    h1="$reset$bold$green"
+    p1="$reset"
 
-ip="$(ifconfig -l | xargs -n1 ipconfig getifaddr | paste -sd ' ' -)"
-#ip="$(ip route get 1.1.1.1 | head -1 | cut -d' ' -f7)"
-kernel="$(uname -srm)"
-uptime="$(uptime)"
-hostname="$(hostname)"
-load="$(uptime | cut -f4 -d, | cut -f2 -d:)"
-load="$(trim $load)"
-uptime="$(uptime | cut -f1 -d,)"
-os="$(sw_vers -productVersion)"
-
-# ☉
+    ip="$(ifconfig -l | xargs -n1 ipconfig getifaddr | paste -sd ' ' -)"
+    #ip="$(ip route get 1.1.1.1 | head -1 | cut -d' ' -f7)"
+    kernel="$(uname -srm)"
+    uptime="$(uptime)"
+    hostname="$(hostname)"
+    load="$(uptime | cut -f4 -d, | cut -f2 -d:)"
+    load="$(trim $load)"
+    uptime="$(uptime | cut -f1 -d,)"
+    os="$(sw_vers -productVersion)"
 
 cat <<EOF
 
-${h2} · IP         ${r}${ip}
-${h2} · Kernel     ${r}${kernel}
-${h2} · OS         ${r}MacOS ${os}
-${h2} · Load       ${r}${load}
-${h2} · Uptime     ${r}${uptime}
-${h1} ○ Hostname   ${h3}${hostname}${r}
+    ${h2} · IP         ${r}${ip}
+    ${h2} · Kernel     ${r}${kernel}
+    ${h2} · OS         ${r}MacOS ${os}
+    ${h2} · Load       ${r}${load}
+    ${h2} · Uptime     ${r}${uptime}
+    ${h1} ○ Hostname   ${h3}${hostname}${r}
 
 EOF
+}
+
+main "$@"
+

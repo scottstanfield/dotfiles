@@ -26,7 +26,6 @@ call plug#begin('~/.config/nvim/plugged')
 Plug 'sheerun/vim-polyglot'				" all the best language / syntax packs
 Plug 'ryanoasis/vim-devicons'
 Plug 'tmux-plugins/vim-tmux'
-"Plug 'JuliaEditorSupport/julia-vim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'tpope/vim-unimpaired'              " ]p paste below; [p paste above
 
@@ -67,11 +66,12 @@ Plug 'segeljakt/vim-silicon'
 " Plug 'idbrii/vim-gogo'
 " Plug 'tyru/open-browser.vim'
 " Plug 'sotte/presenting.vim'
+Plug 'sotte/presenting.nvim'
 
 Plug 'powerman/vim-plugin-AnsiEsc'
 
-Plug 'scottstanfield/vimcmdline'
-" Plug 'jalvesaq/vimcmdline'
+" Plug 'scottstanfield/vimcmdline'
+Plug 'jalvesaq/vimcmdline'
 
 " colorschemes
 "Plug 'NLKNguyen/papercolor-theme'

@@ -53,6 +53,7 @@ ARCH=$(arch)        # arm64, i386, x86_64
 if [[ $UNAME == "Darwin" ]]; then
     export HOMEBREW_NO_AUTO_UPDATE=1
 fi
+export HOMEBREW_NO_INSTALL_CLEANUP=1
 
 if [[ $UNAME  == "Linux" ]]; then
 fi
@@ -159,6 +160,7 @@ path=(
 
     ~/dotfile/bin
     ~/miniconda3/bin
+    $HOME/.local/bin
 
     .
 
@@ -229,12 +231,12 @@ if [[ $(whence -p "gls" &>/dev/null) -eq 0 || $(ls --version &>/dev/null) ]]; th
     alias la="ls ${lsflags} -la"
     alias ll="ls ${lsflags} -l --sort=extension"
     alias lla="ls ${lsflags} -la"
-    alias llD="ls ${lsflags} -l --sort=time --reverse --time-style=long-iso"
-    alias lld="ls ${lsflags} -l --sort=time --time-style=long-iso"
+    alias llD="ls ${lsflags} -l --sort=time --reverse --time-style=full-iso"
+    alias lld="ls ${lsflags} -l --sort=time --time-style=full-iso"
     alias lln="ls ${lsflags} -l"
     alias llS="ls ${lsflags} -l --sort=size --reverse"
     alias lls="ls ${lsflags} -l --sort=size "
-    alias llt="ls ${lsflags} -l --sort=time --reverse --time-style=long-iso"
+    alias llt="ls ${lsflags} -l --sort=time --reverse --time-style=full-iso"
 fi
 
 ## eza/exa settings for ls
@@ -305,6 +307,8 @@ alias d='dirs -v'
 alias scp='scp -p'
 alias p="python"
 alias sudosu="sudo -Es"
+alias ips="ip -4 --color --brief a"
+alias ddb="duckdb"
 
 alias rsp="rsync -avlhW --info=progress2,stats "
 function anybar { echo -n $1 | nc -4u -w0 localhost ${2:-1738}; }
@@ -324,7 +328,7 @@ function jl()      { < $1 jq -C . | less }
 function gd()      { git diff --color=always $* | less }
 function witch()   { file $(which "$*") }
 function gg()      { git commit -m "$*" }
-function http      { command http --pretty=all --verbose $@ | less -R; }
+function httpie    { command http --pretty=all --verbose $@ | less -R; }
 function fixzsh    { compaudit | xargs chmod go-w }
 function ht()      { (head $1 && echo "---" && tail $1) | less }
 function take()    { mkdir -p $1 && cd $1 }
@@ -399,9 +403,9 @@ autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 # }}}
 
-# export NVM_AUTO_USE=false
- export NVM_LAZY_LOAD=true
- zinit light lukechilds/zsh-nvm
+export NVM_AUTO_USE=false
+export NVM_LAZY_LOAD=true
+zinit light lukechilds/zsh-nvm
 
 # | completions | # {{{
 zinit ice wait silent blockf; 
@@ -536,3 +540,26 @@ export LDFLAGS="-L/opt/homebrew/opt/llvm/lib"
 export CPPFLAGS="-I/opt/homebrew/opt/llvm/include"
 export CFLAGS="-I/opt/homebrew/opt/llvm/include"
 export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
+
+# bun completions
+[ -s "/Users/sstanfield/.bun/_bun" ] && source "/Users/sstanfield/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
+alias uv="uv --native-tls"
+alias uvx="uvx --native-tls"
+
+
+# >>> juliaup initialize >>>
+
+# !! Contents within this block are managed by juliaup !!
+
+path=('/Users/sstanfield/.juliaup/bin' $path)
+export PATH
+
+# <<< juliaup initialize <<<
+
+# Generated for envman. Do not edit.
+[ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"
