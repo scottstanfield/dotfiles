@@ -148,6 +148,7 @@ setopt nullglob
 
 path=(
     $HOME/bin
+    $HOME/.local/bin
 
     # $(brew --prefix llvm)/bin
     $path[@]
@@ -187,17 +188,17 @@ manpath=(
 manpath=($^manpath(N))
 setopt NO_nullglob
 
-if in_path "bat" ; then
-    export MANPAGER="sh -c 'col -bx | bat -l man -p'"
-fi
+# if in_path "bat" ; then
+#     export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+# fi
 
-if in_path "batcat" ; then
-    alias bat='batcat'
-    export MANPAGER="sh -c 'col -bx | bat -l man -p'"
-fi
+# if in_path "batcat" ; then
+#     alias bat='batcat'
+#     export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+# fi
 
 ## Setup fzf FuzzyFinder path
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+# [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 ## LS and colors
 ## Tips: https://gist.github.com/syui/11322769c45f42fad962
@@ -272,6 +273,7 @@ fi
 
 
 ## Aliases
+alias fd="fdfind"
 alias ,="cd .."
 function @() {
   if [ ! "$#" -gt 0 ]; then
@@ -451,11 +453,10 @@ zinit light zdharma-continuum/null
 #     sbin"glow" bpick"*.tar.gz"  charmbracelet/glow
 #
 #zi wait'0b' lucid from"gh-r" as"program" for @junegunn/fzf
-zi ice wait'0a' lucid; zi snippet https://github.com/junegunn/fzf/blob/master/shell/key-bindings.zsh
-zi ice wait'1a' lucid; zi snippet https://github.com/junegunn/fzf/blob/master/shell/completion.zsh
-zi wait'0c' lucid pick"fzf-finder.plugin.zsh" light-mode for  @leophys/zsh-plugin-fzf-finder
-
-export FZF_DEFAULT_COMMAND="rg --files --hidden --follow --glob '!.git'"
+# zi ice wait'0a' lucid; zi snippet https://github.com/junegunn/fzf/blob/master/shell/key-bindings.zsh
+# zi ice wait'1a' lucid; zi snippet https://github.com/junegunn/fzf/blob/master/shell/completion.zsh
+# zi wait'0c' lucid pick"fzf-finder.plugin.zsh" light-mode for  @leophys/zsh-plugin-fzf-finder
+# export FZF_DEFAULT_COMMAND="rg --files --hidden --follow --glob '!.git'"
 
 # zinit pack"binary+keys" for fzf
 # zinit pack"bgn" for fzf
@@ -532,7 +533,22 @@ export PKG_LIBS="${PKG_LIBS} -fopenmp"
 
 # LDFLAGS="-L/opt/homebrew/opt/llvm@12/lib -Wl,-rpath,/opt/homebrew/opt/llvm@12/lib"
 
-export LDFLAGS="-L/opt/homebrew/opt/llvm/lib"
-export CPPFLAGS="-I/opt/homebrew/opt/llvm/include"
-export CFLAGS="-I/opt/homebrew/opt/llvm/include"
-export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
+# export LDFLAGS="-L/opt/homebrew/opt/llvm/lib"
+# export CPPFLAGS="-I/opt/homebrew/opt/llvm/include"
+# export CFLAGS="-I/opt/homebrew/opt/llvm/include"
+# export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
+
+eval "$(zoxide init zsh)"
+
+# bun completions
+# [ -s "/home/scott/.bun/_bun" ] && source "/home/scott/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
+# fzf (adds 10 msec)
+(( $+commands[fzf] )) && source <(fzf --zsh)
+
+# Generated for envman. Do not edit.
+[ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"

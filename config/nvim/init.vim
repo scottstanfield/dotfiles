@@ -887,22 +887,23 @@ endtry
 " }}}
 
 function! UpdateCFlags()
-	let l:pkg_config_files = system("pkg-config --cflags libczmq libprotobuf-c")
+	let l:pkg_config_files = system("pkg-config --cflags libczmq libzmq protobuf libprotobuf-c ")
 	let g:ale_c_clang_options = l:pkg_config_files
 	let g:ale_c_gcc_options = l:pkg_config_files
 	let g:ale_cpp_cc_options = l:pkg_config_files
 endfunction
 
-autocmd FileType c call UpdateCFlags()
+"autocmd FileType c call UpdateCFlags()
 
+let g:ale_c_parse_makefile = 1
+let g:ale_echo_msg_error_str = 'E'
+let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+let g:ale_echo_msg_warning_str = 'W'
 let g:ale_fixers = { 'javascript': ['eslint'] }
 let g:ale_fix_on_save = 1
+"let g:ale_linters = {'c': ['gcc'], 'cpp': ['clang', 'g++'], 'javascript': ['eslint'] }
+let g:ale_python_flake8_options = '--max-line-length 88 --extend-ignore=E203'
 let g:ale_sign_error = '>>'
 let g:ale_sign_warning = '--'
-let g:ale_echo_msg_error_str = 'E'
-let g:ale_echo_msg_warning_str = 'W'
-let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
-let g:ale_python_flake8_options = '--max-line-length 88 --extend-ignore=E203'
-let g:ale_linters = {'c': ['clang'], 'cpp': ['clang', 'g++'], 'javascript': ['eslint'] }
 
 let g:csv_default_delim=','

@@ -25,7 +25,6 @@ if (!require("pak")) install.packages("pak")
 
 pak::pak('remotes')
 pak::pak('jalvesaq/colorout')
-pak::pak('cran/setwidth')
 print(cc(p))
 
 pak::pak(cc(p))

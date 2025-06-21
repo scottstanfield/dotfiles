@@ -8,6 +8,7 @@ local({
   options(repos = r)
   options(digits.secs = 5)
   options(scipen = 999)
+  options(setWidthOnResize = TRUE)
 })
 
 cc <- function(str) { Filter(nchar, unlist(strsplit(str, "[ \n]"))) }
