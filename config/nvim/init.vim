@@ -26,6 +26,10 @@ endfunction
 
 call plug#begin('~/.config/nvim/plugged')
 
+Plug 'nvim-treesitter/nvim-treesitter'
+Plug 'nvim-treesitter/nvim-treesitter-textobjects'
+Plug 'nvim-lua/plenary.nvim'
+
 " Essential
 Plug 'sheerun/vim-polyglot'				" all the best language / syntax packs
 Plug 'ryanoasis/vim-devicons'
@@ -107,7 +111,7 @@ nmap <leader>to :silent Goyo<CR>
 Plug 'junegunn/vim-easy-align',		{ 'on': ['<Plug>(EasyAlign)', 'EasyAlign'] }
 xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
-let g:easy_align_delimiters = { ';': {'pattern': ':'}, '>': {'pattern': '>'}, 'a': {'pattern': '<-'}, '<': {'pattern': '<-'}, ':': {'pattern': ':='}}
+let g:easy_align_delimiters = { '/': {'pattern': '/'}, ';': {'pattern': ';'}, '>': {'pattern': '>'}, 'a': {'pattern': '<-'}, '<': {'pattern': '<-'}, ':': {'pattern': ':='}}
 au FileType markdown vmap <Leader><Bslash> :EasyAlign*<Bar><Enter>
 
 
