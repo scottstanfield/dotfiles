@@ -296,6 +296,7 @@ endfunction
 " https://www.typography.com/blog/house-of-flying-reference-marks
 " *, †, ‡, §, ||, #, **, ††, ‡‡, §§, ||||, ###, ***, †††, ‡‡‡
 
+ab [pm] ±
 ab [dagger] †
 ab [obelus] †
 ab [dagger2] ‡
@@ -449,7 +450,11 @@ nnoremap <S-Tab> :tabn<CR>
 nnoremap <Tab> <C-w><C-w>
 
 " Open current Markdown (*.md) file in OS X "Marked" and force redraw
-nnoremap <leader>m :silent !open -a "Marked 2.app" '%:p'<cr> :redraw!<cr>
+" Unused at the moment
+" nnoremap <leader>m :silent !open -a "Marked 2.app" '%:p'<cr> :redraw!<cr>
+
+" Setup vim for C & Makefiles
+nnoremap <leader>m :write<CR> :silent make \| cwindow<CR>
 
 " Two quick jk exits insert mode (odd, I know)
 inoremap jk <Esc>l
