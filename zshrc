@@ -297,7 +297,7 @@ alias path='echo $PATH | tr : "\n" | cat -n'
 alias pd='pushd'  # symmetry with cd
 alias r="R --no-save --no-restore-data --quiet"
 alias R="R --no-save --no-restore-data "
-alias rg='rg --pretty --smart-case --fixed-strings'
+alias rg='rg --pretty --smart-case'
 alias rgc='rg --no-line-number --color never '
 alias ssh="TERM=xterm-256color ssh"
 alias t='tmux -2 new-session -A -s "moab"'
@@ -321,7 +321,7 @@ ats() {
 
 function fif() {
   if [ ! "$#" -gt 0 ]; then echo "Need a string to search for!"; return 1; fi
-  rg --files-with-matches --no-messages "$1" | fzf --preview "highlight -O ansi -l {} 2> /dev/null | rg --colors 'match:bg:yellow' --ignore-case --pretty --context 10 '$1' || rg --ignore-case --pretty --context 10 '$1' {}"
+  rg --color=never --files-with-matches --no-messages "$1" | fzf --preview "highlight -O ansi -l {} 2> /dev/null | rg --colors 'match:bg:yellow' --ignore-case --pretty --context 10 '$1' || rg --ignore-case --pretty --context 10 '$1' {}"
 }
 
 function jl()      { < $1 jq -C . | less }
@@ -556,10 +556,11 @@ alias uvx="uvx --native-tls"
 
 # !! Contents within this block are managed by juliaup !!
 
-path=('/Users/sstanfield/.juliaup/bin' $path)
-export PATH
+# path=('/Users/sstanfield/.juliaup/bin' $path)
+# export PATH
 
 # <<< juliaup initialize <<<
 
 # Generated for envman. Do not edit.
 [ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"
+eval "$(zoxide init zsh)"
