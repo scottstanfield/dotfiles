@@ -231,12 +231,15 @@ if [[ $(whence -p "gls" &>/dev/null) -eq 0 || $(ls --version &>/dev/null) ]]; th
     alias la="ls ${lsflags} -la"
     alias ll="ls ${lsflags} -l --sort=extension"
     alias lla="ls ${lsflags} -la"
-    alias llD="ls ${lsflags} -l --sort=time --reverse --time-style=full-iso"
-    alias lld="ls ${lsflags} -l --sort=time --time-style=full-iso"
     alias lln="ls ${lsflags} -l"
-    alias llS="ls ${lsflags} -l --sort=size --reverse"
+
+    lsflags+=" --no-user --no-permissions"
+    alias l="ll --no-user --no-permissions"
+    alias lld="ls ${lsflags} -l --sort=time --time-style=full-iso"
+    alias llD="ls ${lsflags} -l --sort=time --reverse --time-style=full-iso"
     alias lls="ls ${lsflags} -l --sort=size "
-    alias llt="ls ${lsflags} -l --sort=time --reverse --time-style=full-iso"
+    alias llS="ls ${lsflags} -l --sort=size --reverse"
+    alias lle="ls ${lsflags} -l --sort=extension "
 fi
 
 ## eza/exa settings for ls
