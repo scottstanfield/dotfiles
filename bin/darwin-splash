@@ -3,6 +3,23 @@
 # shellcheck source=/dev/null
 # shellcheck disable=2009
 
+# OS: macOS 15.5 24F74 arm64
+# Host: Mac15,10
+# Kernel: 24.5.0
+
+# OS: Ubuntu 24.10 aarch64
+# Host: Apple Virtualization Generic
+# Kernel: 6.11.0.-29-generic
+
+# 
+# · IP         192.168.1.121
+# · Kernel     Darwin 24.5.0 arm64
+# · OS         MacOS 15.5
+# · Load       1.67 2.70 3.40
+# · Uptime     21:38  up 2 days
+# ○ Hostname   mRS-JVH4XP06TV
+
+
 readonly _D="$(dirname "$(readlink -f "$0")")" && cd $_D
 
 cache_uname() {

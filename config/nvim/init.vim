@@ -36,7 +36,7 @@ Plug 'dracula/vim', {'as': 'dracula'}
 Plug 'p00f/alabaster.nvim'
 
 " from vim boilerplate generator
-Plug 'dense-analysis/ale'           " code linting
+" Plug 'dense-analysis/ale'           " code linting
 
 Plug 'Yggdroot/indentLine'          " | in the white space
 let g:indentLine_enabled = 0
@@ -458,8 +458,6 @@ nnoremap <leader>m :write<CR> :silent make \| cwindow<CR>
 
 " Two quick jk exits insert mode (odd, I know)
 inoremap jk <Esc>l
-inoremap `` <c-\><c-o>:w<cr>
-noremap `` :w<cr>
 
 " Change tabs to spaces, or the other way around. Good for Python!
 nmap <leader>1 :set et<cr>:retab<cr>
@@ -646,7 +644,7 @@ nnoremap <buffer> <Left> :N<cr>
 " Check spelling: [s ]s z= zg
 augroup markdown
 	autocmd!
-	"autocmd Filetype markdown setlocal spell spelllang=en_us
+	autocmd Filetype markdown setlocal nospell spelllang=en_us
 	autocmd filetype markdown set conceallevel=2
 	autocmd filetype markdown set cursorline
 augroup END
@@ -894,3 +892,5 @@ let g:ale_python_flake8_options = '--max-line-length 88 --extend-ignore=E203'
 let g:ale_linters = {'c': ['clang'], 'cpp': ['clang', 'g++'], 'javascript': ['eslint'] }
 
 let g:csv_default_delim=','
+
+set nospell
