@@ -311,6 +311,7 @@ endfunction
 " https://www.typography.com/blog/house-of-flying-reference-marks
 " *, †, ‡, §, ||, #, **, ††, ‡‡, §§, ||||, ###, ***, †††, ‡‡‡
 
+ab [pm] ±
 ab [dagger] †
 ab [obelus] †
 ab [dagger2] ‡
