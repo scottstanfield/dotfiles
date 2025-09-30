@@ -14,7 +14,9 @@ export DEBIAN_FRONTEND=noninteractive
 
 # install webi which is used to install some simple programs
 curl https://webi.sh/webi | sh
-webi rust go fd ripgrep fzf zoxide bat
+webi rust fd ripgrep fzf zoxide bat
+
+source "$HOME/.config/envman/PATH.env"
 
 # [[ $EUID -eq 0 ]] || die "$0 needs to run as root. Try sudo $0"
 
