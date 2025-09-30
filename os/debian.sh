@@ -29,14 +29,12 @@ packages=(
     zsh
 )
 
+
 # install core packages
 sudo apt-get install --no-install-recommends -y ${packages[*]}
 
-# install miniconda
-mkdir -p /tmp/miniconda3
-wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O /tmp/miniconda.sh
-bash /tmp/miniconda.sh -b -u -p ~/miniconda3
-rm -rf /tmp/miniconda
+# python manager uv
+curl -LsSf https://astral.sh/uv/install.sh | sh
 
 # install the Rust language (mostly to get the Eza replacement for ls)
 cargo install eza
