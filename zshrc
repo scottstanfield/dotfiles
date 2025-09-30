@@ -34,7 +34,7 @@
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
-typeset -g POWERLEVEL9K_INSTANT_PROMPT=off
+# typeset -g POWERLEVEL9K_INSTANT_PROMPT=off
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
@@ -388,24 +388,19 @@ case "$OSTYPE" in
   *) echo 'WARN: unsupported system -- some cli programs might not work' ;;
 esac
 
-# ZINIT installer {{{
-[[ ! -f ~/.zinit/bin/zinit.zsh ]] && {
-    print -P "%F{33}▓▒░ %F{220}Installing zsh %F{33}zinit%F{220} plugin manager (%F{33}zdharma-continuum/zinit%F{220})…%f"
-    command mkdir -p "$HOME/.zinit" && command chmod g-rwX "$HOME/.zinit"
-    command git clone --depth=1 https://github.com/zdharma-continuum/zinit.git "$HOME/.zinit/bin" && \
-        print -P "%F{33}▓▒░ %F{34}Installation successful.%f%b" || \
-        print -P "%F{160}▓▒░ Install failed.%f%b"
-}
-source "$HOME/.zinit/bin/zinit.zsh"
+# ZINIT installer (from https://github.com/zdharma-continuum/zinit?tab=readme-ov-file#install)
+
+ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
+[ ! -d $ZINIT_HOME ] && mkdir -p "$(dirname $ZINIT_HOME)"
+[ ! -d $ZINIT_HOME/.git ] && git clone --depth=1 https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
+source "${ZINIT_HOME}/zinit.zsh"
 autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
-# }}}
 
-# export NVM_AUTO_USE=false
- export NVM_LAZY_LOAD=true
- zinit light lukechilds/zsh-nvm
 
-# | completions | # {{{
+# export NVM_LAZY_LOAD=true
+# zinit light lukechilds/zsh-nvm
+
 zinit ice wait silent blockf; 
 zinit snippet PZT::modules/completion/init.zsh
 unsetopt correct
@@ -413,9 +408,8 @@ unsetopt correct_all
 setopt complete_in_word         # cd /ho/sco/tm<TAB> expands to /home/scott/tmp
 setopt auto_menu                # show completion menu on succesive tab presses
 
-# }}}
-
 zinit load zdharma-continuum/history-search-multi-word
+# p10k 
 zinit ice depth=1; zinit light romkatv/powerlevel10k
 
 zinit fpath -f /opt/homebrew/share/zsh/site-functions
@@ -488,8 +482,8 @@ export BAT_THEME="gruvbox-dark"
 export AWS_DEFAULT_PROFILE=dev-additive
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-typeset -g POWERLEVEL9K_PROMPT_CHAR_{OK,ERROR}_VIINS_CONTENT_EXPANSION='»'
+# [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+# typeset -g POWERLEVEL9K_PROMPT_CHAR_{OK,ERROR}_VIINS_CONTENT_EXPANSION='»'
 
 
 ##
@@ -552,3 +546,14 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 
 # Generated for envman. Do not edit.
 [ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"
+
+
+# precmd() {
+#   # Join failing codes with spaces (e.g. "1 127")
+#   export STARSHIP_PIPESTATUS="${pipestatus[*]}"
+# }
+# export STARSHIP_CONFIG="$HOME/.config/starship/starship.toml"
+# eval "$(starship init zsh)"
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

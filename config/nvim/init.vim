@@ -26,12 +26,12 @@ endfunction
 
 call plug#begin('~/.config/nvim/plugged')
 
-Plug 'nvim-treesitter/nvim-treesitter'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'nvim-treesitter/nvim-treesitter-textobjects'
 Plug 'nvim-lua/plenary.nvim'
 
 " Essential
-Plug 'sheerun/vim-polyglot'				" all the best language / syntax packs
+"Plug 'sheerun/vim-polyglot'				" all the best language / syntax packs
 Plug 'ryanoasis/vim-devicons'
 Plug 'tmux-plugins/vim-tmux'
 "Plug 'JuliaEditorSupport/julia-vim'
@@ -45,7 +45,7 @@ Plug 'dracula/vim', {'as': 'dracula'}
 Plug 'p00f/alabaster.nvim'
 
 " from vim boilerplate generator
-Plug 'dense-analysis/ale'           " code linting
+"Plug 'dense-analysis/ale'           " code linting
 
 Plug 'Yggdroot/indentLine'          " | in the white space
 let g:indentLine_enabled = 0
@@ -163,6 +163,8 @@ augroup rainbow
   autocmd!
     autocmd FileType julia RainbowParentheses
     autocmd FileType r RainbowParentheses
+    autocmd FileType c RainbowParentheses
+    autocmd FileType cpp RainbowParentheses
     autocmd FileType python RainbowParentheses
     autocmd FileType bash RainbowParentheses
     autocmd FileType vim RainbowParentheses
@@ -891,24 +893,40 @@ endtry
 
 " }}}
 
-function! UpdateCFlags()
-	let l:pkg_config_files = system("pkg-config --cflags libczmq libzmq protobuf libprotobuf-c ")
-	let g:ale_c_clang_options = l:pkg_config_files
-	let g:ale_c_gcc_options = l:pkg_config_files
-	let g:ale_cpp_cc_options = l:pkg_config_files
-endfunction
+"function! UpdateCFlags()
+"	let l:pkg_config_files = system("pkg-config --cflags libczmq libzmq protobuf libprotobuf-c fmt CLI11")
+"	let g:ale_c_clang_options = l:pkg_config_files
+"	let g:ale_c_gcc_options = l:pkg_config_files
+"	let g:ale_cpp_cc_options = l:pkg_config_files
+"endfunction
 
-"autocmd FileType c call UpdateCFlags()
+""autocmd FileType c call UpdateCFlags()
 
-let g:ale_c_parse_makefile = 1
-let g:ale_echo_msg_error_str = 'E'
-let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
-let g:ale_echo_msg_warning_str = 'W'
-let g:ale_fixers = { 'javascript': ['eslint'] }
-let g:ale_fix_on_save = 1
-"let g:ale_linters = {'c': ['gcc'], 'cpp': ['clang', 'g++'], 'javascript': ['eslint'] }
-let g:ale_python_flake8_options = '--max-line-length 88 --extend-ignore=E203'
-let g:ale_sign_error = '>>'
-let g:ale_sign_warning = '--'
+"let g:ale_c_parse_makefile = 1
+"let g:ale_cpp_parse_makefile = 1
+"let g:ale_echo_msg_error_str = 'E'
+"let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+"let g:ale_echo_msg_warning_str = 'W'
+"let g:ale_fixers = { 'javascript': ['eslint'] }
+"let g:ale_fix_on_save = 1
+""let g:ale_linters = {'c': ['gcc'], 'cpp': ['clang', 'g++'], 'javascript': ['eslint'] }
+"let g:ale_linters = {'c': ['gcc'], 'cpp': ['clang', 'g++'], 'python': ['flake8'], 'r': ['lintr'], 'javascript': ['eslint'] }
+"let g:ale_cpp_clang_options = '-std=c++20'
+"let g:ale_cpp_gcc_options = '-std=gnu++20'
+"let g:ale_python_flake8_options = '--max-line-length 88 --extend-ignore=E203'
+"let g:ale_sign_error = '>>'
+"let g:ale_sign_warning = '--'
 
 let g:csv_default_delim=','
+
+" helper to debug what is setting indent options
+command! ShowIndent verbose set et? ts? sw? sts? indentexpr?
+
+" --- tree-sitter config (lua inside init.vim) ---
+lua << EOF
+require('nvim-treesitter.configs').setup({
+  ensure_installed = { "c", "cpp" },   -- grammars you want
+  highlight = { enable = true },       -- syntax highlighting
+  indent = { enable = false },         -- don't let TS override indent
+})
+EOF

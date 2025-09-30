@@ -87,3 +87,11 @@
     helper=cache
 [http]
 	sslVerify = false
+[page]
+	diff = delta
+	show = delta
+	log = delta
+	blame = delta
+	reflog = delta
+[interactive]
+	diffFilter = delta --color-only
