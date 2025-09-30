@@ -431,9 +431,6 @@ zinit light-mode for \
     zdharma-continuum/zinit-annex-submods \
     zdharma-continuum/zinit-annex-rust
 
-#zinit ice cargo'!lsd'
-zinit light zdharma-continuum/null
-
 # For git command extensions
 # zinit as"null" wait"1" lucid for sbin                davidosomething/git-my
 
