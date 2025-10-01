@@ -273,7 +273,6 @@ fi
 
 
 ## Aliases
-alias fd="fdfind"
 alias ,="cd .."
 function @() {
   if [ ! "$#" -gt 0 ]; then
