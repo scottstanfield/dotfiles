@@ -20,6 +20,10 @@ if empty(glob(data_dir . '/autoload/plug.vim'))
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
+function! CheckForR()
+    return executable('R')
+endfunction 
+
 call plug#begin('~/.config/nvim/plugged')
 
 " Essential
@@ -124,7 +128,6 @@ Plug 'edkolev/tmuxline.vim', {'on': ['Tmuxline', 'TmuxlineSimple', 'TmuxlineSnap
 Plug 'kassio/neoterm'
 
 Plug 'jalvesaq/colorout', { 'for': 'r' }
-" Plug 'jalvesaq/Nvim-r', { 'for': 'r', 'branch': 'master'}
 
 command Z w | qa
 cabbrev wqa Z
@@ -209,34 +212,14 @@ function! s:customRlangMappings()
 endfunction
 augroup nvimr
     autocmd!
+    let R_tmpdir = '~$USER/R/tmp'               " TODO: consider removing this
+    let R_source_args = 'print.eval=F'
+    let R_nvimpager = 'no'
 	let R_args = ['--no-save', '--quiet']
 	let R_assign = 0
 	" let R_auto_start = 1
     autocmd filetype r call s:customRlangMappings()
 augroup END
-
-" rlang
-	" let R_tmpdir = '~$USER/R/tmp'				  " TODO: consider removing this
-	" let R_source_args = 'print.eval=F'
-	" let R_nvimpager = 'no'
-	"let R_auto_start = 1
-	" " I needed to run `brew link --force readline` in order to get gcc5
-	" to compile nvimcom (which updates automatically when you invoke nvim-r)
-	" vnoremap <silent> <Space> <Plug>RSendSelection<Esc><Esc>
-	"  inoremap <s-cr> <Esc>:call SendLineToR("stay")<cr><down><home>i
-
-	" handle <s-cr> and <c-cr>
-	" https://stackoverflow.com/questions/16359878/how-to-map-shift-enter
-
-	"nmap <Space> <Plug>RSendLine
-
-	" vmap <Space> <Plug>RSendSelection
-	" nmap <Space> <Plug>RSendLine
-
-	" nmap <silent> ✠		:call SendLineToR("stay")<CR><Esc><Home><Down>
-	" imap <silent> ✠		<Esc>:call SendLineToR("stay")<CR><Esc>A
-	" vmap ✠				  <Plug>RSendSelection<Esc><Esc>
-"}}}
 
 "autocmd VimLeave * if exists("g:SendCmdToR") && string(g:SendCmdToR) != "function('SendCmdToR_fake')" | call RQuit("nosave") | endif
 
@@ -291,6 +274,7 @@ let cmdline_app['python'] = 'ipython --no-confirm-exit'
 let cmdline_app['sh']		= 'bash'
 let cmdline_app['julia']	= 'julia'
 let cmdline_app['javascript']  = 'node'
+let cmdline_app['sql']  = 'duckdb'
 
 
 " }}}
@@ -706,6 +690,12 @@ augroup END
 augroup templates
 	autocmd!
 	autocmd BufNewFile *.html	 0r ~/.config/nvim/templates/template.html
+augroup END
+
+augroup asm
+    autocmd!
+	autocmd BufNewFile,BufReadPost *.s set filetype=asm
+	autocmd BufNewFile,BufReadPost *.s let g:rplugin_disabled = 1
 augroup END
 
 

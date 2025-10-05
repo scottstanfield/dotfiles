@@ -163,6 +163,8 @@ setopt nullglob
 
 path=(
     $HOME/bin
+    $HOME/.local/bin
+    $HOME/.cargo/bin
 
     # $(brew --prefix llvm)/bin
     $path[@]
@@ -178,7 +180,6 @@ path=(
 
     .
 
-    $HOME/.cargo/bin
 )
 
 # Now, remove paths that don't exist https://stackoverflow.com/a/9352979
@@ -203,13 +204,9 @@ manpath=(
 manpath=($^manpath(N))
 setopt NO_nullglob
 
-if in_path "bat" ; then
-    export MANPAGER="sh -c 'col -bx | bat -l man -p'"
-fi
-
 if in_path "batcat" ; then
     alias bat='batcat'
-    export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+    export MANPAGER="sh -c 'col -bx | batcat -l man -p'"
 fi
 
 ## Setup fzf FuzzyFinder path
@@ -299,6 +296,8 @@ function @() {
     printenv | sort | grep -i "$1"
   fi
 }
+alias dc='docker compose'
+alias sc='systemctl'
 alias cp="cp -a"
 alias df='df --human-readable'
 alias dkrr='docker run --rm -it -u1000:1000 -v$(pwd):/work -w /work -e DISPLAY=$DISPLAY'

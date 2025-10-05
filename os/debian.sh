@@ -38,6 +38,13 @@ rm -rf /tmp/miniconda
 git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 ~/.fzf/install
 
+# The git clone from junegunn installs an older version of fzf
+mkdir -p ~/bin
+cd /tmp
+wget https://github.com/junegunn/fzf/releases/download/v0.55.0/fzf-0.55.0-linux_amd64.tar.gz
+tar xvf fzf-0.55.0-linux_amd64.tar.gz
+mv fzf ~/bin
+
 # install the Rust language (mostly to get the Eza replacement for ls)
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 source ~/.cargo/env
