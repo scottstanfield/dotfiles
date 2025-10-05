@@ -136,9 +136,26 @@ Plug 'tpope/vim-commentary'						" smarter commenting with gc
 Plug 'tpope/vim-vinegar'						" smarter commenting with gc
 Plug 'tpope/vim-surround'
 
-Plug 'airblade/vim-gitgutter'					" shows git diff marks in the gutter
+" Plug 'airblade/vim-gitgutter'					" shows git diff marks in the gutter
+" let g:gitgutter_enabled = 1						" off by default
+" let g:gitgutter_diff_args = '--ignore-cr-at-eol --ignore-space-at-eol --ignore-space-change'
+" let g:gitgutter_git_executable = '/opt/homebrew/bin/git'
 nmap <silent> <leader>tg :GitGutterToggle<CR>
-let g:gitgutter_enabled = 1						" off by default
+
+Plug 'nvim-lua/plenary.nvim'   " required dependency
+Plug 'lewis6991/gitsigns.nvim'
+
+" Jump between hunks
+nnoremap ]c :Gitsigns next_hunk<CR>
+nnoremap [c :Gitsigns prev_hunk<CR>
+
+" Stage / reset hunks
+nnoremap <leader>hs :Gitsigns stage_hunk<CR>
+nnoremap <leader>hr :Gitsigns reset_hunk<CR>
+
+" Preview hunk diff
+nnoremap <leader>hp :Gitsigns preview_hunk<CR>
+
 
 Plug 'github/copilot.vim'
 "Plug 'mechatroner/rainbow_csv'
@@ -159,6 +176,24 @@ call plug#end()
 " }}}
 
 " Plugin Configurations {{{
+
+"
+
+  " signs = {
+  "   add          = {hl = 'GitSignsAdd'   , text = '+', numhl='GitSignsAddNr'   , linehl='GitSignsAddLn'},
+  "   change       = {hl = 'GitSignsChange', text = '~', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
+  "   delete       = {hl = 'GitSignsDelete', text = '_', numhl='GitSignsDeleteNr', linehl='GitSignsDeleteLn'},
+  "   topdelete    = {hl = 'GitSignsDelete', text = '‾', numhl='GitSignsDeleteNr', linehl='GitSignsDeleteLn'},
+  "   changedelete = {hl = 'GitSignsChange', text = '~', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
+  " },
+
+lua << EOF
+require('gitsigns').setup {
+  current_line_blame = false, -- inline git blame text (toggle with :Gitsigns toggle_current_line_blame)
+  update_debounce = 100,
+}
+EOF
+
 
 " junegunn/goyo.vim {{{
 let g:goyo_width = 70
@@ -501,6 +536,8 @@ nnoremap <silent> <leader>tw :set invwrap<CR>:set wrap?<CR>
 " Toggle invisible whiteSpace ¬ ¶
 nnoremap <leader>i :set list!<CR>
 set listchars=eol:¬,tab:▸\.,trail:▫,nbsp:_,extends:»,precedes:«
+
+
 
 
 " Toggle Line numbers on/off
@@ -894,3 +931,9 @@ let g:ale_linters = {'c': ['clang'], 'cpp': ['clang', 'g++'], 'javascript': ['es
 let g:csv_default_delim=','
 
 set nospell
+
+highlight Whitespace guifg=Yellow ctermfg=Yellow gui=bold
+highlight NonText    guifg=Yellow   ctermfg=Yellow   gui=bold
+highlight Tab        guifg=Yellow    ctermfg=Yellow
+highlight Trailing   guifg=Magenta ctermfg=Magenta
+
