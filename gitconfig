@@ -20,7 +20,6 @@
     autocrlf = input   # set to input on Mac/Linux, true on Windows
     excludesfile = ~/.gitignore
     whitespace = fix,-indent-with-non-tab,trailing-space,cr-at-eol
-    pager = delta
 
 
 [delta]
