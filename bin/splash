@@ -495,6 +495,23 @@ main() {
     h2="$reset$bold$yellow"
     h1="$reset$bold$green"
     p1="$reset"
+ip="$(ip route get 1.1.1.1 | head -1 | cut -d' ' -f7)"
+kernel="$(uname -srm)"
+os="$(source /etc/os-release; echo $NAME $VERSION)"
+uptime="$(uptime -p | sed 's/up //')"
+load=$(cat /proc/loadavg | cut -d ' ' -f 1,2,3)
+
+temps="NA"
+if [[ -e /sys/class/thermal/thermal_zone0/temp ]]; then
+    cpu_t1k=$(cat /sys/class/thermal/thermal_zone0/temp)
+    cpu_t=$(printf %.1f "$((10**3 * $cpu_t1k / 1000))e-3")
+    temps="$cpu_t° C"
+fi
+
+hostname="$(hostname)"
+model="$(cat /proc/cpuinfo | grep -i model | head -2 | cut -f2 -d: | tail -1)"
+model="$(trim $model)"
+uptime="$(uptime --pretty)"
 
     ip="$(ifconfig -l | xargs -n1 ipconfig getifaddr | paste -sd ' ' -)"
     #ip="$(ip route get 1.1.1.1 | head -1 | cut -d' ' -f7)"

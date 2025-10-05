@@ -9,7 +9,7 @@ local({
   options(digits.secs = 5)
   options(scipen = 999)
   options(help_type = "html") # open help in browser
-  options(setWidthOnResize=T)
+  options(setWidthOnResize = TRUE)
 })
 
 cc <- function(str) { Filter(nchar, unlist(strsplit(str, "[ \n]"))) }

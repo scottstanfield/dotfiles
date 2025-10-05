@@ -52,6 +52,13 @@ export XDG_STATE_HOME="$HOME/.local/state"
 for dir in "$XDG_CONFIG_HOME" "$XDG_DATA_HOME" "$XDG_CACHE_HOME" "$XDG_STATE_HOME"; do
   [ -d "$dir" ] || mkdir -p -m 700 "$dir"
 done
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+# typeset -g POWERLEVEL9K_INSTANT_PROMPT=off
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
 
 in_path()  { builtin whence -p "$1" &> /dev/null; return $? }
 
@@ -210,7 +217,7 @@ if in_path "batcat" ; then
 fi
 
 ## Setup fzf FuzzyFinder path
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+# [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 ## LS and colors
 ## Tips: https://gist.github.com/syui/11322769c45f42fad962
@@ -408,8 +415,6 @@ case "$OSTYPE" in
 esac
 
 # ZINIT installer {{{
-#
-
 ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
 
 [[ ! -d $ZINIT_HOME ]] && {
@@ -430,6 +435,10 @@ autoload -Uz _zinit
 # zinit light lukechilds/zsh-nvm
 
 # completions
+
+# export NVM_LAZY_LOAD=true
+# zinit light lukechilds/zsh-nvm
+
 zinit ice wait silent blockf; 
 zinit snippet PZT::modules/completion/init.zsh
 unsetopt correct
@@ -438,6 +447,7 @@ setopt complete_in_word         # cd /ho/sco/tm<TAB> expands to /home/scott/tmp
 setopt auto_menu                # show completion menu on succesive tab presses
 
 zinit load zdharma-continuum/history-search-multi-word
+# p10k 
 zinit ice depth=1; zinit light romkatv/powerlevel10k
 
 zinit fpath -f /opt/homebrew/share/zsh/site-functions
@@ -459,9 +469,6 @@ zinit light-mode for \
     zdharma-continuum/zinit-annex-submods \
     zdharma-continuum/zinit-annex-rust
 
-#zinit ice cargo'!lsd'
-zinit light zdharma-continuum/null
-
 # For git command extensions
 # zinit as"null" wait"1" lucid for sbin                davidosomething/git-my
 
@@ -475,11 +482,10 @@ zinit light zdharma-continuum/null
 #     sbin"glow" bpick"*.tar.gz"  charmbracelet/glow
 #
 #zi wait'0b' lucid from"gh-r" as"program" for @junegunn/fzf
-zi ice wait'0a' lucid; zi snippet https://github.com/junegunn/fzf/blob/master/shell/key-bindings.zsh
-zi ice wait'1a' lucid; zi snippet https://github.com/junegunn/fzf/blob/master/shell/completion.zsh
-zi wait'0c' lucid pick"fzf-finder.plugin.zsh" light-mode for  @leophys/zsh-plugin-fzf-finder
-
-export FZF_DEFAULT_COMMAND="rg --files --hidden --follow --glob '!.git'"
+# zi ice wait'0a' lucid; zi snippet https://github.com/junegunn/fzf/blob/master/shell/key-bindings.zsh
+# zi ice wait'1a' lucid; zi snippet https://github.com/junegunn/fzf/blob/master/shell/completion.zsh
+# zi wait'0c' lucid pick"fzf-finder.plugin.zsh" light-mode for  @leophys/zsh-plugin-fzf-finder
+# export FZF_DEFAULT_COMMAND="rg --files --hidden --follow --glob '!.git'"
 
 # zinit pack"binary+keys" for fzf
 # zinit pack"bgn" for fzf
@@ -510,6 +516,9 @@ function prompt_my_host_icon() {
 export BAT_THEME="gruvbox-dark"
 export AWS_DEFAULT_PROFILE=dev-additive
 
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+# [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+# typeset -g POWERLEVEL9K_PROMPT_CHAR_{OK,ERROR}_VIINS_CONTENT_EXPANSION='»'
 
 ##
 ## Lazy load Anaconda to save startup time
@@ -559,6 +568,15 @@ export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
 
 # bun completions
 [ -s "/Users/sstanfield/.bun/_bun" ] && source "/Users/sstanfield/.bun/_bun"
+# export LDFLAGS="-L/opt/homebrew/opt/llvm/lib"
+# export CPPFLAGS="-I/opt/homebrew/opt/llvm/include"
+# export CFLAGS="-I/opt/homebrew/opt/llvm/include"
+# export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
+
+eval "$(zoxide init zsh)"
+
+# bun completions
+# [ -s "/home/scott/.bun/_bun" ] && source "/home/scott/.bun/_bun"
 
 # bun
 export BUN_INSTALL="$HOME/.bun"
@@ -599,4 +617,19 @@ eval "$(zoxide init zsh)"
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 typeset -g POWERLEVEL9K_STATUS_ERROR=true
 
+# fzf (adds 10 msec)
+(( $+commands[fzf] )) && source <(fzf --zsh)
+
+# Generated for envman. Do not edit.
+[ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"
+
+
+# precmd() {
+#   # Join failing codes with spaces (e.g. "1 127")
+#   export STARSHIP_PIPESTATUS="${pipestatus[*]}"
+# }
+# export STARSHIP_CONFIG="$HOME/.config/starship/starship.toml"
+# eval "$(starship init zsh)"
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

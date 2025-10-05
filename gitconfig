@@ -43,11 +43,11 @@
     amend = commit -a --amend
     wipe = !git add -A && git commit -qm 'WIPE SAVEPOINT' && git reset HEAD~1 --hard
     workflow = !open http://haacked.com/archive/2014/07/28/github-flow-aliases/
-    bclean = "!f() { git branch --merged ${1-master} | grep -v " ${1-master}$" | xargs git branch -d; }; f"
-    bdone = "!f() { git checkout ${1-master} && git up && git bclean ${1-master}; }; f"
+    bclean = "!f() { git branch --merged ${1-main} | grep -v " ${1-main}$" | xargs git branch -d; }; f"
+    bdone = "!f() { git checkout ${1-main} && git up && git bclean ${1-main}; }; f"
 
-    delete-remote-stale-branches = !git branch -r --merged origin/master | sed -e 's/origin\\///' | grep -v master | xargs -p -n 1 git push origin --delete
-    list-remote-stale-branches = !git branch -r --merged origin/master | sed -e 's/origin\\///' | grep -v master 
+    delete-remote-stale-branches = !git branch -r --merged origin/main | sed -e 's/origin\\///' | grep -v main | xargs -p -n 1 git push origin --delete
+    list-remote-stale-branches = !git branch -r --merged origin/main | sed -e 's/origin\\///' | grep -v main 
 
 [push]   
     default  = simple
@@ -86,3 +86,11 @@
     helper=cache
 [http]
 	sslVerify = false
+[page]
+	diff = delta
+	show = delta
+	log = delta
+	blame = delta
+	reflog = delta
+[interactive]
+	diffFilter = delta --color-only

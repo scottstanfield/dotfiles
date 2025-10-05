@@ -30,7 +30,7 @@
 
   # The list of segments shown on the left. Fill it with the most important segments.
   typeset -g POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(
-    # os_icon               # os identifier
+    my_host_icon
     dir                     # current directory
     vcs                     # git status
     prompt_char             # prompt symbol
@@ -44,70 +44,76 @@
     status                  # exit code of the last command
     command_execution_time  # duration of the last command
     background_jobs         # presence of background jobs
+    # goenv                   # go environment (https://github.com/syndbg/goenv)
+    # nodenv                  # node.js version from nodenv (https://github.com/nodenv/nodenv)
+    # nvm                     # node.js version from nvm (https://github.com/nvm-sh/nvm)
+    # nodeenv                 # node.js environment (https://github.com/ekalinin/nodeenv)
     # direnv                  # direnv status (https://direnv.net/)
     # asdf                    # asdf version manager (https://github.com/asdf-vm/asdf)
     virtualenv              # python virtual environment (https://docs.python.org/3/library/venv.html)
     anaconda                # conda environment (https://conda.io/)
     pyenv                   # python environment (https://github.com/pyenv/pyenv)
-    # goenv                   # go environment (https://github.com/syndbg/goenv)
-    # nodenv                  # node.js version from nodenv (https://github.com/nodenv/nodenv)
-    # nvm                     # node.js version from nvm (https://github.com/nvm-sh/nvm)
-    # nodeenv                 # node.js environment (https://github.com/ekalinin/nodeenv)
-    # node_version          # node.js version
-    # go_version            # go version (https://golang.org)
-    # rust_version          # rustc version (https://www.rust-lang.org)
-    # dotnet_version        # .NET version (https://dotnet.microsoft.com)
-    # php_version           # php version (https://www.php.net/)
-    # laravel_version       # laravel php framework version (https://laravel.com/)
-    # java_version          # java version (https://www.java.com/)
-    # package               # name@version from package.json (https://docs.npmjs.com/files/package.json)
-    # rbenv                   # ruby version from rbenv (https://github.com/rbenv/rbenv)
-    # rvm                     # ruby version from rvm (https://rvm.io)
-    # fvm                     # flutter version management (https://github.com/leoafarias/fvm)
-    # luaenv                  # lua version from luaenv (https://github.com/cehoffman/luaenv)
-    # jenv                    # java version from jenv (https://github.com/jenv/jenv)
-    # plenv                   # perl version from plenv (https://github.com/tokuhirom/plenv)
-    # perlbrew                # perl version from perlbrew (https://github.com/gugod/App-perlbrew)
-    # phpenv                  # php version from phpenv (https://github.com/phpenv/phpenv)
-    # scalaenv                # scala version from scalaenv (https://github.com/scalaenv/scalaenv)
-    # haskell_stack           # haskell version from stack (https://haskellstack.org/)
-    # kubecontext             # current kubernetes context (https://kubernetes.io/)
-    # terraform               # terraform workspace (https://www.terraform.io)
-    # terraform_version     # terraform version (https://www.terraform.io)
+    # cpu_arch              # CPU architecture
     # aws                     # aws profile (https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-profiles.html)
     # aws_eb_env              # aws elastic beanstalk environment (https://aws.amazon.com/elasticbeanstalk/)
     # azure                   # azure account name (https://docs.microsoft.com/en-us/cli/azure)
+    # battery               # internal battery
+    # chezmoi_shell           # chezmoi shell (https://www.chezmoi.io/)
+    # context                 # user@hostname
+    # cpu_arch              # CPU architecture
+    # disk_usage            # disk usage
+    # dotnet_version        # .NET version (https://dotnet.microsoft.com)
+    # example               # example user-defined segment (see prompt_example function below)
+    # fvm                     # flutter version management (https://github.com/leoafarias/fvm)
     # gcloud                  # google cloud cli account and project (https://cloud.google.com/)
+    # go_version            # go version (https://golang.org)
+    # goenv                   # go environment (https://github.com/syndbg/goenv)
     # google_app_cred         # google application credentials (https://cloud.google.com/docs/authentication/production)
-    # toolbox                 # toolbox name (https://github.com/containers/toolbox)
-    context                 # user@hostname
-    # nordvpn                 # nordvpn connection status, linux only (https://nordvpn.com/)
-    # ranger                  # ranger shell (https://github.com/ranger/ranger)
-    # yazi                    # yazi shell (https://github.com/sxyazi/yazi)
-    # nnn                     # nnn shell (https://github.com/jarun/nnn)
+    # haskell_stack           # haskell version from stack (https://haskellstack.org/)
+    # ip                    # ip address and bandwidth usage for a specified network interface
+    # java_version          # java version (https://www.java.com/)
+    # jenv                    # java version from jenv (https://github.com/jenv/jenv)
+    # kubecontext             # current kubernetes context (https://kubernetes.io/)
+    # laravel_version       # laravel php framework version (https://laravel.com/)
     # lf                      # lf shell (https://github.com/gokcehan/lf)
-    # xplr                    # xplr shell (https://github.com/sayanarijit/xplr)
-    # vim_shell               # vim shell indicator (:sh)
+    # load                  # CPU load
+    # luaenv                  # lua version from luaenv (https://github.com/cehoffman/luaenv)
     # midnight_commander      # midnight commander shell (https://midnight-commander.org/)
     # nix_shell               # nix shell (https://nixos.org/nixos/nix-pills/developing-with-nix-shell.html)
-    # chezmoi_shell           # chezmoi shell (https://www.chezmoi.io/)
-    # vpn_ip                # virtual private network indicator
-    # load                  # CPU load
-    # disk_usage            # disk usage
-    # ram                   # free RAM
-    # swap                  # used swap
-    # todo                    # todo items (https://github.com/todotxt/todo.txt-cli)
-    # timewarrior             # timewarrior tracking status (https://timewarrior.net/)
-    # taskwarrior             # taskwarrior task count (https://taskwarrior.org/)
+    # nnn                     # nnn shell (https://github.com/jarun/nnn)
+    # node_version          # node.js version
+    # nodeenv                 # node.js environment (https://github.com/ekalinin/nodeenv)
+    # nodenv                  # node.js version from nodenv (https://github.com/nodenv/nodenv)
+    # nordvpn                 # nordvpn connection status, linux only (https://nordvpn.com/)
+    # nvm                     # node.js version from nvm (https://github.com/nvm-sh/nvm)
+    # package               # name@version from package.json (https://docs.npmjs.com/files/package.json)
     # per_directory_history   # Oh My Zsh per-directory-history local/global indicator
-    # # cpu_arch              # CPU architecture
-    # time                  # current time
-    # ip                    # ip address and bandwidth usage for a specified network interface
-    # public_ip             # public IP address
+    # perlbrew                # perl version from perlbrew (https://github.com/gugod/App-perlbrew)
+    # php_version           # php version (https://www.php.net/)
+    # phpenv                  # php version from phpenv (https://github.com/phpenv/phpenv)
+    # plenv                   # perl version from plenv (https://github.com/tokuhirom/plenv)
     # proxy                 # system-wide http/https/ftp proxy
-    # battery               # internal battery
+    # public_ip             # public IP address
+    # ram                   # free RAM
+    # ranger                  # ranger shell (https://github.com/ranger/ranger)
+    # rbenv                   # ruby version from rbenv (https://github.com/rbenv/rbenv)
+    # rust_version          # rustc version (https://www.rust-lang.org)
+    # rvm                     # ruby version from rvm (https://rvm.io)
+    # scalaenv                # scala version from scalaenv (https://github.com/scalaenv/scalaenv)
+    # swap                  # used swap
+    # taskwarrior             # taskwarrior task count (https://taskwarrior.org/)
+    # terraform               # terraform workspace (https://www.terraform.io)
+    # terraform_version     # terraform version (https://www.terraform.io)
+    # time                  # current time
+    # timewarrior             # timewarrior tracking status (https://timewarrior.net/)
+    # todo                    # todo items (https://github.com/todotxt/todo.txt-cli)
+    # toolbox                 # toolbox name (https://github.com/containers/toolbox)
+    # vim_shell               # vim shell indicator (:sh)
+    # vpn_ip                # virtual private network indicator
     # wifi                  # wifi speed
-    # example               # example user-defined segment (see prompt_example function below)
+    # xplr                    # xplr shell (https://github.com/sayanarijit/xplr)
+    # yazi                    # yazi shell (https://github.com/sxyazi/yazi)
+    context                 # user@hostname
   )
 
   # Defines character set used by powerlevel10k. It's best to let `p10k configure` set it for you.
@@ -522,7 +528,7 @@
 
   # Status when it's just an error code (e.g., '1'). No need to show it if prompt_char is enabled as
   # it will signify error by turning red.
-  typeset -g POWERLEVEL9K_STATUS_ERROR=true
+  typeset -g POWERLEVEL9K_STATUS_ERROR=false
   typeset -g POWERLEVEL9K_STATUS_ERROR_FOREGROUND=160
   typeset -g POWERLEVEL9K_STATUS_ERROR_VISUAL_IDENTIFIER_EXPANSION='✘'
 
