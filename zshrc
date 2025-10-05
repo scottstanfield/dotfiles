@@ -466,9 +466,8 @@ function prompt_my_host_icon() {
     # if prompt_icon_index is set, use that
     # if host_icon is set, use that instead
 
-    pi1=$prompticons[${PROMPT_ICON_INDEX:-1}]
+    pi1=$prompticons[${PROMPT_ICON_INDEX:-3}]
     pi1=${HOST_ICON:-$pi1}
-	# p10k segment -i $prompticons[${PROMPT_ICON_INDEX:-1}] -f 074
     p10k segment -i $pi1 -f ${HOST_ICON_COLOR:-4}
 
     unset p

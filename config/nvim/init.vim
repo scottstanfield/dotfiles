@@ -78,15 +78,8 @@ Plug 'segeljakt/vim-silicon'
 
 Plug 'powerman/vim-plugin-AnsiEsc'
 
-" Plug 'scottstanfield/vimcmdline'
-Plug 'jalvesaq/vimcmdline'
-if CheckForR()
-    Plug 'jalvesaq/colorout', { 'for': 'r' }
-    Plug 'jalvesaq/Nvim-r', { 'for': ['r', 'rmd'] }
-endif
-
 Plug 'scottstanfield/vimcmdline'
-" Plug 'jalvesaq/vimcmdline'
+Plug 'jalvesaq/colorout', { 'for': 'r' }
 
 " colorschemes
 "Plug 'NLKNguyen/papercolor-theme'
@@ -193,7 +186,7 @@ augroup nvimr
 	let R_args = ['--no-save', '--quiet']
 	let R_assign = 0
 	" let R_auto_start = 1
-    autocmd filetype r call s:customRlangMappings()
+    "autocmd filetype r call s:customRlangMappings()
 augroup END
 
 " rlang
@@ -273,6 +266,7 @@ let cmdline_app['sh']		= 'bash'
 let cmdline_app['julia']	= 'julia'
 let cmdline_app['javascript']  = 'node'
 let cmdline_app['sql']  = 'duckdb'
+let cmdline_app['r']  = 'R --no-save --quiet --no-restore-data'
 
 
 " }}}
