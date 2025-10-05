@@ -24,6 +24,13 @@
 #   Range (min … max):   163.4 ms … 841.2 ms    10 runs
  
 
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
 
 # Profile .zshrc startup times by uncommenting this line:
 # zmodload zsh/zprof
@@ -31,13 +38,20 @@
 # Profile startup times by adding this to you .zshrc: zmodload zsh/zprof
 # Start a new zsh. Then run and inspect: zprof > startup.txt
 
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
-typeset -g POWERLEVEL9K_INSTANT_PROMPT=off
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
+# ~/.config → config files (portable across Mac & Linux)
+# ~/.local/share → persistent data (databases, templates, etc.)
+# ~/.cache → throwaway caches
+# ~/.local/state → logs and histories
+
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_DATA_HOME="$HOME/.local/share"
+export XDG_CACHE_HOME="$HOME/.cache"
+export XDG_STATE_HOME="$HOME/.local/state"
+
+# Create them if they don’t exist
+for dir in "$XDG_CONFIG_HOME" "$XDG_DATA_HOME" "$XDG_CACHE_HOME" "$XDG_STATE_HOME"; do
+  [ -d "$dir" ] || mkdir -p -m 700 "$dir"
+done
 
 in_path()  { builtin whence -p "$1" &> /dev/null; return $? }
 
@@ -387,6 +401,7 @@ zstyle ':completion:*' list-suffixes zstyle ':completion:*' expand prefix suff
 ## zinit plugin installer
 ##
 
+# TODO: this case isn't needed any more
 case "$OSTYPE" in
   linux*) bpick='*((#s)|/)*(linux|musl)*((#e)|/)*' ;;
   darwin*) bpick='*(macos|darwin)*' ;;
@@ -394,31 +409,34 @@ case "$OSTYPE" in
 esac
 
 # ZINIT installer {{{
-[[ ! -f ~/.zinit/bin/zinit.zsh ]] && {
+#
+
+ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
+
+[[ ! -d $ZINIT_HOME ]] && {
     print -P "%F{33}▓▒░ %F{220}Installing zsh %F{33}zinit%F{220} plugin manager (%F{33}zdharma-continuum/zinit%F{220})…%f"
-    command mkdir -p "$HOME/.zinit" && command chmod g-rwX "$HOME/.zinit"
-    command git clone --depth=1 https://github.com/zdharma-continuum/zinit.git "$HOME/.zinit/bin" && \
+    mkdir -p -m 700 "$(dirname $ZINIT_HOME)"
+    git clone --depth=1 https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
+    [[ $ZINIT_HOME/.git ]] && \
         print -P "%F{33}▓▒░ %F{34}Installation successful.%f%b" || \
         print -P "%F{160}▓▒░ Install failed.%f%b"
-}
-source "$HOME/.zinit/bin/zinit.zsh"
+} 
+source "${ZINIT_HOME}/zinit.zsh"
 autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
-# }}}
 
-export NVM_AUTO_USE=false
-export NVM_LAZY_LOAD=true
-zinit light lukechilds/zsh-nvm
+# for Node nvm
+# export NVM_AUTO_USE=false
+# export NVM_LAZY_LOAD=true
+# zinit light lukechilds/zsh-nvm
 
-# | completions | # {{{
+# completions
 zinit ice wait silent blockf; 
 zinit snippet PZT::modules/completion/init.zsh
 unsetopt correct
 unsetopt correct_all
 setopt complete_in_word         # cd /ho/sco/tm<TAB> expands to /home/scott/tmp
 setopt auto_menu                # show completion menu on succesive tab presses
-
-# }}}
 
 zinit load zdharma-continuum/history-search-multi-word
 zinit ice depth=1; zinit light romkatv/powerlevel10k
@@ -493,10 +511,6 @@ function prompt_my_host_icon() {
 export BAT_THEME="gruvbox-dark"
 export AWS_DEFAULT_PROFILE=dev-additive
 
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-typeset -g POWERLEVEL9K_PROMPT_CHAR_{OK,ERROR}_VIINS_CONTENT_EXPANSION='»'
-
 
 ##
 ## Lazy load Anaconda to save startup time
@@ -567,3 +581,23 @@ alias uvx="uvx --native-tls"
 # Generated for envman. Do not edit.
 [ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"
 eval "$(zoxide init zsh)"
+
+# Starship prompt with custom config location
+# export STARSHIP_CONFIG="$HOME/.config/starship/starship.toml"
+# eval "$(starship init zsh)"
+
+# function precmd() {
+#   local cols=${COLUMNS:-$(tput cols 2>/dev/null || echo 120)}
+#   if (( cols >= 125 )); then
+#     export STARSHIP_CONFIG="$HOME/.config/starship/starship.toml"
+#   elif (( cols >= 90 )); then
+#     export STARSHIP_CONFIG="$HOME/.config/starship/medium.toml"
+#   else
+#     export STARSHIP_CONFIG="$HOME/.config/starship/narrow.toml"
+#   fi
+# }
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+typeset -g POWERLEVEL9K_STATUS_ERROR=true
+
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
