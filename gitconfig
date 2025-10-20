@@ -1,30 +1,16 @@
 ; vim: ft=gitconfig
 
-; consider redoing based on this great .gitconfig
-; https://gist.github.com/pksunkara/988716
-
-; Load [user] details from a local file (not version controlled)
 [include]
-    path=~/.gitconfig.local
-;
-; Don't use this since it messes up Plug installs in vim
-; [url "ssh://git@github.com/"]
-;   insteadOf = https://github.com
+    path = ~/.gitconfig.local
 
 [core]
     editor = nvim
-    status = auto
-    branch = auto
-    interactive = auto
-    diff = auto
-    autocrlf = input   # set to input on Mac/Linux, true on Windows
+    autocrlf = input
     excludesfile = ~/.gitignore
     whitespace = fix,-indent-with-non-tab,trailing-space,cr-at-eol
     pager = delta
 
-
 [delta]
-    #features = side-by-side line-numbers decorations
     features = line-numbers decorations
     whitespace-error-style = 22 reverse
     hunk-header-style = omit
@@ -33,27 +19,29 @@
     file-style = bold yellow ul
     file-decoration-style = none
 
+[color]
+    diff = auto
+    status = auto
+    branch = auto
+    interactive = auto
+    ui = true
 
+[color "branch"]
+    current = yellow bold
+    local = green bold
+    remote = cyan bold
 
-[alias]
-    lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit 
-    co = checkout
-    up = !git pull --rebase --prune --tags $@ 
-    save = !git add -A && git commit -m 'SAVEPOINT'
-    undo = reset HEAD~1 --mixed
-    amend = commit -a --amend
-    wipe = !git add -A && git commit -qm 'WIPE SAVEPOINT' && git reset HEAD~1 --hard
-    workflow = !open http://haacked.com/archive/2014/07/28/github-flow-aliases/
-    bclean = "!f() { git branch --merged ${1-main} | grep -v " ${1-main}$" | xargs git branch -d; }; f"
-    bdone = "!f() { git checkout ${1-main} && git up && git bclean ${1-main}; }; f"
+[pager]
+    diff = delta
+    show = delta
+    log = delta
+    blame = delta
+    reflog = delta
 
-    delete-remote-stale-branches = !git branch -r --merged origin/main | sed -e 's/origin\\///' | grep -v main | xargs -p -n 1 git push origin --delete
-    list-remote-stale-branches = !git branch -r --merged origin/main | sed -e 's/origin\\///' | grep -v main 
+[push]
+    default = simple
 
-[push]   
-    default  = simple
-
-[diff] 
+[diff]
     tool = difftastic
     mnemonicprefix = true
     rename = copy
@@ -61,37 +49,99 @@
 [grep]
     lineNumber = true
 
-[color]
-	diff = auto
-	status = auto
-	branch = auto
-	interactive = auto
-	ui = true
-	pager = true
-	ui = true
-
-[color "branch"]
-	current = yellow bold
-	local = green bold
-	remote = cyan bold
+[init]
+    defaultBranch = main
 
 [filter "lfs"]
     clean = git-lfs clean -- %f
     smudge = git-lfs smudge -- %f
     process = git-lfs filter-process
     required = true
-[init]
-	defaultBranch = main
 
-[credential]
-    helper=cache
-[http]
-	sslVerify = false
-[page]
-	diff = delta
-	show = delta
-	log = delta
-	blame = delta
-	reflog = delta
-[interactive]
-	diffFilter = delta --color-only
+[pull]
+    rebase = true
+    ff = only
+
+[fetch]
+    prune = true
+
+[rebase]
+    autoStash = true
+
+[merge]
+    conflictStyle = zdiff3
+
+[rerere]
+    enabled = true
+
+[safe]
+    crlf = warn
+
+[alias]
+    lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+    co = checkout
+    up = !git pull --rebase --prune --tags $@
+    undo = reset HEAD~1 --mixed
+    amend = commit -a --amend
+    save = !git add -A && git commit -m 'SAVEPOINT'
+    wipe = !git add -A && git commit -qm 'WIPE SAVEPOINT' && git reset HEAD~1 --hard
+
+    # Resolve the default branch name (e.g. "main" or "master") from origin/HEAD
+    default-branch = "!f(){ \
+        b=$(git symbolic-ref --quiet --short refs/remotes/origin/HEAD 2>/dev/null || echo origin/main); \
+        printf '%s\n' \"${b#origin/}\"; \
+    }; f"
+
+    # ---------- LOCAL STALE (merged into base) ----------
+    list-local-stale-branches = "!f(){ \
+        base=${1:-$(git default-branch)}; \
+        git for-each-ref refs/heads --format='%(refname:short)' --merged \"refs/heads/$base\" \
+        | grep -E -v \"^($base|HEAD)$\"; \
+    }; f"
+
+    delete-local-stale-branches = "!f(){ \
+        base=${1:-$(git default-branch)}; \
+        git for-each-ref refs/heads --format='%(refname:short)' --merged \"refs/heads/$base\" \
+        | grep -E -v \"^($base|HEAD)$\" \
+        | while IFS= read -r b; do \
+            [ -n \"$b\" ] && git branch -d \"$b\"; \
+        done; \
+    }; f"
+
+    delete-local-stale-branches-dry = "!f(){ \
+        base=${1:-$(git default-branch)}; \
+        git for-each-ref refs/heads --format='%(refname:short)' --merged \"refs/heads/$base\" \
+        | grep -E -v \"^($base|HEAD)$\" \
+        | while IFS= read -r b; do \
+            [ -n \"$b\" ] && echo git branch -d \"$b\"; \
+        done; \
+    }; f"
+
+    # ---------- REMOTE STALE (merged into origin/base) ----------
+    list-remote-stale-branches = "!f(){ \
+        base=${1:-$(git default-branch)}; \
+        git for-each-ref refs/remotes/origin --format='%(refname:short)' --merged \"refs/remotes/origin/$base\" \
+        | sed 's@^origin/@@' \
+        | grep -E -v \"^($base|HEAD)$\"; \
+    }; f"
+
+    delete-remote-stale-branches = "!f(){ \
+        base=${1:-$(git default-branch)}; \
+        git for-each-ref refs/remotes/origin --format='%(refname:short)' --merged \"refs/remotes/origin/$base\" \
+        | sed 's@^origin/@@' \
+        | grep -E -v \"^($base|HEAD)$\" \
+        | while IFS= read -r b; do \
+            [ -n \"$b\" ] && git push origin --delete \"$b\"; \
+        done; \
+    }; f"
+
+    delete-remote-stale-branches-dry = "!f(){ \
+        base=${1:-$(git default-branch)}; \
+        git for-each-ref refs/remotes/origin --format='%(refname:short)' --merged \"refs/remotes/origin/$base\" \
+        | sed 's@^origin/@@' \
+        | grep -E -v \"^($base|HEAD)$\" \
+        | while IFS= read -r b; do \
+            [ -n \"$b\" ] && echo git push origin --delete \"$b\"; \
+        done; \
+    }; f"
+
