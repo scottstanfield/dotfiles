@@ -78,7 +78,10 @@ Plug 'segeljakt/vim-silicon'
 
 Plug 'powerman/vim-plugin-AnsiEsc'
 
-Plug 'scottstanfield/vimcmdline'
+Plug 'scottstanfield/hlterm'
+"Plug '~/code/repos/scottstanfield-hlterm'
+"Plug 'jalvesaq/hlterm'
+
 Plug 'jalvesaq/colorout', { 'for': 'r' }
 
 " colorschemes
@@ -243,33 +246,36 @@ nnoremap <c-t> :NERDTreeToggle<cr>
 nnoremap <silent> <F2> :NERDTreeFind<CR>
 nnoremap <silent> <F3> :NERDTreeToggle<CR>
 " }}}
+
+
 " scottstanfield/vimcmdline {{{
 
-let cmdline_map_start			 = '<LocalLeader>s'
-let cmdline_map_send			 = '<Space>'
-let cmdline_map_send_and_stay  = '<LocalLeader><Space>'
-let cmdline_map_source_fun	 = '<LocalLeader>f'
-let cmdline_map_send_paragraph = '<LocalLeader>p'
-let cmdline_map_send_block	 = '<LocalLeader>b'
-let cmdline_map_quit			 = '<LocalLeader>q'
-let cmdline_vsplit	  = 0	   " Split the window vertically
-let cmdline_esc_term	  = 1	   " Remap <Esc> to :stopinsert in Neovim's terminal
-let cmdline_in_buffer   = 1	   " Start the interpreter in a Neovim's terminal
-let cmdline_term_height = 15	   " Initial height of interpreter window or pane
-let cmdline_term_width  = 80	   " Initial width of interpreter window or pane
-let cmdline_tmp_dir	  = '/tmp' " Temporary directory to save files
-let cmdline_outhl		  = 1	   " Syntax highlight the output
-let cmdline_auto_scroll = 1	   " Keep the cursor at the end of terminal (nvim)
-let cmdline_app = {}
-let cmdline_app['python'] = 'ipython --no-confirm-exit'
-let cmdline_app['sh']		= 'bash'
-let cmdline_app['julia']	= 'julia'
-let cmdline_app['javascript']  = 'node'
-let cmdline_app['sql']  = 'duckdb'
-let cmdline_app['r']  = 'R --no-save --quiet --no-restore-data'
 
 
+" let cmdline_map_start			 = '<LocalLeader>s'
+" let cmdline_map_send			 = '<Space>'
+" let cmdline_map_send_and_stay  = '<LocalLeader><Space>'
+" let cmdline_map_source_fun	 = '<LocalLeader>f'
+" let cmdline_map_send_paragraph = '<LocalLeader>p'
+" let cmdline_map_send_block	 = '<LocalLeader>b'
+" let cmdline_map_quit			 = '<LocalLeader>q'
+" let cmdline_vsplit	  = 0	   " Split the window vertically
+" let cmdline_esc_term	  = 1	   " Remap <Esc> to :stopinsert in Neovim's terminal
+" let cmdline_in_buffer   = 1	   " Start the interpreter in a Neovim's terminal
+" let cmdline_term_height = 15	   " Initial height of interpreter window or pane
+" let cmdline_term_width  = 80	   " Initial width of interpreter window or pane
+" let cmdline_tmp_dir	  = '/tmp' " Temporary directory to save files
+" let cmdline_outhl		  = 1	   " Syntax highlight the output
+" let cmdline_auto_scroll = 1	   " Keep the cursor at the end of terminal (nvim)
+" let cmdline_app = {}
+" let cmdline_app['python'] = 'ipython --no-confirm-exit'
+" let cmdline_app['sh']		= 'bash'
+" let cmdline_app['julia']	= 'julia'
+" let cmdline_app['javascript']  = 'node'
+" let cmdline_app['sql']  = 'duckdb'
+" let cmdline_app['r']  = 'R --no-save --quiet --no-restore-data'
 " }}}
+
 " TrailerTrash {{{
 nmap <silent> <leader>$ :TrailerTrim<cr>
 nmap <silent> <leader>w :Trailer<cr>
