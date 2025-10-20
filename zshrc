@@ -186,7 +186,6 @@ path=(
     $HOME/.local/bin
 
     .
-
 )
 
 # Now, remove paths that don't exist https://stackoverflow.com/a/9352979
@@ -211,9 +210,13 @@ manpath=(
 manpath=($^manpath(N))
 setopt NO_nullglob
 
+if in_path "bat" ; then
+    export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+fi
+
 if in_path "batcat" ; then
     alias bat='batcat'
-    export MANPAGER="sh -c 'col -bx | batcat -l man -p'"
+    export MANPAGER="sh -c 'col -bx | batat -l man -p'"
 fi
 
 ## Setup fzf FuzzyFinder path
@@ -505,9 +508,8 @@ function prompt_my_host_icon() {
     # if prompt_icon_index is set, use that
     # if host_icon is set, use that instead
 
-    pi1=$prompticons[${PROMPT_ICON_INDEX:-1}]
+    pi1=$prompticons[${PROMPT_ICON_INDEX:-3}]
     pi1=${HOST_ICON:-$pi1}
-	# p10k segment -i $prompticons[${PROMPT_ICON_INDEX:-1}] -f 074
     p10k segment -i $pi1 -f ${HOST_ICON_COLOR:-4}
 
     unset p
