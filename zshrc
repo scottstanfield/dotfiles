@@ -279,21 +279,27 @@ if [[ $(whence -p "eza" &>/dev/null) -eq 0 ]]; then
     alias elss="eza ${ezaflags} --all --long --sort size"
 
     export EZA_COLORS="\
-    uu=36:\
-    gu=37:\
-    sn=32:\
-    sb=32:\
+    di=3:\
     da=34:\
-    ur=34:\
-    uw=35:\
-    ux=36:\
-    ue=36:\
     gr=34:\
+    gu=37:\
     gw=35:\
     gx=36:\
+    sb=32:\
+    sn=32:\
     tr=34:\
     tw=35:\
-    tx=36:"
+    tx=36:\
+    ue=36:\
+    ur=34:\
+    uu=36:\
+    uw=35:\
+    ux=36:\
+    "
+
+    if [[ -d "$HOME/.config/eza" ]]; then
+        export EZA_CONFIG_DIR=$HOME/.config/eza
+    fi
 fi
 
 
@@ -314,7 +320,8 @@ alias dkrr='docker run --rm -it -u1000:1000 -v$(pwd):/work -w /work -e DISPLAY=$
 alias dust='dust -r'
 alias grep="grep --color=auto"
 alias gs="git status 2>/dev/null"
-alias h="history 1"
+alias h="history 50"
+alias ha="history 9999"
 alias hg="history 1 | grep -i"
 alias logs="docker logs control -f"
 alias m="less"
@@ -492,7 +499,7 @@ zinit light-mode for \
 
 # zinit pack"binary+keys" for fzf
 # zinit pack"bgn" for fzf
-# zinit pack for ls_colors
+zinit pack for ls_colors
 
 
 # | syntax highlighting | <-- needs to be last zinit #
