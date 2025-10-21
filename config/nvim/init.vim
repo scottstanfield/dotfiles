@@ -24,98 +24,68 @@ function! CheckForR()
     return executable('R')
 endfunction 
 
+
 call plug#begin('~/.config/nvim/plugged')
 
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-Plug 'nvim-treesitter/nvim-treesitter-textobjects'
+" Core deps
 Plug 'nvim-lua/plenary.nvim'
 
-" Essential
-"Plug 'sheerun/vim-polyglot'				" all the best language / syntax packs
-Plug 'ryanoasis/vim-devicons'
-Plug 'tmux-plugins/vim-tmux'
-Plug 'nvim-telescope/telescope.nvim'
-Plug 'tpope/vim-unimpaired'              " ]p paste below; [p paste above
+" Treesitter (syntax, textobjects)
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'nvim-treesitter/nvim-treesitter-textobjects'
+Plug 'HiPhish/rainbow-delimiters.nvim'       " replaces junegunn/rainbow_parentheses; uses treesitter
 
-Plug 'nicwest/vim-camelsnek'
+" UI / Icons / Statusline
+Plug 'nvim-tree/nvim-web-devicons'           " replaces ryanoasis/vim-devicons
+Plug 'itchyny/lightline.vim'
+let g:lightline = {'colorscheme': 'dracula'}
 
-" Colors
+" Colorschemes
 Plug 'dracula/vim', {'as': 'dracula'}
 Plug 'p00f/alabaster.nvim'
-
-" from vim boilerplate generator
-" Plug 'dense-analysis/ale'           " code linting
-
-Plug 'Yggdroot/indentLine'          " | in the white space
-let g:indentLine_enabled = 0
-let g:indentLine_char_list = ['|', '¦', '┆', '┊']
-let g:indentLine_faster = 1
-
-"" HTML Bundle
-Plug 'hail2u/vim-css3-syntax'
-Plug 'tpope/vim-haml'
-Plug 'mattn/emmet-vim'
-Plug 'jelera/vim-javascript-syntax'
-
-Plug 'mileszs/ack.vim'
-"Plug 'Raimondi/delimitMate'		 " auto closing quotes
-
-Plug 'atelierbram/vim-colors_atelier-schemes'
-Plug 'csexton/trailertrash.vim'
-Plug 'editorconfig/editorconfig-vim'
 Plug 'lifepillar/vim-colortemplate'
 Plug 'chriskempson/base16-vim'
+Plug 'atelierbram/vim-colors_atelier-schemes'
 
-" Highlight a code block in visual mode and :Silicon to generate a nice PNG
-Plug 'segeljakt/vim-silicon'
+" Editing QoL
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-unimpaired'
+Plug 'tpope/vim-vinegar'
+Plug 'kshenoy/vim-signature'
+Plug 'nicwest/vim-camelsnek'
 
-" Slideshows with remarkjs
-" Plug 'idbrii/vim-remarkjs'
-" Plug 'idbrii/vim-gogo'
-" Plug 'tyru/open-browser.vim'
-" Plug 'sotte/presenting.vim'
-Plug 'sotte/presenting.nvim'
+" Plug 'lukas-reineke/indent-blankline.nvim'   " replaces yggdroot/indentLine
+" lua << EOF
+" require('ibl').setup{}
+" EOF
 
-Plug 'powerman/vim-plugin-AnsiEsc'
+Plug 'folke/trouble.nvim'
 
-Plug 'scottstanfield/hlterm'
-"Plug '~/code/repos/scottstanfield-hlterm'
-"Plug 'jalvesaq/hlterm'
+" Git
+Plug 'tpope/vim-fugitive'
+Plug 'lewis6991/gitsigns.nvim'
 
-Plug 'jalvesaq/colorout', { 'for': 'r' }
+" Terminal / tmux
+Plug 'kassio/neoterm'
+Plug 'tmux-plugins/vim-tmux'
+Plug 'edkolev/tmuxline.vim', {'on': ['Tmuxline', 'TmuxlineSimple', 'TmuxlineSnapshot'] }
 
-" colorschemes
-"Plug 'NLKNguyen/papercolor-theme'
-Plug 'dracula/vim'
-Plug 'junegunn/seoul256.vim'
+" TODO: switch to mini.pick
+" Fuzzy finder (pick Telescope OR FZF; here we keep Telescope)
+Plug 'nvim-telescope/telescope.nvim'
+Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
 
-Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
-Plug 'jistr/vim-nerdtree-tabs'
-
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
+" Focused writing / presenting
+Plug 'junegunn/goyo.vim'
 Plug 'junegunn/limelight.vim'
 nmap <leader>tl :Limelight!! 0.7<CR>
+Plug 'sotte/presenting.nvim'
 
-Plug 'junegunn/vim-peekaboo'
-
-" Plug 'junegunn/goyo.vim', { 'for': 'markdown' }
-Plug 'junegunn/goyo.vim'
-let g:goyo_width = 80
-nmap <leader>to :silent Goyo<CR>
-
-Plug 'junegunn/vim-easy-align',		{ 'on': ['<Plug>(EasyAlign)', 'EasyAlign'] }
-xmap ga <Plug>(EasyAlign)
-nmap ga <Plug>(EasyAlign)
-let g:easy_align_delimiters = { '/': {'pattern': '/'}, ';': {'pattern': ';'}, '>': {'pattern': '>'}, 'a': {'pattern': '<-'}, '<': {'pattern': '<-'}, ':': {'pattern': ':='}}
-au FileType markdown vmap <Leader><Bslash> :EasyAlign*<Bar><Enter>
-
-
-" vim as a markdown editor: https://secluded.site/vim-as-a-markdown-editor
-" Plug 'godlygeek/tabular'
-" Plug 'plasticboy/vim-markdown'
-
-" plasticboy/vim-markdown 
+" Markdown / Editorconfig / misc
+Plug 'editorconfig/editorconfig-vim'
+" (Treesitter handles markdown highlighting well; your markdown options below still apply)
 let g:vim_markdown_folding_disabled = 1
 let g:vim_markdown_frontmatter = 1
 let g:vim_markdown_strikethrough = 1
@@ -123,81 +93,34 @@ let g:vim_markdown_conceal = 0
 let g:vim_markdown_conceal_code_blocks = 0
 let g:vim_markdown_edit_url_in = 'tab'
 let g:vim_markdown_follow_anchor = 1
-let g:vim_markdown_frontmatter = 1
-let g:vim_markdown_strikethrough = 1
 let g:vim_markdown_toml_frontmatter = 1
-	
-" Plug 'itchyny/lightline.vim'
-" let g:lightline = {'colorscheme': 'dracula'}
 
-Plug 'edkolev/tmuxline.vim', {'on': ['Tmuxline', 'TmuxlineSimple', 'TmuxlineSnapshot'] }
+" Code snapshots
+Plug 'segeljakt/vim-silicon'
 
-Plug 'kassio/neoterm'
-
+" ANSI color passthrough & terminal highlighting (your projects)
+Plug 'powerman/vim-plugin-AnsiEsc'
+Plug 'scottstanfield/hlterm'
 Plug 'jalvesaq/colorout', { 'for': 'r' }
 
-command Z w | qa
-cabbrev wqa Z
-
-Plug 'kshenoy/vim-signature'                    " show marks in margin
-Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-repeat'
-Plug 'tpope/vim-commentary'						" smarter commenting with gc
-Plug 'tpope/vim-vinegar'						" smarter commenting with gc
-Plug 'tpope/vim-surround'
-
-" Plug 'airblade/vim-gitgutter'					" shows git diff marks in the gutter
-" let g:gitgutter_enabled = 1						" off by default
-" let g:gitgutter_diff_args = '--ignore-cr-at-eol --ignore-space-at-eol --ignore-space-change'
-" let g:gitgutter_git_executable = '/opt/homebrew/bin/git'
-nmap <silent> <leader>tg :GitGutterToggle<CR>
-
-Plug 'nvim-lua/plenary.nvim'   " required dependency
-Plug 'lewis6991/gitsigns.nvim'
-
-" Jump between hunks
-nnoremap ]c :Gitsigns next_hunk<CR>
-nnoremap [c :Gitsigns prev_hunk<CR>
-
-" Stage / reset hunks
-nnoremap <leader>hs :Gitsigns stage_hunk<CR>
-nnoremap <leader>hr :Gitsigns reset_hunk<CR>
-
-" Preview hunk diff
-nnoremap <leader>hp :Gitsigns preview_hunk<CR>
-
-
+" Copilot (if you use it)
 Plug 'github/copilot.vim'
-"Plug 'mechatroner/rainbow_csv'
-
-Plug 'junegunn/rainbow_parentheses.vim'
-let g:rainbow#pairs = [['(', ')'], ['[', ']']]
-augroup rainbow
-  autocmd!
-    autocmd FileType julia RainbowParentheses
-    autocmd FileType r RainbowParentheses
-    autocmd FileType c RainbowParentheses
-    autocmd FileType cpp RainbowParentheses
-    autocmd FileType python RainbowParentheses
-    autocmd FileType bash RainbowParentheses
-    autocmd FileType vim RainbowParentheses
-    autocmd FileType zsh RainbowParentheses
-augroup END
 
 call plug#end()
-" }}}
 
-" Plugin Configurations {{{
 
-"
+nnoremap <leader>ff :Telescope find_files<CR>
+nnoremap <leader>fg :Telescope live_grep<CR>
+nnoremap <leader>fb :Telescope buffers<CR>
+nnoremap <leader>fh :Telescope help_tags<CR>
 
-  " signs = {
-  "   add          = {hl = 'GitSignsAdd'   , text = '+', numhl='GitSignsAddNr'   , linehl='GitSignsAddLn'},
-  "   change       = {hl = 'GitSignsChange', text = '~', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
-  "   delete       = {hl = 'GitSignsDelete', text = '_', numhl='GitSignsDeleteNr', linehl='GitSignsDeleteLn'},
-  "   topdelete    = {hl = 'GitSignsDelete', text = '‾', numhl='GitSignsDeleteNr', linehl='GitSignsDeleteLn'},
-  "   changedelete = {hl = 'GitSignsChange', text = '~', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
-  " },
+
+" after :PlugInstall, run :UpdateRemotePlugins if asked; also ensure `make` exists
+lua << EOF
+require('telescope').load_extension('fzf')
+EOF
+
+
 
 lua << EOF
 require('gitsigns').setup {
@@ -205,12 +128,43 @@ require('gitsigns').setup {
   update_debounce = 100,
 }
 EOF
+nnoremap ]c :Gitsigns next_hunk<CR>
+nnoremap [c :Gitsigns prev_hunk<CR>
+nnoremap <leader>hs :Gitsigns stage_hunk<CR>
+nnoremap <leader>hr :Gitsigns reset_hunk<CR>
+nnoremap <leader>hp :Gitsigns preview_hunk<CR>
 
 
-" junegunn/goyo.vim {{{
+lua << EOF
+vim.g.rainbow_delimiters = { strategy = { [''] = require('rainbow-delimiters').strategy['global'] } }
+EOF
+
+
+lua << EOF
+require('nvim-treesitter.configs').setup{
+  ensure_installed = { "vim", "lua", "bash", "python", "cpp", "c", "markdown", "markdown_inline", "json", "yaml", "regex" },
+  highlight = { enable = true, additional_vim_regex_highlighting = false },
+  indent = { enable = true },
+  textobjects = { select = { enable = true } },
+}
+EOF
+
+" lua << EOF
+"     local lsp = require('lspconfig')
+"     lsp.pyright.setup({})
+"     lsp.clangd.setup({})
+"     lsp.r_language_server.setup({})
+" EOF
+
+lua << EOF
+require('trouble').setup({})
+EOF
+nnoremap <leader>xx :Trouble diagnostics toggle<CR>
+
+
+" junegunn/goyo.vim 
 let g:goyo_width = 70
 nmap <leader>tm :silent Goyo<CR>
-" }}}
 
 " jalvesaq/Nvim-r {{{
 " rlang
@@ -233,63 +187,6 @@ augroup END
 "autocmd VimLeave * if exists("g:SendCmdToR") && string(g:SendCmdToR) != "function('SendCmdToR_fake')" | call RQuit("nosave") | endif
 
 
-" fuzzyfinder {{{
-nnoremap <silent> <c-p> :FZF<CR>
-nnoremap <silent> <leader>ff :FZF<CR>
-nnoremap <silent> <leader>ft :Files<CR>
-nmap <leader>fc		:Commits<CR>
-"let g:fzf_layout = { 'window': 'left' }
-au FileType fzf tnoremap <nowait><buffer> <esc> <c-g>
-" }}}
-
-" Nerdtree {{{
-let g:NERDTreeShowHidden=1
-let g:NERDTreeMinimalUI=1
-let g:NERDTreeIgnore=['\.git$[[dir]]', 'node_modules','\.rbc$', '\~$', '\.pyc$', '\.db$', '\.sqlite$', '__pycache__']
-
-augroup nerd_loader
-	autocmd!
-	autocmd VimEnter * silent! autocmd! FileExplorer
-	autocmd BufEnter,BufNew *
-		\  if isdirectory(expand('<amatch>'))
-		\|	 call plug#load('nerdtree')
-		\|	 execute 'autocmd! nerd_loader'
-		\| endif
-augroup END
-nnoremap <leader>n :NERDTreeToggle<cr>
-nnoremap <c-t> :NERDTreeToggle<cr>
-nnoremap <silent> <F2> :NERDTreeFind<CR>
-nnoremap <silent> <F3> :NERDTreeToggle<CR>
-" }}}
-
-
-" scottstanfield/vimcmdline {{{
-
-
-
-" let cmdline_map_start			 = '<LocalLeader>s'
-" let cmdline_map_send			 = '<Space>'
-" let cmdline_map_send_and_stay  = '<LocalLeader><Space>'
-" let cmdline_map_source_fun	 = '<LocalLeader>f'
-" let cmdline_map_send_paragraph = '<LocalLeader>p'
-" let cmdline_map_send_block	 = '<LocalLeader>b'
-" let cmdline_map_quit			 = '<LocalLeader>q'
-" let cmdline_vsplit	  = 0	   " Split the window vertically
-" let cmdline_esc_term	  = 1	   " Remap <Esc> to :stopinsert in Neovim's terminal
-" let cmdline_in_buffer   = 1	   " Start the interpreter in a Neovim's terminal
-" let cmdline_term_height = 15	   " Initial height of interpreter window or pane
-" let cmdline_term_width  = 80	   " Initial width of interpreter window or pane
-" let cmdline_tmp_dir	  = '/tmp' " Temporary directory to save files
-" let cmdline_outhl		  = 1	   " Syntax highlight the output
-" let cmdline_auto_scroll = 1	   " Keep the cursor at the end of terminal (nvim)
-" let cmdline_app = {}
-" let cmdline_app['python'] = 'ipython --no-confirm-exit'
-" let cmdline_app['sh']		= 'bash'
-" let cmdline_app['julia']	= 'julia'
-" let cmdline_app['javascript']  = 'node'
-" let cmdline_app['sql']  = 'duckdb'
-" let cmdline_app['r']  = 'R --no-save --quiet --no-restore-data'
-" }}}
 
 " TrailerTrash {{{
 nmap <silent> <leader>$ :TrailerTrim<cr>
