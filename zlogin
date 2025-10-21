@@ -9,14 +9,14 @@
   fi
 } &!
 
-in_path()  { command "$1" >/dev/null 2>/dev/null }
+in_path()  { command -v "$1" >/dev/null 2>/dev/null }
 
 # Execute code only if STDERR is bound to a TTY.
 if [[ -o INTERACTIVE && -t 2 ]]; then
 
     if [[ -z "$TMUX" ]]; then
-        if test "$(uname -s)" = "Linux"; then
-            in_path "splash" && splash
+        if [[ "$(uname -s)" = "Linux" ]] ; then
+            in_path "linux-splash" && linux-splash
         else
             in_path "darwin-splash" && darwin-splash
         fi
