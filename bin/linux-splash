@@ -1,0 +1,75 @@
+#!/bin/bash
+# vim:filetype=bash:
+
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
+readonly _D="$(dirname "$(readlink -f "$0")")" && cd $_D
+
+trim() {
+    local var="$*"
+    # remove leading whitespace characters
+    var="${var#"${var%%[![:space:]]*}"}"
+    # remove trailing whitespace characters
+    var="${var%"${var##*[![:space:]]}"}"
+    printf '%s' "$var"
+}
+
+ansi_colors()
+{
+  esc=""
+
+  black="$esc[30m";   red="$esc[31m";    green="$esc[32m"
+  yellow="$esc[33m"   blue="$esc[34m";   purple="$esc[35m"
+  cyan="$esc[36m";    white="$esc[37m"
+
+  blackb="$esc[40m";   redb="$esc[41m";    greenb="$esc[42m"
+  yellowb="$esc[43m"   blueb="$esc[44m";   purpleb="$esc[45m"
+  cyanb="$esc[46m";    whiteb="$esc[47m"
+
+  bold="$esc[1m";    boldoff="$esc[22m"
+  italics="$esc[3m"; italicsoff="$esc[23m"
+  ul="$esc[4m";      uloff="$esc[24m"
+  inv="$esc[7m";     invoff="$esc[27m"
+
+  reset="$esc[0m"
+  r="$esc[0m"
+}
+
+ansi_colors
+
+# 32, 33, 36
+# green, yellow, cyan
+
+h3="$reset$bold$purple"
+h2="$reset$bold$yellow"
+h1="$reset$bold$green"
+p1="$reset"
+
+ip="$(ip route get 1.1.1.1 | head -1 | cut -d' ' -f7)"
+kernel="$(uname -srm)"
+os="$(source /etc/os-release; echo $NAME $VERSION)"
+uptime="$(uptime -p | sed 's/up //')"
+load=$(cat /proc/loadavg | cut -d ' ' -f 1,2,3)
+cpu_t1k=$(cat /sys/class/thermal/thermal_zone0/temp)
+cpu_t=$(printf %.1f "$((10**3 * $cpu_t1k / 1000))e-3")
+temps="$cpu_t° C"
+hostname="$(hostname)"
+model="$(cat /proc/cpuinfo | grep -i model | head -2 | cut -f2 -d: | tail -1)"
+model="$(trim $model)"
+uptime="$(uptime --pretty)"
+
+# ☉
+
+cat <<EOF
+
+${h2} · Hostname   ${h2}${hostname}
+${h2} · IP         ${r}${ip}
+${h2} · Kernel     ${r}${kernel}
+${h2} · OS         ${r}${os}
+${h2} · Load       ${r}${load}
+${h2} · CPU        ${r}${temps}
+${h2} · Uptime     ${r}${uptime}
+${h1} ○ Model      ${h3}${model}${r}
+
+EOF
