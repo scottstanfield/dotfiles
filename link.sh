@@ -87,7 +87,7 @@ cp bin/* ~/bin
 
 # Install neovim plugins
 println "Installing vim plugins..."
-nvim +PlugInstall +qall
+./neovim.plugins.sh
 
 # create ~/.ssh folder so zsh-agent doesn't complain
 mkdir -p ~/.ssh
