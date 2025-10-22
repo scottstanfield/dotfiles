@@ -24,6 +24,9 @@ function! CheckForR()
     return executable('R')
 endfunction 
 
+" for neovim :checkhealth
+let g:loaded_perl_provider = 0
+let g:loaded_ruby_provider = 0
 
 call plug#begin('~/.config/nvim/plugged')
 
@@ -95,6 +98,7 @@ let g:vim_markdown_edit_url_in = 'tab'
 let g:vim_markdown_follow_anchor = 1
 let g:vim_markdown_toml_frontmatter = 1
 
+
 " Code snapshots
 Plug 'segeljakt/vim-silicon'
 
@@ -115,39 +119,80 @@ nnoremap <leader>fb :Telescope buffers<CR>
 nnoremap <leader>fh :Telescope help_tags<CR>
 
 
-" after :PlugInstall, run :UpdateRemotePlugins if asked; also ensure `make` exists
+" -------- SAFE STARTUP GUARDS --------
 lua << EOF
-require('telescope').load_extension('fzf')
+local function safe_require(name)
+  local ok, mod = pcall(require, name)
+  if ok then return mod end
+  return nil
+end
+
+-- Telescope
+local telescope = safe_require('telescope')
+if telescope then
+  pcall(telescope.load_extension, 'fzf')
+end
+
+-- Gitsigns
+local gitsigns = safe_require('gitsigns')
+if gitsigns then
+  gitsigns.setup({
+    current_line_blame = false,
+    update_debounce = 100,
+  })
+end
+
+-- indent-blankline
+local ibl = safe_require('ibl')
+if ibl then
+  ibl.setup({
+    exclude = { filetypes = { "help", "terminal", "trouble", "lazy", "mason", "NvimTree" } },
+  })
+end
+
+-- Rainbow delimiters
+local rd = safe_require('rainbow-delimiters')
+if rd then
+  vim.g.rainbow_delimiters = { strategy = { [''] = rd.strategy['global'] } }
+end
+
+-- Trouble
+local trouble = safe_require('trouble')
+if trouble then
+  trouble.setup({})
+end
+
+-- nvim-treesitter
+local ts = safe_require('nvim-treesitter.configs')
+if ts then
+  local install = safe_require('nvim-treesitter.install')
+  if install then
+    install.prefer_git = true
+    install.compilers = { "cc", "gcc", "clang" }
+  end
+  ts.setup({
+    ensure_installed = {
+      "vim","lua","bash","python","c","cpp",
+      "json","yaml","markdown","markdown_inline","regex"
+    },
+    sync_install = false,
+    auto_install = true,
+    highlight = { enable = true, additional_vim_regex_highlighting = false },
+    indent = { enable = true },
+    textobjects = { select = { enable = true } },
+  })
+end
 EOF
 
+" -------- END GUARDS --------
 
 
-lua << EOF
-require('gitsigns').setup {
-  current_line_blame = false, -- inline git blame text (toggle with :Gitsigns toggle_current_line_blame)
-  update_debounce = 100,
-}
-EOF
 nnoremap ]c :Gitsigns next_hunk<CR>
 nnoremap [c :Gitsigns prev_hunk<CR>
 nnoremap <leader>hs :Gitsigns stage_hunk<CR>
 nnoremap <leader>hr :Gitsigns reset_hunk<CR>
 nnoremap <leader>hp :Gitsigns preview_hunk<CR>
 
-
-lua << EOF
-vim.g.rainbow_delimiters = { strategy = { [''] = require('rainbow-delimiters').strategy['global'] } }
-EOF
-
-
-lua << EOF
-require('nvim-treesitter.configs').setup{
-  ensure_installed = { "vim", "lua", "bash", "python", "cpp", "c", "markdown", "markdown_inline", "json", "yaml", "regex" },
-  highlight = { enable = true, additional_vim_regex_highlighting = false },
-  indent = { enable = true },
-  textobjects = { select = { enable = true } },
-}
-EOF
 
 " lua << EOF
 "     local lsp = require('lspconfig')
@@ -156,10 +201,7 @@ EOF
 "     lsp.r_language_server.setup({})
 " EOF
 
-lua << EOF
-require('trouble').setup({})
-EOF
-nnoremap <leader>xx :Trouble diagnostics toggle<CR>
+noremap <leader>xx :Trouble diagnostics toggle<CR>
 
 
 " junegunn/goyo.vim 
@@ -768,7 +810,12 @@ if has('termguicolors')
 endif
 
 set background=dark
-colorscheme dracula
+try
+    colorscheme dracula
+catch
+    colorscheme slate
+endtry
+
 " hi colorcolumn ctermbg=darkgrey
 
 " Hide the Magenta with ,/
@@ -845,11 +892,3 @@ highlight Trailing   guifg=Magenta ctermfg=Magenta
 " helper to debug what is setting indent options
 command! ShowIndent verbose set et? ts? sw? sts? indentexpr?
 
-" --- tree-sitter config (lua inside init.vim) ---
-lua << EOF
-require('nvim-treesitter.configs').setup({
-  ensure_installed = { "c", "cpp" },   -- grammars you want
-  highlight = { enable = true },       -- syntax highlighting
-  indent = { enable = false },         -- don't let TS override indent
-})
-EOF
