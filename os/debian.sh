@@ -14,7 +14,7 @@ export DEBIAN_FRONTEND=noninteractive
 
 # install webi which is used to install some simple programs
 curl https://webi.sh/webi | sh
-webi rust fd ripgrep fzf zoxide bat
+webi rust fd ripgrep fzf zoxide bat jq
 
 source "$HOME/.config/envman/PATH.env"
 
