@@ -20,14 +20,6 @@ if empty(glob(data_dir . '/autoload/plug.vim'))
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
-function! CheckForR()
-    return executable('R')
-endfunction 
-
-" for neovim :checkhealth
-let g:loaded_perl_provider = 0
-let g:loaded_ruby_provider = 0
-
 call plug#begin('~/.config/nvim/plugged')
 
 " Core deps
@@ -192,6 +184,14 @@ nnoremap [c :Gitsigns prev_hunk<CR>
 nnoremap <leader>hs :Gitsigns stage_hunk<CR>
 nnoremap <leader>hr :Gitsigns reset_hunk<CR>
 nnoremap <leader>hp :Gitsigns preview_hunk<CR>
+
+function! CheckForR()
+    return executable('R')
+endfunction 
+
+" for neovim :checkhealth
+let g:loaded_perl_provider = 0
+let g:loaded_ruby_provider = 0
 
 
 " lua << EOF
