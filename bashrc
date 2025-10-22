@@ -1,6 +1,11 @@
 export CLICOLOR=1
 export LANG="en_US.UTF-8"
 export PATH=$PATH:.
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_DATA_HOME="$HOME/.local/share"
+export XDG_STATE_HOME="$HOME/.local/state"
+export XDG_CACHE_HOME="$HOME/.cache"
+
 
 alias ls="ls --color -F"
 alias ll="ls --color -F -l"
