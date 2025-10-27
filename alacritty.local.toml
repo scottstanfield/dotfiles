@@ -3,6 +3,10 @@
 # List fonts already install on MacOS
 # asutil fonts -list | less
 
+# For legibility checks: 1lI 00
+# == === <= >= !! ?? || && ++ -- 
+# ‘agrQ£@’
+
 # 1. Github Mona: https://github.com/mona-sans
 # brew install font-monaspace-nerd-font
 #

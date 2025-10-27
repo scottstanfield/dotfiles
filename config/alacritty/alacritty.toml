@@ -1,12 +1,17 @@
+[general]
 live_config_reload = true
-
-window.option_as_alt = "Both"
-
 import = [
     "~/.alacritty.local.toml",
     "~/.config/alacritty/dracula.toml",
+    "~/.config/alacritty/fonts.toml"
 ]
 
+[font]
+size=18
+
+# For legibility checks: 1lI 00
+# == === <= >= !! ?? || && ++ -- 
+# ‘agrQ£@’
 
 [env]
 TERM = "xterm-256color"
@@ -26,10 +31,7 @@ chars = "\u001B[13;5u"
 key = "Return"
 mods = "Control"
 
-[window.dimensions]
-columns = 120
-lines = 50
-
-[window.padding]
-x = 4
-y = 0
+[window]
+option_as_alt = "Both"
+dimensions = {columns=120, lines=50}
+padding = {x=4, y=0}
