@@ -23,15 +23,6 @@
 #   Time (mean ± σ):     464.2 ms ± 321.2 ms    [User: 89.1 ms, System: 67.4 ms]
 #   Range (min … max):   163.4 ms … 841.2 ms    10 runs
  
-
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
-
-
 # Profile .zshrc startup times by uncommenting this line:
 # zmodload zsh/zprof
 # Then start a new zsh. Then run and inspect: zprof > startup.txt
@@ -52,13 +43,15 @@ export XDG_STATE_HOME="$HOME/.local/state"
 for dir in "$XDG_CONFIG_HOME" "$XDG_DATA_HOME" "$XDG_CACHE_HOME" "$XDG_STATE_HOME"; do
   [ -d "$dir" ] || mkdir -p -m 700 "$dir"
 done
+
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
-# typeset -g POWERLEVEL9K_INSTANT_PROMPT=off
+typeset -g POWERLEVEL9K_INSTANT_PROMPT=on
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
+
 
 in_path()  { builtin whence -p "$1" &> /dev/null; return $? }
 
@@ -67,6 +60,7 @@ export CLICOLOR=1
 export EDITOR=vim
 export VISUAL=vim
 export LANG="en_US.UTF-8"
+export LC_ALL=""
 export PAGER=less
 UNAME=$(uname)      # Darin, Linux
 ARCH=$(arch)        # arm64, i386, x86_64
@@ -307,9 +301,9 @@ fi
 alias ,="cd .."
 function @() {
   if [ ! "$#" -gt 0 ]; then
-    printenv | sort | less
+    printenv | sort | grep -v LS_COLOR | less 
   else
-    printenv | sort | grep -i "$1"
+    printenv | sort | grep -v LS_COLOR | grep -i "$1"
   fi
 }
 alias dc='docker compose'
@@ -511,6 +505,10 @@ FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}comment]='fg=gray'
 
 export prompticons=( 󰯉 󰊠         ▼         󰆚 󰀘 󱍢 󰦥)
 
+# Having this instant_* function prevents the "flash of unstyled content"
+function instant_prompt_my_host_icon() {
+    prompt_my_host_icon
+}
 function prompt_my_host_icon() {
     # if prompt_icon_index is set, use that
     # if host_icon is set, use that instead
