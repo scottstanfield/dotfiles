@@ -81,15 +81,6 @@ Plug 'sotte/presenting.nvim'
 " Markdown / Editorconfig / misc
 Plug 'editorconfig/editorconfig-vim'
 " (Treesitter handles markdown highlighting well; your markdown options below still apply)
-let g:vim_markdown_folding_disabled = 1
-let g:vim_markdown_frontmatter = 1
-let g:vim_markdown_strikethrough = 1
-let g:vim_markdown_conceal = 0
-let g:vim_markdown_conceal_code_blocks = 0
-let g:vim_markdown_edit_url_in = 'tab'
-let g:vim_markdown_follow_anchor = 1
-let g:vim_markdown_toml_frontmatter = 1
-
 
 " Code snapshots
 Plug 'segeljakt/vim-silicon'
@@ -821,15 +812,38 @@ endtry
 " Hide the Magenta with ,/
 nnoremap <silent> <leader>/ :set hlsearch! hlsearch?<CR>
 
-hi Cursor guifg=green guibg=magenta
+augroup RestoreCursorShapeOnExit
+  autocmd!
+  autocmd VimLeave * set guicursor=a:block-blinkon0
+augroup END
+
+hi Cursor guibg=Orange
+hi Cursor guibg=NvimLightCyan
+hi Cursor guibg=Magenta
+"hi Cursor guifg=green guibg=NvimLightCyan
 hi Cursor2 guifg=red guibg=red
 
 " TODO: fix cursor for insert mode 
 "set guicursor=n-v-c:block-Cursor/lCursor-blinkon0,i-ci-ve:ver25-Cursor2/lCursor2,r-cr:hor20,o:hor50
 
-set guicursor=n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50
-		  \,a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor
-		  \,sm:block-blinkwait175-blinkoff150-blinkon175
+" Start with a clean definition
+set guicursor=
+
+set guicursor+=n-v-c:block          " Normal, Visual, and Command-line modes → block cursor
+set guicursor+=i-ci-ve:ver45        " Insert, CLI Insert, Visual-Exclusive → vertical bar (25% width)
+set guicursor+=r-cr:hor20           " Replace and CLI Replace → horizontal bar (20% height)
+set guicursor+=o:hor50              " Operator-pending → horizontal bar (50% height)
+
+" All modes → blink timing and highlight groups
+"   blinkwait700  → wait 700 ms before blinking starts
+"   blinkoff400   → cursor off 400 ms
+"   blinkon250    → cursor on 250 ms
+"   Cursor/lCursor → highlight groups for active/inactive cursor
+set guicursor+=a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor
+
+" Showmatch mode → block cursor, faster blink timing
+set guicursor+=sm:block-blinkwait175-blinkoff150-blinkon175
+set showmatch
 
 " }}}
 
@@ -891,4 +905,17 @@ highlight Trailing   guifg=Magenta ctermfg=Magenta
 
 " helper to debug what is setting indent options
 command! ShowIndent verbose set et? ts? sw? sts? indentexpr?
+
+if has('nvim')
+lua << EOF
+  local set = vim.api.nvim_set_hl
+  set(0, "RainbowDelimiterRed",    { fg = "#b2faff" })
+  set(0, "RainbowDelimiterYellow", { fg = "#f1fa8c" })
+  set(0, "RainbowDelimiterBlue",   { fg = "#8be9fd" })
+  set(0, "RainbowDelimiterOrange", { fg = "#ffb86c" })
+  set(0, "RainbowDelimiterGreen",  { fg = "#69ff94" })
+  set(0, "RainbowDelimiterViolet", { fg = "#bd93f9" })
+  set(0, "RainbowDelimiterCyan",   { fg = "#8be9fd" })
+EOF
+endif
 
