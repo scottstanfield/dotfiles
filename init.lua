@@ -4,11 +4,11 @@
 
 -- c+space --> alacritty
 hs.hotkey.bind({"ctrl"}, "space", function()
-  local alacritty = hs.application.get('alacritty')
+  local alacritty = hs.application.get('ghostty')
   if (alacritty ~= nil and alacritty:isFrontmost()) then
     alacritty:hide()
   else
-    hs.application.launchOrFocus("/Applications/Alacritty.app")
+    hs.application.launchOrFocus("/Applications/Ghostty.app")
   end
 end)
 
