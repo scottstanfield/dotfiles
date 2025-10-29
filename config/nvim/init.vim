@@ -48,6 +48,7 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-vinegar'
+Plug 'tpope/vim-markdown'
 Plug 'kshenoy/vim-signature'
 Plug 'nicwest/vim-camelsnek'
 
@@ -77,6 +78,13 @@ Plug 'junegunn/goyo.vim'
 Plug 'junegunn/limelight.vim'
 nmap <leader>tl :Limelight!! 0.7<CR>
 Plug 'sotte/presenting.nvim'
+
+Plug 'junegunn/vim-easy-align',		{ 'on': ['<Plug>(EasyAlign)', 'EasyAlign'] }
+xmap ga <Plug>(EasyAlign)
+nmap ga <Plug>(EasyAlign)
+let g:easy_align_delimiters = { ';': {'pattern': ':'}, '>': {'pattern': '>'}, 'a': {'pattern': '<-'}, '<': {'pattern': '<-'}, ':': {'pattern': ':='}}
+au FileType markdown vmap <Leader><Bslash> :EasyAlign*<Bar><Enter>
+
 
 " Markdown / Editorconfig / misc
 Plug 'editorconfig/editorconfig-vim'
@@ -156,11 +164,15 @@ if ts then
   ts.setup({
     ensure_installed = {
       "vim","lua","bash","python","c","cpp",
-      "json","yaml","markdown","markdown_inline","regex"
+      "json","yaml","regex"
     },
     sync_install = false,
     auto_install = true,
-    highlight = { enable = true, additional_vim_regex_highlighting = false },
+    highlight = { 
+        enable = true, 
+        disable = { "markdown" },
+        additional_vim_regex_highlighting = false 
+    },
     indent = { enable = true },
     textobjects = { select = { enable = true } },
   })
