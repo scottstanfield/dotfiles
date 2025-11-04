@@ -314,6 +314,7 @@ alias dkrr='docker run --rm -it -u1000:1000 -v$(pwd):/work -w /work -e DISPLAY=$
 alias dust='dust -r'
 alias grep="grep --color=auto"
 alias gs="git status 2>/dev/null"
+alias ga="git add"
 alias h="history 50"
 alias ha="history 9999"
 alias hg="history 1 | grep -i"
