@@ -52,7 +52,6 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-
 in_path()  { builtin whence -p "$1" &> /dev/null; return $? }
 
 export BLOCK_SIZE="'1"          # Add commas to file sizes
@@ -204,6 +203,7 @@ manpath=(
 manpath=($^manpath(N))
 setopt NO_nullglob
 
+export MANROFFOPT="-c"
 if in_path "bat" ; then
     export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 fi

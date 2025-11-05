@@ -28,7 +28,8 @@ Plug 'nvim-lua/plenary.nvim'
 " Treesitter (syntax, textobjects)
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'nvim-treesitter/nvim-treesitter-textobjects'
-Plug 'HiPhish/rainbow-delimiters.nvim'       " replaces junegunn/rainbow_parentheses; uses treesitter
+Plug 'HiPhish/rainbow-delimiters.nvim'       
+" Plug 'junegunn/rainbow_parentheses.vim'
 
 " UI / Icons / Statusline
 Plug 'nvim-tree/nvim-web-devicons'           " replaces ryanoasis/vim-devicons
@@ -99,7 +100,7 @@ Plug 'scottstanfield/hlterm'
 Plug 'jalvesaq/colorout', { 'for': 'r' }
 
 " Copilot (if you use it)
-Plug 'github/copilot.vim'
+" Plug 'github/copilot.vim'
 
 call plug#end()
 
@@ -139,12 +140,6 @@ if ibl then
   ibl.setup({
     exclude = { filetypes = { "help", "terminal", "trouble", "lazy", "mason", "NvimTree" } },
   })
-end
-
--- Rainbow delimiters
-local rd = safe_require('rainbow-delimiters')
-if rd then
-  vim.g.rainbow_delimiters = { strategy = { [''] = rd.strategy['global'] } }
 end
 
 -- Trouble
@@ -203,6 +198,7 @@ let g:loaded_ruby_provider = 0
 "     lsp.clangd.setup({})
 "     lsp.r_language_server.setup({})
 " EOF
+
 
 noremap <leader>xx :Trouble diagnostics toggle<CR>
 
@@ -833,6 +829,8 @@ hi Cursor guibg=Orange
 hi Cursor guibg=NvimLightCyan
 hi Cursor guibg=Magenta
 "hi Cursor guifg=green guibg=NvimLightCyan
+hi Cursor guifg=green guibg=magenta
+hi Cursor guifg=green guibg=lightgreen
 hi Cursor2 guifg=red guibg=red
 
 " TODO: fix cursor for insert mode 
@@ -922,7 +920,7 @@ if has('nvim')
 lua << EOF
   local set = vim.api.nvim_set_hl
   set(0, "RainbowDelimiterRed",    { fg = "#b2faff" })
-  set(0, "RainbowDelimiterYellow", { fg = "#f1fa8c" })
+  set(0, "RainbowDelimiterYellow", { fg = "#ff934f" })
   set(0, "RainbowDelimiterBlue",   { fg = "#8be9fd" })
   set(0, "RainbowDelimiterOrange", { fg = "#ffb86c" })
   set(0, "RainbowDelimiterGreen",  { fg = "#69ff94" })
