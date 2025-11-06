@@ -47,7 +47,7 @@ done
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
-typeset -g POWERLEVEL9K_INSTANT_PROMPT=on
+typeset -g POWERLEVEL9K_INSTANT_PROMPT=off
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
@@ -333,7 +333,7 @@ alias td='tmux detach'
 alias ts='tmux source ~/.tmux.conf'
 alias d='dirs -v'
 alias scp='scp -p'
-alias p="python"
+alias p="python3"
 alias sudosu="sudo -Es"
 alias ips="ip -4 --color --brief a"
 alias ddb="duckdb"
