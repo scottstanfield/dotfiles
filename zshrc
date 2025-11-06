@@ -249,7 +249,7 @@ if [[ $(whence -p "gls" &>/dev/null) -eq 0 || $(ls --version &>/dev/null) ]]; th
     alias lln="ls ${lsflags} -l"
 
     lsflags+=" --no-user --no-permissions"
-    alias l="ll --no-user --no-permissions"
+    alias l="ll"
     alias lld="ls ${lsflags} -l --sort=time --time-style=full-iso"
     alias llD="ls ${lsflags} -l --sort=time --reverse --time-style=full-iso"
     alias lls="ls ${lsflags} -l --sort=size "
@@ -320,7 +320,7 @@ alias ha="history 9999"
 alias hg="history 1 | grep -i"
 alias logs="docker logs control -f"
 alias m="less"
-alias b="bat --plain"
+alias b="bat"
 alias path='echo $PATH | tr : "\n" | cat -n'
 alias pd='pushd'  # symmetry with cd
 alias r="R --no-save --no-restore-data --quiet"
