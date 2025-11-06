@@ -126,12 +126,12 @@ main() {
 
 cat <<EOF
 
-    ${h2} · IP         ${r}${ip}
-    ${h2} · Kernel     ${r}${kernel}
-    ${h2} · OS         ${r}MacOS ${os}
-    ${h2} · Load       ${r}${load}
-    ${h2} · Uptime     ${r}${uptime}
-    ${h1} ○ Hostname   ${h3}${hostname}${r}
+${h2} · IP         ${r}${ip}
+${h2} · Kernel     ${r}${kernel}
+${h2} · OS         ${r}MacOS ${os}
+${h2} · Load       ${r}${load}
+${h2} · Uptime     ${r}${uptime}
+${h1} ○ Hostname   ${h3}${hostname}${r}
 
 EOF
 }
