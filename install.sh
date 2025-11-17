@@ -58,6 +58,7 @@ link gitignore                       ~/.gitignore
 link config/nvim/init.vim            ~/.config/nvim/init.vim
 link config/ghostty/config           ~/.config/ghostty/config
 
+mkdir -p ~/.config/alacritty
 cpn config/alacritty/alacritty.toml       ~/.config/alacritty/alacritty.toml
 cpn config/alacritty/dracula.toml         ~/.config/alacritty/dracula.toml
 link alacritty.local.toml ~/.alacritty.local.toml

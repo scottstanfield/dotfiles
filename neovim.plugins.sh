@@ -10,8 +10,12 @@ readonly _D="$(dirname "$(readlink -f "$0")")" && cd "$_D"
 
 
 ## Pre-requisites
-: "${XDG_DATA_HOME:-missing}"
-: "${XDG_CACHE_HOME:-missing}"
+XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
+XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.config}"
+
+mkdir -p $XDG_DATA_HOME
+mkdir -p $XDG_CACHE_HOME
+
 require nvim
 require git 
 require curl
