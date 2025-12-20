@@ -291,6 +291,8 @@ if [[ $(whence -p "eza" &>/dev/null) -eq 0 ]]; then
     ux=36:\
     "
 
+export EXA_COLORS="ext:db=green:${EXA_COLORS}"
+
     if [[ -d "$HOME/.config/eza" ]]; then
         export EZA_CONFIG_DIR=$HOME/.config/eza
     fi
@@ -641,3 +643,5 @@ typeset -g POWERLEVEL9K_STATUS_ERROR=true
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+export MAKEFLAGS=-j10

@@ -3,14 +3,11 @@
 cc <- function(str) { Filter(nchar, unlist(strsplit(str, "[ \n \t]"))) }
 
 p <- '
-	MASS
-	RColorBrewer
 	anytime
 	argparse
 	collapse
 	data.table
 	descr
-	duckdb
 	dygraphs
 	ggplot2
 	glue
@@ -21,15 +18,24 @@ p <- '
 	magrittr
 	nanotime
 	purrr
-	xts
+	RColorBrewer
+  anytime
+  bit64
+  descr
+  glue
+  stringr
+  tidyr
 	xts
 	zoo
 '
 
+#	MASS
+# duckdb
 if (!require("pak")) install.packages("pak")
+pak::pak_install_extra()
 
+pak::pak(cc(p))
 pak::pak('remotes')
 pak::pak('jalvesaq/colorout')
 print(cc(p))
 
-pak::pak(cc(p))

@@ -37,7 +37,7 @@ CCACHE=$(HB)/ccache
 MAKE=make -j8
 
 # GNU version
-GNU_VER=14
+GNU_VER=15
 
 # LLVM (Clang) compiler options
 CC=$(CCACHE) $(HO)/llvm/bin/clang
