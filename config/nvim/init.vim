@@ -692,20 +692,16 @@ augroup my_au
 augroup END
 
 
-" Remember the cursor position for every file
-" function! PositionCursorFromViminfo()
-"	  if !(bufname("%") =~ '\(COMMIT_EDITMSG\)') && line("'\"") > 1 && line("'\"") <= line("$")
-"		  exe "normal! g`\""
-"	  endif
-" endfunction
-" autocmd BufReadPost * call PositionCursorFromViminfo()
-
-" see :help restore-cursor
-autocmd BufReadPost *
-  \ if line("'\"") >= 1 && line("'\"") <= line("$") && &ft !~# 'commit'
-  \ |	exe "normal! g`\""
-  \ | endif
-
+" Restore the cursor location from last edit position (see :help restore-cursor)
+augroup RestoreCursor
+    autocmd!
+    autocmd BufReadPre * autocmd FileType <buffer> ++once
+    \ let s:line = line("'\"")
+    \ | if s:line >= 1 && s:line <= line("$") && &filetype !~# 'commit'
+    \      && index(['xxd', 'gitrebase'], &filetype) == -1
+    \ |   execute "normal! g`\""
+    \ | endif
+augroup END
 
 " }}}
 
