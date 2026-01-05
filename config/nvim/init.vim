@@ -27,7 +27,7 @@ Plug 'nvim-lua/plenary.nvim'
 
 " Treesitter (syntax, textobjects)
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-Plug 'nvim-treesitter/nvim-treesitter-textobjects'
+Plug 'nvim-treesitter/nvim-treesitter-textobjects', {'branch': 'main'} 
 Plug 'HiPhish/rainbow-delimiters.nvim'       
 " Plug 'junegunn/rainbow_parentheses.vim'
 
