@@ -176,7 +176,7 @@ path=(
 
     ~/texlive/bin/universal-darwin
     ~/dotfile/bin
-    ~/miniconda3/bin
+    ~/miniconda3bin
     $HOME/.local/bin
 
     .
@@ -633,3 +633,10 @@ typeset -g POWERLEVEL9K_STATUS_ERROR=true
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 eval "$(~/.local/bin/mise activate zsh)"
+
+# To support second installation of neovim from mini.vim
+# git clone --filter=blob:none https://github.com/nvim-mini/MiniMax ~/code/minimax
+# VIM_APPNAME=nvim-minimax nvim -l ~/code/minimax/setup.lua
+alias nv="NVIM_APPNAME=nvim-minimax nvim "
+
+
