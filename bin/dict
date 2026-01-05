@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+# https://jsomers.net/blog/dictionary
+# You're probably using the wrong dictionary
+# tl;dr: cross Webster 1913 for great content
+
+# Best match
+# curl dict://dict.org/define:flash
+
+# Search all dictionaries
+# curl dict://dict.org/define:flash:*
+
+# Match by soundex (note the double ::)
+# curl dict://dict.org/m:flahsh::soundex
+
+dict() {
+    local word="$1"
+    local encoded=$(echo $word | jq -Rr @uri)
+    curl -s "dict://dict.org/d:${encoded}" | less -R
+}
+
+dict "$*"
