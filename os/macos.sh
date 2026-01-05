@@ -9,6 +9,8 @@ cd "$_D"
 
 require brew
 
+# xan, yq
+
 export HOMEBREW_NO_INSTALL_CLEANUP
 export HOMEBREW_NO_AUTO_UPDATE=1
 

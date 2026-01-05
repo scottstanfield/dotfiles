@@ -22,14 +22,19 @@ endif
 
 call plug#begin('~/.config/nvim/plugged')
 
+" LSP core + convenience installers
+Plug 'neovim/nvim-lspconfig'
+Plug 'williamboman/mason.nvim'
+Plug 'williamboman/mason-lspconfig.nvim'
+
 " Core deps
 Plug 'nvim-lua/plenary.nvim'
 
 " Treesitter (syntax, textobjects)
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-Plug 'nvim-treesitter/nvim-treesitter-textobjects'
-Plug 'HiPhish/rainbow-delimiters.nvim'       
-" Plug 'junegunn/rainbow_parentheses.vim'
+Plug 'nvim-treesitter/nvim-treesitter-textobjects', {'branch': 'main'} 
+
+Plug 'HiPhish/rainbow-delimiters.nvim'       " replaces junegunn/rainbow_parentheses; uses treesitter
 
 " UI / Icons / Statusline
 Plug 'nvim-tree/nvim-web-devicons'           " replaces ryanoasis/vim-devicons
@@ -112,6 +117,29 @@ nnoremap <leader>fh :Telescope help_tags<CR>
 
 
 " -------- SAFE STARTUP GUARDS --------
+
+lua << EOF
+-- Mason: install editor tooling
+require("mason").setup()
+
+require("mason-lspconfig").setup({
+  ensure_installed = { "tinymist" },
+})
+
+-- NEW LSP CONFIG STYLE (nvim-lspconfig ≥ 0.11)
+vim.lsp.config("tinymist", {
+  filetypes = { "typst" },
+  cmd_env = {
+    RUST_LOG = "warn",   -- or "error"
+  },
+})
+
+-- Enable the server
+vim.lsp.enable("tinymist")
+EOF
+
+
+
 lua << EOF
 local function safe_require(name)
   local ok, mod = pcall(require, name)
@@ -162,7 +190,7 @@ if ts then
       "json","yaml","regex"
     },
     sync_install = false,
-    auto_install = true,
+    auto_install = false,
     highlight = { 
         enable = true, 
         disable = { "markdown" },
@@ -456,6 +484,8 @@ nnoremap Q gqap
 nnoremap <C-q> :q<cr>
 
 " Noop remap q for macro recording: I never use it
+nnoremap <localleader>q :x<cr>
+nnoremap <localleader>w :w<cr>
 nnoremap q :x<cr>
 
 " Sane navigation for wrapped lines

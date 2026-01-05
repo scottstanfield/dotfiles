@@ -174,6 +174,7 @@ path=(
     /bin
     /sbin
 
+    ~/texlive/bin/universal-darwin
     ~/dotfile/bin
     ~/miniconda3/bin
     $HOME/.local/bin
@@ -574,8 +575,6 @@ export CPPFLAGS="-I/opt/homebrew/opt/llvm/include"
 export CFLAGS="-I/opt/homebrew/opt/llvm/include"
 export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
 
-# bun completions
-[ -s "/Users/sstanfield/.bun/_bun" ] && source "/Users/sstanfield/.bun/_bun"
 # export LDFLAGS="-L/opt/homebrew/opt/llvm/lib"
 # export CPPFLAGS="-I/opt/homebrew/opt/llvm/include"
 # export CFLAGS="-I/opt/homebrew/opt/llvm/include"
@@ -583,16 +582,8 @@ export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
 
 eval "$(zoxide init zsh)"
 
-# bun completions
-# [ -s "/home/scott/.bun/_bun" ] && source "/home/scott/.bun/_bun"
-
-# bun
-export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
-
 alias uv="uv --native-tls"
 alias uvx="uvx --native-tls"
-
 
 # >>> juliaup initialize >>>
 
@@ -641,3 +632,4 @@ typeset -g POWERLEVEL9K_STATUS_ERROR=true
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+eval "$(~/.local/bin/mise activate zsh)"
