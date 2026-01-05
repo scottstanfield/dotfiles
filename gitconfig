@@ -58,7 +58,7 @@
     required = true
 
 [pull]
-    rebase = true
+    rebase = false
     ff = only
 
 [fetch]
