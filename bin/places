@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+# https://jsomers.net/blog/dictionary
+# You're probably using the wrong dictionary
+# tl;dr: cross Webster 1913 for great content
+# curl dict://dict.org/define:flash
+
+# list of dictionaries
+# curl dict://dict.org/show:db
+
+places() {
+    local word="$1"
+    local encoded=$(echo $word | jq -Rr @uri)
+    curl -s "dict://dict.org/d:${encoded}:gaz2k-places" | less -R
+}
+
+places "$*"

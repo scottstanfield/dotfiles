@@ -1,0 +1,9 @@
+[tools]
+node = "lts"
+"pipx:black" = "latest"
+rg = "latest"
+jq = "latest"
+yq = "latest"
+typst = "latest"
+neovim = "latest"
+lnav = "latest"

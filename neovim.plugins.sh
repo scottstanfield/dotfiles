@@ -31,8 +31,7 @@ rm -rf $xdg_data_home/nvim/site
 curl -fLo $xdg_data_home/nvim/site/autoload/plug.vim --create-dirs \
        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
-nvim --headless +':PlugInstall --sync' +qa
-nvim --headless +':TSUpdateSync vim' +qa
+nvim --headless +PlugInstall  +qa
+nvim --headless +TSUpdate +qa
 
 echo "Neovim bootstrap complete. Next launch should be clean."
-

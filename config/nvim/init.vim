@@ -22,14 +22,18 @@ endif
 
 call plug#begin('~/.config/nvim/plugged')
 
+" LSP core + convenience installers
+Plug 'neovim/nvim-lspconfig'
+Plug 'williamboman/mason.nvim'
+Plug 'williamboman/mason-lspconfig.nvim'
+
 " Core deps
 Plug 'nvim-lua/plenary.nvim'
 
 " Treesitter (syntax, textobjects)
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'nvim-treesitter/nvim-treesitter-textobjects', {'branch': 'main'} 
-Plug 'HiPhish/rainbow-delimiters.nvim'       
-" Plug 'junegunn/rainbow_parentheses.vim'
+Plug 'HiPhish/rainbow-delimiters.nvim'       " replaces junegunn/rainbow_parentheses; uses treesitter
 
 " UI / Icons / Statusline
 Plug 'nvim-tree/nvim-web-devicons'           " replaces ryanoasis/vim-devicons
@@ -112,6 +116,29 @@ nnoremap <leader>fh :Telescope help_tags<CR>
 
 
 " -------- SAFE STARTUP GUARDS --------
+
+lua << EOF
+-- Mason: install editor tooling
+require("mason").setup()
+
+require("mason-lspconfig").setup({
+  ensure_installed = { "tinymist" },
+})
+
+-- NEW LSP CONFIG STYLE (nvim-lspconfig ≥ 0.11)
+vim.lsp.config("tinymist", {
+  filetypes = { "typst" },
+  cmd_env = {
+    RUST_LOG = "warn",   -- or "error"
+  },
+})
+
+-- Enable the server
+vim.lsp.enable("tinymist")
+EOF
+
+
+
 lua << EOF
 local function safe_require(name)
   local ok, mod = pcall(require, name)
@@ -162,7 +189,7 @@ if ts then
       "json","yaml","regex"
     },
     sync_install = false,
-    auto_install = true,
+    auto_install = false,
     highlight = { 
         enable = true, 
         disable = { "markdown" },
@@ -227,14 +254,6 @@ augroup END
 
 "autocmd VimLeave * if exists("g:SendCmdToR") && string(g:SendCmdToR) != "function('SendCmdToR_fake')" | call RQuit("nosave") | endif
 
-
-
-" TrailerTrash {{{
-nmap <silent> <leader>$ :TrailerTrim<cr>
-nmap <silent> <leader>w :Trailer<cr>
-let g:show_trailertrash = 1
-"autocmd FileType c,python,r,javascript BufWritePre :call TrailerTrim()
-" }}}
 
 " }}} Plugin configuration
 
@@ -370,6 +389,7 @@ set nostartofline				" Searches leave cursor on same column
 set ignorecase					" Case-insensitive searching.
 set lazyredraw					" No redraw during macro execution
 set number						" Show line numbers.
+set cursorline                  " Highlight the current line number
 set shortmess=atIF				" stifle the long interrupt prompts
 set showmode					" Display the mode you're in.
 set smartcase					" But case-sensitive if has caps
@@ -456,6 +476,8 @@ nnoremap Q gqap
 nnoremap <C-q> :q<cr>
 
 " Noop remap q for macro recording: I never use it
+nnoremap <localleader>q :x<cr>
+nnoremap <localleader>w :w<cr>
 nnoremap q :x<cr>
 
 " Sane navigation for wrapped lines
@@ -624,14 +646,6 @@ augroup END
 " buffers
 " https://dev.to/nickjj/writing-and-previewing-markdown-in-real-time-with-vim-8-3icf
 
-let g:iron_map_defaults=0
-augroup ironmapping
-	autocmd!
-	autocmd Filetype python nmap <buffer> <leader>t <Plug>(iron-send-motion)
-	autocmd Filetype python vmap <buffer> <leader>t <Plug>(iron-send-motion)
-	autocmd Filetype python nmap <buffer> <leader>. <Plug>(iron-repeat-cmd)
-augroup END
-
 augroup yaml_syntax
 	autocmd!
 	autocmd BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml
@@ -678,20 +692,16 @@ augroup my_au
 augroup END
 
 
-" Remember the cursor position for every file
-" function! PositionCursorFromViminfo()
-"	  if !(bufname("%") =~ '\(COMMIT_EDITMSG\)') && line("'\"") > 1 && line("'\"") <= line("$")
-"		  exe "normal! g`\""
-"	  endif
-" endfunction
-" autocmd BufReadPost * call PositionCursorFromViminfo()
-
-" see :help restore-cursor
-autocmd BufReadPost *
-  \ if line("'\"") >= 1 && line("'\"") <= line("$") && &ft !~# 'commit'
-  \ |	exe "normal! g`\""
-  \ | endif
-
+" Restore the cursor location from last edit position (see :help restore-cursor)
+augroup RestoreCursor
+    autocmd!
+    autocmd BufReadPre * autocmd FileType <buffer> ++once
+    \ let s:line = line("'\"")
+    \ | if s:line >= 1 && s:line <= line("$") && &filetype !~# 'commit'
+    \      && index(['xxd', 'gitrebase'], &filetype) == -1
+    \ |   execute "normal! g`\""
+    \ | endif
+augroup END
 
 " }}}
 
@@ -741,25 +751,6 @@ function! OpenMarkdownPreview() abort
 endfunction
 
 "}}}
-
-" Use ripgrep for searching ⚡️
-" Options include:
-" --vimgrep -> Needed to parse the rg response properly for ack.vim
-" --type-not sql -> Avoid huge sql file dumps as it slows down the search
-" --smart-case -> Search case insensitive if all lowercase pattern, Search case sensitively otherwise
-let g:ackprg = 'rg --vimgrep --type-not sql --smart-case'
-
-" Auto close the Quickfix list after pressing '<enter>' on a list item
-let g:ack_autoclose = 1
-
-" Any empty ack search will search for the work the cursor is on
-let g:ack_use_cword_for_empty_search = 1
-
-" Don't jump to first match
-cnoreabbrev Ack Ack!
-
-" Maps <leader>/ so we're ready to type the search keyword
-" nnoremap <Leader>/ :Ack!<Space>
 
 " Navigate quickfix list with ease
 nnoremap <silent> [q :cprevious<CR>
