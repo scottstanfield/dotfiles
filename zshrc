@@ -525,39 +525,6 @@ function prompt_my_host_icon() {
 export BAT_THEME="gruvbox-dark"
 export AWS_DEFAULT_PROFILE=dev-additive
 
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-# [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-# typeset -g POWERLEVEL9K_PROMPT_CHAR_{OK,ERROR}_VIINS_CONTENT_EXPANSION='»'
-
-##
-## Lazy load Anaconda to save startup time
-## 
-
-function lazyload_conda {
-    if whence -p conda &> /dev/null; then
-        conda() {
-            # Remove this function, subsequent calls will execute 'conda' directly
-            unfunction "$0"
-
-            # Follow softlink, then up two folders for typical location of anaconda
-            _conda_prefix=$(dirname $(dirname $(readlink -f $(whence -p conda))))
-            __conda_setup="$("$_conda_prefix/bin/conda" 'shell.zsh' 'hook' 2> /dev/null)"
-            if [ $? -eq 0 ]; then
-                eval "$__conda_setup"
-            else
-                if [ -f "$_conda_prefix/etc/profile.d/conda.sh" ]; then
-                    . "$_conda_prefix/etc/profile.d/conda.sh"  # commented out by conda initialize
-                else
-                    export PATH="$_conda_prefix/base/bin:$PATH"  # commented out by conda initialize
-                fi
-            fi
-            unset __conda_setup
-
-            $0 "$@"
-        }
-    fi
-}
-lazyload_conda
 
 # my C flags
 # export CFLAGS='-Wall -O3 -include stdio.h --std=c17'
@@ -575,64 +542,17 @@ export CPPFLAGS="-I/opt/homebrew/opt/llvm/include"
 export CFLAGS="-I/opt/homebrew/opt/llvm/include"
 export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
 
-# export LDFLAGS="-L/opt/homebrew/opt/llvm/lib"
-# export CPPFLAGS="-I/opt/homebrew/opt/llvm/include"
-# export CFLAGS="-I/opt/homebrew/opt/llvm/include"
-# export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
-
-eval "$(zoxide init zsh)"
-
 alias uv="uv --native-tls"
 alias uvx="uvx --native-tls"
-
-# >>> juliaup initialize >>>
-
-# !! Contents within this block are managed by juliaup !!
-
-# path=('/Users/sstanfield/.juliaup/bin' $path)
-# export PATH
-
-# <<< juliaup initialize <<<
-
-# Generated for envman. Do not edit.
-[ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"
-eval "$(zoxide init zsh)"
-
-# Starship prompt with custom config location
-# export STARSHIP_CONFIG="$HOME/.config/starship/starship.toml"
-# eval "$(starship init zsh)"
-
-# function precmd() {
-#   local cols=${COLUMNS:-$(tput cols 2>/dev/null || echo 120)}
-#   if (( cols >= 125 )); then
-#     export STARSHIP_CONFIG="$HOME/.config/starship/starship.toml"
-#   elif (( cols >= 90 )); then
-#     export STARSHIP_CONFIG="$HOME/.config/starship/medium.toml"
-#   else
-#     export STARSHIP_CONFIG="$HOME/.config/starship/narrow.toml"
-#   fi
-# }
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 typeset -g POWERLEVEL9K_STATUS_ERROR=true
 
-# fzf (adds 10 msec)
-(( $+commands[fzf] )) && source <(fzf --zsh)
 
-# Generated for envman. Do not edit.
-[ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"
-
-
-# precmd() {
-#   # Join failing codes with spaces (e.g. "1 127")
-#   export STARSHIP_PIPESTATUS="${pipestatus[*]}"
-# }
-# export STARSHIP_CONFIG="$HOME/.config/starship/starship.toml"
-# eval "$(starship init zsh)"
-
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 eval "$(~/.local/bin/mise activate zsh)"
+eval "$(zoxide init zsh)"
+(( $+commands[fzf] )) && source <(fzf --zsh)
 
 # To support second installation of neovim from mini.vim
 # git clone --filter=blob:none https://github.com/nvim-mini/MiniMax ~/code/minimax
