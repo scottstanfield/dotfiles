@@ -1,28 +1,7 @@
 # Scott Stanfield
-# http://git.io/dmz/
-
 # Timing startup
 # % hyperfine --warmup 2 'zsh -i -c "exit"'
 
-# Superfast as of Jun 20, 2020
-# Benchmark 16" MacBook Pro #1: zsh -i -c "exit"
-#   Time (mean ± σ):     137.3 ms ±   4.5 ms    [User: 61.5 ms, System: 71.6 ms]
-#   Range (min … max):   130.8 ms … 152.2 ms    19 runs
-#
-# Benchmark iMacPro 2019
-#   Time (mean ± σ):      92.9 ms ±   0.9 ms    [User: 51.0 ms, System: 38.4 ms]
-#   Range (min … max):    91.7 ms …  95.5 ms    31 runs
-#
-# Relativity macbook M2 air
-#   Benchmark 1: zsh -i  -c "exit"
-#  Time (mean ± σ):     340.2 ms ± 214.2 ms    [User: 97.0 ms, System: 77.0 ms]
-#  Range (min … max):   211.2 ms … 761.1 ms    12 runs
-
-# Relativity with no wifi, and after 30+ minute warmup. note large SD
-# Benchmark 1: zsh -i  -c "exit"
-#   Time (mean ± σ):     464.2 ms ± 321.2 ms    [User: 89.1 ms, System: 67.4 ms]
-#   Range (min … max):   163.4 ms … 841.2 ms    10 runs
- 
 # Profile .zshrc startup times by uncommenting this line:
 # zmodload zsh/zprof
 # Then start a new zsh. Then run and inspect: zprof > startup.txt
@@ -36,8 +15,8 @@
 
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_DATA_HOME="$HOME/.local/share"
-export XDG_CACHE_HOME="$HOME/.cache"
 export XDG_STATE_HOME="$HOME/.local/state"
+export XDG_CACHE_HOME="$HOME/.cache"
 
 # Create them if they don’t exist
 for dir in "$XDG_CONFIG_HOME" "$XDG_DATA_HOME" "$XDG_CACHE_HOME" "$XDG_STATE_HOME"; do
@@ -185,6 +164,9 @@ path=(
 # Now, remove paths that don't exist https://stackoverflow.com/a/9352979
 path=($^path(N))
 
+# need mise path early on
+eval "$(~/.local/bin/mise activate zsh)"
+
 ## :r! find /opt/homebrew/opt -type d -follow -name gnuman -print
 manpath=(
     /opt/homebrew/opt/libtool/libexec/gnuman
@@ -316,7 +298,7 @@ alias dust='dust -r'
 alias grep="grep --color=auto"
 alias gs="git status 2>/dev/null"
 alias ga="git add"
-alias h="history 50"
+alias h="history 0"
 alias ha="history 9999"
 alias hg="history 1 | grep -i"
 alias logs="docker logs control -f"
@@ -435,16 +417,6 @@ source "${ZINIT_HOME}/zinit.zsh"
 autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 
-# for Node nvm
-# export NVM_AUTO_USE=false
-# export NVM_LAZY_LOAD=true
-# zinit light lukechilds/zsh-nvm
-
-# completions
-
-# export NVM_LAZY_LOAD=true
-# zinit light lukechilds/zsh-nvm
-
 zinit ice wait silent blockf; 
 zinit snippet PZT::modules/completion/init.zsh
 unsetopt correct
@@ -457,13 +429,6 @@ zinit load zdharma-continuum/history-search-multi-word
 zinit ice depth=1; zinit light romkatv/powerlevel10k
 
 zinit fpath -f /opt/homebrew/share/zsh/site-functions
-# autoload compinit
-# compinit
-# zinit compinit
-
-# zinit ice blockf atpull'zinit creinstall -q .'
-# zinit light zsh-users/zsh-completions
-
 zstyle -t :omz:plugins:ssh-agent quiet
 zinit snippet OMZP::ssh-agent
 
@@ -475,26 +440,6 @@ zinit light-mode for \
     zdharma-continuum/zinit-annex-submods \
     zdharma-continuum/zinit-annex-rust
 
-# For git command extensions
-# zinit as"null" wait"1" lucid for sbin                davidosomething/git-my
-
-# brew install fd bat eza glow fzf
-# cargo install eza git-delta
-
-# zinit only installs x86 binaries
-# zinit wait"1" lucid from"gh-r" as"null" for \
-#     sbin"**/fd"                 @sharkdp/fd      \
-#     sbin"**/bat"                @sharkdp/bat     \
-#     sbin"glow" bpick"*.tar.gz"  charmbracelet/glow
-#
-#zi wait'0b' lucid from"gh-r" as"program" for @junegunn/fzf
-# zi ice wait'0a' lucid; zi snippet https://github.com/junegunn/fzf/blob/master/shell/key-bindings.zsh
-# zi ice wait'1a' lucid; zi snippet https://github.com/junegunn/fzf/blob/master/shell/completion.zsh
-# zi wait'0c' lucid pick"fzf-finder.plugin.zsh" light-mode for  @leophys/zsh-plugin-fzf-finder
-# export FZF_DEFAULT_COMMAND="rg --files --hidden --follow --glob '!.git'"
-
-# zinit pack"binary+keys" for fzf
-# zinit pack"bgn" for fzf
 zinit pack for ls_colors
 
 
@@ -550,7 +495,6 @@ typeset -g POWERLEVEL9K_STATUS_ERROR=true
 
 
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-eval "$(~/.local/bin/mise activate zsh)"
 eval "$(zoxide init zsh)"
 (( $+commands[fzf] )) && source <(fzf --zsh)
 
