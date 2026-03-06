@@ -49,3 +49,5 @@ case ":$PATH:" in
 esac
 
 # <<< juliaup initialize <<<
+
+. "$HOME/.local/bin/env"

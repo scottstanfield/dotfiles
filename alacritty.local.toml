@@ -1,5 +1,5 @@
 [font]
-size = 14
+size = 16
 
 # List fonts already install on MacOS
 # asutil fonts -list | less
