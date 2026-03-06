@@ -7,6 +7,14 @@ require() { hash "$@" || exit 127; }
 _D="$(dirname "$(readlink -f "$0")")"
 cd "$_D"
 
+# Install Homebrew if not present
+if ! command -v brew &>/dev/null; then
+    echo "Installing Homebrew..."
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    # Add brew to PATH for Apple Silicon
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+fi
+
 require brew
 
 export HOMEBREW_NO_INSTALL_CLEANUP
