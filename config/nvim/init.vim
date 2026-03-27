@@ -35,6 +35,12 @@ Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'nvim-treesitter/nvim-treesitter-textobjects', {'branch': 'main'} 
 Plug 'HiPhish/rainbow-delimiters.nvim'       " replaces junegunn/rainbow_parentheses; uses treesitter
 
+" Toggle soft / hard wrap mode for markdown and txt
+" [ow   soft wrap mode
+" ]ow   hard wrap mode
+" yow   toggle wrap mode
+Plug 'andrewferrier/wrapping.nvim'
+
 " UI / Icons / Statusline
 Plug 'nvim-tree/nvim-web-devicons'           " replaces ryanoasis/vim-devicons
 Plug 'itchyny/lightline.vim'
@@ -173,6 +179,11 @@ end
 local trouble = safe_require('trouble')
 if trouble then
   trouble.setup({})
+end
+
+local wrapping = safe_require('wrapping')
+if wrapping then
+    wrapping.setup()
 end
 
 -- nvim-treesitter
