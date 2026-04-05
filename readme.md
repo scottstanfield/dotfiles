@@ -27,3 +27,6 @@ ln -s "$HOME/Library/Mobile Documents/com~apple~CloudDocs" $HOME/iCloud
 ```
 
 
+## Modern alternative to consider
+zellij over tmux
+
