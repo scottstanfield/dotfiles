@@ -48,10 +48,6 @@ let g:lightline = {'colorscheme': 'dracula'}
 
 " Colorschemes
 Plug 'dracula/vim', {'as': 'dracula'}
-Plug 'p00f/alabaster.nvim'
-Plug 'lifepillar/vim-colortemplate'
-Plug 'chriskempson/base16-vim'
-Plug 'atelierbram/vim-colors_atelier-schemes'
 
 " Editing QoL
 Plug 'tpope/vim-surround'
@@ -72,7 +68,7 @@ Plug 'folke/trouble.nvim'
 
 " Git
 Plug 'tpope/vim-fugitive'
-Plug 'lewis6991/gitsigns.nvim'
+Plug 'lewis6991/gitsigns.nvim'      " I like this one
 
 " Terminal / tmux
 Plug 'kassio/neoterm'

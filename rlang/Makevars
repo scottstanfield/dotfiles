@@ -34,7 +34,7 @@ XH=/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk
 CCACHE=$(HB)/ccache
 
 # Make using all cores (set # to # of cores on your machine)
-MAKE=make -j8
+MAKEFLAGS=-j6
 
 # GNU version
 GNU_VER=14

@@ -1,0 +1,16 @@
+[tools]
+"pipx:black" = "latest"
+duckdb = "latest"
+duf = "latest"          # disk usage
+jq = "latest"
+neovim = "latest"
+node = "lts"
+rg = "latest"           # ripgrep
+typst = "latest"        # type settting language
+uv = "latest"
+yq = "latest"
+
+# lnav = "latest"       # log navigator
+
+[settings.pipx]
+uvx = true

@@ -6,22 +6,25 @@
 
 # idempotent bash: https://arslan.io/2019/07/03/how-to-write-idempotent-bash-scripts/
 # https://github.com/anordal/shellharden/blob/master/how_to_do_things_safely_in_bash.md
+
 set -o errexit  # Exit on error. Append "|| true" if you expect an error.
 set -o errtrace # Exit on error inside any functions or subshells.
 set -o nounset  # Do not allow use of undefined vars. Use ${VAR:-} to use an undefined VAR
 set -o pipefail # Catch the error in case mysqldump fails (but gzip succeeds) in `mysqldump |gzip`
 
-##
-## Preconditions
-##
-require() { hash "$@" || exit 127; }
+#require() { hash "$@" || exit 127; }
 println() { printf '%s\n' "$*"; }
 die()     { ret=$?; printf "%s\n" "$@" >&2; exit "$ret"; }
 msg()     { echo >&2 -e "${1-}"; }
 
-require curl 
-require git 
-require tmux
+require() {
+    for cmd in "$@"; do
+        hash "$cmd" 2>/dev/null || { echo "Missing required command: $cmd" >&2; exit 127; }
+    done
+}
+
+## Preconditions
+require curl git adkf stow
 
 # Change directories to where this script is located
 #cd "$(dirname "$(realpath "${BASH_SOURCE[0]}")")"
@@ -77,14 +80,6 @@ cp bin/* ~/bin
 
 # fixing potential insecure group writable folders
 # compaudit | xargs chmod g-w
-
-# Setup termcap for tmux
-# Italics + true color + iTerm + tmux + vim
-# https://medium.com/@dubistkomisch/how-to-actually-get-italics-and-true-colour-to-work-in-iterm-tmux-vim-9ebe55ebc2be
-# Understanding TERM strings 
-# https://sanctum.geek.nz/arabesque/term-strings/
-# tic -x termcap/tmux-256color.terminfo || true
-# tic -x termcap/xterm-256color-italic.terminfo || true
 
 # Install neovim plugins
 println "Installing vim plugins..."

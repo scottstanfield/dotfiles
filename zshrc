@@ -2,17 +2,23 @@
 # Timing startup
 # % hyperfine --warmup 2 'zsh -i -c "exit"'
 
+# Superfast as of Jun 20, 2020
+# Benchmark 16" MacBook Pro #1: zsh -i -c "exit"
+#   Time (mean ± σ):     137.3 ms ±   4.5 ms    [User: 61.5 ms, System: 71.6 ms]
+#   Range (min … max):   130.8 ms … 152.2 ms    19 runs
+#
+# Benchmark iMacPro 2019
+#   Time (mean ± σ):      92.9 ms ±   0.9 ms    [User: 51.0 ms, System: 38.4 ms]
+#   Range (min … max):    91.7 ms …  95.5 ms    31 runs
+#
 # Profile .zshrc startup times by uncommenting this line:
 # zmodload zsh/zprof
 # Then start a new zsh. Then run and inspect: zprof > startup.txt
-# Profile startup times by adding this to you .zshrc: zmodload zsh/zprof
-# Start a new zsh. Then run and inspect: zprof > startup.txt
 
 # ~/.config → config files (portable across Mac & Linux)
 # ~/.local/share → persistent data (databases, templates, etc.)
 # ~/.cache → throwaway caches
 # ~/.local/state → logs and histories
-
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_STATE_HOME="$HOME/.local/state"
@@ -112,19 +118,19 @@ autoload zmv
 ## Run os/macos.sh to install.
 ##
 ## To insert GNU binaries before macOS BSD versions, run this to import matching folders:
-## :r! find /usr/local/opt -type d -follow -name gnubin -print
 ## :r! find /opt/homebrew/opt -type d -follow -name gnubin -print
+## :r! fd gnubin /opt/homebrew/opt --type d --follow --max-depth 4
+
 #
 ## It's slow: just add them all, and remove ones that don't match at end
 ## Same with gnuman
-## :r! find /usr/local/opt -type d -follow -name gnuman -print
-## :r! find /opt/homebrew/opt -type d -follow -name gnuman -print
 ##
 ## Note: I had /Library/Apple/usr/bin because of /etc/path.d/100-rvictl (REMOVED)
 ##
 ## Dangerous to put /usr/local/bin in front of /usr/bin, but yolo 
 ## https://superuser.com/a/580611
 ##
+
 
 # Keep duplicates (Unique) out of these paths
 typeset -gU path fpath manpath
@@ -141,11 +147,13 @@ fi
 setopt nullglob
 
 path=(
+    $HOME/.local/share/mise/shims
+
     $HOME/bin
     $HOME/.local/bin
     $HOME/.cargo/bin
 
-    # $(brew --prefix llvm)/bin
+    /opt/homebrew/opt/llvm/bin
     $path[@]
 
     /usr/bin
@@ -153,10 +161,7 @@ path=(
     /bin
     /sbin
 
-    ~/texlive/bin/universal-darwin
     ~/dotfile/bin
-    ~/miniconda3bin
-    $HOME/.local/bin
 
     .
 )
@@ -168,15 +173,18 @@ path=($^path(N))
 eval "$(~/.local/bin/mise activate zsh)"
 
 ## :r! find /opt/homebrew/opt -type d -follow -name gnuman -print
+## :r! fd gnuman /opt/homebrew/opt --type d --follow --max-depth 4
 manpath=(
-    /opt/homebrew/opt/libtool/libexec/gnuman
-    /opt/homebrew/opt/coreutils/libexec/gnuman
-    /opt/homebrew/opt/gnu-tar/libexec/gnuman
-    /opt/homebrew/opt/grep/libexec/gnuman
-    /opt/homebrew/opt/gawk/libexec/gnuman
-    /opt/homebrew/opt/make/libexec/gnuman
-    /opt/homebrew/opt/findutils/libexec/gnuman
-    /opt/homebrew/opt/gnu-which/libexec/gnuman
+
+    /opt/homebrew/opt/coreutils/libexec/gnuman/
+    /opt/homebrew/opt/gnu-tar/libexec/gnuman/
+    /opt/homebrew/opt/gnu-which/libexec/gnuman/
+    /opt/homebrew/opt/findutils/libexec/gnuman/
+    /opt/homebrew/opt/grep/libexec/gnuman/
+    /opt/homebrew/opt/make/libexec/gnuman/
+    /opt/homebrew/opt/gawk/libexec/gnuman/
+    /opt/homebrew/opt/gsed/libexec/gnuman/
+    /opt/homebrew/opt/gnu-sed/libexec/gnuman/
 
     /usr/local/share/man
     /usr/share/man
@@ -195,9 +203,6 @@ if in_path "batcat" ; then
     alias bat='batcat'
     export MANPAGER="sh -c 'col -bx | batat -l man -p'"
 fi
-
-## Setup fzf FuzzyFinder path
-# [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 ## LS and colors
 ## Tips: https://gist.github.com/syui/11322769c45f42fad962
@@ -289,53 +294,67 @@ function @() {
     printenv | sort | grep -v LS_COLOR | grep -i "$1"
   fi
 }
-alias dc='docker compose'
-alias sc='systemctl'
+alias b="bat"
 alias cp="cp -a"
+alias d='dirs -v'
+alias dc='docker compose'
+alias ddb="duckdb"
 alias df='df --human-readable'
 alias dkrr='docker run --rm -it -u1000:1000 -v$(pwd):/work -w /work -e DISPLAY=$DISPLAY'
 alias dust='dust -r'
+alias ga="git add"
 alias grep="grep --color=auto"
 alias gs="git status 2>/dev/null"
 alias ga="git add"
 alias h="history 0"
 alias ha="history 9999"
 alias hg="history 1 | grep -i"
+alias ips="ip -4 --color --brief a"
 alias logs="docker logs control -f"
 alias m="less"
-alias b="bat"
+alias p="python3"
 alias path='echo $PATH | tr : "\n" | cat -n'
 alias pd='pushd'  # symmetry with cd
 alias r="R --no-save --no-restore-data --quiet"
 alias R="R --no-save --no-restore-data "
 alias rg='rg --pretty --smart-case'
 alias rgc='rg --no-line-number --color never '
+alias rsp="rsync -avlhW --info=progress2,stats "
+alias sc='systemctl'
+alias scp='scp -p'
 alias ssh="TERM=xterm-256color ssh"
+alias sudosu="sudo -Es"
 alias t='tmux -2 new-session -A -s "moab"'
 alias td='tmux detach'
 alias ts='tmux source ~/.tmux.conf'
-alias d='dirs -v'
-alias scp='scp -p'
-alias p="python3"
-alias sudosu="sudo -Es"
-alias ips="ip -4 --color --brief a"
-alias ddb="duckdb"
+alias uv="uv --native-tls"
+alias uvx="uvx --native-tls"
 
-alias rsp="rsync -avlhW --info=progress2,stats "
 function anybar { echo -n $1 | nc -4u -w0 localhost ${2:-1738}; }
 
-ats() {
-     alacritty-theme-switcher "$(ls -1 ~/.config/alacritty/themes/themes | sed -e 's/\..*$//' | fzf --layout=reverse)"
+function mx() {
+  local tool="$1"
+  shift || true
+  mise exec "${tool}@latest" -- "$tool" "$@"
 }
 
-#for index ({1..9}) alias "$index"="cd +${index}"; unset index
 
-function fif() {
-  if [ ! "$#" -gt 0 ]; then echo "Need a string to search for!"; return 1; fi
-  rg --color=never --files-with-matches --no-messages "$1" | fzf --preview "highlight -O ansi -l {} 2> /dev/null | rg --colors 'match:bg:yellow' --ignore-case --pretty --context 10 '$1' || rg --ignore-case --pretty --context 10 '$1' {}"
-}
+# function fif() {
+#   if [ ! "$#" -gt 0 ]; then echo "Need a string to search for!"; return 1; fi
+#   rg --color=never --files-with-matches --no-messages "$1" | fzf --preview "highlight -O ansi -l {} 2> /dev/null | rg --colors 'match:bg:yellow' --ignore-case --pretty --context 10 '$1' || rg --ignore-case --pretty --context 10 '$1' {}"
+# }
 
-function jl()      { < $1 jq -C . | less }
+less_options=(
+    --chop-long-lines        # -S Do not automatically wrap long lines.
+    --ignore-case            # -i Like "smartcase" in Vim: ignore case unless the search pattern is mixed.
+    --LONG-PROMPT            # -M most verbose prompt
+    --no-init                # -X Do not clear the screen first.
+    --quit-if-one-screen     # -F If the entire text fits on one screen, just show it and quit. (like cat)
+    --RAW-CONTROL-CHARS      # -R Allow ANSI colour escapes, but no other escapes.
+);
+export LESS="${less_options[*]}";
+
+function jl()      { < $1 jq -C . | less $LESS }
 function gd()      { git diff --color=always $* | less }
 function witch()   { file $(which "$*") }
 function gg()      { git commit -m "$*" }
@@ -352,20 +371,6 @@ function chpwd() {
     emulate -L zsh
     ls -F
 }
-
-## less / more / bat
-
-less_options=(
-    --quit-if-one-screen     # -F If the entire text fits on one screen, just show it and quit. (like cat)
-    --no-init                # -X Do not clear the screen first.
-    --ignore-case            # -i Like "smartcase" in Vim: ignore case unless the search pattern is mixed.
-    --chop-long-lines        # -S Do not automatically wrap long lines.
-    --RAW-CONTROL-CHARS      # -R Allow ANSI colour escapes, but no other escapes.
-    --quiet                  # -q No bell when trying to scroll past the end of the buffer.
-    --dumb                   # -d Do not complain when we are on a dumb terminal.
-    --LONG-PROMPT            # -M most verbose prompt
-);
-export LESS="${less_options[*]}";
 
 ## vi / vim / neovim (nvim)
 
@@ -425,23 +430,13 @@ setopt complete_in_word         # cd /ho/sco/tm<TAB> expands to /home/scott/tmp
 setopt auto_menu                # show completion menu on succesive tab presses
 
 zinit load zdharma-continuum/history-search-multi-word
-# p10k 
 zinit ice depth=1; zinit light romkatv/powerlevel10k
 
 zinit fpath -f /opt/homebrew/share/zsh/site-functions
 zstyle -t :omz:plugins:ssh-agent quiet
 zinit snippet OMZP::ssh-agent
 
-# This is a weird way of loading 4 git-related repos/scripts; consider removing
-zinit light-mode for \
-    zdharma-continuum/zinit-annex-readurl \
-    zdharma-continuum/zinit-annex-bin-gem-node \
-    zdharma-continuum/zinit-annex-patch-dl \
-    zdharma-continuum/zinit-annex-submods \
-    zdharma-continuum/zinit-annex-rust
-
 zinit pack for ls_colors
-
 
 # | syntax highlighting | <-- needs to be last zinit #
 zinit light zdharma-continuum/fast-syntax-highlighting
@@ -468,24 +463,21 @@ function prompt_my_host_icon() {
 }
 
 export BAT_THEME="gruvbox-dark"
-export AWS_DEFAULT_PROFILE=dev-additive
 
+# [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+typeset -g POWERLEVEL9K_PROMPT_CHAR_{OK,ERROR}_VIINS_CONTENT_EXPANSION='»'
+typeset -g POWERLEVEL9K_STATUS_ERROR=true
 
-# my C flags
-# export CFLAGS='-Wall -O3 -include stdio.h --std=c17'
-# alias goc="cc -xc - $CFLAGS"
-
+# R language settings
 export R_LIBS="~/.R/libs"
 export R_OPENMP_ENABLED=1
 export PKG_CFLAGS="${PKG_CFLAGS} -fopenmp"
 export PKG_LIBS="${PKG_LIBS} -fopenmp"
 
-# LDFLAGS="-L/opt/homebrew/opt/llvm@12/lib -Wl,-rpath,/opt/homebrew/opt/llvm@12/lib"
-
 export LDFLAGS="-L/opt/homebrew/opt/llvm/lib"
 export CPPFLAGS="-I/opt/homebrew/opt/llvm/include"
 export CFLAGS="-I/opt/homebrew/opt/llvm/include"
-export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
+
 
 alias uv="uv --native-tls"
 alias uvx="uvx --native-tls"
@@ -493,14 +485,22 @@ alias uvx="uvx --native-tls"
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 typeset -g POWERLEVEL9K_STATUS_ERROR=true
 
-
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-eval "$(zoxide init zsh)"
 (( $+commands[fzf] )) && source <(fzf --zsh)
+# https://github.com/junegunn/fzf/blob/master/shell/key-bindings.zsh
+# https://github.com/junegunn/fzf/blob/master/shell/completion.zsh
+
+
+# mise
+[[ -f ~/.local/bin/mise ]] && eval "$(~/.local/bin/mise activate zsh)"
+
+(( $+commands[fzf] )) && source <(fzf --zsh)
+(( $+commands[zoxide] )) && eval "$(zoxide init zsh)"
 
 # To support second installation of neovim from mini.vim
 # git clone --filter=blob:none https://github.com/nvim-mini/MiniMax ~/code/minimax
 # VIM_APPNAME=nvim-minimax nvim -l ~/code/minimax/setup.lua
 alias nv="NVIM_APPNAME=nvim-minimax nvim "
-
-
+#
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+typeset -g POWERLEVEL9K_STATUS_ERROR=true
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
