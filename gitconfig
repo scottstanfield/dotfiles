@@ -1,5 +1,7 @@
 ; vim: ft=gitconfig
 
+; Reworked in 2026 from https://jvns.ca/blog/2024/02/16/popular-git-config-options/
+;
 [include]
     path = ~/.gitconfig.local
 
@@ -8,8 +10,14 @@
     autocrlf = input
     excludesfile = ~/.gitignore
     whitespace = fix,-indent-with-non-tab,trailing-space,cr-at-eol
+    pager = delta
 
 [delta]
+    navigate = true          # n/N to jump between files
+    side-by-side = true
+    line-numbers = true
+    syntax-theme = ansi   # or ansi, Nord, etc.
+
     features = line-numbers decorations
     whitespace-error-style = 22 reverse
     hunk-header-style = omit
@@ -38,12 +46,15 @@
     reflog = delta
 
 [push]
-    default = simple
+    default = current
+    autoSetupRemote = true    # Auto-track on first push (Git 2.38+)
 
 [diff]
-    tool = difftastic
-    mnemonicprefix = true
+    tool = delta
     rename = copy
+    algorithm = histogram     # Better than default myers for most code
+    colorMoved = default      # Highlights moved blocks differently than changed blocks
+    mnemonicPrefix = true     # Shows i/w/c instead of a/b in diff headers
 
 [grep]
     lineNumber = true
@@ -77,7 +88,6 @@
     crlf = warn
 
 [alias]
-    restore-clean = !"git restore . && git clean -fd" 
     sync = !"git fetch origin && git rebase origin/main"
     # lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
 

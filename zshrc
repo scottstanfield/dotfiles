@@ -294,6 +294,7 @@ function @() {
     printenv | sort | grep -v LS_COLOR | grep -i "$1"
   fi
 }
+alias gd="git diff"
 alias b="bat"
 alias cp="cp -a"
 alias d='dirs -v'
@@ -355,7 +356,6 @@ less_options=(
 export LESS="${less_options[*]}";
 
 function jl()      { < $1 jq -C . | less $LESS }
-function gd()      { git diff --color=always $* | less }
 function witch()   { file $(which "$*") }
 function gg()      { git commit -m "$*" }
 function httpie    { command http --pretty=all --verbose $@ | less -R; }
