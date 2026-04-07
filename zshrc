@@ -372,6 +372,16 @@ function chpwd() {
     ls -F
 }
 
+less_options=(
+    --quit-if-one-screen     # -F If the entire text fits on one screen, just show it and quit. (like cat)
+    --no-init                # -X Do not clear the screen first.
+    --ignore-case            # -i Like "smartcase" in Vim: ignore case unless the search pattern is mixed.
+    --chop-long-lines        # -S Do not automatically wrap long lines.
+    --RAW-CONTROL-CHARS      # -R Allow ANSI colour escapes, but no other escapes.
+    --LONG-PROMPT            # -M most verbose prompt
+);
+export LESS="${less_options[*]}";
+
 ## vi / vim / neovim (nvim)
 
 # vi alias points to nvim or vim
