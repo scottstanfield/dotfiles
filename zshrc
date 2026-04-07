@@ -410,13 +410,6 @@ zstyle ':completion:*' list-suffixes zstyle ':completion:*' expand prefix suff
 ## zinit plugin installer
 ##
 
-# TODO: this case isn't needed any more
-case "$OSTYPE" in
-  linux*) bpick='*((#s)|/)*(linux|musl)*((#e)|/)*' ;;
-  darwin*) bpick='*(macos|darwin)*' ;;
-  *) echo 'WARN: unsupported system -- some cli programs might not work' ;;
-esac
-
 # ZINIT installer {{{
 ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
 
