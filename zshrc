@@ -507,3 +507,6 @@ alias nv="NVIM_APPNAME=nvim-minimax nvim "
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 typeset -g POWERLEVEL9K_STATUS_ERROR=true
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+# Added by GitButler installer
+(( $+commands[but] )) && eval "$(but completions zsh)"
