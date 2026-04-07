@@ -58,7 +58,7 @@
     required = true
 
 [pull]
-    rebase = false
+	rebase = true
     ff = only
 
 [fetch]
@@ -78,8 +78,12 @@
 
 [alias]
     sync = !"git fetch origin && git rebase origin/main"
-    rewrite-author = !~/bin/git-rewrite-author.sh
-    lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+    # lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+
+    l = log --oneline --decorate=auto --color --graph
+    lg = log --abbrev-commit --all --graph --pretty=format:'%C(yellow)%h%Creset -%C(auto)%d%Creset %s %C(dim)(%cr)%Creset'
+    ll = log --abbrev-commit --all --graph --pretty=format:'%C(yellow)%h%Creset -%C(auto)%d%Creset %s %C(dim)(%cr)%Creset'
+
     co = checkout
     up = !git pull --rebase --prune --tags $@
     undo = reset HEAD~1 --mixed
@@ -146,3 +150,5 @@
         done; \
     }; f"
 
+[branch]
+	autosetuprebase = always
