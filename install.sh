@@ -12,19 +12,15 @@ set -o errtrace # Exit on error inside any functions or subshells.
 set -o nounset  # Do not allow use of undefined vars. Use ${VAR:-} to use an undefined VAR
 set -o pipefail # Catch the error in case mysqldump fails (but gzip succeeds) in `mysqldump |gzip`
 
-#require() { hash "$@" || exit 127; }
+require() { hash "$@" || exit 127; }
 println() { printf '%s\n' "$*"; }
 die()     { ret=$?; printf "%s\n" "$@" >&2; exit "$ret"; }
 msg()     { echo >&2 -e "${1-}"; }
 
-require() {
-    for cmd in "$@"; do
-        hash "$cmd" 2>/dev/null || { echo "Missing required command: $cmd" >&2; exit 127; }
-    done
-}
-
 ## Preconditions
-require curl git adkf stow
+require curl
+require git
+require stow
 
 # Change directories to where this script is located
 #cd "$(dirname "$(realpath "${BASH_SOURCE[0]}")")"
