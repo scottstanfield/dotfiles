@@ -20,7 +20,6 @@ msg()     { echo >&2 -e "${1-}"; }
 ## Preconditions
 require curl
 require git
-require stow
 
 # Change directories to where this script is located
 #cd "$(dirname "$(realpath "${BASH_SOURCE[0]}")")"
