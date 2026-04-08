@@ -15,19 +15,15 @@
 # zmodload zsh/zprof
 # Then start a new zsh. Then run and inspect: zprof > startup.txt
 
-# ~/.config → config files (portable across Mac & Linux)
-# ~/.local/share → persistent data (databases, templates, etc.)
-# ~/.cache → throwaway caches
-# ~/.local/state → logs and histories
-export XDG_CONFIG_HOME="$HOME/.config"
-export XDG_DATA_HOME="$HOME/.local/share"
-export XDG_STATE_HOME="$HOME/.local/state"
-export XDG_CACHE_HOME="$HOME/.cache"
+: ${XDG_CACHE_HOME:=${HOME}/.cache}        # non-essential cached data
+: ${XDG_CONFIG_HOME:=${HOME}/.config}      # user-specific portable configuration
+: ${XDG_DATA_HOME:=${HOME}/.local/share}   # user-specific data (venvs, nvim swap)
+: ${XDG_STATE_HOME:=${HOME}/.local/state}  # persistent app state (logs, history)
+export XDG_CACHE_HOME XDG_CONFIG_HOME XDG_DATA_HOME XDG_STATE_HOME
 
-# Create them if they don’t exist
-for dir in "$XDG_CONFIG_HOME" "$XDG_DATA_HOME" "$XDG_CACHE_HOME" "$XDG_STATE_HOME"; do
-  [ -d "$dir" ] || mkdir -p -m 700 "$dir"
-done
+# this should go in a one-time setup
+# mkdir -p -m 755 $XDG_CACHE_HOME $XDG_CONFIG_HOME 
+# mkdir -p -m 700 $XDG_DATA_HOME $XDG_STATE_HOME
 
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
@@ -64,32 +60,25 @@ fi
 HISTFILE=${ZDOTDIR:-$HOME}/.zsh_history
 HISTSIZE=50000
 SAVEHIST=50000
-setopt EXTENDED_HISTORY         # Record timestamp in history
-setopt HIST_EXPIRE_DUPS_FIRST   # Expire duplicate entries first when trimming history
-setopt HIST_FIND_NO_DUPS        # Do not display a line previously found
-setopt HIST_IGNORE_ALL_DUPS     # Delete old recorded entry if new entry is a duplicate
-setopt HIST_IGNORE_DUPS         # Dont record an entry that was just recorded again
-setopt HIST_IGNORE_SPACE        # Dont record an entry starting with a space
-setopt HIST_SAVE_NO_DUPS        # Dont write duplicate entries in the history file
-setopt INC_APPEND_HISTORY       # Immediately append to history file
-setopt SHARE_HISTORY            # Share history between all sessions:
 
-setopt NO_caseglob    
-setopt NO_flowcontrol 
-setopt NO_nullglob
-setopt autocd                   # cd to a folder just by typing it's name
-setopt autopushd      
-setopt chaselinks          
-setopt extendedglob        
-setopt globdots         
-setopt globstarshort 
-setopt interactive_comments     # allow # comments in shell; good for copy/paste
-setopt interactivecomments 
-setopt nullglob 
-setopt numericglobsort
-setopt pushdignoredups  
-setopt pushdsilent
-setopt rcquotes
+setopt hist_{'expire_dups_first','find_no_dups','ignore_all_dups','reduce_blanks','verify'}
+setopt {'extended','inc_append','share'}_history
+
+setopt NO_caseglob          # case-insensitive globbing
+setopt NO_flowcontrol       # disable ctrl-s/ctrl-q flow control in the terminal
+setopt NO_nullglob          # unmatched globs pass through as literals (overridden below)
+setopt autocd               # cd to a folder just by typing its name
+setopt autopushd            # cd pushes old dir onto stack automatically
+setopt chaselinks           # resolve symlinks to their true path
+setopt extendedglob         # enable extended glob operators: ^, ~, #, etc.
+setopt globdots             # WARNING: * matches dotfiles too
+setopt globstarshort        # ** as shorthand for **/* 
+setopt interactive_comments # allow # comments in shell; good for copy/paste
+setopt nullglob             # unmatched globs expand to nothing instead of erroring
+setopt numericglobsort      # sort filenames with numbers numerically (file10 > file9)
+setopt pushdignoredups      # don't push duplicate dirs onto the stack
+setopt pushdsilent          # don't print dir stack after pushd/popd
+setopt rcquotes             # allow '' inside single-quoted strings as escaped quote
 
 ZLE_REMOVE_SUFFIX_CHARS=$' \t\n;&' # These "eat" the auto prior space after a tab complete
 
