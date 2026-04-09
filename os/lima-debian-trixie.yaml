@@ -1,0 +1,51 @@
+# debian-trixie.yaml
+# Debian 13 (Trixie) Lima configuration
+
+vmType: vz          # use Virtualization.framework on Apple Silicon; change to "qemu" on Intel
+
+os: Linux
+arch: default       # matches host architecture (aarch64 on Apple Silicon, x86_64 on Intel)
+
+cpus: 4
+memory: 4GiB
+disk: 40GiB
+
+images:
+  - location: "https://cloud.debian.org/images/cloud/trixie/daily/latest/debian-13-genericcloud-arm64-daily.qcow2"
+    arch: aarch64
+
+mounts:
+  - location: "~"
+    writable: true
+  - location: "/tmp/lima"
+    writable: true
+
+mountType: virtiofs  # fast virtio-based mount; use "9p" if you hit compatibility issues
+
+ssh:
+  localPort: 0       # 0 = pick a free port automatically
+  loadDotSSHPubKeys: true
+
+provision:
+  - mode: system
+    script: |
+      #!/bin/bash
+      set -eux
+      apt-get update
+      apt-get install -y --no-install-recommends \
+        curl \
+        wget \
+        git \
+        vim \
+        less \
+        htop
+
+networks:
+  - vzNAT: true      # NAT networking via Virtualization.framework; remove if using qemu
+
+hostResolver:
+  enabled: true      # use Lima's built-in DNS resolver
+
+containerd:
+  system: false      # set true if you want containerd + nerdctl
+  user: false
