@@ -12,6 +12,16 @@ cd "$_D"
 if ! command -v mise &>/dev/null; then
     bash <(curl --fail --silent --show-error --location https://mise.run)
     export PATH="$HOME/.local/bin:$HOME/.local/share/mise/shims:$PATH"
+
+fi
+
+if ! grep -q 'mise/shims' "$HOME/.bashrc"; then
+    cat >> $HOME/.bashrc < EOF
+
+# mise
+export PATH="$HOME/.local/bin:$HOME/.local/share/mise/shims:$PATH"
+EOF
 fi
 
 mise use --global neovim uv eza bat duf fd jq ripgrep zoxide delta fzf
+

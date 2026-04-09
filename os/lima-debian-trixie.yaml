@@ -35,14 +35,16 @@ provision:
     script: |
       #!/bin/bash
       set -eux
-      apt-get update
-      apt-get install -y --no-install-recommends \
-        curl \
-        wget \
-        git \
-        vim \
-        less \
-        htop
+      apt-get install -y --no-install-recommends git less curl
+
+  - mode: user
+    script: |
+      #!/bin/bash
+      set -Eeuo pipefail
+
+      # clone dotfiles
+      git clone https://github.com/scottstanfield/dotfiles.git "$HOME/dotfiles"
+
 
 networks:
   - vzNAT: true      # NAT networking via Virtualization.framework; remove if using qemu
