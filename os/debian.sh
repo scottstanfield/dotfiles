@@ -12,32 +12,14 @@ cd "$_D"
 # Tell apt-get we can't give feedback
 export DEBIAN_FRONTEND=noninteractive
 
-# install webi which is used to install some simple programs
-curl https://webi.sh/webi | sh
-webi rust fd ripgrep fzf zoxide bat jq
+curl https://mise.run | sh
+export PATH="$HOME/.local/bin:$PATH"
+eval $"(mise activate bash)"
 
-source "$HOME/.config/envman/PATH.env"
+require mise
 
-# [[ $EUID -eq 0 ]] || die "$0 needs to run as root. Try sudo $0"
+mise use --global nvim uv eza jq wget zsh
 
-packages=(
-    git
-    httpie
-    jq
-    neovim
-    wget
-    zsh
-)
-
-
-# install core packages
-sudo apt-get install --no-install-recommends -y ${packages[*]}
-
-# python manager uv
-curl -LsSf https://astral.sh/uv/install.sh | sh
-
-# install the Rust language (mostly to get the Eza replacement for ls)
-cargo install eza
 
 # change /etc/default/keyboard to swap caps for control
 # XKBOPTIONS="ctrl:swapcaps"
