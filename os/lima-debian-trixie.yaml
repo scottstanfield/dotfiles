@@ -1,5 +1,9 @@
-# debian-trixie.yaml
-# Debian 13 (Trixie) Lima configuration
+# limactl start --name=deb ./lima-debian-trixie.yaml
+# limactl shell deb
+# limactl stop deb
+# rm -rf ~/.lima/deb
+
+# Use this to test a Debian 13 instance on Mac OS
 
 vmType: vz          # use Virtualization.framework on Apple Silicon; change to "qemu" on Intel
 
@@ -8,7 +12,7 @@ arch: default       # matches host architecture (aarch64 on Apple Silicon, x86_6
 
 cpus: 4
 memory: 4GiB
-disk: 40GiB
+disk: 20GiB
 
 images:
   - location: "https://cloud.debian.org/images/cloud/trixie/daily/latest/debian-13-genericcloud-arm64-daily.qcow2"
