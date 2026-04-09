@@ -9,14 +9,11 @@ die()     { local ret=$?; printf "%s\n" "$@" >&2; exit "$ret"; }
 readonly _D="$(dirname "$(readlink -f "$0")")"
 cd "$_D"
 
-require blah
-# Tell apt-get we can't give feedback
-export DEBIAN_FRONTEND=noninteractive
+curl --fail --silent --show-error --location https://mise.run | bash
 
-apt-get update -qq
-apt-get install -y --no-install-recommends wget zsh
+export PATH="$HOME/.local/bin:$PATH"
+eval "$(mise activate bash)"
 
-# change /etc/default/keyboard to swap caps for control
-# XKBOPTIONS="ctrl:swapcaps"
+mise use --global nvim uv eza 
 
 exit 0
