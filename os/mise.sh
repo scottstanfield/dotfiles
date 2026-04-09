@@ -15,4 +15,4 @@ if ! command -v mise &>/dev/null; then
     eval "$(mise activate bash)"
 fi
 
-mise use --global neovim uv eza 
+mise use --global neovim uv eza bat duf fd jq ripgrep zoxide delta fzf
