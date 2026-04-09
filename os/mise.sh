@@ -9,11 +9,10 @@ die()     { local ret=$?; printf "%s\n" "$@" >&2; exit "$ret"; }
 readonly _D="$(dirname "$(readlink -f "$0")")"
 cd "$_D"
 
-curl --fail --silent --show-error --location https://mise.run | bash
+if ! command -v mise &>/dev/null; then
+    bash <(curl --fail --silent --show-error --location https://mise.run)
+    export PATH="$HOME/.local/bin:$PATH"
+    eval "$(mise activate bash)"
+fi
 
-export PATH="$HOME/.local/bin:$PATH"
-eval "$(mise activate bash)"
-
-mise use --global nvim uv eza 
-
-exit 0
+mise use --global neovim uv eza 

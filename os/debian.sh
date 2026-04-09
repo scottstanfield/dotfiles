@@ -18,5 +18,3 @@ apt-get install -y --no-install-recommends wget zsh
 
 # change /etc/default/keyboard to swap caps for control
 # XKBOPTIONS="ctrl:swapcaps"
-
-exit 0
