@@ -7,6 +7,7 @@ export XDG_STATE_HOME="$HOME/.local/state"
 export XDG_CACHE_HOME="$HOME/.cache"
 
 
+alias path="printenv | grep -i path | tr : "\n" | cat -n"
 alias ls="ls --color -F"
 alias ll="ls --color -F -l"
 alias ,="cd .."
