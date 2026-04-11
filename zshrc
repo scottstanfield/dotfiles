@@ -277,10 +277,10 @@ fi
 ## Aliases
 alias ,="cd .."
 function @() {
-  if [ ! "$#" -gt 0 ]; then
-    printenv | sort | grep -v LS_COLOR | less 
+  if [ "$#" -eq 0 ]; then
+    printenv | sort | grep -v COLOR | less 
   else
-    printenv | sort | grep -v LS_COLOR | grep -i "$1"
+    printenv | sort | grep --invert-match COLOR | grep --ignore-case --color=always "$1"
   fi
 }
 alias gd="git diff"
@@ -319,6 +319,7 @@ alias td='tmux detach'
 alias ts='tmux source ~/.tmux.conf'
 alias uv="uv --native-tls"
 alias uvx="uvx --native-tls"
+alias cleanbash='env -i HOME=$HOME TERM=$TERM PATH=/usr/bin:/bin:/usr/sbin:/sbin bash '
 
 function anybar { echo -n $1 | nc -4u -w0 localhost ${2:-1738}; }
 

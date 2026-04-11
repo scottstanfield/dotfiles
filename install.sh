@@ -55,6 +55,7 @@ link gitconfig                       ~/.gitconfig
 link gitignore                       ~/.gitignore
 link config/nvim/init.vim            ~/.config/nvim/init.vim
 link config/ghostty/config           ~/.config/ghostty/config
+link config/mise/config.toml         ~/.config/mise/config.toml
 
 mkdir -p ~/.config/alacritty
 cpn config/alacritty/alacritty.toml       ~/.config/alacritty/alacritty.toml

@@ -1,14 +1,18 @@
 [tools]
 "pipx:black" = "latest"
-duckdb = "latest"
-duf = "latest"          # disk usage
-jq = "latest"
-neovim = "latest"
-node = "lts"
-rg = "latest"           # ripgrep
-typst = "latest"        # type settting language
-uv = "latest"
-yq = "latest"
+delta        = "latest"
+difftastic   = "latest"
+duckdb       = "latest"
+duf          = "latest"          # disk usage
+eza          = "latest"
+glow         = "latest"
+jq           = "latest"
+lazygit      = "latest"
+neovim       = "latest"
+node         = "lts"
+rg           = "latest"           # ripgrep
+uv           = "latest"
+yq           = "latest"
 
 # lnav = "latest"       # log navigator
 
