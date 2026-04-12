@@ -120,12 +120,28 @@ nnoremap <leader>fh :Telescope help_tags<CR>
 " -------- SAFE STARTUP GUARDS --------
 
 lua << EOF
--- Mason: install editor tooling
-require("mason").setup()
+EOF
 
-require("mason-lspconfig").setup({
-  ensure_installed = { "tinymist" },
-})
+
+
+lua << EOF
+local function safe_require(name)
+  local ok, mod = pcall(require, name)
+  if ok then return mod end
+  return nil
+end
+
+-- Mason: install editor tooling
+local mason = safe_require('mason')
+if mason then
+    mason.setup()
+
+    local mason_lspconfig = safe_require('mason-lspconfig')
+    if mason_lspconfig then
+        mason_lspconfig.setup({
+            ensure_installed = { "tinymist" },
+        })
+    end
 
 -- NEW LSP CONFIG STYLE (nvim-lspconfig ≥ 0.11)
 vim.lsp.config("tinymist", {
@@ -137,16 +153,10 @@ vim.lsp.config("tinymist", {
 
 -- Enable the server
 vim.lsp.enable("tinymist")
-EOF
 
-
-
-lua << EOF
-local function safe_require(name)
-  local ok, mod = pcall(require, name)
-  if ok then return mod end
-  return nil
 end
+
+
 
 -- Telescope
 local telescope = safe_require('telescope')
