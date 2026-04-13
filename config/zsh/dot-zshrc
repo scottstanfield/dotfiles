@@ -39,8 +39,8 @@ export XDG_RUNTIME_DIR
 # rm -rf ~/.cache ~/.local/state ~/.zinit
 
 # this should go in a one-time setup
-# mkdir -p -m 755 $XDG_CACHE_HOME $XDG_CONFIG_HOME 
-# mkdir -p -m 700 $XDG_DATA_HOME $XDG_STATE_HOME
+mkdir -p -m 755 $XDG_CACHE_HOME $XDG_CONFIG_HOME 
+mkdir -p -m 700 $XDG_DATA_HOME $XDG_STATE_HOME
 
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
