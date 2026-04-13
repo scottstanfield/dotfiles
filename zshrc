@@ -500,3 +500,6 @@ typeset -g POWERLEVEL9K_STATUS_ERROR=true
 
 # Added by GitButler installer
 (( $+commands[but] )) && eval "$(but completions zsh)"
+
+export LIMA_HOME="$XDG_DATA_HOME/lima"
+

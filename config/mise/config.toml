@@ -13,6 +13,7 @@ node         = "lts"
 rg           = "latest"           # ripgrep
 uv           = "latest"
 yq           = "latest"
+claude = "latest"
 
 # lnav = "latest"       # log navigator
 
