@@ -29,6 +29,8 @@ cd "$DOTFILES_DIR"
 ##
 println "Stowing packages..."
 
+mkdir -p $XDG_CONFIG_HOME
+
 # Main dotfiles (all platforms)
 println "  -> config"
 stow --dotfiles -t ~/.config config
