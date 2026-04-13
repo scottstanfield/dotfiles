@@ -1,0 +1,4 @@
+[tools]
+fzf = "latest"
+jq = "latest"
+neovim = "latest"

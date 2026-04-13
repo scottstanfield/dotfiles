@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 # vim:filetype=sh:
+#
+# https://codeberg.org/Jorenar/dotfiles
 
 # dmz: Setup my Dotfiles / viM / zshrc / gitconfig using GNU Stow
 # http://git.io/dmz
