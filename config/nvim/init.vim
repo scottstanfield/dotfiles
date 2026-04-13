@@ -143,16 +143,16 @@ if mason then
         })
     end
 
--- NEW LSP CONFIG STYLE (nvim-lspconfig ≥ 0.11)
-vim.lsp.config("tinymist", {
-  filetypes = { "typst" },
-  cmd_env = {
-    RUST_LOG = "warn",   -- or "error"
-  },
-})
+    -- NEW LSP CONFIG STYLE (nvim-lspconfig ≥ 0.11)
+    vim.lsp.config("tinymist", {
+    filetypes = { "typst" },
+    cmd_env = {
+        RUST_LOG = "warn",   -- or "error"
+    },
+    })
 
--- Enable the server
-vim.lsp.enable("tinymist")
+    -- Enable the server
+    vim.lsp.enable("tinymist")
 
 end
 

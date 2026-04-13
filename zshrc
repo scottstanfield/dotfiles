@@ -64,7 +64,7 @@ fi
 # HISTORY
 #########
 
-export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
+#export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 export HISTFILE="$HOME/.zsh_history"
 
 HISTSIZE=50000
@@ -505,10 +505,7 @@ alias nv="NVIM_APPNAME=nvim-minimax nvim "
 #
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 typeset -g POWERLEVEL9K_STATUS_ERROR=true
+
+export LIMA_HOME=$XDG_DATA_HOME/lima
+
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
-# Added by GitButler installer
-(( $+commands[but] )) && eval "$(but completions zsh)"
-
-export LIMA_HOME="$XDG_DATA_HOME/lima"
-
