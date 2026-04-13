@@ -29,6 +29,7 @@ cd "$DOTFILES_DIR"
 ##
 println "Stowing packages..."
 
+: ${XDG_CONFIG_HOME:=${HOME}/.config}      # user-specific portable configuration
 mkdir -p $XDG_CONFIG_HOME
 
 # Main dotfiles (all platforms)
