@@ -30,35 +30,48 @@ cd "$DOTFILES_DIR"
 println "Stowing packages..."
 
 # Main dotfiles (all platforms)
+println "  -> config"
+stow --dotfiles -t ~/.config config
+
 println "  -> home"
-stow -v -d packages -t "$HOME" home
+stow --dotfiles -t ~ home
 
 # OS-specific packages
-case "$(uname)" in
-    Darwin)
-        println "  -> macos"
-        stow -v -d packages -t "$HOME" macos
-        ;;
-    Linux)
-        if [[ -d packages/linux ]]; then
-            println "  -> linux"
-            stow -v -d packages -t "$HOME" linux
-        fi
-        ;;
-esac
+# case "$(uname)" in
+#     Darwin)
+#         println "  -> macos"
+#         stow -v -d packages -t "$HOME" macos
+#         ;;
+#     Linux)
+#         if [[ -d packages/linux ]]; then
+#             println "  -> linux"
+#             stow -v -d packages -t "$HOME" linux
+#         fi
+#         ;;
+# esac
 
 ##
 ## Copy template files (no-clobber)
 ##
 println "Setting up template files..."
 if [[ ! -f ~/.machine ]]; then
-    cp templates/machine.template ~/.machine
+cat > ~/.machine <<EOF
+#  󰯉 󰊠      󰣧      ▼         󰆚 󰀘 󱍢 󰦥    󰯉      
+export HOST_ICON=""
+export HOST_ICON_COLOR="4"
+EOF
     println "  -> Created ~/.machine (edit this for machine-specific settings)"
 fi
 
-if [[ ! -f ~/.gitconfig.local ]]; then
-    cp templates/gitconfig.local.template ~/.gitconfig.local
-    println "  -> Created ~/.gitconfig.local (edit this for local git settings)"
+if [[ ! -f ~/.config/git/local ]]; then
+
+cat > ~/.config/git/local <<EOF
+[user]
+    email = scottstanfield@gmail.com
+    name = Scott Stanfield
+EOF
+
+    println "  -> Created ~/.config/git/local"
 fi
 
 ##
@@ -70,9 +83,6 @@ mkdir -p ~/.ssh
 ## Install neovim plugins
 ##
 println "Installing vim plugins..."
-nvim --headless +PlugInstall +qa
-nvim --headless +TSUpdate +qa
-
 ./neovim.plugins.sh
 
 println ""

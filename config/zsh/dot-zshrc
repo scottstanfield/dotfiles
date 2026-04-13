@@ -25,6 +25,16 @@
 : ${XDG_STATE_HOME:=${HOME}/.local/state}  # persistent app state (logs, history)
 export XDG_CACHE_HOME XDG_CONFIG_HOME XDG_DATA_HOME XDG_STATE_HOME
 
+TMPDIR="${TMPDIR:-/tmp}"
+if [[ -z "$XDG_RUNTIME_DIR" ]]; then
+  if [[ "$OSTYPE" == linux* && -d "/run/user/$(id -u)" ]]; then
+    XDG_RUNTIME_DIR="/run/user/$(id -u)"
+  else
+    XDG_RUNTIME_DIR="$TMPDIR/runtime-$(id -un)"
+  fi
+fi
+export XDG_RUNTIME_DIR
+
 # always safe to
 # rm -rf ~/.cache ~/.local/state ~/.zinit
 
@@ -60,12 +70,15 @@ export HOMEBREW_NO_INSTALL_CLEANUP=1
 if [[ $UNAME  == "Linux" ]]; then
 fi
 
+# Enforce XDG
+export LESSHISTFILE="${XDG_CONFIG_HOME}/less/history"
+
+
 #########
 # HISTORY
 #########
 
-#export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
-export HISTFILE="$HOME/.zsh_history"
+export HISTFILE="$XDG_STATE_HOME/zsh/history"
 
 HISTSIZE=50000
 SAVEHIST=50000
@@ -329,6 +342,7 @@ alias ts='tmux source ~/.tmux.conf'
 alias uv="uv --native-tls"
 alias uvx="uvx --native-tls"
 alias cleanbash='env -i HOME=$HOME TERM=$TERM PATH=/usr/bin:/bin:/usr/sbin:/sbin bash '
+alias cheat="sh -c 'curl -sq cheat.sh/\$1 | less' -"
 
 function anybar { echo -n $1 | nc -4u -w0 localhost ${2:-1738}; }
 
@@ -389,7 +403,7 @@ export EDITOR=${_vi}
 alias vi="${_vi} -o"
 
 # zshrc and vimrc aliases to edit these two files
-alias zshrc="${_vi} ~/.zshrc"
+alias zshrc="${_vi} ${ZDOTDIR}/.zshrc"
 if [[ $EDITOR  == "nvim" ]]; then
     alias vimrc="nvim ~/.config/nvim/init.vim"
 else
@@ -508,4 +522,7 @@ typeset -g POWERLEVEL9K_STATUS_ERROR=true
 
 export LIMA_HOME=$XDG_DATA_HOME/lima
 
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+[[ ! -f ${ZDOTDIR}/.p10k.zsh ]] || source ${ZDOTDIR}/.p10k.zsh
+
+
+
