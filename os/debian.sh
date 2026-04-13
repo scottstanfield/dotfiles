@@ -13,7 +13,7 @@ cd "$_D"
 export DEBIAN_FRONTEND=noninteractive
 
 apt-get update -qq
-apt-get install -y --no-install-recommends build-essential curl git vim less htop zsh
+apt-get install -y --no-install-recommends build-essential curl git vim less htop zsh stow
 apt-get install -y --no-install-recommends fastfetch
 
 # change /etc/default/keyboard to swap caps for control
