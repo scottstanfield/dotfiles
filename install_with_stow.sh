@@ -41,6 +41,9 @@ stow --dotfiles -t ~/.config config
 println "  -> home"
 stow --dotfiles -t ~ home
 
+println "  -> zsh"
+stow --dotfiles -t ~ zsh
+
 # OS-specific packages
 # case "$(uname)" in
 #     Darwin)

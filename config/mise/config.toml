@@ -5,6 +5,7 @@ difftastic   = "latest"
 duckdb       = "latest"
 duf          = "latest"          # disk usage
 eza          = "latest"
+fzf          = "latest"
 glow         = "latest"
 jq           = "latest"
 lazygit      = "latest"
