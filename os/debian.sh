@@ -19,7 +19,7 @@ export DEBIAN_FRONTEND=noninteractive
 export XDG_CACHE_HOME XDG_CONFIG_HOME XDG_DATA_HOME XDG_STATE_HOME
 
 TMPDIR="${TMPDIR:-/tmp}"
-if [[ -z "$XDG_RUNTIME_DIR" ]]; then
+if [[ -z "$XDG_RUNTIME_DIR:-" ]]; then
   if [[ "$OSTYPE" == linux* && -d "/run/user/$(id -u)" ]]; then
     XDG_RUNTIME_DIR="/run/user/$(id -u)"
   else
