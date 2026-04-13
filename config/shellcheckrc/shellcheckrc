@@ -1,0 +1,5 @@
+# ignore: https://www.shellcheck.net/wiki/Ignore
+# enable: https://www.shellcheck.net/wiki/optional
+#disable=SC1090,SC1091
+#enable=add-default-case,check-extra-masked-returns,deprecate-which
+#enable=quote-safe-variables,check-set-e-suppressed,require-variable-braces
