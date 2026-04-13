@@ -15,11 +15,18 @@
 # zmodload zsh/zprof
 # Then start a new zsh. Then run and inspect: zprof > startup.txt
 
-: ${XDG_CACHE_HOME:=${HOME}/.cache}        # non-essential cached data
+# Important to you? → share
+# Just runtime noise? → state
+# Can be recomputed? → cache
+
 : ${XDG_CONFIG_HOME:=${HOME}/.config}      # user-specific portable configuration
 : ${XDG_DATA_HOME:=${HOME}/.local/share}   # user-specific data (venvs, nvim swap)
+: ${XDG_CACHE_HOME:=${HOME}/.cache}        # non-essential cached data
 : ${XDG_STATE_HOME:=${HOME}/.local/state}  # persistent app state (logs, history)
 export XDG_CACHE_HOME XDG_CONFIG_HOME XDG_DATA_HOME XDG_STATE_HOME
+
+# always safe to
+# rm -rf ~/.cache ~/.local/state ~/.zinit
 
 # this should go in a one-time setup
 # mkdir -p -m 755 $XDG_CACHE_HOME $XDG_CONFIG_HOME 
