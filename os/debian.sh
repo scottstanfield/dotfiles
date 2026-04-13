@@ -18,6 +18,7 @@ export DEBIAN_FRONTEND=noninteractive
 : ${XDG_STATE_HOME:=${HOME}/.local/state}  # persistent app state (logs, history)
 export XDG_CACHE_HOME XDG_CONFIG_HOME XDG_DATA_HOME XDG_STATE_HOME
 
+: ${XDG_RUNTIME_DIR:=-}
 TMPDIR="${TMPDIR:-/tmp}"
 if [[ -z "{$XDG_RUNTIME_DIR:-}" ]]; then
   if [[ "$OSTYPE" == linux* && -d "/run/user/$(id -u)" ]]; then
