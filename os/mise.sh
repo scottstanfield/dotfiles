@@ -23,4 +23,4 @@ export PATH="$HOME/.local/bin:$HOME/.local/share/mise/shims:$PATH"
 EOF
 fi
 
-mise use --global neovim uv eza bat duf fd jq ripgrep zoxide delta fzf
+mise use --global neovim eza fd ripgrep fzf
