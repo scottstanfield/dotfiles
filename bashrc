@@ -9,7 +9,7 @@ export PATH=$PATH:$HOME/.local/bin:.
 export XDG_CACHE_HOME XDG_CONFIG_HOME XDG_DATA_HOME XDG_STATE_HOME
 
 alias path="printenv | grep -i path | tr : "\n" | cat -n"
-@() {
+envprint() {
   if [ "$#" -eq 0 ]; then
     printenv | sort | grep -v COLORS | less
   else
