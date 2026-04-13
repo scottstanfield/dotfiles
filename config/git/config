@@ -3,14 +3,15 @@
 ; Reworked in 2026 from https://jvns.ca/blog/2024/02/16/popular-git-config-options/
 ;
 [include]
-    path = ~/.gitconfig.local
+    path = ~/.config/git/local
 
 [core]
     editor = nvim
     autocrlf = input
-    excludesfile = ~/.gitignore
     whitespace = fix,-indent-with-non-tab,trailing-space,cr-at-eol
     pager = delta
+    excludesfile = ~/.config/git/ignore
+	attributesfile = ~/.config/git/attributes
 
 [delta]
     navigate = true          # n/N to jump between files

@@ -1,3 +1,38 @@
-Library/
-Pictures/
-Documents/davinci-media
+# Ignore anything hidden (beginning with a dot)
+.*
+
+# track these files, if they exist
+!.dockerignore
+!.editorconfig
+!.env.example
+!.git-blame-ignore-revs
+!.gitignore
+!.nvmrc
+
+# Mac OS specific
+.DS_Store
+Thumbs.db
+
+# Environment and secrets
+.env
+.env.local
+
+# ignore private/secret files
+*.der
+*.key
+*.pem
+
+# Dependency folders
+node_modules/
+vendor/
+.venv/
+
+
+# Build and logs
+dist/
+build/
+*.log
+
+*.swp
+*.swo
+*~

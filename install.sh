@@ -20,6 +20,7 @@ msg()     { echo >&2 -e "${1-}"; }
 ## Preconditions
 require curl
 require git
+require stow
 
 # Change directories to where this script is located
 #cd "$(dirname "$(realpath "${BASH_SOURCE[0]}")")"
@@ -51,16 +52,8 @@ link bashrc                          ~/.bashrc
 link bash_profile                    ~/.bash_profile
 link inputrc                         ~/.inputrc
 link p10k.zsh                        ~/.p10k.zsh
-link gitconfig                       ~/.gitconfig
-link gitignore                       ~/.gitignore
-link config/nvim/init.vim            ~/.config/nvim/init.vim
-link config/ghostty/config           ~/.config/ghostty/config
-link config/mise/config.toml         ~/.config/mise/config.toml
 
-mkdir -p ~/.config/alacritty
-cpn config/alacritty/alacritty.toml       ~/.config/alacritty/alacritty.toml
-cpn config/alacritty/dracula.toml         ~/.config/alacritty/dracula.toml
-link alacritty.local.toml ~/.alacritty.local.toml
+stow -t ~/.config config
 
 cpn machine ~/.machine
 cpn gitconfig.local ~/.gitconfig.local

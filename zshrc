@@ -64,7 +64,9 @@ fi
 # HISTORY
 #########
 
-HISTFILE=${ZDOTDIR:-$HOME}/.zsh_history
+export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
+export HISTFILE="$HOME/.zsh_history"
+
 HISTSIZE=50000
 SAVEHIST=50000
 
