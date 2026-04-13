@@ -35,14 +35,13 @@ provision:
     script: |
       #!/bin/bash
       set -eux
+      apt-get update
       apt-get install -y --no-install-recommends git less curl
 
   - mode: user
     script: |
       #!/bin/bash
       set -Eeuo pipefail
-
-      # clone dotfiles
       git clone https://github.com/scottstanfield/dotfiles.git "$HOME/dotfiles"
 
 
