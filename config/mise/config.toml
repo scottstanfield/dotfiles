@@ -14,6 +14,8 @@ rg           = "latest"           # ripgrep
 uv           = "latest"
 yq           = "latest"
 claude = "latest"
+rust = "latest"
+"cargo:tree-sitter-cli" = "latest"
 
 # lnav = "latest"       # log navigator
 
