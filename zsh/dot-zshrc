@@ -78,7 +78,7 @@ export LESSHISTFILE="${XDG_CONFIG_HOME}/less/history"
 # HISTORY
 #########
 
-export HISTFILE="$XDG_STATE_HOME/zsh/history"
+export HISTFILE=~/.zsh_history
 
 HISTSIZE=50000
 SAVEHIST=50000
@@ -526,3 +526,4 @@ export LIMA_HOME=$XDG_DATA_HOME/lima
 
 
 
+PICO_SDK_PATH=/Users/scott/code/qube/pico-c-proramming/pico-sdk

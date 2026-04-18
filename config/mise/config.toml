@@ -1,8 +1,6 @@
 [tools]
-"pipx:black" = "latest"
 delta        = "latest"
 difftastic   = "latest"
-duckdb       = "latest"
 duf          = "latest"          # disk usage
 eza          = "latest"
 fzf          = "latest"
@@ -14,9 +12,6 @@ node         = "lts"
 rg           = "latest"           # ripgrep
 uv           = "latest"
 yq           = "latest"
-claude = "latest"
-rust = "latest"
-"cargo:tree-sitter-cli" = "latest"
 
 # lnav = "latest"       # log navigator
 
