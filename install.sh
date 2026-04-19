@@ -46,8 +46,6 @@ cpn() {
 link zshrc                           ~/.zshrc
 link zlogin                          ~/.zlogin
 link vimrc                           ~/.vimrc
-link tmux.conf                       ~/.tmux.conf
-link tmux.reset.conf                 ~/.tmux.reset.conf
 link bashrc                          ~/.bashrc
 link bash_profile                    ~/.bash_profile
 link inputrc                         ~/.inputrc
@@ -55,7 +53,7 @@ link p10k.zsh                        ~/.p10k.zsh
 
 stow -t ~/.config config
 
-cpn machine ~/.machine
+cpn machine ~/.zshrc.local
 cpn gitconfig.local ~/.gitconfig.local
 
 # This is the stupidest name for an app yet. And it should be in .config/.hammerspoon

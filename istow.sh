@@ -62,30 +62,39 @@ stow --dotfiles -t ~ zsh
 ## Copy template files (no-clobber)
 ##
 println "Setting up template files..."
-if [[ ! -f ~/.machine ]]; then
-cat > ~/.machine <<EOF
-#  󰯉 󰊠      󰣧      ▼         󰆚 󰀘 󱍢 󰦥    󰯉      
-export HOST_ICON=""
-export HOST_ICON_COLOR="4"
-EOF
-    println "  -> Created ~/.machine (edit this for machine-specific settings)"
+if [[ -f ~/.machine && ! -f ~/.zshrc.local ]]; then
+    mv ~/.machine ~/.zshrc.local
+    println "  -> Renamed ~/.machine to ~/.zshrc.local"
+fi
+if [[ ! -f ~/.zshrc.local ]]; then
+    cp templates/zshrc.local ~/.zshrc.local
+    println "  -> Bootstraping prompt with ~/.zshrc.local"
 fi
 
 if [[ ! -f ~/.config/git/local ]]; then
-
-cat > ~/.config/git/local <<EOF
-[user]
-    email = scottstanfield@gmail.com
-    name = Scott Stanfield
-EOF
-
+    cp templates/gitconfig.local ~/.config/git/local
     println "  -> Created ~/.config/git/local"
+    println "  Put your name and email address in here"
 fi
+
 
 ##
 ## Create required directories
 ##
 mkdir -p ~/.ssh
+
+##
+## Install tmux plugin manager
+##
+TPM_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/tmux/plugins/tpm"
+if [[ ! -d "$TPM_DIR" ]]; then
+    println "Installing tpm..."
+    mkdir -p "$(dirname "$TPM_DIR")"
+    git clone -q https://github.com/tmux-plugins/tpm "$TPM_DIR"
+    "$TPM_DIR/bin/install_plugins"
+else
+    println "tpm already installed"
+fi
 
 ##
 ## Install neovim plugins
