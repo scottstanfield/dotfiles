@@ -8,4 +8,5 @@ if ! command -v mise &>/dev/null; then
     export PATH="$HOME/.local/bin:$HOME/.local/share/mise/shims:$PATH"
 fi
 
+mise trust
 mise install

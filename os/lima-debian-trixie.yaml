@@ -35,13 +35,13 @@ provision:
     script: |
       #!/bin/bash
       set -eux
+      echo 'LIMA_VM=1' >> /etc/environment
       apt-get update
       apt-get install -y --no-install-recommends git less curl
 
   - mode: user
     script: |
       #!/bin/bash
-      set -Eeuo pipefail
       git clone https://github.com/scottstanfield/dotfiles.git "$HOME/dotfiles"
 
 
