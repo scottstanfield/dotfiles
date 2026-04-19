@@ -57,3 +57,5 @@ function nonzero_return() { RETVAL=$?; [ $RETVAL -ne 0 ] && echo "[$RETVAL] "; }
 export PS1="\h \w \$ "
 export PS1="${GRN}\h ${CYN}\w ${RED}\`nonzero_return\`${END}${GRN}\$ ${END}"
 
+# Non-essential aliases
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
