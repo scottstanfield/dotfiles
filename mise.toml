@@ -1,5 +1,4 @@
 [tools]
 fzf = "latest"
 jq = "latest"
-lima = "latest"
 neovim = "latest"
