@@ -96,6 +96,10 @@ else
     println "tpm already installed"
 fi
 
+# 
+println "Update mise now that ~/.config/mise/config.toml is linked"
+mise up
+
 ##
 ## Install neovim plugins
 ##
@@ -104,4 +108,3 @@ println "Installing vim plugins..."
 
 println ""
 println "Done! You may need to restart your shell."
-exit 0

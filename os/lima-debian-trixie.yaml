@@ -35,7 +35,7 @@ provision:
     script: |
       #!/bin/bash
       set -eux
-      echo 'LIMA_VM=1' >> /etc/environment
+      echo 'export LIMA_VM=1' > /etc/profile.d/lima.sh
       apt-get update
       apt-get install -y --no-install-recommends git less curl
 
