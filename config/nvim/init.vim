@@ -20,19 +20,19 @@ if empty(glob(data_dir . '/autoload/plug.vim'))
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
-call plug#begin('~/.config/nvim/plugged')
+call plug#begin(stdpath('data') . '/plugged')
 
 " LSP core + convenience installers
 Plug 'neovim/nvim-lspconfig'
 Plug 'williamboman/mason.nvim'
 Plug 'williamboman/mason-lspconfig.nvim'
+" Treesitter (syntax, textobjects)
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'nvim-treesitter/nvim-treesitter-textobjects', {'branch': 'main'}
 
 " Core deps
 Plug 'nvim-lua/plenary.nvim'
 
-" Treesitter (syntax, textobjects)
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-Plug 'nvim-treesitter/nvim-treesitter-textobjects', {'branch': 'main'} 
 Plug 'HiPhish/rainbow-delimiters.nvim'       " replaces junegunn/rainbow_parentheses; uses treesitter
 
 " Toggle soft / hard wrap mode for markdown and txt
@@ -121,11 +121,6 @@ nnoremap <leader>fh :Telescope help_tags<CR>
 
 lua << EOF
 -- Mason: install editor tooling
-require("mason").setup()
-
-require("mason-lspconfig").setup({
-  ensure_installed = { "tinymist" },
-})
 
 -- NEW LSP CONFIG STYLE (nvim-lspconfig ≥ 0.11)
 vim.lsp.config("tinymist", {
@@ -142,65 +137,45 @@ EOF
 
 
 lua << EOF
-local function safe_require(name)
-  local ok, mod = pcall(require, name)
-  if ok then return mod end
-  return nil
-end
+pcall(function() require('mason').setup() end)
+
+pcall(function()
+  require("mason-lspconfig").setup({ ensure_installed = { "tinymist" } })
+end)
 
 -- Telescope
-local telescope = safe_require('telescope')
-if telescope then
-  pcall(telescope.load_extension, 'fzf')
-end
+local ok, telescope = pcall(require, 'telescope')
+if ok then pcall(telescope.load_extension, 'fzf') end
 
--- Gitsigns
-local gitsigns = safe_require('gitsigns')
-if gitsigns then
-  gitsigns.setup({
-    current_line_blame = false,
-    update_debounce = 100,
-  })
-end
+pcall(function()
+  require('gitsigns').setup({ current_line_blame = false, update_debounce = 100 })
+end)
 
--- indent-blankline
-local ibl = safe_require('ibl')
-if ibl then
-  ibl.setup({
+pcall(function()
+  require('ibl').setup({
     exclude = { filetypes = { "help", "terminal", "trouble", "lazy", "mason", "NvimTree" } },
   })
-end
+end)
 
--- Trouble
-local trouble = safe_require('trouble')
-if trouble then
-  trouble.setup({})
-end
-
-local wrapping = safe_require('wrapping')
-if wrapping then
-    wrapping.setup()
-end
+pcall(function() require('trouble').setup({}) end)
+pcall(function() require('wrapping').setup() end)
 
 -- nvim-treesitter
-local ts = safe_require('nvim-treesitter.configs')
-if ts then
-  local install = safe_require('nvim-treesitter.install')
-  if install then
+local ok, ts = pcall(require, 'nvim-treesitter.configs')
+if ok then
+  pcall(function()
+    local install = require('nvim-treesitter.install')
     install.prefer_git = true
     install.compilers = { "cc", "gcc", "clang" }
-  end
+  end)
   ts.setup({
-    ensure_installed = {
-      "vim","lua","bash","python","c","cpp",
-      "json","yaml","regex"
-    },
+    ensure_installed = { "vim","lua","bash","python","c","cpp","json","yaml","regex" },
     sync_install = false,
     auto_install = false,
-    highlight = { 
-        enable = true, 
-        disable = { "markdown" },
-        additional_vim_regex_highlighting = false 
+    highlight = {
+      enable = true,
+      disable = { "markdown" },
+      additional_vim_regex_highlighting = false,
     },
     indent = { enable = true },
     textobjects = { select = { enable = true } },
