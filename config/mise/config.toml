@@ -8,7 +8,6 @@ glow         = "latest"
 jq           = "latest"
 lazygit      = "latest"
 neovim       = "latest"
-node         = "lts"
 rg           = "latest"           # ripgrep
 uv           = "latest"
 yq           = "latest"
