@@ -28,6 +28,9 @@ myunlink() {
     done
 }
 
+## Remove one stale link
+[[ -L ~/.config/mise ]] && rm ~/.config/mise
+
 println "Unlinking packages..."
 myunlink config "$XDG_CONFIG_HOME"
 myunlink home   "$HOME"        --dot

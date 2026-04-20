@@ -82,16 +82,35 @@ mycopy templates/gitconfig.local "$HOME/.gitconfig.local"
 mkdir -p "$HOME/.ssh" && chmod 700 "$HOME/.ssh"
 
 ##
-## Bootstrap mise (if missing) and install tools from mise.toml / mise.local.toml.
+## Bootstrap mise (if missing) and install baseline tools.
 ## Running this first so the downstream tpm and nvim-plugin steps can find
 ## mise-managed tmux/nvim on PATH.
 ##
+## Baseline tools are tracked in templates/mise-baseline.toml and symlinked
+## into ~/.config/mise/conf.d/ so mise's own ~/.config/mise/config.toml
+## stays a real, untracked file that `mise use -g <tool>` can mutate freely
+## without dirtying this repo.
+##
+
 if ! command -v mise >/dev/null 2>&1; then
     println "Bootstrapping mise..."
     bash <(curl --fail --silent --show-error --location https://mise.run)
 fi
 export PATH="$HOME/.local/bin:$XDG_DATA_HOME/mise/shims:$PATH"
-mise trust
+
+mkdir -p "$XDG_CONFIG_HOME/mise/conf.d"
+baseline_src="$DOTFILES_DIR/templates/mise-baseline.toml"
+baseline_dst="$XDG_CONFIG_HOME/mise/conf.d/baseline.toml"
+if [[ -L $baseline_dst ]]; then
+    rm "$baseline_dst"
+fi
+if [[ -e $baseline_dst ]]; then
+    println "  !! $baseline_dst exists and is not a symlink, skipping baseline link"
+else
+    ln -s "$baseline_src" "$baseline_dst"
+    println "  linked baseline -> $baseline_src"
+fi
+
 println "Running mise up..."
 mise up
 

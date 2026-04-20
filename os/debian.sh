@@ -38,7 +38,9 @@ mkdir -p -m 700 $XDG_DATA_HOME $XDG_STATE_HOME
 
 apt-get update -qq
 apt-get install -y --no-install-recommends curl git vim less htop zsh tmux
-#apt-get install -y --no-install-recommends build-essential
+# build-essential: gcc/g++/make, needed by nvim-treesitter :TSUpdate
+# and telescope-fzf-native make hook.
+apt-get install -y --no-install-recommends build-essential
 
 # change /etc/default/keyboard to swap caps for control
 # XKBOPTIONS="ctrl:swapcaps"

@@ -1,0 +1,28 @@
+# Opt-in extras pack for a full programming / data setup.
+# Enabled via ./extras.sh. All tools get installed together — all-or-nothing.
+
+[tools]
+
+# ---- Languages ----
+node   = "latest"
+python = "latest"
+rust   = "latest"
+go     = "latest"
+julia  = "latest"          # may need community backend on first install
+# r — dropped; building R from source needs gfortran + LaTeX. Install via
+# `brew install r` (macOS) or `apt install r-base` (Debian) when needed.
+
+# ---- Data tooling ----
+duckdb = "latest"
+jless  = "latest"
+"aqua:BurntSushi/xsv" = "latest"
+hexyl  = "latest"
+
+# ---- CLI extras ----
+hyperfine = "latest"       # benchmarking
+tokei     = "latest"       # code line counts
+dust      = "latest"       # du, better
+tlrc      = "latest"       # tldr client (Rust impl)
+
+# ---- macOS only ----
+lima = { version = "latest", os = ["macos"] }

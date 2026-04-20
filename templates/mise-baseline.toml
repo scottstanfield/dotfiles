@@ -1,0 +1,26 @@
+# Baseline mise tools — installed on every machine by istow.sh.
+# Symlinked to ~/.config/mise/conf.d/baseline.toml so that mise's own
+# ~/.config/mise/config.toml stays a real, untracked scratchpad for
+# `mise use -g <tool>` experiments. Promote keepers from config.toml into
+# this file (or into templates/extras.toml for the opt-in pack).
+
+[tools]
+bat          = "latest"
+cowsay = "latest"
+delta        = "latest"
+difftastic   = "latest"
+duf          = "latest"          # disk usage
+eza          = "latest"
+fd           = "latest"
+fzf          = "latest"
+glow         = "latest"
+jq           = "latest"
+lazygit      = "latest"
+neovim       = "latest"
+rg           = "latest"          # ripgrep
+tmux         = "latest"
+uv           = "latest"
+yq           = "latest"
+
+[settings.pipx]
+uvx = true

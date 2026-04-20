@@ -16,8 +16,11 @@ Anywhere code is platform-specific, gate it with `uname` / `$OSTYPE`. Never assu
 
 Two steps, run from a fresh clone of `~/dotfiles`:
 
-1. `os/debian.sh` **or** `os/macos.sh` — installs system packages and exports XDG env vars.
-2. `./istow.sh` — symlinks packages via the in-script `mylink` helper (GNU Stow no longer required), drops template files (no-clobber), bootstraps `mise` (installs it if missing, runs `mise trust` + `mise up`), then installs tpm and neovim plugins. Each downstream step self-skips with a re-run hint if its tool isn't on `PATH` yet.
+1. Platform prep:
+   - Debian/Ubuntu: `os/debian.sh` — `apt-get` core packages + `build-essential` + XDG env vars.
+   - macOS: `os/macos-cli.sh` — ensures Xcode Command Line Tools (macOS's `build-essential` equivalent) + XDG env vars. **No Homebrew.** Optional second script `os/macos-apps.sh` installs GUI apps + fonts via brew-cask (run only if you want the full desktop setup).
+2. `./istow.sh` — symlinks packages via the in-script `mylink` helper (GNU Stow no longer required), drops template files (no-clobber), bootstraps `mise` (installs it if missing, symlinks `templates/mise-baseline.toml` into `~/.config/mise/conf.d/`, runs `mise up`), then installs tpm and neovim plugins. Each downstream step self-skips with a re-run hint if its tool isn't on `PATH` yet.
+3. *(optional)* `./extras.sh` — symlinks `templates/extras.toml` into `~/.config/mise/conf.d/` and runs `mise up` to install the dev/data pack. All-or-nothing; skip on minimal boxes.
 
 **Remaining goal:** fold step 1 into step 2 so bootstrap is a single command. When editing install scripts, prefer moves that bring us closer to one-command bootstrap. Ask Scott before making it automatic.
 
@@ -27,7 +30,7 @@ Two steps, run from a fresh clone of `~/dotfiles`:
 
 | Source dir | Target | Call | Contents |
 |------------|--------|------|----------|
-| `config/`  | `~/.config` | `mylink config ~/.config` | `nvim`, `git`, `tmux`, `mise`, `alacritty`, `ghostty`, `bat`, `lazygit`, `lima`, `vim`, `shellcheckrc` |
+| `config/`  | `~/.config` | `mylink config ~/.config` | `alacritty`, `bat`, `ghostty`, `git`, `lazygit`, `lima`, `nvim`, `shellcheckrc`, `tmux`, `vim` |
 | `home/`    | `~` | `mylink home ~ --dot` | `zshenv` (sets `ZDOTDIR=$HOME`) |
 | `zsh/`     | `~` | `mylink zsh ~ --dot`  | `zshrc`, `zlogin`, `p10k.zsh` |
 
@@ -40,12 +43,30 @@ Two files are **copied with no-clobber** via `mycopy`, not symlinked. Do not com
 
 Note: the tracked `templates/gitconfig.local` currently carries Scott's own identity as a default — harmless on his boxes, but keep that in mind if you're making this repo more portable for others.
 
-## `mise.toml` vs `mise.local.toml`
+## mise configuration — three-tier model
 
-- `mise.toml` — shared tooling for every machine (checked in).
-- `mise.local.toml` — **gitignored**, for per-machine tools (e.g. `lima` on macOS only).
+Mise tools are split across three layers by mutability:
 
-Add cross-platform tools to `mise.toml`. Anything that only makes sense on one host goes in `mise.local.toml`.
+| Layer | File | Tracked | Managed by |
+|-------|------|---------|-----------|
+| Experiment | `~/.config/mise/config.toml` | No — real file | `mise use -g <tool>` writes here |
+| Baseline | `~/.config/mise/conf.d/baseline.toml` | Yes | `istow.sh` symlinks `templates/mise-baseline.toml` |
+| Extras (opt-in) | `~/.config/mise/conf.d/extras.toml` | Yes | `extras.sh` symlinks `templates/extras.toml` |
+
+Mise merges all three at read time. Write commands (`mise use -g ...`) only touch `config.toml`, which isn't tracked — so experimenting with new tools doesn't dirty the repo. When a tool earns its keep, promote it by hand: add to `templates/mise-baseline.toml` or `templates/extras.toml`, then delete the redundant entry from `~/.config/mise/config.toml`.
+
+**Extras are all-or-nothing.** Run `./extras.sh` on dev machines (languages, data tools, hyperfine, etc.); skip on minimal boxes. To disable after enabling: `rm ~/.config/mise/conf.d/extras.toml` (re-running `extras.sh` re-links it).
+
+**No `config/mise/` directory.** Earlier iterations put mise config inside the stowed tree, but any `mise use -g` through the symlink leaked into the repo. Templates live outside `config/` specifically so `istow.sh` and `extras.sh` can manage conf.d/ symlinks explicitly.
+
+**OS-specific tools** use a per-entry filter rather than separate files:
+
+```toml
+lima = { version = "latest", os = ["macos"] }    # macOS only
+# foo = { version = "latest", os = ["linux"] }   # Linux only
+```
+
+mise skips tools whose `os` doesn't match the host.
 
 ## XDG
 

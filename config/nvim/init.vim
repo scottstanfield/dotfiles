@@ -20,7 +20,7 @@ if empty(glob(data_dir . '/autoload/plug.vim'))
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
-call plug#begin('~/.config/nvim/plugged')
+call plug#begin(stdpath('data') . '/plugged')
 
 " LSP core + convenience installers
 Plug 'neovim/nvim-lspconfig'
@@ -30,10 +30,15 @@ Plug 'williamboman/mason-lspconfig.nvim'
 " Core deps
 Plug 'nvim-lua/plenary.nvim'
 
-" Treesitter (syntax, textobjects)
+" Treesitter — AST-based editing. Compiles parsers via gcc/clang at :TSUpdate;
+" need build-essential on Debian, Xcode CLT on macOS.
+"   - AST-based syntax highlighting (more accurate than regex on lua/python/yaml)
+"   - AST-aware smart indent
+"   - code text objects (vaf = around function, vac = around class)
+"   - rainbow-delimiters reads the treesitter tree to color matching brackets
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-Plug 'nvim-treesitter/nvim-treesitter-textobjects', {'branch': 'main'} 
-Plug 'HiPhish/rainbow-delimiters.nvim'       " replaces junegunn/rainbow_parentheses; uses treesitter
+Plug 'nvim-treesitter/nvim-treesitter-textobjects', {'branch': 'main'}
+Plug 'HiPhish/rainbow-delimiters.nvim'       " uses treesitter
 
 " Toggle soft / hard wrap mode for markdown and txt
 " [ow   soft wrap mode
