@@ -37,7 +37,7 @@ mkdir -p -m 755 $XDG_CACHE_HOME $XDG_CONFIG_HOME
 mkdir -p -m 700 $XDG_DATA_HOME $XDG_STATE_HOME
 
 apt-get update -qq
-apt-get install -y --no-install-recommends curl git vim less htop zsh stow tmux
+apt-get install -y --no-install-recommends curl git vim less htop zsh tmux
 #apt-get install -y --no-install-recommends build-essential
 
 # change /etc/default/keyboard to swap caps for control

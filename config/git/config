@@ -3,7 +3,7 @@
 ; Reworked in 2026 from https://jvns.ca/blog/2024/02/16/popular-git-config-options/
 ;
 [include]
-    path = ~/.config/git/local
+    path = ~/.gitconfig.local
 
 [core]
     editor = nvim

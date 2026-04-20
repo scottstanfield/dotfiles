@@ -1,110 +1,126 @@
 #!/usr/bin/env bash
-# vim:filetype=sh:
-#
-# https://codeberg.org/Jorenar/dotfiles
+# Install dotfiles: symlink packages into $HOME / $XDG_CONFIG_HOME,
+# drop machine-local templates (no-clobber), install tpm and nvim plugins.
 
-# dmz: Setup my Dotfiles / viM / zshrc / gitconfig using GNU Stow
-# http://git.io/dmz
+set -Eeuo pipefail
 
-set -o errexit  # Exit on error. Append "|| true" if you expect an error.
-set -o errtrace # Exit on error inside any functions or subshells.
-set -o nounset  # Do not allow use of undefined vars. Use ${VAR:-} to use an undefined VAR
-set -o pipefail # Catch the error in case mysqldump fails (but gzip succeeds) in `mysqldump |gzip`
-
-##
-## Helpers
-##
 println() { printf '%s\n' "$*"; }
-die()     { ret=$?; printf "%s\n" "$@" >&2; exit "$ret"; }
+die()     { printf '%s\n' "$*" >&2; exit 1; }
 
-# Require stow
-command -v stow >/dev/null 2>&1 || die "GNU stow is required. Install it first (brew install stow / apt install stow)"
-command -v git >/dev/null 2>&1 || die "git is required"
-command -v nvim >/dev/null 2>&1 || die "neovim is required"
+command -v git  >/dev/null 2>&1 || die "git is required"
 
-# Change directories to where this script is located
 DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$DOTFILES_DIR"
 
-##
-## Stow packages
-##
-println "Stowing packages..."
-
-: ${XDG_CONFIG_HOME:=${HOME}/.config}      # user-specific portable configuration
-mkdir -p $XDG_CONFIG_HOME
-
-# Main dotfiles (all platforms)
-println "  -> config"
-stow --dotfiles -t ~/.config config
-
-println "  -> home"
-stow --dotfiles -t ~ home
-
-println "  -> zsh"
-stow --dotfiles -t ~ zsh
-
-# OS-specific packages
-# case "$(uname)" in
-#     Darwin)
-#         println "  -> macos"
-#         stow -v -d packages -t "$HOME" macos
-#         ;;
-#     Linux)
-#         if [[ -d packages/linux ]]; then
-#             println "  -> linux"
-#             stow -v -d packages -t "$HOME" linux
-#         fi
-#         ;;
-# esac
+: "${XDG_CONFIG_HOME:=$HOME/.config}"
+: "${XDG_DATA_HOME:=$HOME/.local/share}"
+mkdir -p "$XDG_CONFIG_HOME"
 
 ##
-## Copy template files (no-clobber)
+## Linking and copy helpers (replaces GNU stow for this repo)
+##
+
+# mylink <pkg_dir> <target_dir> [--dot]
+# Symlink each top-level entry of pkg_dir into target_dir. --dot prepends '.'
+# to the target name (zshrc -> .zshrc). Works for files and directories.
+# Refreshes existing symlinks; warns and skips on existing real files/dirs.
+mylink() {
+    local pkg="$1" target="$2" dot=""
+    [[ "${3:-}" == "--dot" ]] && dot="."
+    local abs_pkg
+    abs_pkg=$(cd "$pkg" && pwd)
+    mkdir -p "$target"
+    for src in "$abs_pkg"/*; do
+        [[ -e $src ]] || continue
+        local dst="$target/${dot}$(basename "$src")"
+        if [[ -L $dst ]]; then
+            rm "$dst"
+        elif [[ -e $dst ]]; then
+            println "  !! $dst exists (not a symlink), skipping"
+            continue
+        fi
+        ln -s "$src" "$dst"
+        println "  linked $dst -> $src"
+    done
+}
+
+# mycopy <src> <dst>
+# Copy src to dst only if dst doesn't exist. Works for files and directories.
+mycopy() {
+    local src="$1" dst="$2"
+    if [[ -e $dst ]]; then
+        println "  skip $dst (already exists)"
+        return
+    fi
+    mkdir -p "$(dirname "$dst")"
+    cp -R "$src" "$dst"
+    println "  copied $src -> $dst"
+}
+
+##
+## Link packages
+##
+println "Linking packages..."
+mylink config "$XDG_CONFIG_HOME"
+mylink home   "$HOME"        --dot
+mylink zsh    "$HOME"        --dot
+
+##
+## Machine-local templates (no-clobber)
 ##
 println "Setting up template files..."
 if [[ -f ~/.machine && ! -f ~/.zshrc.local ]]; then
     mv ~/.machine ~/.zshrc.local
-    println "  -> Renamed ~/.machine to ~/.zshrc.local"
+    println "  renamed ~/.machine to ~/.zshrc.local"
 fi
-if [[ ! -f ~/.zshrc.local ]]; then
-    cp templates/zshrc.local ~/.zshrc.local
-    println "  -> Bootstraping prompt with ~/.zshrc.local"
-fi
-
-if [[ ! -f ~/.config/git/local ]]; then
-    cp templates/gitconfig.local ~/.config/git/local
-    println "  -> Created ~/.config/git/local"
-    println "  Put your name and email address in here"
-fi
-
+mycopy templates/zshrc.local     "$HOME/.zshrc.local"
+mycopy templates/gitconfig.local "$HOME/.gitconfig.local"
 
 ##
-## Create required directories
+## Required directories
 ##
-mkdir -p ~/.ssh
+mkdir -p "$HOME/.ssh" && chmod 700 "$HOME/.ssh"
 
 ##
-## Install tmux plugin manager
+## Bootstrap mise (if missing) and install tools from mise.toml / mise.local.toml.
+## Running this first so the downstream tpm and nvim-plugin steps can find
+## mise-managed tmux/nvim on PATH.
 ##
-TPM_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/tmux/plugins/tpm"
-if [[ ! -d "$TPM_DIR" ]]; then
-    println "Installing tpm..."
-    mkdir -p "$(dirname "$TPM_DIR")"
-    git clone -q https://github.com/tmux-plugins/tpm "$TPM_DIR"
-    "$TPM_DIR/bin/install_plugins"
-else
-    println "tpm already installed"
+if ! command -v mise >/dev/null 2>&1; then
+    println "Bootstrapping mise..."
+    bash <(curl --fail --silent --show-error --location https://mise.run)
 fi
-
-# 
-println "Update mise now that ~/.config/mise/config.toml is linked"
+export PATH="$HOME/.local/bin:$XDG_DATA_HOME/mise/shims:$PATH"
+mise trust
+println "Running mise up..."
 mise up
 
 ##
-## Install neovim plugins
+## tmux plugin manager (skipped if tmux is not installed)
 ##
-println "Installing vim plugins..."
-./neovim.plugins.sh
+if command -v tmux >/dev/null 2>&1; then
+    TPM_DIR="$XDG_DATA_HOME/tmux/plugins/tpm"
+    if [[ ! -d "$TPM_DIR" ]]; then
+        println "Installing tpm..."
+        mkdir -p "$(dirname "$TPM_DIR")"
+        git clone -q https://github.com/tmux-plugins/tpm "$TPM_DIR"
+        "$TPM_DIR/bin/install_plugins"
+    else
+        println "tpm already installed"
+    fi
+else
+    println "tmux not found; skipping tpm install. Re-run ./istow.sh after installing tmux."
+fi
+
+##
+## Neovim plugins (skipped if nvim is not installed)
+##
+if command -v nvim >/dev/null 2>&1; then
+    println "Installing vim plugins..."
+    ./neovim.plugins.sh
+else
+    println "nvim not found; skipping neovim plugin install. Re-run ./istow.sh after installing nvim."
+fi
 
 println ""
 println "Done! You may need to restart your shell."

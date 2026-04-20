@@ -1,22 +1,43 @@
 #!/usr/bin/env bash
-# Undo everything istow.sh creates, for testing a fresh install.
+# Undo what istow.sh creates, for testing a fresh install.
+# Leaves ~/.zshrc.local and ~/.gitconfig.local alone (machine-local).
 
-set -euo pipefail
+set -Eeuo pipefail
 println() { printf '%s\n' "$*"; }
 
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
-println "Unstowing packages..."
-stow -D -t ~/.config config 2>/dev/null || true
-stow -D -t ~ home 2>/dev/null || true
-stow -D -t ~ zsh 2>/dev/null || true
+: "${XDG_CONFIG_HOME:=$HOME/.config}"
+: "${XDG_DATA_HOME:=$HOME/.local/share}"
+
+# myunlink <pkg_dir> <target_dir> [--dot]
+# Remove symlinks that mylink would have created for pkg_dir in target_dir.
+# Only removes symlinks that resolve back into $pkg_dir; leaves everything else.
+myunlink() {
+    local pkg="$1" target="$2" dot=""
+    [[ "${3:-}" == "--dot" ]] && dot="."
+    local abs_pkg
+    abs_pkg=$(cd "$pkg" && pwd)
+    for src in "$abs_pkg"/*; do
+        [[ -e $src ]] || continue
+        local dst="$target/${dot}$(basename "$src")"
+        if [[ -L $dst ]]; then
+            rm "$dst"
+            println "  removed $dst"
+        fi
+    done
+}
+
+println "Unlinking packages..."
+myunlink config "$XDG_CONFIG_HOME"
+myunlink home   "$HOME"        --dot
+myunlink zsh    "$HOME"        --dot
 
 println "Removing tmux plugins..."
-rm -rf ~/.local/share/tmux/plugins
+rm -rf "$XDG_DATA_HOME/tmux/plugins"
 
 println "Removing neovim plugins..."
-rm -rf ~/.local/share/nvim/site
+rm -rf "$XDG_DATA_HOME/nvim/site"
 
-println "Keeping ~/.zshrc.local and ~/.config/git/local (user-specific files)."
-
+println "Keeping ~/.zshrc.local and ~/.gitconfig.local (machine-local files)."
 println "Clean. Run ./istow.sh to reinstall."
