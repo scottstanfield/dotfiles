@@ -8,7 +8,7 @@ export PATH=$PATH:$HOME/.local/bin:.
 : ${XDG_STATE_HOME:=${HOME}/.local/state}  # persistent app state (logs, history)
 export XDG_CACHE_HOME XDG_CONFIG_HOME XDG_DATA_HOME XDG_STATE_HOME
 
-alias path="echo $PATH | tr : "\n" | cat -n"
+alias path='echo $PATH | tr : "\n" | cat -n'
 envprint() {
   if [ "$#" -eq 0 ]; then
     printenv | sort | grep -v COLORS | less
