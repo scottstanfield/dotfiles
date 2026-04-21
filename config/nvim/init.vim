@@ -20,7 +20,7 @@ if empty(glob(data_dir . '/autoload/plug.vim'))
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
-call plug#begin('~/.config/nvim/plugged')
+call plug#begin(stdpath('data') . '/plugged')
 
 " LSP core + convenience installers
 Plug 'neovim/nvim-lspconfig'
@@ -30,10 +30,15 @@ Plug 'williamboman/mason-lspconfig.nvim'
 " Core deps
 Plug 'nvim-lua/plenary.nvim'
 
-" Treesitter (syntax, textobjects)
+" Treesitter — AST-based editing. Compiles parsers via gcc/clang at :TSUpdate;
+" need build-essential on Debian, Xcode CLT on macOS.
+"   - AST-based syntax highlighting (more accurate than regex on lua/python/yaml)
+"   - AST-aware smart indent
+"   - code text objects (vaf = around function, vac = around class)
+"   - rainbow-delimiters reads the treesitter tree to color matching brackets
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-Plug 'nvim-treesitter/nvim-treesitter-textobjects', {'branch': 'main'} 
-Plug 'HiPhish/rainbow-delimiters.nvim'       " replaces junegunn/rainbow_parentheses; uses treesitter
+Plug 'nvim-treesitter/nvim-treesitter-textobjects', {'branch': 'main'}
+Plug 'HiPhish/rainbow-delimiters.nvim'       " uses treesitter
 
 " Toggle soft / hard wrap mode for markdown and txt
 " [ow   soft wrap mode
@@ -120,23 +125,6 @@ nnoremap <leader>fh :Telescope help_tags<CR>
 " -------- SAFE STARTUP GUARDS --------
 
 lua << EOF
--- Mason: install editor tooling
-require("mason").setup()
-
-require("mason-lspconfig").setup({
-  ensure_installed = { "tinymist" },
-})
-
--- NEW LSP CONFIG STYLE (nvim-lspconfig ≥ 0.11)
-vim.lsp.config("tinymist", {
-  filetypes = { "typst" },
-  cmd_env = {
-    RUST_LOG = "warn",   -- or "error"
-  },
-})
-
--- Enable the server
-vim.lsp.enable("tinymist")
 EOF
 
 
@@ -147,6 +135,33 @@ local function safe_require(name)
   if ok then return mod end
   return nil
 end
+
+-- Mason: install editor tooling
+local mason = safe_require('mason')
+if mason then
+    mason.setup()
+
+    local mason_lspconfig = safe_require('mason-lspconfig')
+    if mason_lspconfig then
+        mason_lspconfig.setup({
+            ensure_installed = { "tinymist" },
+        })
+    end
+
+    -- NEW LSP CONFIG STYLE (nvim-lspconfig ≥ 0.11)
+    vim.lsp.config("tinymist", {
+    filetypes = { "typst" },
+    cmd_env = {
+        RUST_LOG = "warn",   -- or "error"
+    },
+    })
+
+    -- Enable the server
+    vim.lsp.enable("tinymist")
+
+end
+
+
 
 -- Telescope
 local telescope = safe_require('telescope')
@@ -334,6 +349,7 @@ ab [theta] θ
 ab [Theta] Θ
 ab [sigma] σ
 ab [Sigma] Σ
+ab [epsilon] ε  
 ab [rho] ρ
 ab [pi] Π
 ab [blank] ␣

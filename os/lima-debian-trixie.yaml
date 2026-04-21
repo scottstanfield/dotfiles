@@ -12,7 +12,7 @@ arch: default       # matches host architecture (aarch64 on Apple Silicon, x86_6
 
 cpus: 4
 memory: 4GiB
-disk: 20GiB
+disk: 3GiB
 
 images:
   - location: "https://cloud.debian.org/images/cloud/trixie/daily/latest/debian-13-genericcloud-arm64-daily.qcow2"
@@ -35,14 +35,13 @@ provision:
     script: |
       #!/bin/bash
       set -eux
+      echo 'export LIMA_VM=1' > /etc/profile.d/lima.sh
+      apt-get update
       apt-get install -y --no-install-recommends git less curl
 
   - mode: user
     script: |
       #!/bin/bash
-      set -Eeuo pipefail
-
-      # clone dotfiles
       git clone https://github.com/scottstanfield/dotfiles.git "$HOME/dotfiles"
 
 

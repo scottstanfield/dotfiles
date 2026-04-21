@@ -15,15 +15,32 @@
 # zmodload zsh/zprof
 # Then start a new zsh. Then run and inspect: zprof > startup.txt
 
-: ${XDG_CACHE_HOME:=${HOME}/.cache}        # non-essential cached data
+# Important to you? → share
+# Just runtime noise? → state
+# Can be recomputed? → cache
+
 : ${XDG_CONFIG_HOME:=${HOME}/.config}      # user-specific portable configuration
 : ${XDG_DATA_HOME:=${HOME}/.local/share}   # user-specific data (venvs, nvim swap)
+: ${XDG_CACHE_HOME:=${HOME}/.cache}        # non-essential cached data
 : ${XDG_STATE_HOME:=${HOME}/.local/state}  # persistent app state (logs, history)
 export XDG_CACHE_HOME XDG_CONFIG_HOME XDG_DATA_HOME XDG_STATE_HOME
 
+TMPDIR="${TMPDIR:-/tmp}"
+if [[ -z "$XDG_RUNTIME_DIR" ]]; then
+  if [[ "$OSTYPE" == linux* && -d "/run/user/$(id -u)" ]]; then
+    XDG_RUNTIME_DIR="/run/user/$(id -u)"
+  else
+    XDG_RUNTIME_DIR="$TMPDIR/runtime-$(id -un)"
+  fi
+fi
+export XDG_RUNTIME_DIR
+
+# always safe to
+# rm -rf ~/.cache ~/.local/state ~/.zinit
+
 # this should go in a one-time setup
-# mkdir -p -m 755 $XDG_CACHE_HOME $XDG_CONFIG_HOME 
-# mkdir -p -m 700 $XDG_DATA_HOME $XDG_STATE_HOME
+mkdir -p -m 755 $XDG_CACHE_HOME $XDG_CONFIG_HOME 
+mkdir -p -m 700 $XDG_DATA_HOME $XDG_STATE_HOME
 
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
@@ -53,11 +70,16 @@ export HOMEBREW_NO_INSTALL_CLEANUP=1
 if [[ $UNAME  == "Linux" ]]; then
 fi
 
+# Enforce XDG
+export LESSHISTFILE="${XDG_CONFIG_HOME}/less/history"
+
+
 #########
 # HISTORY
 #########
 
-HISTFILE=${ZDOTDIR:-$HOME}/.zsh_history
+export HISTFILE=~/.zsh_history
+
 HISTSIZE=50000
 SAVEHIST=50000
 
@@ -144,6 +166,8 @@ path=(
 
     /opt/homebrew/opt/llvm/bin
     $path[@]
+
+    ~/.local/bin
 
     /usr/bin
     /usr/sbin
@@ -283,8 +307,12 @@ function @() {
     printenv | sort | grep --invert-match COLOR | grep --ignore-case --color=always "$1"
   fi
 }
-alias gd="git diff"
+
+alias R="R --no-save --no-restore-data "
+alias b="bat --plain"
 alias b="bat"
+alias cheat="sh -c 'curl -sq cheat.sh/\$1 | less' -"
+alias cleanbash='env -i HOME=$HOME TERM=$TERM PATH=/usr/bin:/bin:/usr/sbin:/sbin bash '
 alias cp="cp -a"
 alias d='dirs -v'
 alias dc='docker compose'
@@ -293,20 +321,21 @@ alias df='df --human-readable'
 alias dkrr='docker run --rm -it -u1000:1000 -v$(pwd):/work -w /work -e DISPLAY=$DISPLAY'
 alias dust='dust -r'
 alias ga="git add"
+alias gd="git diff"
 alias grep="grep --color=auto"
 alias gs="git status 2>/dev/null"
-alias ga="git add"
 alias h="history 0"
 alias ha="history 9999"
 alias hg="history 1 | grep -i"
 alias ips="ip -4 --color --brief a"
 alias logs="docker logs control -f"
 alias m="less"
+alias p="python"
 alias p="python3"
 alias path='echo $PATH | tr : "\n" | cat -n'
 alias pd='pushd'  # symmetry with cd
 alias r="R --no-save --no-restore-data --quiet"
-alias R="R --no-save --no-restore-data "
+alias rg='rg --pretty --smart-case --fixed-strings'
 alias rg='rg --pretty --smart-case'
 alias rgc='rg --no-line-number --color never '
 alias rsp="rsync -avlhW --info=progress2,stats "
@@ -316,10 +345,9 @@ alias ssh="TERM=xterm-256color ssh"
 alias sudosu="sudo -Es"
 alias t='tmux -2 new-session -A -s "moab"'
 alias td='tmux detach'
-alias ts='tmux source ~/.tmux.conf'
+alias ts='tmux source ~/.config/tmux/tmux.conf'
 alias uv="uv --native-tls"
 alias uvx="uvx --native-tls"
-alias cleanbash='env -i HOME=$HOME TERM=$TERM PATH=/usr/bin:/bin:/usr/sbin:/sbin bash '
 
 function anybar { echo -n $1 | nc -4u -w0 localhost ${2:-1738}; }
 
@@ -380,7 +408,7 @@ export EDITOR=${_vi}
 alias vi="${_vi} -o"
 
 # zshrc and vimrc aliases to edit these two files
-alias zshrc="${_vi} ~/.zshrc"
+alias zshrc="${_vi} ${ZDOTDIR}/.zshrc"
 if [[ $EDITOR  == "nvim" ]]; then
     alias vimrc="nvim ~/.config/nvim/init.vim"
 else
@@ -391,8 +419,8 @@ fi
 # Put your user-specific settings here
 [[ -f $HOME/.zshrc.$USER ]] && source $HOME/.zshrc.$USER
 
-# Put your machine-specific settings here
-[[ -f $HOME/.machine ]] && source $HOME/.machine
+# Machine-specific settings (prompt icon, colors, etc.)
+[[ -f $HOME/.zshrc.local ]] && source $HOME/.zshrc.local
 
 zstyle ':completion:*' list-suffixes zstyle ':completion:*' expand prefix suffix 
 
@@ -475,13 +503,7 @@ export CFLAGS="-I/opt/homebrew/opt/llvm/include"
 alias uv="uv --native-tls"
 alias uvx="uvx --native-tls"
 
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-typeset -g POWERLEVEL9K_STATUS_ERROR=true
-
 (( $+commands[fzf] )) && source <(fzf --zsh)
-# https://github.com/junegunn/fzf/blob/master/shell/key-bindings.zsh
-# https://github.com/junegunn/fzf/blob/master/shell/completion.zsh
-
 
 # mise
 [[ -f ~/.local/bin/mise ]] && eval "$(~/.local/bin/mise activate zsh)"
@@ -493,10 +515,10 @@ typeset -g POWERLEVEL9K_STATUS_ERROR=true
 # git clone --filter=blob:none https://github.com/nvim-mini/MiniMax ~/code/minimax
 # VIM_APPNAME=nvim-minimax nvim -l ~/code/minimax/setup.lua
 alias nv="NVIM_APPNAME=nvim-minimax nvim "
-#
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-typeset -g POWERLEVEL9K_STATUS_ERROR=true
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-# Added by GitButler installer
-(( $+commands[but] )) && eval "$(but completions zsh)"
+export LIMA_HOME=$XDG_DATA_HOME/lima
+
+[[ ! -f ${ZDOTDIR}/.p10k.zsh ]] || source ${ZDOTDIR}/.p10k.zsh
+
+PICO_SDK_PATH=/Users/scott/code/qube/pico-c-proramming/pico-sdk
+export PATH="/opt/homebrew/opt/llvm/bin:$PATH"

@@ -1,94 +1,157 @@
 #!/usr/bin/env bash
-# vim:filetype=sh:
 
-# dmz: Setup my Dotfiles / viM / zshrc / gitconfig
-# http://git.io/dmz
+# 100% confirmed and guided by me with Claude Code 
+# as part of a big refactor. Went well.
 
-# idempotent bash: https://arslan.io/2019/07/03/how-to-write-idempotent-bash-scripts/
-# https://github.com/anordal/shellharden/blob/master/how_to_do_things_safely_in_bash.md
+# Install dotfiles: symlink packages into $HOME / $XDG_CONFIG_HOME,
+# drop machine-local templates (no-clobber), install tpm and nvim plugins.
 
-set -o errexit  # Exit on error. Append "|| true" if you expect an error.
-set -o errtrace # Exit on error inside any functions or subshells.
-set -o nounset  # Do not allow use of undefined vars. Use ${VAR:-} to use an undefined VAR
-set -o pipefail # Catch the error in case mysqldump fails (but gzip succeeds) in `mysqldump |gzip`
+set -Eeuo pipefail
 
-require() { hash "$@" || exit 127; }
 println() { printf '%s\n' "$*"; }
-die()     { ret=$?; printf "%s\n" "$@" >&2; exit "$ret"; }
-msg()     { echo >&2 -e "${1-}"; }
+die()     { printf '%s\n' "$*" >&2; exit 1; }
 
-## Preconditions
-require curl
-require git
+command -v git  >/dev/null 2>&1 || die "git is required"
 
-# Change directories to where this script is located
-#cd "$(dirname "$(realpath "${BASH_SOURCE[0]}")")"
-canonical=$(cd -P -- "$(dirname -- "$0")" && printf '%s\n' "$(pwd -P)") 
-cd "$canonical"
+DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+cd "$DOTFILES_DIR"
 
-# Create temp folder for all the files being backed up
-B=$(mktemp -d /tmp/dotfiles.XXXX)
+: "${XDG_CONFIG_HOME:=$HOME/.config}"
+: "${XDG_DATA_HOME:=$HOME/.local/share}"
+mkdir -p "$XDG_CONFIG_HOME"
 
-link() {
-    if [[ -e $1 ]]; then
-        # println "$1 -> $2"
-        cp -pL "$2" "$B" 2>/dev/null || true		# (p)reserve attributes and deference symbolic links
-        mkdir -p $(dirname $2)                      # ensure target file directory exists
-        ln -sf "$PWD/$1" "$2"                       # link target
+##
+## Linking and copy helpers (replaces GNU stow for this repo)
+##
+
+# mylink <pkg_dir> <target_dir> [--dot]
+# Symlink each top-level entry of pkg_dir into target_dir. --dot prepends '.'
+# to the target name (zshrc -> .zshrc). Works for files and directories.
+# Refreshes existing symlinks; warns and skips on existing real files/dirs.
+mylink() {
+    local pkg="$1" target="$2" dot=""
+    [[ "${3:-}" == "--dot" ]] && dot="."
+    local abs_pkg
+    abs_pkg=$(cd "$pkg" && pwd)
+    mkdir -p "$target"
+    for src in "$abs_pkg"/*; do
+        [[ -e $src ]] || continue
+        local dst="$target/${dot}$(basename "$src")"
+        if [[ -L $dst ]]; then
+            rm "$dst"
+        elif [[ -e $dst ]]; then
+            println "  !! $dst exists (not a symlink), skipping"
+            continue
+        fi
+        ln -s "$src" "$dst"
+        println "  linked $dst -> $src"
+    done
+}
+
+# mycopy <src> <dst>
+# Copy src to dst only if dst doesn't exist. Works for files and directories.
+mycopy() {
+    local src="$1" dst="$2"
+    if [[ -e $dst ]]; then
+        println "  skip $dst (already exists)"
+        return
     fi
+    mkdir -p "$(dirname "$dst")"
+    cp -R "$src" "$dst"
+    println "  copied $src -> $dst"
 }
 
-cpn() { 
-    cp -n "$1" "$2" || true 
-}
+# precondition for testing in virtual machine "lima"
+# lima creates a temporary ~/.zshrc and ~/.bashrc
 
-link zshrc                           ~/.zshrc
-link zlogin                          ~/.zlogin
-link vimrc                           ~/.vimrc
-link tmux.conf                       ~/.tmux.conf
-link tmux.reset.conf                 ~/.tmux.reset.conf
-link bashrc                          ~/.bashrc
-link bash_profile                    ~/.bash_profile
-link inputrc                         ~/.inputrc
-link p10k.zsh                        ~/.p10k.zsh
-link gitconfig                       ~/.gitconfig
-link gitignore                       ~/.gitignore
-link config/nvim/init.vim            ~/.config/nvim/init.vim
-link config/ghostty/config           ~/.config/ghostty/config
-link config/mise/config.toml         ~/.config/mise/config.toml
-
-mkdir -p ~/.config/alacritty
-cpn config/alacritty/alacritty.toml       ~/.config/alacritty/alacritty.toml
-cpn config/alacritty/dracula.toml         ~/.config/alacritty/dracula.toml
-link alacritty.local.toml ~/.alacritty.local.toml
-
-cpn machine ~/.machine
-cpn gitconfig.local ~/.gitconfig.local
-
-# This is the stupidest name for an app yet. And it should be in .config/.hammerspoon
-if [[ $(uname) == "Darwin" ]]; then
-    link init.lua  ~/.hammerspoon/init.lua
+if [[ -v LIMA_VM ]]; then
+    rm -f ~/.zshrc ~/.bash_logout ~/.bashrc ~/.profile
 fi
 
-# copy bin files
-mkdir -p ~/bin
-cp bin/* ~/bin
 
-# fixing potential insecure group writable folders
-# compaudit | xargs chmod g-w
+##
+## Link packages
+##
+println "Linking packages..."
+mylink config "$XDG_CONFIG_HOME"
+mylink home   "$HOME"        --dot
+mylink zsh    "$HOME"        --dot
 
-# Install neovim plugins
-println "Installing vim plugins..."
-nvim --headless +PlugInstall +qa
-nvim --headless +TSUpdate +qa
+##
+## Machine-local templates (no-clobber)
+##
+println "Setting up template files..."
+if [[ -f ~/.machine && ! -f ~/.zshrc.local ]]; then
+    mv ~/.machine ~/.zshrc.local
+    println "  renamed ~/.machine to ~/.zshrc.local"
+fi
+mycopy templates/zshrc.local     "$HOME/.zshrc.local"
+mycopy templates/gitconfig.local "$HOME/.gitconfig.local"
 
-./neovim.plugins.sh
+##
+## Required directories
+##
+mkdir -p "$HOME/.ssh" && chmod 700 "$HOME/.ssh"
 
-# create ~/.ssh folder so zsh-agent doesn't complain
-mkdir -p ~/.ssh
+##
+## Bootstrap mise (if missing) and install baseline tools.
+## Running this first so the downstream tpm and nvim-plugin steps can find
+## mise-managed tmux/nvim on PATH.
+##
+## Baseline tools are tracked in templates/mise-baseline.toml and symlinked
+## into ~/.config/mise/conf.d/ so mise's own ~/.config/mise/config.toml
+## stays a real, untracked file that `mise use -g <tool>` can mutate freely
+## without dirtying this repo.
+##
 
-# # now change shells
-println "Backed up existing files to $B"
-ls $B
+if ! command -v mise >/dev/null 2>&1; then
+    println "Bootstrapping mise..."
+    bash <(curl --fail --silent --show-error --location https://mise.run)
+fi
+export PATH="$HOME/.local/bin:$XDG_DATA_HOME/mise/shims:$PATH"
 
-exit 0
+mkdir -p "$XDG_CONFIG_HOME/mise/conf.d"
+baseline_src="$DOTFILES_DIR/templates/mise-baseline.toml"
+baseline_dst="$XDG_CONFIG_HOME/mise/conf.d/baseline.toml"
+if [[ -L $baseline_dst ]]; then
+    rm "$baseline_dst"
+fi
+if [[ -e $baseline_dst ]]; then
+    println "  !! $baseline_dst exists and is not a symlink, skipping baseline link"
+else
+    ln -s "$baseline_src" "$baseline_dst"
+    println "  linked baseline -> $baseline_src"
+fi
+
+println "Running mise up..."
+mise up
+
+##
+## tmux plugin manager (skipped if tmux is not installed)
+##
+if command -v tmux >/dev/null 2>&1; then
+    TPM_DIR="$XDG_DATA_HOME/tmux/plugins/tpm"
+    if [[ ! -d "$TPM_DIR" ]]; then
+        println "Installing tpm..."
+        mkdir -p "$(dirname "$TPM_DIR")"
+        git clone -q https://github.com/tmux-plugins/tpm "$TPM_DIR"
+        "$TPM_DIR/bin/install_plugins"
+    else
+        println "tpm already installed"
+    fi
+else
+    println "tmux not found; skipping tpm install. Re-run ./istow.sh after installing tmux."
+fi
+
+##
+## Neovim plugins (skipped if nvim is not installed)
+##
+if command -v nvim >/dev/null 2>&1; then
+    println "Installing vim plugins..."
+    ./neovim.plugins.sh
+else
+    println "nvim not found; skipping neovim plugin install. Re-run ./istow.sh after installing nvim."
+fi
+
+println ""
+println "Done! You may need to restart your shell."

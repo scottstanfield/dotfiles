@@ -8,8 +8,8 @@ export PATH=$PATH:$HOME/.local/bin:.
 : ${XDG_STATE_HOME:=${HOME}/.local/state}  # persistent app state (logs, history)
 export XDG_CACHE_HOME XDG_CONFIG_HOME XDG_DATA_HOME XDG_STATE_HOME
 
-alias path="printenv | grep -i path | tr : "\n" | cat -n"
-@() {
+alias path='echo $PATH | tr : "\n" | cat -n'
+envprint() {
   if [ "$#" -eq 0 ]; then
     printenv | sort | grep -v COLORS | less
   else
@@ -57,3 +57,5 @@ function nonzero_return() { RETVAL=$?; [ $RETVAL -ne 0 ] && echo "[$RETVAL] "; }
 export PS1="\h \w \$ "
 export PS1="${GRN}\h ${CYN}\w ${RED}\`nonzero_return\`${END}${GRN}\$ ${END}"
 
+# Non-essential aliases
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
