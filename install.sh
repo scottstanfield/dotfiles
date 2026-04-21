@@ -76,6 +76,7 @@ println "Linking packages..."
 mylink config "$XDG_CONFIG_HOME"
 mylink home   "$HOME"        --dot
 mylink zsh    "$HOME"        --dot
+mylink bin    "$HOME/bin"
 
 ##
 ## Machine-local templates (no-clobber)
