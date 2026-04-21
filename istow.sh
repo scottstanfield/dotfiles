@@ -61,6 +61,15 @@ mycopy() {
     println "  copied $src -> $dst"
 }
 
+# precondition for testing in virtual machine "lima"
+# lima creates a temporary ~/.zshrc and ~/.bashrc
+
+if [[ -v LIMA_VM ]]; then
+    rm ~/.zshrc
+    rm ~/.bashrc
+fi
+
+
 ##
 ## Link packages
 ##
