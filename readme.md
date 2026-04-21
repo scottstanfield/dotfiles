@@ -7,8 +7,13 @@ Fork this to your github repo, then clone down to your machine:
 ```
 cd ~
 git clone https://github.com/scottstanfield/dotfiles
-dotfiles/os/macos-cli.sh   # or os/debian.sh or os/raspbian.sh
-dotfiles/istow.sh          # symlinks configs, bootstraps mise, installs plugins
+
+dotfiles/os/macos-cli.sh   # or sudo os/debian.sh or os/raspbian.sh
+dotfiles/install.sh        # symlinks configs, bootstraps mise, installs plugins
+zsh
+chsh -s $(which zsh)
+
+
 dotfiles/extras.sh         # optional: languages + dev extras via mise
 dotfiles/os/macos-apps.sh  # optional: GUI apps + fonts via brew-cask (macOS only)
 ```
@@ -45,7 +50,7 @@ A few rules this repo is organized around. Not dogma — they fell out of hittin
 Configs go under `$XDG_CONFIG_HOME`, data under `$XDG_DATA_HOME`, cache under `$XDG_CACHE_HOME`. Tools that default to legacy paths get redirected — vim-plug writes plugins to `stdpath('data')/plugged` instead of `~/.config/nvim/plugged`. `$HOME` stays clean; every file has a principled location.
 
 **4. Bootstrap is idempotent and silent-skip.**
-`./istow.sh` can be re-run any number of times. Each downstream step (tpm, nvim plugins, mise tools) checks for its dependency on `PATH` and skips with a re-run hint if it's not there yet. No "fresh install" vs "update" modes, no destructive setup that only works once. You can interrupt and resume without tearing things down.
+`./install.sh` can be re-run any number of times. Each downstream step (tpm, nvim plugins, mise tools) checks for its dependency on `PATH` and skips with a re-run hint if it's not there yet. No "fresh install" vs "update" modes, no destructive setup that only works once. You can interrupt and resume without tearing things down.
 
 **5. When a dependency's surface area exceeds the need, replace it with code.**
 This repo used GNU stow, but only ever the link + `--dotfiles` rename subset. That became ~15 lines of bash (`mylink` in `istow.sh`) and one fewer thing to `brew install` on a fresh mac. Same reasoning inlined the old `os/mise.sh` bootstrap into `istow.sh`. Code you control beats a dep you pin the version of.
