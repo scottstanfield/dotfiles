@@ -19,8 +19,6 @@ images:
     arch: aarch64
 
 mounts:
-  - location: "~"
-    writable: true
   - location: "/tmp/lima"
     writable: true
 
