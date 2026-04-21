@@ -6,7 +6,6 @@
 
 [tools]
 bat          = "latest"
-cowsay = "latest"
 delta        = "latest"
 difftastic   = "latest"
 duf          = "latest"          # disk usage

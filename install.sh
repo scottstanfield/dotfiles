@@ -65,8 +65,7 @@ mycopy() {
 # lima creates a temporary ~/.zshrc and ~/.bashrc
 
 if [[ -v LIMA_VM ]]; then
-    rm ~/.zshrc
-    rm ~/.bashrc
+    rm -f ~/.zshrc ~/.bash_logout ~/.bashrc ~/.profile
 fi
 
 
