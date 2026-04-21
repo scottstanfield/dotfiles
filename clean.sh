@@ -43,4 +43,4 @@ println "Removing neovim plugins..."
 rm -rf "$XDG_DATA_HOME/nvim/site"
 
 println "Keeping ~/.zshrc.local and ~/.gitconfig.local (machine-local files)."
-println "Clean. Run ./istow.sh to reinstall."
+println "Clean. Run ./install.sh to reinstall."
