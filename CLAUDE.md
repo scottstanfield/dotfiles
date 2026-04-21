@@ -31,7 +31,7 @@ Two steps, run from a fresh clone of `~/dotfiles`:
 | Source dir | Target | Call | Contents |
 |------------|--------|------|----------|
 | `config/`  | `~/.config` | `mylink config ~/.config` | `alacritty`, `bat`, `ghostty`, `git`, `lazygit`, `lima`, `nvim`, `shellcheckrc`, `tmux`, `vim` |
-| `home/`    | `~` | `mylink home ~ --dot` | `zshenv` (sets `ZDOTDIR=$HOME`) |
+| `home/`    | `~` | `mylink home ~ --dot` | `zshenv` (sets `ZDOTDIR=$HOME`), `inputrc` (readline config) |
 | `zsh/`     | `~` | `mylink zsh ~ --dot`  | `zshrc`, `zlogin`, `p10k.zsh` |
 
 ## Templates vs symlinks
@@ -77,7 +77,7 @@ The repo is mid-migration to XDG. Current branch at time of writing: `git-to-xdg
 These are leftovers from the pre-stow copy/link flow. `istow.sh` does **not** reference them. Don't modify them to fix bugs — fix the real file under `zsh/`, `config/`, or `home/` instead.
 
 - `install.sh` — superseded by `istow.sh`
-- `bashrc`, `bash_profile`, `inputrc` — pre-XDG; zsh is the daily shell
+- `bashrc`, `bash_profile` — pre-XDG; zsh is the daily shell
 - `init.lua` — Hammerspoon config; only `install.sh` linked it
 - `ctags`
 - `minimal/`, `plugins/`, `python/`, `rlang/` — present but not wired up; treat as archived until Scott reopens them

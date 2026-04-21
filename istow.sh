@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+
+# 100% confirmed and guided by me with Claude Code 
+# as part of a big refactor. Went well.
+
 # Install dotfiles: symlink packages into $HOME / $XDG_CONFIG_HOME,
 # drop machine-local templates (no-clobber), install tpm and nvim plugins.
 
