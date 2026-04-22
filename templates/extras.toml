@@ -5,6 +5,7 @@
 
 # ---- Claude ----
 rtk = "latest"
+claude = "latest"
 
 # ---- Languages ----
 node   = "latest"

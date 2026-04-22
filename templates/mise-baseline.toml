@@ -6,6 +6,7 @@
 
 [tools]
 bat          = "latest"
+bun = "latest"
 delta        = "latest"
 difftastic   = "latest"
 duf          = "latest"          # disk usage
@@ -16,6 +17,7 @@ glow         = "latest"
 jq           = "latest"
 lazygit      = "latest"
 neovim       = "latest"
+prettier = "latest"
 rg           = "latest"          # ripgrep
 tmux         = "latest"
 uv           = "latest"
