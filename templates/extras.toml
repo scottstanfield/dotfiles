@@ -16,6 +16,9 @@ go     = "latest"
 # r — dropped; building R from source needs gfortran + LaTeX. Install via
 # `brew install r` (macOS) or `apt install r-base` (Debian) when needed.
 
+# requires node
+prettier = "latest"
+
 # ---- Data tooling ----
 duckdb = "latest"
 jless  = "latest"

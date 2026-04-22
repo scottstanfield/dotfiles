@@ -17,7 +17,6 @@ glow         = "latest"
 jq           = "latest"
 lazygit      = "latest"
 neovim       = "latest"
-prettier = "latest"
 rg           = "latest"          # ripgrep
 tmux         = "latest"
 uv           = "latest"
