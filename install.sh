@@ -108,6 +108,9 @@ mkdir -p "$HOME/.ssh" && chmod 700 "$HOME/.ssh"
 if ! command -v mise >/dev/null 2>&1; then
     println "Bootstrapping mise..."
     bash <(curl --fail --silent --show-error --location https://mise.run)
+else
+    println "Checking for mise update..."
+    mise self-update
 fi
 export PATH="$HOME/.local/bin:$XDG_DATA_HOME/mise/shims:$PATH"
 
