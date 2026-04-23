@@ -428,6 +428,8 @@ zinit load zdharma-continuum/history-search-multi-word
 zinit ice depth=1; zinit light romkatv/powerlevel10k
 
 zinit fpath -f /opt/homebrew/share/zsh/site-functions
+zinit fpath -f ~/.local/share/zsh/completions
+
 zstyle -t :omz:plugins:ssh-agent quiet
 zinit snippet OMZP::ssh-agent
 
