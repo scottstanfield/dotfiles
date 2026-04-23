@@ -38,4 +38,4 @@ mkdir -p -m 755 "$XDG_CACHE_HOME" "$XDG_CONFIG_HOME"
 mkdir -p -m 700 "$XDG_DATA_HOME"  "$XDG_STATE_HOME"
 
 println ""
-println "Done. Next: ./istow.sh (bootstraps mise and installs tools from mise.toml)."
+println "Done. Next: ./install.sh (bootstraps mise and installs tools from mise.toml)."

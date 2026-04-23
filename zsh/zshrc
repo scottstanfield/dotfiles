@@ -135,6 +135,18 @@ fi
 
 setopt nullglob
 
+if [[ "$(uname)" == "Darwin" ]]; then
+    gnu_bins=(
+        /opt/homebrew/bin
+        $(brew --prefix)/opt/coreutils/libexec/gnubin
+        $(brew --prefix)/opt/gnu-sed/libexec/gnubin
+        $(brew --prefix)/opt/gawk/libexec/gnubin
+        /opt/homebrew/opt/llvm/bin
+    )
+else
+    gnu_bins=()
+fi
+
 path=(
     $HOME/.local/share/mise/shims
 
@@ -142,7 +154,7 @@ path=(
     $HOME/.local/bin
     $HOME/.cargo/bin
 
-    /opt/homebrew/opt/llvm/bin
+    $gnu_bins[@]
     $path[@]
 
     /usr/bin
@@ -272,8 +284,6 @@ if in_path eza; then
 fi
 
 
-## Aliases
-alias ,="cd .."
 function @() {
   if [ "$#" -eq 0 ]; then
     printenv | sort | grep -v COLOR | less 
@@ -281,6 +291,10 @@ function @() {
     printenv | sort | grep --invert-match COLOR | grep --ignore-case --color=always "$1"
   fi
 }
+
+## ALIASES go here
+alias ,="cd .."
+alias cx="chmod +x"
 alias gd="git diff"
 alias b="bat"
 alias cp="cp -a"
@@ -460,8 +474,8 @@ export LDFLAGS="-L/opt/homebrew/opt/llvm/lib"
 export CPPFLAGS="-I/opt/homebrew/opt/llvm/include"
 export CFLAGS="-I/opt/homebrew/opt/llvm/include"
 
-# (( $+commands[fzf] )) && source <(fzf --zsh)
-# (( $+commands[zoxide] )) && eval "$(zoxide init zsh)"
+(( $+commands[fzf] )) && source <(fzf --zsh)
+(( $+commands[zoxide] )) && eval "$(zoxide init zsh)"
 
 # To support second installation of neovim from mini.vim
 # git clone --filter=blob:none https://github.com/nvim-mini/MiniMax ~/code/minimax

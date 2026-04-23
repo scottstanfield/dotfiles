@@ -10,6 +10,12 @@ set -Eeuo pipefail
 
 println() { printf '%s\n' "$*"; }
 die()     { printf '%s\n' "$*" >&2; exit 1; }
+in_path() { command -v "$1" &>/dev/null; }
+
+# Require bash 4+
+if (( BASH_VERSINFO[0] < 4 )); then
+    die "bash 4+ required (you have ${BASH_VERSION}). Install with: brew install bash"
+fi
 
 source "$(dirname "$0")/lib/colors.sh"
 colors_init "$@"
@@ -17,7 +23,7 @@ colors_init "$@"
 DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$DOTFILES_DIR"
 
-command -v git  >/dev/null 2>&1 || die "git is required"
+in_path git || die "git is required"
 
 : "${XDG_DATA_HOME:=$HOME/.local/share}"
 : "${XDG_CONFIG_HOME:=$HOME/.config}"
@@ -141,7 +147,7 @@ mise up
 ## tmux plugin manager (skipped if tmux is not installed)
 ##
 section "tmux"
-if command -v tmux >/dev/null 2>&1; then
+if in_path tmux; then
     TPM_DIR="$XDG_DATA_HOME/tmux/plugins/tpm"
     if [[ ! -d "$TPM_DIR" ]]; then
         println "Installing tpm..."
@@ -153,11 +159,31 @@ else
     warn "tmux not found; skipping tpm install. Re-run ./install.sh after installing tmux."
 fi
 
+section "Brew packages"
+# Map package name -> binary to check
+declare -A brew_pkgs=(
+    [coreutils]=gls
+    [gnu-sed]=gsed
+    [gawk]=gawk
+)
+
+if in_path brew; then
+    for pkg in "${!brew_pkgs[@]}"; do
+        bin="${brew_pkgs[$pkg]}"
+        if ! in_path "$bin"; then
+            brew install "$pkg"
+            ok "installed $pkg ($bin)"
+        else
+            note "$pkg already installed"
+        fi
+    done
+fi
+
 ##
 ## Neovim plugins (skipped if nvim is not installed)
 ##
 section "neovim"
-if command -v nvim >/dev/null 2>&1; then
+if in_path nvim; then
     note "Installing vim plugins..."
 
     rm -rf $XDG_DATA_HOME/nvim/site

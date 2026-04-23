@@ -101,6 +101,13 @@ for bin in bat delta difft duf eza fd fzf glow jq lazygit nvim rg tmux uv yq; do
     check_bin "$bin"
 done
 
+if [[ "$(uname)" == "Darwin" ]]; then
+    section "GNU core utils installed on Mac OS"
+    for bin in gsed gawk; do
+        check_bin "$bin"
+    done
+fi
+
 section "Plugins"
 if [[ -d "$XDG_DATA_HOME/tmux/plugins/tpm" ]]; then
     ok "tpm installed"
