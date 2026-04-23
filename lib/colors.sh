@@ -49,10 +49,10 @@ _colors_init() {
     # 8 basic color codes from the original 1978 DEC VT100 & 1979 ANSI X3.64 spec
     if [[ $use_color -eq 1 ]]; then
         BOLD=$'\e[1m';   RESET=$'\e[0m'
-        RED=$'\e[31m';   GREEN=$'\e[32m'
+        RED=$'\e[31m';   GREEN=$'\e[32m' BLUE=$'\e[34m'
         YELLOW=$'\e[33m'; DIM=$'\e[2m'
     else
-        BOLD=''; RESET=''; RED=''; GREEN=''; YELLOW=''; DIM=''
+        BOLD=''; RESET=''; RED=''; GREEN=''; YELLOW=''; DIM=''; BLUE=''
     fi
 
     export BOLD RESET RED GREEN YELLOW DIM
@@ -80,7 +80,7 @@ colors_reset_counts() { WARNINGS=0; ERRORS=0; }
 # Logging helpers
 # ---------------------------------------------------------------------------
 
-section() { printf '\n%s%s%s\n' "$BOLD"    "$*" "$RESET"; }
+section() { printf '\n%s%s%s' "$BOLD" "$BLUE"   "$*" "$RESET"; }
 ok()      { printf '  %s✓%s %s\n' "$GREEN"  "$RESET" "$*"; }
 warn()    { printf '  %s!%s %s\n' "$YELLOW" "$RESET" "$*"; WARNINGS=$((WARNINGS+1)); }
 fail()    { printf '  %s✗%s %s\n' "$RED"    "$RESET" "$*"; ERRORS=$((ERRORS+1)); }

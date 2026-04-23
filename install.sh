@@ -11,13 +11,17 @@ set -Eeuo pipefail
 println() { printf '%s\n' "$*"; }
 die()     { printf '%s\n' "$*" >&2; exit 1; }
 
-command -v git  >/dev/null 2>&1 || die "git is required"
+source "$(dirname "$0")/lib/colors.sh"
+colors_init "$@"
 
 DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$DOTFILES_DIR"
 
+command -v git  >/dev/null 2>&1 || die "git is required"
+
 : "${XDG_DATA_HOME:=$HOME/.local/share}"
 : "${XDG_CONFIG_HOME:=$HOME/.config}"
+section "Creating ${XDG_DATA_HOME} and ${XDG_CONFIG_HOME}"
 mkdir -p "$XDG_CONFIG_HOME"
 mkdir -p "$XDG_DATA_HOME"
 
@@ -41,11 +45,11 @@ mylink() {
         if [[ -L $dst ]]; then
             rm "$dst"
         elif [[ -e $dst ]]; then
-            println "  !! $dst exists (not a symlink), skipping"
+            note "$dst exists (not a symlink), skipping"
             continue
         fi
         ln -s "$src" "$dst"
-        println "  linked $dst -> $src"
+        ok "linked $dst -> $src"
     done
 }
 
@@ -54,12 +58,12 @@ mylink() {
 mycopy() {
     local src="$1" dst="$2"
     if [[ -e $dst ]]; then
-        println "  skip $dst (already exists)"
+        note "skip $dst (already exists)"
         return
     fi
     mkdir -p "$(dirname "$dst")"
     cp -R "$src" "$dst"
-    println "  copied $src -> $dst"
+    ok "copied $src -> $dst"
 }
 
 # precondition for testing in virtual machine "lima"
@@ -72,7 +76,7 @@ fi
 ##
 ## Link packages
 ##
-println "Linking packages..."
+section "Linking ~/.config ~/bin ~/.zsh* and ~/.bash*"
 mylink config "$XDG_CONFIG_HOME"
 mylink home   "$HOME"        --dot
 mylink zsh    "$HOME"        --dot
@@ -82,10 +86,10 @@ mylink hammerspoon "$HOME/.hammerspoon"
 ##
 ## Machine-local templates (no-clobber)
 ##
-println "Setting up template files..."
+section "Setting up template files..."
 if [[ -f ~/.machine && ! -f ~/.zshrc.local ]]; then
     mv ~/.machine ~/.zshrc.local
-    println "  renamed ~/.machine to ~/.zshrc.local"
+    ok "renamed ~/.machine to ~/.zshrc.local"
 fi
 mycopy templates/zshrc.local     "$HOME/.zshrc.local"
 mycopy templates/gitconfig.local "$HOME/.gitconfig.local"
@@ -93,6 +97,7 @@ mycopy templates/gitconfig.local "$HOME/.gitconfig.local"
 ##
 ## Required directories
 ##
+section "Ensuring ~/.ssh directory permission"
 mkdir -p "$HOME/.ssh" && chmod 700 "$HOME/.ssh"
 
 ##
@@ -106,11 +111,12 @@ mkdir -p "$HOME/.ssh" && chmod 700 "$HOME/.ssh"
 ## without dirtying this repo.
 ##
 
+section "Installing mise"
 if ! command -v mise >/dev/null 2>&1; then
-    println "Bootstrapping mise..."
+    note "Installing from https://mise.run"
     bash <(curl --fail --silent --show-error --location https://mise.run)
 else
-    println "Checking for mise update..."
+    note "Checking for mise updates"
     mise self-update
 fi
 export PATH="$HOME/.local/bin:$XDG_DATA_HOME/mise/shims:$PATH"
@@ -122,18 +128,19 @@ if [[ -L $baseline_dst ]]; then
     rm "$baseline_dst"
 fi
 if [[ -e $baseline_dst ]]; then
-    println "  !! $baseline_dst exists and is not a symlink, skipping baseline link"
+    warn "$baseline_dst exists and is not a symlink, skipping baseline link"
 else
     ln -s "$baseline_src" "$baseline_dst"
-    println "  linked baseline -> $baseline_src"
+    ok "linked baseline -> $baseline_src"
 fi
 
-println "Running mise up..."
+section "Running mise up..."
 mise up
 
 ##
 ## tmux plugin manager (skipped if tmux is not installed)
 ##
+section "tmux"
 if command -v tmux >/dev/null 2>&1; then
     TPM_DIR="$XDG_DATA_HOME/tmux/plugins/tpm"
     if [[ ! -d "$TPM_DIR" ]]; then
@@ -141,53 +148,27 @@ if command -v tmux >/dev/null 2>&1; then
         mkdir -p "$(dirname "$TPM_DIR")"
         git clone -q https://github.com/tmux-plugins/tpm "$TPM_DIR"
         "$TPM_DIR/bin/install_plugins"
-    else
-        println "tpm already installed"
     fi
 else
-    println "tmux not found; skipping tpm install. Re-run ./istow.sh after installing tmux."
+    warn "tmux not found; skipping tpm install. Re-run ./install.sh after installing tmux."
 fi
-
-zsh_tab_completions() {
-    echo "Setting up zsh completions"
-    mkdir -p $XDG_CONFIG_HOME/zsh/completions
-
-    # eza
-    curl -s -o $XDG_CONFIG_HOME/zsh/completions/_eza \
-    https://raw.githubusercontent.com/eza-community/eza/main/completions/zsh/_eza
-
-    # fd
-    curl -s -o $XDG_CONFIG_HOME/zsh/completions/_fd \
-    https://raw.githubusercontent.com/sharkdp/fd/master/contrib/completion/_fd
-
-    # ripgrep
-    curl -s -o $XDG_CONFIG_HOME/zsh/completions/_rg \
-    https://raw.githubusercontent.com/BurntSushi/ripgrep/master/complete/_rg
-
-    # bat
-    curl -s -o $XDG_CONFIG_HOME/zsh/completions/_bat \
-    https://raw.githubusercontent.com/sharkdp/bat/master/assets/completions/bat.zsh.in
-
-    # bun
-    curl -s -o $XDG_CONFIG_HOME/zsh/completions/_bun \
-    https://raw.githubusercontent.com/oven-sh/bun/main/completions/bun.zsh
-
-    if type rg > /dev/null; then
-        rg --generate complete-zsh > $XDG_CONFIG_HOME/zsh/completions/_rg
-    fi
-}
 
 ##
 ## Neovim plugins (skipped if nvim is not installed)
 ##
+section "neovim"
 if command -v nvim >/dev/null 2>&1; then
-    println "Installing vim plugins..."
-    ./neovim.plugins.sh
+    note "Installing vim plugins..."
+
+    rm -rf $XDG_DATA_HOME/nvim/site
+    curl -SsfLo $XDG_DATA_HOME/nvim/site/autoload/plug.vim --create-dirs \
+           https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+
+    nvim --headless +PlugInstall  +qa
+    nvim --headless +TSUpdate +qa
 else
-    println "nvim not found; skipping neovim plugin install. Re-run ./istow.sh after installing nvim."
+    warn "nvim not found; skipping neovim plugin install. Re-run ./install.sh after installing nvim."
 fi
 
-zsh_tab_completions
-
-println ""
-println "Done! You may need to restart your shell."
+echo
+ok "You may need to restart your shell."

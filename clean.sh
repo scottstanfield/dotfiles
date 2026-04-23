@@ -49,4 +49,12 @@ section "Removing zsh plugins"
 rm -rf ~/.local/share/zinit
 
 note "Keeping ~/.zshrc.local and ~/.gitconfig.local (machine-local files)."
-ok "Done. Run ./install.sh to reinstall."
+
+section "Summary"
+if (( ERRORS == 0 && WARNINGS == 0 )); then
+    printf '  %sDone. ./install.sh to reinstall.%s\n\n' "$GREEN" "$RESET"
+elif (( ERRORS == 0 )); then
+    printf '  %s%d warning(s)%s\n\n' "$YELLOW" "$WARNINGS" "$RESET"
+else
+    printf '  %s%d error(s)%s, %s%d warning(s)%s\n\n' "$RED" "$ERRORS" "$RESET" "$YELLOW" "$WARNINGS" "$RESET"
+fi
