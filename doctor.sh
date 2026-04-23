@@ -8,21 +8,8 @@ DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 : "${XDG_CONFIG_HOME:=$HOME/.config}"
 : "${XDG_DATA_HOME:=$HOME/.local/share}"
 
-if [[ -t 1 ]] && [[ -z "${NO_COLOR:-}" ]] && command -v tput >/dev/null 2>&1; then
-    BOLD=$(tput bold); RED=$(tput setaf 1); GREEN=$(tput setaf 2)
-    YELLOW=$(tput setaf 3); DIM=$(tput dim); RESET=$(tput sgr0)
-else
-    BOLD=''; RED=''; GREEN=''; YELLOW=''; DIM=''; RESET=''
-fi
-
-ERRORS=0
-WARNINGS=0
-
-section() { printf '\n%s%s%s\n' "$BOLD" "$*" "$RESET"; }
-ok()      { printf '  %s✓%s %s\n' "$GREEN"  "$RESET" "$*"; }
-warn()    { printf '  %s!%s %s\n' "$YELLOW" "$RESET" "$*"; WARNINGS=$((WARNINGS+1)); }
-fail()    { printf '  %s✗%s %s\n' "$RED"    "$RESET" "$*"; ERRORS=$((ERRORS+1)); }
-note()    { printf '    %s%s%s\n' "$DIM"    "$*"    "$RESET"; }
+source "$(dirname "$0")/lib/colors.sh"
+colors_init "$@"
 
 # check_link <link_path> <expected_relative_target>
 # Verify that link_path is a symlink into $DOTFILES_DIR/<expected_relative_target>.

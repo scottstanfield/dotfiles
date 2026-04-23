@@ -1,6 +1,5 @@
--- https://github.com/alacritty/alacritty/issues/862
---
-
+-- ~/.hammerspoon config
+-- simple macOS utility that maps keybindings to launch or focus apps
 
 -- c+space --> alacritty
 hs.hotkey.bind({"ctrl"}, "space", function()

@@ -69,8 +69,6 @@ if [[ -n "${LIMA_VM:-}" ]]; then
     rm -f ~/.zshrc ~/.bash_logout ~/.bashrc ~/.profile
 fi
 
-echo here
-
 ##
 ## Link packages
 ##
@@ -79,6 +77,7 @@ mylink config "$XDG_CONFIG_HOME"
 mylink home   "$HOME"        --dot
 mylink zsh    "$HOME"        --dot
 mylink bin    "$HOME/bin"
+mylink hammerspoon "$HOME/.hammerspoon"
 
 ##
 ## Machine-local templates (no-clobber)

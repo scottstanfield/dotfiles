@@ -84,6 +84,7 @@ Plug 'edkolev/tmuxline.vim', {'on': ['Tmuxline', 'TmuxlineSimple', 'TmuxlineSnap
 " Fuzzy finder (pick Telescope OR FZF; here we keep Telescope)
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
+Plug 'nvim-telescope/telescope-file-browser.nvim'
 
 " Focused writing / presenting
 Plug 'junegunn/goyo.vim'
@@ -119,7 +120,8 @@ call plug#end()
 
 nnoremap <leader>ff :Telescope find_files<CR>
 nnoremap <leader>fg :Telescope live_grep<CR>
-nnoremap <leader>fb :Telescope buffers<CR>
+nnoremap <leader>fu :Telescope buffers<CR>
+nnoremap <leader>fb :Telescope file_browser<CR>
 nnoremap <leader>fh :Telescope help_tags<CR>
 
 

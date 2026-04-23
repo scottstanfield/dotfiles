@@ -7,6 +7,9 @@ println() { printf '%s\n' "$*"; }
 
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
+source "$(dirname "$0")/lib/colors.sh"
+colors_init "$@"
+
 : "${XDG_CONFIG_HOME:=$HOME/.config}"
 : "${XDG_DATA_HOME:=$HOME/.local/share}"
 
@@ -23,7 +26,7 @@ myunlink() {
         local dst="$target/${dot}$(basename "$src")"
         if [[ -L $dst ]]; then
             rm "$dst"
-            println "  removed $dst"
+            ok "  removed $dst"
         fi
     done
 }
@@ -31,19 +34,19 @@ myunlink() {
 ## Remove one stale link
 [[ -L ~/.config/mise ]] && rm ~/.config/mise
 
-println "Unlinking packages..."
+section "Unlinking $XDG_CONFIG_HOME and zsh config"
 myunlink config "$XDG_CONFIG_HOME"
 myunlink home   "$HOME"        --dot
 myunlink zsh    "$HOME"        --dot
 
-println "Removing tmux plugins..."
+section "Removing tmux plugins"
 rm -rf "$XDG_DATA_HOME/tmux/plugins"
 
-println "Removing neovim plugins..."
+section "Removing neovim plugins"
 rm -rf "$XDG_DATA_HOME/nvim/site"
 
-println "Removing zsh plugins..."
+section "Removing zsh plugins"
 rm -rf ~/.local/share/zinit
 
-println "Keeping ~/.zshrc.local and ~/.gitconfig.local (machine-local files)."
-println "Clean. Run ./install.sh to reinstall."
+note "Keeping ~/.zshrc.local and ~/.gitconfig.local (machine-local files)."
+ok "Done. Run ./install.sh to reinstall."

@@ -19,14 +19,14 @@ Two steps, run from a fresh clone of `~/dotfiles`:
 1. Platform prep:
    - Debian/Ubuntu: `os/debian.sh` — `apt-get` core packages + `build-essential` + XDG env vars.
    - macOS: `os/macos-cli.sh` — ensures Xcode Command Line Tools (macOS's `build-essential` equivalent) + XDG env vars. **No Homebrew.** Optional second script `os/macos-apps.sh` installs GUI apps + fonts via brew-cask (run only if you want the full desktop setup).
-2. `./istow.sh` — symlinks packages via the in-script `mylink` helper (GNU Stow no longer required), drops template files (no-clobber), bootstraps `mise` (installs it if missing, symlinks `templates/mise-baseline.toml` into `~/.config/mise/conf.d/`, runs `mise up`), then installs tpm and neovim plugins. Each downstream step self-skips with a re-run hint if its tool isn't on `PATH` yet.
+2. `./install.sh` — symlinks packages and config files
 3. *(optional)* `./extras.sh` — symlinks `templates/extras.toml` into `~/.config/mise/conf.d/` and runs `mise up` to install the dev/data pack. All-or-nothing; skip on minimal boxes.
 
 **Remaining goal:** fold step 1 into step 2 so bootstrap is a single command. When editing install scripts, prefer moves that bring us closer to one-command bootstrap. Ask Scott before making it automatic.
 
 ## Link layout
 
-`istow.sh` defines two small helpers — `mylink` and `mycopy` — that replace GNU Stow for this repo. `mylink` creates one symlink per top-level entry of the package; with `--dot` it prepends `.` to the target name (so `zsh/zshrc` → `~/.zshrc`). No tree folding, no unstow mode, no recursive rename — deliberate scope limit.
+`install.sh` defines two small helpers — `mylink` and `mycopy` — that replace GNU Stow for this repo. `mylink` creates one symlink per top-level entry of the package; with `--dot` it prepends `.` to the target name (so `zsh/zshrc` → `~/.zshrc`). No tree folding, no unstow mode, no recursive rename — deliberate scope limit.
 
 | Source dir | Target | Call | Contents |
 |------------|--------|------|----------|
@@ -50,14 +50,14 @@ Mise tools are split across three layers by mutability:
 | Layer | File | Tracked | Managed by |
 |-------|------|---------|-----------|
 | Experiment | `~/.config/mise/config.toml` | No — real file | `mise use -g <tool>` writes here |
-| Baseline | `~/.config/mise/conf.d/baseline.toml` | Yes | `istow.sh` symlinks `templates/mise-baseline.toml` |
+| Baseline | `~/.config/mise/conf.d/baseline.toml` | Yes | `install.sh` symlinks `templates/mise-baseline.toml` |
 | Extras (opt-in) | `~/.config/mise/conf.d/extras.toml` | Yes | `extras.sh` symlinks `templates/extras.toml` |
 
 Mise merges all three at read time. Write commands (`mise use -g ...`) only touch `config.toml`, which isn't tracked — so experimenting with new tools doesn't dirty the repo. When a tool earns its keep, promote it by hand: add to `templates/mise-baseline.toml` or `templates/extras.toml`, then delete the redundant entry from `~/.config/mise/config.toml`.
 
 **Extras are all-or-nothing.** Run `./extras.sh` on dev machines (languages, data tools, hyperfine, etc.); skip on minimal boxes. To disable after enabling: `rm ~/.config/mise/conf.d/extras.toml` (re-running `extras.sh` re-links it).
 
-**No `config/mise/` directory.** Earlier iterations put mise config inside the stowed tree, but any `mise use -g` through the symlink leaked into the repo. Templates live outside `config/` specifically so `istow.sh` and `extras.sh` can manage conf.d/ symlinks explicitly.
+**No `config/mise/` directory.** Earlier iterations put mise config inside the stowed tree, but any `mise use -g` through the symlink leaked into the repo. Templates live outside `config/` specifically so `install.sh` and `extras.sh` can manage conf.d/ symlinks explicitly.
 
 **OS-specific tools** use a per-entry filter rather than separate files:
 
@@ -74,9 +74,9 @@ The repo is mid-migration to XDG. Current branch at time of writing: `git-to-xdg
 
 ## Legacy files — do not edit, candidates for cleanup
 
-These are leftovers from the pre-stow copy/link flow. `istow.sh` does **not** reference them. Don't modify them to fix bugs — fix the real file under `zsh/`, `config/`, or `home/` instead.
+These are leftovers from the pre-stow copy/link flow. `install.sh` does **not** reference them. Don't modify them to fix bugs — fix the real file under `zsh/`, `config/`, or `home/` instead.
 
-- `install.sh` — superseded by `istow.sh`
+- `install.sh` — superseded by `install.sh`
 - `bashrc`, `bash_profile` — pre-XDG; zsh is the daily shell
 - `init.lua` — Hammerspoon config; only `install.sh` linked it
 - `ctags`
@@ -86,14 +86,14 @@ When touching this repo long-term, deleting legacy is preferred over leaving shi
 
 ## `bin/` — known gap
 
-`bin/` holds personal scripts (some haven't been touched since 2022–2024). The old `install.sh` did `cp bin/* ~/bin`, but `istow.sh` does **not** install them. `zsh/zshrc` does put `$HOME/bin` on `PATH`, so the scripts just aren't there.
+`bin/` holds personal scripts (some haven't been touched since 2022–2024). The old `install.sh` did `cp bin/* ~/bin`, but `install.sh` does **not** install them. `zsh/zshrc` does put `$HOME/bin` on `PATH`, so the scripts just aren't there.
 
-Proposed fix: add `mylink bin ~/bin` (or similar) to `istow.sh` once `bin/` is tidied up. Flag this as a known improvement — don't silently patch it without discussing with Scott first.
+Proposed fix: add `mylink bin ~/bin` (or similar) to `install.sh` once `bin/` is tidied up. Flag this as a known improvement — don't silently patch it without discussing with Scott first.
 
 ## Testing changes to the install flow
 
-- `./clean.sh` — removes the symlinks `istow.sh` created (via the `myunlink` helper), tpm, and nvim site. Leaves `~/.zshrc.local` and `~/.gitconfig.local` alone.
-- Re-run `./istow.sh` after `clean.sh` to verify a fresh install still works.
+- `./clean.sh` — removes the symlinks `install.sh` created (via the `myunlink` helper), tpm, and nvim site. Leaves `~/.zshrc.local` and `~/.gitconfig.local` alone.
+- Re-run `./install.sh` after `clean.sh` to verify a fresh install still works.
 - `os/ephemeral-lima.sh` spins up a throwaway Debian VM for Linux-side testing from a Mac. `lima shell deb` to get in.
 
 ## Conventions
