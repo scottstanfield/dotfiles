@@ -373,7 +373,8 @@ set clipboard+=unnamedplus		" Use system clipboard
 " Vertical Split lighten color of vertical split and remove | bar
 " https://stackoverflow.com/questions/9001337/vim-split-bar-styling
 "highlight VertSplit ctermfg=bg
-set fillchars+=vert:\
+" set fillchars+=vert:\
+set fillchars+=vert:║
 
 set hidden						" switch buffers w/o saving
 set undofile
