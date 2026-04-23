@@ -3,6 +3,9 @@
 
 [tools]
 
+# ---- git  ----
+gh = "latest"
+
 # ---- Claude ----
 rtk = "latest"
 claude = "latest"

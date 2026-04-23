@@ -27,6 +27,7 @@ p <- '
 '
 
 if (!require("pak")) install.packages("pak")
+options(pkg.num_works=1)
 
 pak::pak('remotes')
 pak::pak('jalvesaq/colorout')

@@ -108,6 +108,7 @@ Plug 'segeljakt/vim-silicon'
 " ANSI color passthrough & terminal highlighting (your projects)
 Plug 'powerman/vim-plugin-AnsiEsc'
 Plug 'scottstanfield/hlterm'
+"Plug 'jalvesaq/hlterm'
 Plug 'jalvesaq/colorout', { 'for': 'r' }
 
 " Copilot (if you use it)
@@ -124,16 +125,20 @@ nnoremap <leader>fh :Telescope help_tags<CR>
 
 " -------- SAFE STARTUP GUARDS --------
 
-lua << EOF
-EOF
-
-
 
 lua << EOF
 local function safe_require(name)
   local ok, mod = pcall(require, name)
   if ok then return mod end
   return nil
+end
+
+hlterm = safe_require('hlterm')
+if hlterm then
+    hlterm.setup({
+        mappings = { send = "<Space>" },
+        app = { python = "PYTHON_BASIC_REPL=1 python3" },
+    })
 end
 
 -- Mason: install editor tooling
@@ -160,8 +165,6 @@ if mason then
     vim.lsp.enable("tinymist")
 
 end
-
-
 
 -- Telescope
 local telescope = safe_require('telescope')
@@ -872,6 +875,7 @@ set showmatch
 " }}}
 
 highlight Comment cterm=italic gui=italic
+"highlight Comment guifg=#606060
 set t_ZH=[3m
 set t_ZR=[23m
 

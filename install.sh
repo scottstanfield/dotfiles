@@ -16,9 +16,10 @@ command -v git  >/dev/null 2>&1 || die "git is required"
 DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$DOTFILES_DIR"
 
-: "${XDG_CONFIG_HOME:=$HOME/.config}"
 : "${XDG_DATA_HOME:=$HOME/.local/share}"
+: "${XDG_CONFIG_HOME:=$HOME/.config}"
 mkdir -p "$XDG_CONFIG_HOME"
+mkdir -p "$XDG_DATA_HOME"
 
 ##
 ## Linking and copy helpers (replaces GNU stow for this repo)
@@ -64,10 +65,11 @@ mycopy() {
 # precondition for testing in virtual machine "lima"
 # lima creates a temporary ~/.zshrc and ~/.bashrc
 
-if [[ -v LIMA_VM ]]; then
+if [[ -n "${LIMA_VM:-}" ]]; then
     rm -f ~/.zshrc ~/.bash_logout ~/.bashrc ~/.profile
 fi
 
+echo here
 
 ##
 ## Link packages
@@ -147,6 +149,35 @@ else
     println "tmux not found; skipping tpm install. Re-run ./istow.sh after installing tmux."
 fi
 
+zsh_tab_completions() {
+    echo "Setting up zsh completions"
+    mkdir -p $XDG_CONFIG_HOME/zsh/completions
+
+    # eza
+    curl -s -o $XDG_CONFIG_HOME/zsh/completions/_eza \
+    https://raw.githubusercontent.com/eza-community/eza/main/completions/zsh/_eza
+
+    # fd
+    curl -s -o $XDG_CONFIG_HOME/zsh/completions/_fd \
+    https://raw.githubusercontent.com/sharkdp/fd/master/contrib/completion/_fd
+
+    # ripgrep
+    curl -s -o $XDG_CONFIG_HOME/zsh/completions/_rg \
+    https://raw.githubusercontent.com/BurntSushi/ripgrep/master/complete/_rg
+
+    # bat
+    curl -s -o $XDG_CONFIG_HOME/zsh/completions/_bat \
+    https://raw.githubusercontent.com/sharkdp/bat/master/assets/completions/bat.zsh.in
+
+    # bun
+    curl -s -o $XDG_CONFIG_HOME/zsh/completions/_bun \
+    https://raw.githubusercontent.com/oven-sh/bun/main/completions/bun.zsh
+
+    if type rg > /dev/null; then
+        rg --generate complete-zsh > $XDG_CONFIG_HOME/zsh/completions/_rg
+    fi
+}
+
 ##
 ## Neovim plugins (skipped if nvim is not installed)
 ##
@@ -156,6 +187,8 @@ if command -v nvim >/dev/null 2>&1; then
 else
     println "nvim not found; skipping neovim plugin install. Re-run ./istow.sh after installing nvim."
 fi
+
+zsh_tab_completions
 
 println ""
 println "Done! You may need to restart your shell."

@@ -147,13 +147,13 @@ autoload zmv
 typeset -gU path fpath manpath
 
 # Multiple Homebrews on Apple Silicon
-if [[ $UNAME == "Darwin" ]]; then
-    if [[ $ARCH == "arm64" ]]; then
-        eval "$(/opt/homebrew/bin/brew shellenv)"
-    elif [[ $ARCH == "i386" ]]; then
-        eval "$(/usr/local/bin/brew shellenv)"
-    fi
-fi
+# if [[ $UNAME == "Darwin" ]]; then
+#     if [[ $ARCH == "arm64" ]]; then
+#         eval "$(/opt/homebrew/bin/brew shellenv)"
+#     elif [[ $ARCH == "i386" ]]; then
+#         eval "$(/usr/local/bin/brew shellenv)"
+#     fi
+# fi
 
 setopt nullglob
 
@@ -443,7 +443,12 @@ source "${ZINIT_HOME}/zinit.zsh"
 autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 
-zinit ice wait silent blockf; 
+
+#
+# Load zsh completion system via Prezto's completion module.
+# `wait silent` defers until after prompt draw (async, faster startup).
+# `blockf` blocks the plugin from modifying fpath directly — zinit manages it instead.
+zinit ice wait silent blockf
 zinit snippet PZT::modules/completion/init.zsh
 unsetopt correct
 unsetopt correct_all
@@ -453,7 +458,8 @@ setopt auto_menu                # show completion menu on succesive tab presses
 zinit load zdharma-continuum/history-search-multi-word
 zinit ice depth=1; zinit light romkatv/powerlevel10k
 
-zinit fpath -f /opt/homebrew/share/zsh/site-functions
+zinit fpath -f /opt/homebrew/share/zsh/site-functions 
+zinit fpath -f $HOME/.local/share/zsh/completions
 zstyle -t :omz:plugins:ssh-agent quiet
 zinit snippet OMZP::ssh-agent
 
@@ -490,14 +496,20 @@ typeset -g POWERLEVEL9K_PROMPT_CHAR_{OK,ERROR}_VIINS_CONTENT_EXPANSION='»'
 typeset -g POWERLEVEL9K_STATUS_ERROR=true
 
 # R language settings
-export R_LIBS="~/.R/libs"
-export R_OPENMP_ENABLED=1
-export PKG_CFLAGS="${PKG_CFLAGS} -fopenmp"
-export PKG_LIBS="${PKG_LIBS} -fopenmp"
+if [[ -d /opt/homebrew ]]; then
+  export PKG_CONFIG_PATH="/opt/homebrew/opt/libxml2/lib/pkgconfig:\
+/opt/homebrew/opt/curl/lib/pkgconfig:\
+/opt/homebrew/opt/openssl@3/lib/pkgconfig:\
+$PKG_CONFIG_PATH"
+fi
 
-export LDFLAGS="-L/opt/homebrew/opt/llvm/lib"
-export CPPFLAGS="-I/opt/homebrew/opt/llvm/include"
-export CFLAGS="-I/opt/homebrew/opt/llvm/include"
+# export R_OPENMP_ENABLED=1
+# export PKG_CFLAGS="${PKG_CFLAGS} -fopenmp"
+# export PKG_LIBS="${PKG_LIBS} -fopenmp"
+
+# export LDFLAGS="-L/opt/homebrew/opt/llvm/lib"
+# export CPPFLAGS="-I/opt/homebrew/opt/llvm/include"
+# export CFLAGS="-I/opt/homebrew/opt/llvm/include"
 
 
 alias uv="uv --native-tls"

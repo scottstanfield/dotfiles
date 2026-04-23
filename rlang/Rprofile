@@ -12,6 +12,9 @@ local({
   options(setWidthOnResize = TRUE)
 })
 
+dir.create(Sys.getenv("R_LIBS_USER"), recursive = TRUE, showWarnings = FALSE)
+Sys.setenv(GITHUB_PAT = system("gh auth token 2>/dev/null", intern = TRUE))
+
 cc <- function(str) { Filter(nchar, unlist(strsplit(str, "[ \n]"))) }
 
 .First <- function()
@@ -38,9 +41,9 @@ cc <- function(str) { Filter(nchar, unlist(strsplit(str, "[ \n]"))) }
   }
 }
 
-# printf <- function(...) { cat(sprintf(...)) }
-# oneup  <- function() { par(mfrow=c(1,1)) }
-# twoup  <- function() { par(mfrow=c(2,2)) }
-# cls    <- function() { cat('') }
+printf <- function(...) { cat(sprintf(...)) }
+oneup  <- function() { par(mfrow=c(1,1)) }
+twoup  <- function() { par(mfrow=c(2,2)) }
+cls    <- function() { cat('') }
 
 

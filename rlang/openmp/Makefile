@@ -1,10 +1,9 @@
 CC = clang
 NAME = hw
 
-#CFLAGS = -I/opt/homebrew/opt/llvm/include
-CFLAGS = -fopenmp
-LIBS = -fopenmp
-LDFLAGS = -L/opt/homebrew/opt/llvm/lib
+CFLAGS = -Xpreprocessor -fopenmp -I/opt/homebrew/opt/libomp/include
+LIBS = -lomp
+LDFLAGS = -L/opt/homebrew/opt/libomp/lib
 
 OBJS = $(NAME).o
 
