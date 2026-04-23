@@ -372,6 +372,25 @@ ab [cube] ³
 
 set clipboard+=unnamedplus		" Use system clipboard
 
+" Smart pasting: if clipboard has a new line, you likely want ]p
+" otherwise paste inline. So cool! Makes pasting snippets easy
+
+lua << EOF
+vim.keymap.set('n', 'p', function()
+  local reg = vim.fn.getreg('"')
+  if reg:find('\n') then
+    vim.notify('multiline → ]p')
+    vim.cmd('normal! ]p')
+  else
+    vim.notify('inline → p')
+    vim.fn.feedkeys('p', 'n')
+  end
+end, { noremap = true })
+EOF
+
+" Visual block mode, but excluding wrapping whitespace (for clean copy to clipboard)
+nnoremap vv ^vg_|
+
 " Vertical Split lighten color of vertical split and remove | bar
 " https://stackoverflow.com/questions/9001337/vim-split-bar-styling
 "highlight VertSplit ctermfg=bg

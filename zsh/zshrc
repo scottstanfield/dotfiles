@@ -15,32 +15,15 @@
 # zmodload zsh/zprof
 # Then start a new zsh. Then run and inspect: zprof > startup.txt
 
-# Important to you? → share
-# Just runtime noise? → state
-# Can be recomputed? → cache
-
+: ${XDG_CACHE_HOME:=${HOME}/.cache}        # non-essential cached data
 : ${XDG_CONFIG_HOME:=${HOME}/.config}      # user-specific portable configuration
 : ${XDG_DATA_HOME:=${HOME}/.local/share}   # user-specific data (venvs, nvim swap)
-: ${XDG_CACHE_HOME:=${HOME}/.cache}        # non-essential cached data
 : ${XDG_STATE_HOME:=${HOME}/.local/state}  # persistent app state (logs, history)
 export XDG_CACHE_HOME XDG_CONFIG_HOME XDG_DATA_HOME XDG_STATE_HOME
 
-TMPDIR="${TMPDIR:-/tmp}"
-if [[ -z "$XDG_RUNTIME_DIR" ]]; then
-  if [[ "$OSTYPE" == linux* && -d "/run/user/$(id -u)" ]]; then
-    XDG_RUNTIME_DIR="/run/user/$(id -u)"
-  else
-    XDG_RUNTIME_DIR="$TMPDIR/runtime-$(id -un)"
-  fi
-fi
-export XDG_RUNTIME_DIR
-
-# always safe to
-# rm -rf ~/.cache ~/.local/state ~/.zinit
-
 # this should go in a one-time setup
-mkdir -p -m 755 $XDG_CACHE_HOME $XDG_CONFIG_HOME 
-mkdir -p -m 700 $XDG_DATA_HOME $XDG_STATE_HOME
+# mkdir -p -m 755 $XDG_CACHE_HOME $XDG_CONFIG_HOME 
+# mkdir -p -m 700 $XDG_DATA_HOME $XDG_STATE_HOME
 
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
@@ -50,7 +33,7 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-in_path()  { builtin whence -p "$1" &> /dev/null; return $? }
+in_path() { (( $+commands[$1] )) }
 
 export BLOCK_SIZE="'1"          # Add commas to file sizes
 export CLICOLOR=1
@@ -62,24 +45,11 @@ export PAGER=less
 UNAME=$(uname)      # Darin, Linux
 ARCH=$(arch)        # arm64, i386, x86_64
 
-if [[ $UNAME == "Darwin" ]]; then
-    export HOMEBREW_NO_AUTO_UPDATE=1
-fi
-export HOMEBREW_NO_INSTALL_CLEANUP=1
-
-if [[ $UNAME  == "Linux" ]]; then
-fi
-
-# Enforce XDG
-export LESSHISTFILE="${XDG_CONFIG_HOME}/less/history"
-
-
 #########
 # HISTORY
 #########
 
-export HISTFILE=~/.zsh_history
-
+HISTFILE=${ZDOTDIR:-$HOME}/.zsh_history
 HISTSIZE=50000
 SAVEHIST=50000
 
@@ -91,7 +61,7 @@ setopt NO_flowcontrol       # disable ctrl-s/ctrl-q flow control in the terminal
 setopt NO_nullglob          # unmatched globs pass through as literals (overridden below)
 setopt autocd               # cd to a folder just by typing its name
 setopt autopushd            # cd pushes old dir onto stack automatically
-setopt chaselinks           # resolve symlinks to their true path
+setopt chaselinks           # resolve symlinks to their true location
 setopt extendedglob         # enable extended glob operators: ^, ~, #, etc.
 setopt globdots             # WARNING: * matches dotfiles too
 setopt globstarshort        # ** as shorthand for **/* 
@@ -146,14 +116,22 @@ autoload zmv
 # Keep duplicates (Unique) out of these paths
 typeset -gU path fpath manpath
 
-# Multiple Homebrews on Apple Silicon
-# if [[ $UNAME == "Darwin" ]]; then
-#     if [[ $ARCH == "arm64" ]]; then
-#         eval "$(/opt/homebrew/bin/brew shellenv)"
-#     elif [[ $ARCH == "i386" ]]; then
-#         eval "$(/usr/local/bin/brew shellenv)"
-#     fi
-# fi
+if [[ $UNAME == "Darwin" ]]; then
+    export HOMEBREW_NO_AUTO_UPDATE=1
+    export HOMEBREW_NO_INSTALL_CLEANUP=1
+    if [[ $ARCH == "arm64" ]]; then
+        export HOMEBREW_PREFIX="/opt/homebrew";
+        export HOMEBREW_CELLAR="/opt/homebrew/Cellar";
+        export HOMEBREW_REPOSITORY="/opt/homebrew";
+        eval "$(/usr/bin/env PATH_HELPER_ROOT="/opt/homebrew" /usr/libexec/path_helper -s)"
+        [ -z "${MANPATH-}" ] || export MANPATH=":${MANPATH#:}";
+        export INFOPATH="/opt/homebrew/share/info:${INFOPATH:-}";
+    elif [[ $ARCH == "i386" ]]; then
+        eval "$(/usr/local/bin/brew shellenv)"
+    fi
+fi
+
+
 
 setopt nullglob
 
@@ -167,23 +145,19 @@ path=(
     /opt/homebrew/opt/llvm/bin
     $path[@]
 
-    ~/.local/bin
-
     /usr/bin
     /usr/sbin
     /bin
     /sbin
 
     ~/dotfile/bin
-
-    .
 )
 
 # Now, remove paths that don't exist https://stackoverflow.com/a/9352979
 path=($^path(N))
 
 # need mise path early on
-eval "$(~/.local/bin/mise activate zsh)"
+[[ -f ~/.local/bin/mise ]] && eval "$(~/.local/bin/mise activate zsh)"
 
 ## :r! find /opt/homebrew/opt -type d -follow -name gnuman -print
 ## :r! fd gnuman /opt/homebrew/opt --type d --follow --max-depth 4
@@ -208,11 +182,11 @@ manpath=($^manpath(N))
 setopt NO_nullglob
 
 export MANROFFOPT="-c"
-if in_path "bat" ; then
+if in_path bat; then
     export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 fi
 
-if in_path "batcat" ; then
+if in_path batcat; then
     alias bat='batcat'
     export MANPAGER="sh -c 'col -bx | batat -l man -p'"
 fi
@@ -233,7 +207,7 @@ alias lla="ls -GF -la"
 # But on Linux, it's just "ls" and it responds to --version,
 # whereas BSD does not.
 
-if [[ $(whence -p "gls" &>/dev/null) -eq 0 ]]; then
+if in_path gls; then
     lspath=$(whence -p "gls")
 fi
 if [[ $(ls --version &>/dev/null) ]]; then
@@ -241,7 +215,7 @@ if [[ $(ls --version &>/dev/null) ]]; then
 fi
 
 ## GNU ls settings
-if [[ $(whence -p "gls" &>/dev/null) -eq 0 || $(ls --version &>/dev/null) ]]; then
+if in_path gls || $(ls --version &>/dev/null) ]]; then
     lsflags="--color --group-directories-first -F "
     alias ls="ls ${lsflags} "
     alias la="ls ${lsflags} -la"
@@ -259,7 +233,7 @@ if [[ $(whence -p "gls" &>/dev/null) -eq 0 || $(ls --version &>/dev/null) ]]; th
 fi
 
 ## eza/exa settings for ls
-if [[ $(whence -p "eza" &>/dev/null) -eq 0 ]]; then
+if in_path eza; then
     ignorefiles=' --ignore-glob "Library|Music|Movies|Pictures|Public|Applications|Creative Cloud Files" '
     ezaflags="--classify --color-scale --bytes --group-directories-first"
     ezaflags+=${ignorefiles}
@@ -307,12 +281,8 @@ function @() {
     printenv | sort | grep --invert-match COLOR | grep --ignore-case --color=always "$1"
   fi
 }
-
-alias R="R --no-save --no-restore-data "
-alias b="bat --plain"
+alias gd="git diff"
 alias b="bat"
-alias cheat="sh -c 'curl -sq cheat.sh/\$1 | less' -"
-alias cleanbash='env -i HOME=$HOME TERM=$TERM PATH=/usr/bin:/bin:/usr/sbin:/sbin bash '
 alias cp="cp -a"
 alias d='dirs -v'
 alias dc='docker compose'
@@ -321,21 +291,20 @@ alias df='df --human-readable'
 alias dkrr='docker run --rm -it -u1000:1000 -v$(pwd):/work -w /work -e DISPLAY=$DISPLAY'
 alias dust='dust -r'
 alias ga="git add"
-alias gd="git diff"
 alias grep="grep --color=auto"
 alias gs="git status 2>/dev/null"
+alias ga="git add"
 alias h="history 0"
 alias ha="history 9999"
 alias hg="history 1 | grep -i"
 alias ips="ip -4 --color --brief a"
 alias logs="docker logs control -f"
 alias m="less"
-alias p="python"
 alias p="python3"
 alias path='echo $PATH | tr : "\n" | cat -n'
 alias pd='pushd'  # symmetry with cd
 alias r="R --no-save --no-restore-data --quiet"
-alias rg='rg --pretty --smart-case --fixed-strings'
+alias R="R --no-save --no-restore-data "
 alias rg='rg --pretty --smart-case'
 alias rgc='rg --no-line-number --color never '
 alias rsp="rsync -avlhW --info=progress2,stats "
@@ -345,9 +314,10 @@ alias ssh="TERM=xterm-256color ssh"
 alias sudosu="sudo -Es"
 alias t='tmux -2 new-session -A -s "moab"'
 alias td='tmux detach'
-alias ts='tmux source ~/.config/tmux/tmux.conf'
+alias ts='tmux source ~/.tmux.conf'
 alias uv="uv --native-tls"
 alias uvx="uvx --native-tls"
+alias cleanbash='env -i HOME=$HOME TERM=$TERM PATH=/usr/bin:/bin:/usr/sbin:/sbin bash '
 
 function anybar { echo -n $1 | nc -4u -w0 localhost ${2:-1738}; }
 
@@ -362,16 +332,6 @@ function mx() {
 #   if [ ! "$#" -gt 0 ]; then echo "Need a string to search for!"; return 1; fi
 #   rg --color=never --files-with-matches --no-messages "$1" | fzf --preview "highlight -O ansi -l {} 2> /dev/null | rg --colors 'match:bg:yellow' --ignore-case --pretty --context 10 '$1' || rg --ignore-case --pretty --context 10 '$1' {}"
 # }
-
-less_options=(
-    --chop-long-lines        # -S Do not automatically wrap long lines.
-    --ignore-case            # -i Like "smartcase" in Vim: ignore case unless the search pattern is mixed.
-    --LONG-PROMPT            # -M most verbose prompt
-    --no-init                # -X Do not clear the screen first.
-    --quit-if-one-screen     # -F If the entire text fits on one screen, just show it and quit. (like cat)
-    --RAW-CONTROL-CHARS      # -R Allow ANSI colour escapes, but no other escapes.
-);
-export LESS="${less_options[*]}";
 
 function jl()      { < $1 jq -C . | less $LESS }
 function witch()   { file $(which "$*") }
@@ -408,7 +368,7 @@ export EDITOR=${_vi}
 alias vi="${_vi} -o"
 
 # zshrc and vimrc aliases to edit these two files
-alias zshrc="${_vi} ${ZDOTDIR}/.zshrc"
+alias zshrc="${_vi} ~/.zshrc"
 if [[ $EDITOR  == "nvim" ]]; then
     alias vimrc="nvim ~/.config/nvim/init.vim"
 else
@@ -419,8 +379,8 @@ fi
 # Put your user-specific settings here
 [[ -f $HOME/.zshrc.$USER ]] && source $HOME/.zshrc.$USER
 
-# Machine-specific settings (prompt icon, colors, etc.)
-[[ -f $HOME/.zshrc.local ]] && source $HOME/.zshrc.local
+# Put your machine-specific settings here
+[[ -f $HOME/.machine ]] && source $HOME/.machine
 
 zstyle ':completion:*' list-suffixes zstyle ':completion:*' expand prefix suffix 
 
@@ -443,12 +403,7 @@ source "${ZINIT_HOME}/zinit.zsh"
 autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 
-
-#
-# Load zsh completion system via Prezto's completion module.
-# `wait silent` defers until after prompt draw (async, faster startup).
-# `blockf` blocks the plugin from modifying fpath directly — zinit manages it instead.
-zinit ice wait silent blockf
+zinit ice wait silent blockf; 
 zinit snippet PZT::modules/completion/init.zsh
 unsetopt correct
 unsetopt correct_all
@@ -458,8 +413,7 @@ setopt auto_menu                # show completion menu on succesive tab presses
 zinit load zdharma-continuum/history-search-multi-word
 zinit ice depth=1; zinit light romkatv/powerlevel10k
 
-zinit fpath -f /opt/homebrew/share/zsh/site-functions 
-zinit fpath -f $HOME/.local/share/zsh/completions
+zinit fpath -f /opt/homebrew/share/zsh/site-functions
 zstyle -t :omz:plugins:ssh-agent quiet
 zinit snippet OMZP::ssh-agent
 
@@ -491,46 +445,25 @@ function prompt_my_host_icon() {
 
 export BAT_THEME="gruvbox-dark"
 
-# [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-typeset -g POWERLEVEL9K_PROMPT_CHAR_{OK,ERROR}_VIINS_CONTENT_EXPANSION='»'
-typeset -g POWERLEVEL9K_STATUS_ERROR=true
-
 # R language settings
-if [[ -d /opt/homebrew ]]; then
-  export PKG_CONFIG_PATH="/opt/homebrew/opt/libxml2/lib/pkgconfig:\
-/opt/homebrew/opt/curl/lib/pkgconfig:\
-/opt/homebrew/opt/openssl@3/lib/pkgconfig:\
-$PKG_CONFIG_PATH"
-fi
+export R_LIBS="~/.R/libs"
+export R_OPENMP_ENABLED=1
+export PKG_CFLAGS="${PKG_CFLAGS} -fopenmp"
+export PKG_LIBS="${PKG_LIBS} -fopenmp"
 
-# export R_OPENMP_ENABLED=1
-# export PKG_CFLAGS="${PKG_CFLAGS} -fopenmp"
-# export PKG_LIBS="${PKG_LIBS} -fopenmp"
+export LDFLAGS="-L/opt/homebrew/opt/llvm/lib"
+export CPPFLAGS="-I/opt/homebrew/opt/llvm/include"
+export CFLAGS="-I/opt/homebrew/opt/llvm/include"
 
-# export LDFLAGS="-L/opt/homebrew/opt/llvm/lib"
-# export CPPFLAGS="-I/opt/homebrew/opt/llvm/include"
-# export CFLAGS="-I/opt/homebrew/opt/llvm/include"
-
-
-alias uv="uv --native-tls"
-alias uvx="uvx --native-tls"
-
-(( $+commands[fzf] )) && source <(fzf --zsh)
-
-# mise
-[[ -f ~/.local/bin/mise ]] && eval "$(~/.local/bin/mise activate zsh)"
-
-(( $+commands[fzf] )) && source <(fzf --zsh)
-(( $+commands[zoxide] )) && eval "$(zoxide init zsh)"
+# (( $+commands[fzf] )) && source <(fzf --zsh)
+# (( $+commands[zoxide] )) && eval "$(zoxide init zsh)"
 
 # To support second installation of neovim from mini.vim
 # git clone --filter=blob:none https://github.com/nvim-mini/MiniMax ~/code/minimax
 # VIM_APPNAME=nvim-minimax nvim -l ~/code/minimax/setup.lua
 alias nv="NVIM_APPNAME=nvim-minimax nvim "
-
-export LIMA_HOME=$XDG_DATA_HOME/lima
-
-[[ ! -f ${ZDOTDIR}/.p10k.zsh ]] || source ${ZDOTDIR}/.p10k.zsh
-
-PICO_SDK_PATH=/Users/scott/code/qube/pico-c-proramming/pico-sdk
-export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
+#
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+typeset -g POWERLEVEL9K_STATUS_ERROR=true
+typeset -g POWERLEVEL9K_PROMPT_CHAR_{OK,ERROR}_VIINS_CONTENT_EXPANSION='»'
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
