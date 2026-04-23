@@ -215,7 +215,7 @@ if [[ $(ls --version &>/dev/null) ]]; then
 fi
 
 ## GNU ls settings
-if in_path gls || $(ls --version &>/dev/null) ]]; then
+if in_path gls || ls --version &>/dev/null; then
     lsflags="--color --group-directories-first -F "
     alias ls="ls ${lsflags} "
     alias la="ls ${lsflags} -la"
@@ -421,7 +421,12 @@ zinit pack for ls_colors
 
 # | syntax highlighting | <-- needs to be last zinit #
 zinit light zdharma-continuum/fast-syntax-highlighting
-fast-theme -q default
+# After zinit installs fast-syntax-highlighting
+FAST_THEME_MARKER="$HOME/.local/share/fast-syntax-highlighting-configured"
+if [[ ! -f $FAST_THEME_MARKER ]]; then
+    fast-theme -q default
+    touch $FAST_THEME_MARKER
+fi
 FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}path]='fg=cyan'
 FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}path-to-dir]='fg=cyan,underline'
 FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}comment]='fg=gray'

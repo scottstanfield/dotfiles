@@ -374,15 +374,19 @@ set clipboard+=unnamedplus		" Use system clipboard
 
 " Smart pasting: if clipboard has a new line, you likely want ]p
 " otherwise paste inline. So cool! Makes pasting snippets easy
-
 lua << EOF
 vim.keymap.set('n', 'p', function()
-  local reg = vim.fn.getreg('"')
+  local reg = vim.fn.getreg('+')
+  local regtype = vim.fn.getregtype('+')
   if reg:find('\n') then
-    vim.notify('multiline → ]p')
+    vim.notify('multiline → ]p (regtype was: ' .. regtype .. ')')
+    vim.fn.setreg('"', reg, 'l')
+    vim.fn.setreg('+', reg, 'l')
     vim.cmd('normal! ]p')
+    vim.fn.setreg('"', reg, regtype)
+    vim.fn.setreg('+', reg, regtype)
   else
-    vim.notify('inline → p')
+    vim.notify('inline → p (regtype was: ' .. regtype .. ')')
     vim.fn.feedkeys('p', 'n')
   end
 end, { noremap = true })
@@ -690,6 +694,11 @@ augroup markdown
 	autocmd filetype markdown set conceallevel=2
 	autocmd filetype markdown set cursorline
 augroup END
+
+" don't continue comments on o/O
+" r — insert comment leader after pressing Enter in insert mode
+" o — insert comment leader after pressing o or O in normal mode
+autocmd BufEnter * setlocal formatoptions-=o
 
 " buffers
 " https://dev.to/nickjj/writing-and-previewing-markdown-in-real-time-with-vim-8-3icf
