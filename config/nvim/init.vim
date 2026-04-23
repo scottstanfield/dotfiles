@@ -127,7 +127,6 @@ nnoremap <leader>fh :Telescope help_tags<CR>
 
 " -------- SAFE STARTUP GUARDS --------
 
-
 lua << EOF
 local function safe_require(name)
   local ok, mod = pcall(require, name)
@@ -139,7 +138,8 @@ hlterm = safe_require('hlterm')
 if hlterm then
     hlterm.setup({
         mappings = { send = "<Space>" },
-        app = { python = "PYTHON_BASIC_REPL=1 python3" },
+        -- app = { python = "PYTHON_BASIC_REPL=1 python3" },
+        app = { python = "ipython  --InteractiveShell.autoindent=False --no-tip --no-confirm-exit" },
     })
 end
 
