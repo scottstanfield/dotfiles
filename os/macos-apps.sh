@@ -45,5 +45,8 @@ brew install --cask "${apps[@]}"
 println "Installing fonts..."
 brew install --cask "${fonts[@]}"
 
+# enable key repeat in VS Code
+defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false
+
 println ""
 println "Done."
