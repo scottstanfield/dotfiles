@@ -319,8 +319,7 @@ alias path='echo $PATH | tr : "\n" | cat -n'
 alias pd='pushd'  # symmetry with cd
 alias r="R --no-save --no-restore-data --quiet"
 alias R="R --no-save --no-restore-data "
-alias rg='rg --pretty --smart-case'
-alias rgc='rg --no-line-number --color never '
+alias rg="rg --pretty --smart-case --no-require-git -g '!*.lock' "
 alias rsp="rsync -avlhW --info=progress2,stats "
 alias sc='systemctl'
 alias scp='scp -p'
