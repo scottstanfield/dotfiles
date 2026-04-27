@@ -123,7 +123,7 @@ if ! command -v mise >/dev/null 2>&1; then
     bash <(curl --fail --silent --show-error --location https://mise.run)
 else
     note "Checking for mise updates"
-    mise self-update
+    mise self-update --yes
 fi
 export PATH="$HOME/.local/bin:$XDG_DATA_HOME/mise/shims:$PATH"
 
