@@ -3,14 +3,6 @@
 # shellcheck source=/dev/null
 # shellcheck disable=2009
 
-# OS: macOS 15.5 24F74 arm64
-# Host: Mac15,10
-# Kernel: 24.5.0
-
-# OS: Ubuntu 24.10 aarch64
-# Host: Apple Virtualization Generic
-# Kernel: 6.11.0.-29-generic
-
 # 
 # · IP         192.168.1.121
 # · Kernel     Darwin 24.5.0 arm64
@@ -18,7 +10,6 @@
 # · Load       1.67 2.70 3.40
 # · Uptime     21:38  up 2 days
 # ○ Hostname   mRS-JVH4XP06TV
-
 
 readonly _D="$(dirname "$(readlink -f "$0")")" && cd $_D
 
@@ -117,11 +108,9 @@ main() {
     ip="$(ifconfig -l | xargs -n1 ipconfig getifaddr | paste -sd ' ' -)"
     #ip="$(ip route get 1.1.1.1 | head -1 | cut -d' ' -f7)"
     kernel="$(uname -srm)"
-    uptime="$(uptime)"
+    uptime="$(./upsince)"
     hostname="$(hostname)"
-    load="$(uptime | cut -f4 -d, | cut -f2 -d:)"
-    load="$(trim $load)"
-    uptime="$(uptime | cut -f1 -d,)"
+    load="$(./lav)"
     os="$(sw_vers -productVersion)"
 
 cat <<EOF

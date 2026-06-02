@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+# vim: noai:ts=4:sw=4:expandtab
+
+get_loadavg() {
+    if [ -r /proc/loadavg ]; then
+        # Linux: first three fields are 1/5/15 min
+        read -r one five fifteen _ < /proc/loadavg
+    else
+        # macOS/BSD: parse `uptime` output
+        # ...load averages: 1.79 1.85 1.90  (commas on some systems)
+        local line
+        line=$(uptime | sed 's/.*load average[s]*: *//')
+        one=$(echo "$line"   | awk '{print $1}' | tr -d ',')
+        five=$(echo "$line"  | awk '{print $2}' | tr -d ',')
+        fifteen=$(echo "$line" | awk '{print $3}' | tr -d ',')
+    fi
+    printf '%s %s %s\n' "$one" "$five" "$fifteen"
+}
+
+get_loadavg

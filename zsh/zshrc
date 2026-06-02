@@ -167,6 +167,7 @@ path=(
     /sbin
 
     ~/dotfile/bin
+    .
 )
 
 # Now, remove paths that don't exist https://stackoverflow.com/a/9352979

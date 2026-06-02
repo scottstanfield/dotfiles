@@ -49,27 +49,22 @@ p1="$reset"
 ip="$(ip route get 1.1.1.1 | head -1 | cut -d' ' -f7)"
 kernel="$(uname -srm)"
 os="$(source /etc/os-release; echo $NAME $VERSION)"
-uptime="$(uptime -p | sed 's/up //')"
-load=$(cat /proc/loadavg | cut -d ' ' -f 1,2,3)
-cpu_t1k=$(cat /sys/class/thermal/thermal_zone0/temp)
-cpu_t=$(printf %.1f "$((10**3 * $cpu_t1k / 1000))e-3")
-temps="$cpu_t° C"
+uptime="$(./upsince)"
+load="$(./lav)"
+./cputemp
+temps="$(./cputemp)"
 hostname="$(hostname)"
-model="$(cat /proc/cpuinfo | grep -i model | head -2 | cut -f2 -d: | tail -1)"
-model="$(trim $model)"
-uptime="$(uptime --pretty)"
 
 # ☉
 
 cat <<EOF
 
-${h2} · Hostname   ${h2}${hostname}
 ${h2} · IP         ${r}${ip}
 ${h2} · Kernel     ${r}${kernel}
 ${h2} · OS         ${r}${os}
 ${h2} · Load       ${r}${load}
-${h2} · CPU        ${r}${temps}
+${h2} · CPU Temp   ${r}${temps}
 ${h2} · Uptime     ${r}${uptime}
-${h1} ○ Model      ${h3}${model}${r}
+${h1} ○ Hostname   ${h2}${hostname}
 
 EOF

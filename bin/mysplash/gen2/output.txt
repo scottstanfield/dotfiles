@@ -1,0 +1,24 @@
+• Computer  MacBook Air (M2, 2022)
+• OS        macOS Sequoia 15.6.1 (24G90) arm64
+• Kernel    Darwin 24.6.0
+• Uptime    6 days, 6 hours, 30 mins
+• IP        192.168.1.75/24
+• Hostname  rs-mba
+
+
+• Computer  Apple Virtualization Generic Platform (1)
+• OS        Debian GNU/Linux 13.5 (trixie) aarch64
+• Kernel    Linux 6.12.88+deb13-cloud-arm64
+• Uptime    10 hours, 42 mins
+• IP        192.168.64.4/24
+• Hostname  lima-deb
+
+
+• Computer  OptiPlex 7000
+• OS        Debian GNU/Linux 13.5 (trixie) x86_64
+• Kernel    Linux 6.12.57+deb13-amd64
+• Uptime    25 days, 9 hours, 2 mins
+• IP        192.168.1.100/24
+• Hostname  rubicon
+
+

@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+# vim: noai:ts=4:sw=4:expandtab
+
+get_uptime_seconds() {
+    if [ -r /proc/uptime ]; then
+        # Linux: first field of /proc/uptime, truncated to whole seconds
+        local s
+        s=$(< /proc/uptime)
+        printf '%s\n' "${s/.*}"
+    else
+        # macOS/BSD: now minus kern.boottime
+        local boot now
+        boot=$(sysctl -n kern.boottime)   # e.g. "{ sec = 1716400000, usec = 123456 } ..."
+        boot=${boot#*sec = }              # strip up to "sec = "
+        boot=${boot%%,*}                  # strip from first comma onward
+        now=$(date +%s)
+        printf '%s\n' "$(( now - boot ))"
+    fi
+}
+
+format_uptime() {
+    local total=$1
+    local days=$(( total / 86400 ))
+    local hours=$(( (total % 86400) / 3600 ))
+    local mins=$(( (total % 3600) / 60 ))
+    local secs=$(( total % 60 ))
+    printf '%dd %dh %dm %ds\n' "$days" "$hours" "$mins" "$secs"
+}
+
+format_uptime "$(get_uptime_seconds)"
+

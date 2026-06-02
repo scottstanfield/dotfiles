@@ -1,0 +1,6 @@
+host:Computer
+os:OS
+kernel:Kernel
+uptime:Uptime
+localip:IP
+title:Hostname

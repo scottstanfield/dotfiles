@@ -1,0 +1,47 @@
+#!/bin/bash
+# vim:filetype=bash:
+
+get_cpu_temp_c() {
+    # 1. Linux hwmon: most reliable on x86 (coretemp/k10temp). Find a CPU sensor.
+    local f label
+    for f in /sys/class/hwmon/hwmon*/temp*_input; do
+        [ -r "$f" ] || continue
+        label=$(cat "${f%_input}_label" 2>/dev/null)
+        case $label in
+            *Package*|*Tdie*|*Tctl*|*CPU*)
+                printf '%s\n' "$(( $(cat "$f") / 1000 ))"
+                return 0
+                ;;
+        esac
+    done
+
+    # 2. Linux thermal zone: works great on Raspberry Pi, ok elsewhere.
+    if [ -r /sys/class/thermal/thermal_zone0/temp ]; then
+        local raw
+        raw=$(cat /sys/class/thermal/thermal_zone0/temp)
+        # sanity check: real readings are > 0 and look like milli-degrees
+        if [ "$raw" -gt 0 ] 2>/dev/null; then
+            printf '%s\n' "$(( raw / 1000 ))"
+            return 0
+        fi
+    fi
+
+    # 3. macOS: third-party tools (not built in).
+    if command -v osx-cpu-temp >/dev/null 2>&1; then
+        # prints e.g. "54.2°C"; strip to integer
+        local t
+        t=$(osx-cpu-temp)
+        t=${t%%.*}          # drop fractional part
+        t=${t//[!0-9-]/}    # keep digits/sign only
+        [ -n "$t" ] && { printf '%s\n' "$t"; return 0; }
+    fi
+    if command -v istats >/dev/null 2>&1; then
+        istats cpu temp --value-only 2>/dev/null | { read -r t; printf '%s\n' "${t%%.*}"; }
+        return 0
+    fi
+
+    # 4. Nothing found (typical for a Lima VM or a Mac with no helper installed).
+    return 1
+}
+
+get_cpu_temp_c
