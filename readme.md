@@ -9,19 +9,40 @@ cd ~
 git clone https://github.com/scottstanfield/dotfiles
 
 # if Debian:
-sudo dotfiles/os/debian.sh
+sudo dotfiles/os/linux/debian.sh
 
 # or Mac CLI?
-dotfiles/os/macos-cli.sh   # or sudo os/debian.sh or os/raspbian.sh
+dotfiles/os/mac/macos-cli.sh   # or sudo os/linux/debian.sh or os/linux/raspbian.sh
 
-dotfiles/install.sh        # symlinks configs, bootstraps mise, installs plugins
+dotfiles/install.sh            # symlinks configs, bootstraps mise, installs plugins
 zsh
 chsh -s $(which zsh)
 
 
-dotfiles/extras.sh         # optional: languages + dev extras via mise
-dotfiles/os/macos-apps.sh  # optional: GUI apps + fonts via brew-cask (macOS only)
+dotfiles/extras.sh             # optional: languages + dev extras via mise
+dotfiles/os/mac/macos-apps.sh  # optional: GUI apps + fonts via brew-cask (macOS only)
 ```
+
+### One-command macOS setup
+
+On a Mac, `os/mac/setup-mac.sh` chains the bootstrap for you and then *prompts*
+before applying the opinionated system defaults (see `os/mac/README.md`):
+
+```
+dotfiles/os/mac/setup-mac.sh
+```
+
+It runs, in order:
+
+1. `os/mac/macos-cli.sh` — Xcode CLT + XDG dirs
+2. `install.sh` — symlink configs, mise, plugins (your args are forwarded here)
+3. **git / GitHub check** — prints the effective `user.name` / `user.email` and `gh` auth so you can confirm commits are attributed correctly
+4. `claude-setup/setup.sh` — install Claude Code and link your `~/.claude` config
+5. `os/mac/macos-defaults.sh` — **opt-in**, prompted
+
+Steps 1-4 are idempotent and safe to re-run. Step 5 (83 `defaults write`
+settings) mutates system state and wants a logout/restart, so answer `y` at
+the prompt, or run `os/mac/macos-defaults.sh` on its own whenever you like.
 
 Then if you want my changes:
 
@@ -58,4 +79,4 @@ Configs go under `$XDG_CONFIG_HOME`, data under `$XDG_DATA_HOME`, cache under `$
 `./install.sh` can be re-run any number of times. Each downstream step (tpm, nvim plugins, mise tools) checks for its dependency on `PATH` and skips with a re-run hint if it's not there yet. No "fresh install" vs "update" modes, no destructive setup that only works once. You can interrupt and resume without tearing things down.
 
 **5. When a dependency's surface area exceeds the need, replace it with code.**
-This repo used GNU stow, but only ever the link + `--dotfiles` rename subset. That became ~15 lines of bash (`mylink` in `istow.sh`) and one fewer thing to `brew install` on a fresh mac. Same reasoning inlined the old `os/mise.sh` bootstrap into `istow.sh`. Code you control beats a dep you pin the version of.
+This repo used GNU stow, but only ever the link + `--dotfiles` rename subset. That became ~15 lines of bash (`mylink` in `install.sh`) and one fewer thing to `brew install` on a fresh mac. Same reasoning inlined the old `os/mise.sh` bootstrap into `install.sh`. Code you control beats a dep you pin the version of.

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Undo what istow.sh creates, for testing a fresh install.
+# Undo what install.sh creates, for testing a fresh install.
 # Leaves ~/.zshrc.local and ~/.gitconfig.local alone (machine-local).
 
 set -Eeuo pipefail

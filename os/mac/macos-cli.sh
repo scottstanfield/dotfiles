@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Minimal macOS bootstrap: Xcode Command Line Tools + XDG dirs.
-# Does not require or install Homebrew. Run os/macos-apps.sh separately
+# Does not require or install Homebrew. Run os/mac/macos-apps.sh separately
 # for GUI apps (ghostty, alacritty, etc.) and fonts.
 
 set -Eeuo pipefail
@@ -11,7 +11,7 @@ die()     { printf '%s\n' "$*" >&2; exit 1; }
 readonly _D="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$_D"
 
-[[ "$(uname)" == "Darwin" ]] || die "This script is for macOS. Use os/debian.sh on Linux."
+[[ "$(uname)" == "Darwin" ]] || die "This script is for macOS. Use os/linux/debian.sh on Linux."
 
 ##
 ## Xcode Command Line Tools — provides clang, make, git, curl, basic POSIX.
@@ -26,7 +26,7 @@ fi
 println "Xcode Command Line Tools: present"
 
 ##
-## XDG base dirs (mirrors os/debian.sh)
+## XDG base dirs (mirrors os/linux/debian.sh)
 ##
 : "${XDG_CONFIG_HOME:=$HOME/.config}"
 : "${XDG_DATA_HOME:=$HOME/.local/share}"

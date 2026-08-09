@@ -166,6 +166,8 @@ brew_setup() {
         [coreutils]=gls
         [gnu-sed]=gsed
         [gawk]=gawk
+        [htop]=htop
+        [ascii]=ascii
     )
 
     if in_path brew; then

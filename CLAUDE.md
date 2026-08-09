@@ -7,7 +7,7 @@ Notes for future Claude sessions working in this repo. Read this before touching
 Scott's personal dotfiles. Must work on:
 
 - **macOS** (Apple Silicon primary, Intel supported)
-- **Debian / Ubuntu** (including `os/raspbian.sh` for Raspberry Pi)
+- **Debian / Ubuntu** (including `os/linux/raspbian.sh` for Raspberry Pi)
 - **WSL** — best-effort, **untested**. The Debian bootstrap should mostly work. Don't add WSL-specific hacks without confirming with Scott first; he can't verify them.
 
 Anywhere code is platform-specific, gate it with `uname` / `$OSTYPE`. Never assume `/opt/homebrew` exists on Linux.
@@ -17,10 +17,12 @@ Anywhere code is platform-specific, gate it with `uname` / `$OSTYPE`. Never assu
 Two steps, run from a fresh clone of `~/dotfiles`:
 
 1. Platform prep:
-   - Debian/Ubuntu: `os/debian.sh` — `apt-get` core packages + `build-essential` + XDG env vars.
-   - macOS: `os/macos-cli.sh` — ensures Xcode Command Line Tools (macOS's `build-essential` equivalent) + XDG env vars. **No Homebrew.** Optional second script `os/macos-apps.sh` installs GUI apps + fonts via brew-cask (run only if you want the full desktop setup).
+   - Debian/Ubuntu: `os/linux/debian.sh` — `apt-get` core packages + `build-essential` + XDG env vars.
+   - macOS: `os/mac/macos-cli.sh` — ensures Xcode Command Line Tools (macOS's `build-essential` equivalent) + XDG env vars. **No Homebrew.** Optional second script `os/mac/macos-apps.sh` installs GUI apps + fonts via brew-cask (run only if you want the full desktop setup). See `os/mac/README.md`.
 2. `./install.sh` — symlinks packages and config files
 3. *(optional)* `./extras.sh` — symlinks `templates/extras.toml` into `~/.config/mise/conf.d/` and runs `mise up` to install the dev/data pack. All-or-nothing; skip on minimal boxes.
+
+**macOS convenience wrapper:** `os/mac/setup-mac.sh` chains step 1 (`macos-cli.sh`) → step 2 (`install.sh`) → git check → `claude-setup/setup.sh`, then *prompts* to run `os/mac/macos-defaults.sh`. It's a thin wrapper (a new file, not an edit to `macos-cli.sh`) so `macos-cli.sh` stays byte-identical to upstream and never conflicts on rebase. `install.sh` args are forwarded. Keep `macos-defaults.sh` opt-in here — it mutates system state (`killall`, LaunchAgent, logout/restart), so it must never run automatically as part of the idempotent bootstrap. macOS scripts live in `os/mac/` (see its README), Linux ones in `os/linux/`.
 
 **Remaining goal:** fold step 1 into step 2 so bootstrap is a single command. When editing install scripts, prefer moves that bring us closer to one-command bootstrap. Ask Scott before making it automatic.
 
@@ -70,7 +72,7 @@ mise skips tools whose `os` doesn't match the host.
 
 ## XDG
 
-The repo is mid-migration to XDG. Current branch at time of writing: `git-to-xdg`. `XDG_CONFIG_HOME`, `XDG_DATA_HOME`, `XDG_CACHE_HOME`, `XDG_STATE_HOME` are set early in both `zsh/zshrc` and `os/debian.sh`. Prefer XDG paths for any new config you introduce.
+The repo is mid-migration to XDG. Current branch at time of writing: `git-to-xdg`. `XDG_CONFIG_HOME`, `XDG_DATA_HOME`, `XDG_CACHE_HOME`, `XDG_STATE_HOME` are set early in both `zsh/zshrc` and `os/linux/debian.sh`. Prefer XDG paths for any new config you introduce.
 
 ## Legacy files — do not edit, candidates for cleanup
 
@@ -94,7 +96,7 @@ Proposed fix: add `mylink bin ~/bin` (or similar) to `install.sh` once `bin/` is
 
 - `./clean.sh` — removes the symlinks `install.sh` created (via the `myunlink` helper), tpm, and nvim site. Leaves `~/.zshrc.local` and `~/.gitconfig.local` alone.
 - Re-run `./install.sh` after `clean.sh` to verify a fresh install still works.
-- `os/ephemeral-lima.sh` spins up a throwaway Debian VM for Linux-side testing from a Mac. `lima shell deb` to get in.
+- `os/linux/server-lima.sh` spins up a throwaway Debian VM for Linux-side testing from a Mac; `os/linux/shell-lima.sh` (or `limactl shell deb`) to get in.
 
 ## Conventions
 

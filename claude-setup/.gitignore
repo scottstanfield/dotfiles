@@ -1,0 +1,17 @@
+# Safety net: never let Claude secrets / runtime data get committed here,
+# even if copied into this directory by mistake.
+settings.local.json
+*.local.json
+.claude.json
+history.jsonl
+*.jsonl
+projects/
+sessions/
+session-env/
+shell-snapshots/
+paste-cache/
+file-history/
+cache/
+backups/
+telemetry/
+*-cache.json

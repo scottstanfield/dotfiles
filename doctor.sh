@@ -114,7 +114,7 @@ if [[ -d $nvim_plugged ]]; then
     count=$(find "$nvim_plugged" -mindepth 1 -maxdepth 1 -type d 2>/dev/null | wc -l | tr -d ' ')
     ok "nvim plugins ($count installed at $nvim_plugged)"
 else
-    warn "nvim plugins not installed (re-run ./istow.sh once nvim is on PATH)"
+    warn "nvim plugins not installed (re-run ./install.sh once nvim is on PATH)"
 fi
 
 section "Summary"

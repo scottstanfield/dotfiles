@@ -27,7 +27,7 @@ if command -v mise >/dev/null 2>&1; then
     println "Running mise up..."
     mise up
 else
-    println "mise not found; skipping mise up. Run ./istow.sh first."
+    println "mise not found; skipping mise up. Run ./install.sh first."
 fi
 
 println ""

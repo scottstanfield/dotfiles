@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Optional: GUI apps and fonts for macOS via Homebrew Cask.
 # Run this only if you want the full desktop setup. CLI tooling now lives
-# in mise.toml — run ./istow.sh (not this) for that.
+# in mise.toml — run install.sh (not this) for that.
 
 set -Eeuo pipefail
 
