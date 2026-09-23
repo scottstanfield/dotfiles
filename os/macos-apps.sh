@@ -10,6 +10,9 @@ die()     { printf '%s\n' "$*" >&2; exit 1; }
 
 [[ "$(uname)" == "Darwin" ]] || die "This script is for macOS."
 
+# give XDG_CONFIG_HOME a reasonable default if unset
+: "${XDG_CONFIG_HOME:=$HOME/.config}"
+
 ##
 ## Bootstrap Homebrew if missing (needed only for .app bundles and fonts)
 ##
@@ -54,12 +57,6 @@ missing_casks() {
     done
 }
 
-apps=(
-    ghostty
-    hammerspoon
-    rectangle
-)
-
 # enable key repeat in VS Code
 defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false
 
@@ -71,6 +68,12 @@ defaults write org.hammerspoon.Hammerspoon MJConfigFile $XDG_CONFIG_HOME/hammers
 # I like handmirror but you'll need to get it from the app store
 # handmirror
 
+apps=(
+    ghostty
+    hammerspoon
+    rectangle
+)
+
 fonts=(
     font-meslo-lg-nerd-font
     font-jetbrains-mono-nerd-font
@@ -79,20 +82,10 @@ fonts=(
 )
 
 println "Installing GUI apps..."
-mapfile -t apps_missing < <(missing_casks "${apps[@]}")
-if (( ${#apps_missing[@]} > 0 )); then
-    brew install --cask --adopt "${apps_missing[@]}"
-else
-    println "  all apps already installed"
-fi
+brew install --cask --adopt "${apps[@]}"
 
 println "Installing fonts..."
-mapfile -t fonts_missing < <(missing_casks "${fonts[@]}")
-if (( ${#fonts_missing[@]} > 0 )); then
-    brew install --cask --quiet "${fonts_missing[@]}"
-else
-    println "  all fonts already installed"
-fi
+brew install --cask --quiet "${fonts[@]}"
 
 # tell Hammerspoon where to find it's config
 mkdir -p $XDG_CONFIG_HOME/hammerspoon

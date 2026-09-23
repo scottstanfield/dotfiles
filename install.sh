@@ -13,9 +13,9 @@ die()     { printf '%s\n' "$*" >&2; exit 1; }
 in_path() { command -v "$1" &>/dev/null; }
 
 # Require bash 4+
-if (( BASH_VERSINFO[0] < 4 )); then
-    die "bash 4+ required (you have ${BASH_VERSION}). Install with: brew install bash"
-fi
+#if (( BASH_VERSINFO[0] < 4 )); then
+#    die "bash 4+ required (you have ${BASH_VERSION}). Install with: brew install bash"
+#fi
 
 source "$(dirname "$0")/lib/colors.sh"
 colors_init "$@"
@@ -158,26 +158,23 @@ tmux_setup() {
     fi
 }
 
+brew_check_install() {
+    local bin="$1" pkg="$2"
+    if in_path "$bin"; then
+        note "$pkg already installed"
+    else
+        brew install "$pkg"
+	ok "installed $pkg ($bin)"
+    fi
+}
 
 brew_setup() {
     section "Brew packages"
-    # Map package name -> binary to check
-    declare -A brew_pkgs=(
-        [coreutils]=gls
-        [gnu-sed]=gsed
-        [gawk]=gawk
-    )
 
     if in_path brew; then
-        for pkg in "${!brew_pkgs[@]}"; do
-            bin="${brew_pkgs[$pkg]}"
-            if ! in_path "$bin"; then
-                brew install "$pkg"
-                ok "installed $pkg ($bin)"
-            else
-                note "$pkg already installed"
-            fi
-        done
+        brew_check_install gls coreutils
+        brew_check_install gsed gnu-sed
+        brew_check_install gawk gawk
     fi
 }
 
