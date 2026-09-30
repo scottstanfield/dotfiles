@@ -10,17 +10,15 @@ git clone https://github.com/scottstanfield/dotfiles
 
 # if Debian:
 sudo dotfiles/os/debian.sh
-
-# or Mac CLI?
-dotfiles/os/macos-cli.sh   # or sudo os/debian.sh or os/raspbian.sh
-
 dotfiles/install.sh        # symlinks configs, bootstraps mise, installs plugins
 zsh
 chsh -s $(which zsh)
 
-
-dotfiles/extras.sh         # optional: languages + dev extras via mise
+# if Mac
+dotfiles/os/macos-cli.sh   # or sudo os/debian.sh or os/raspbian.sh
+dotfiles/install.sh        # symlinks configs, bootstraps mise, installs plugins
 dotfiles/os/macos-apps.sh  # optional: GUI apps + fonts via brew-cask (macOS only)
+dotfiles/extras.sh         # optional: languages + dev extras via mise
 ```
 
 ## Then if you want my changes:
