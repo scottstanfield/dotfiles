@@ -1,5 +1,5 @@
 ; vim: ft=gitconfig
 
 [user]
-    email = scottstanfield@gmail.com
-    name = Scott Stanfield
+    email = someone@example.com
+    name = Full Name

@@ -43,6 +43,11 @@ MANIFEST
 !.gitignore
 !.nvmrc
 
+# Claude Code project config (skills, settings.json) — track by default;
+# a repo's own .gitignore can still exclude specific files (e.g. settings.local.json)
+!.claude/
+!.claude/**
+
 # Mac OS specific
 .DS_Store
 Thumbs.db
